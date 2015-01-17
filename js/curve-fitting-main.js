@@ -10,8 +10,8 @@ define( function( require ) {
 
   // modules
   var Sim = require( 'JOIST/Sim' );
-  var CurveFittingModel = require( 'CURVE_FITTING/model/CurveFittingModel' );
-  var CurveFittingView = require( 'CURVE_FITTING/view/CurveFittingView' );
+  var CurveFittingModel = require( 'CURVE_FITTING/curve-fitting/model/CurveFittingModel' );
+  var CurveFittingView = require( 'CURVE_FITTING/curve-fitting/view/CurveFittingView' );
   var SimLauncher = require( 'JOIST/SimLauncher' );
   var Screen = require( 'JOIST/Screen' );
 
