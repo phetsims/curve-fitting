@@ -1,3 +1,11 @@
 {
-  "curve-fitting.name": "Curve Fitting"
+  "adjustableFit": "Adjustable fit",
+  "bestFit": "Best fit",
+  "cubic": "Cubic",
+  "curve-fitting.name": "Curve Fitting",
+  "equation": "Equation",
+  "linear": "Linear",
+  "quadratic": "Quadratic",
+  "residuals": "Residuals",
+  "values": "Values"
 }
