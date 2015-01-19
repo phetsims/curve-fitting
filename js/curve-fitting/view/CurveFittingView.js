@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var DeviationsNode = require( 'CURVE_FITTING/curve-fitting/view/DeviationsNode' );
   var Bounds2 = require( 'DOT/Bounds2' );
   var BucketNode = require( 'CURVE_FITTING/curve-fitting/view/BucketNode' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -16,6 +17,7 @@ define( function( require ) {
   var ScreenView = require( 'JOIST/ScreenView' );
 
   // constants
+  var PADDING = 10;
   var SIM_BOUNDS = new Bounds2( 0, 0, 768, 504 );
 
   /**
@@ -23,7 +25,13 @@ define( function( require ) {
    * @constructor
    */
   function CurveFittingView( CurveFittingModel ) {
-    ScreenView.call( this, { renderer: 'svg', layoutBounds: new Bounds2( 0, 0, 768, 504 ) } );
+    ScreenView.call( this, {renderer: 'svg', layoutBounds: new Bounds2( 0, 0, 768, 504 )} );
+
+    // add deviations node
+    var deviationsNode = new DeviationsNode();
+    deviationsNode.centerX = deviationsNode.width / 2 + PADDING;
+    deviationsNode.centerY = deviationsNode.height / 2 + PADDING;
+    this.addChild( deviationsNode );
 
     // add bucket node
     var bucketNode = new BucketNode();
