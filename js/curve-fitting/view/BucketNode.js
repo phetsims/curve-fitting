@@ -1,7 +1,7 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Bucket node in 'Pendulum Lab' simulation.
+ * Bucket node in 'Curve Fitting' simulation.
  *
  * @author Andrey Zelenkov (Mlearner)
  */
@@ -20,8 +20,6 @@ define( function( require ) {
   // constants
   var POINTS_COORDS = [
     {x: -33, y: 8},
-    {x: -20, y: 7},
-    {x: -7, y: 6},
     {x: -25, y: 3},
     {x: -19, y: 0},
     {x: 8, y: -8},
@@ -29,7 +27,6 @@ define( function( require ) {
     {x: -5, y: -8},
     {x: 5, y: 6},
     {x: 2, y: 2},
-    {x: 10, y: 4},
     {x: 18, y: 6},
     {x: 17, y: -4},
     {x: 0, y: 8},
@@ -37,6 +34,9 @@ define( function( require ) {
     {x: -12, y: -6},
     {x: 0, y: -6},
     {x: 12, y: -6},
+    {x: 10, y: 6},
+    {x: -7, y: 6},
+    {x: -20, y: 7},
     {x: 33, y: 8}
   ];
   var POINTS_COLOR = 'rgb( 252, 151, 64 )';
