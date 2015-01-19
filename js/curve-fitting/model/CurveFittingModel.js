@@ -8,6 +8,8 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var CurveType = require( 'CURVE_FITTING/curve-fitting/model/CurveType' );
+  var FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
 
@@ -17,7 +19,13 @@ define( function( require ) {
    */
   function CurveFittingModel() {
 
-    PropertySet.call( this, {} );
+    PropertySet.call( this, {
+      isCurve: false,
+      isResiduals: false,
+      isValues: false,
+      curveType: CurveType.LINEAR,
+      fitType: FitType.BEST
+    } );
   }
 
   return inherit( PropertySet, CurveFittingModel, {

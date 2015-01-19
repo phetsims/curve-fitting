@@ -9,9 +9,10 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var DeviationsNode = require( 'CURVE_FITTING/curve-fitting/view/DeviationsNode' );
   var Bounds2 = require( 'DOT/Bounds2' );
   var BucketNode = require( 'CURVE_FITTING/curve-fitting/view/BucketNode' );
+  var ControlMenuNode = require( 'CURVE_FITTING/curve-fitting/view/ControlMenuNode' );
+  var DeviationsNode = require( 'CURVE_FITTING/curve-fitting/view/DeviationsNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
@@ -38,6 +39,12 @@ define( function( require ) {
     bucketNode.centerX = bucketNode.width / 2 + 30;
     bucketNode.centerY = SIM_BOUNDS.height - bucketNode.height - 5;
     this.addChild( bucketNode );
+
+    // add control menu node
+    var controlMenuNode = new ControlMenuNode( CurveFittingModel );
+    controlMenuNode.centerX = SIM_BOUNDS.width - PADDING - controlMenuNode.width / 2;
+    controlMenuNode.centerY = PADDING + controlMenuNode.height / 2;
+    this.addChild( controlMenuNode );
 
     // add reset all button
     var resetAllButton = new ResetAllButton( {
