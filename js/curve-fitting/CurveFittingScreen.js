@@ -9,12 +9,12 @@ define( function( require ) {
 
   // modules
   var CurveFittingModel = require( 'CURVE_FITTING/curve-fitting/model/CurveFittingModel' );
-  var CurveFittingScreenView = require( 'CURVE_FITTING/curve-fitting/view/CurveFittingScreenView' );
+  var CurveFittingView = require( 'CURVE_FITTING/curve-fitting/view/CurveFittingView' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Screen = require( 'JOIST/Screen' );
 
   // strings
-  var curveFittingSimString = require( 'string!CURVE_FITTING/curve-fitting/curve-fitting.name' );
+  var curveFittingSimString = require( 'string!CURVE_FITTING/curve-fitting.name' );
 
   /**
    * @constructor
@@ -27,8 +27,8 @@ define( function( require ) {
 
     Screen.call( this, curveFittingSimString, icon,
       function() { return new CurveFittingModel(); },
-      function( model ) { return new CurveFittingScreenView( model ); },
-      { backgroundColor: 'white' }
+      function( model ) { return new CurveFittingView( model ); },
+      { backgroundColor: 'rgb( 187, 230, 246 )' }
     );
   }
 
