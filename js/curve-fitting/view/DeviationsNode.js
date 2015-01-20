@@ -13,6 +13,7 @@ define( function( require ) {
   // modules
   var AccordionBox = require( 'SUN/AccordionBox' );
   var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
+  var CurveFittingConstants = require('CURVE_FITTING/curve-fitting/CurveFittingConstants');
   var inherit = require( 'PHET_CORE/inherit' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var Line = require( 'SCENERY/nodes/Line' );
@@ -88,8 +89,9 @@ define( function( require ) {
       ]
     }, options ) ), {
       contentAlign: 'left',
+      cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
       showTitleWhenExpanded: false,
-      fill: 'rgb( 254, 235, 214 )'
+      fill: CurveFittingConstants.PANEL_BACKGROUND_COLOR
     } );
   }
 
