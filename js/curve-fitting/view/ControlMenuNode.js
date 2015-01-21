@@ -11,6 +11,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var CheckBox = require( 'SUN/CheckBox' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var CurveType = require( 'CURVE_FITTING/curve-fitting/model/CurveType' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -19,7 +20,6 @@ define( function( require ) {
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Text = require( 'SCENERY/nodes/Text' );
   var VBox = require( 'SCENERY/nodes/VBox' );
-  var VerticalCheckBoxGroup = require( 'SUN/VerticalCheckBoxGroup' );
   var VerticalAquaRadioButtonGroup = require( 'SUN/VerticalAquaRadioButtonGroup' );
 
   // strings
@@ -33,6 +33,7 @@ define( function( require ) {
   var ValuesString = require( 'string!CURVE_FITTING/values' );
 
   // constants
+  var CHECK_BOX_OPTIONS = {boxWidth: 20};
   var FONT = new PhetFont( 14 );
   var PANEL_OPTIONS = {
     cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
@@ -54,18 +55,23 @@ define( function( require ) {
   function ControlMenuNode( CurveFittingModel, options ) {
     VBox.call( this, _.extend( {spacing: 10}, options ) );
 
+    // create label for residual check box
+    var residualCheckBoxLabel = new Text( ResidualsString, {font: FONT} );
+    residualCheckBoxLabel.setEnabled = function( enabled ) {
+      residualCheckBoxLabel.opacity = ( enabled ? 1 : 0.5 ); // gray out when disabled
+    };
+
     // create options check boxes
-    var checkBoxGroup = new VerticalCheckBoxGroup( [{
-      content: new Text( CurveString, {font: FONT} ),
-      property: CurveFittingModel.property( 'isCurve' )
-    }, {
-      content: new Text( ResidualsString, {font: FONT} ),
-      property: CurveFittingModel.property( 'isResiduals' )
-    }, {
-      content: new Text( ValuesString, {font: FONT} ),
-      property: CurveFittingModel.property( 'isValues' )
-    }
-    ], {spacing: 5, boxWidth: 20} );
+    var residualCheckBox = new CheckBox( residualCheckBoxLabel, CurveFittingModel.property( 'isResiduals' ), CHECK_BOX_OPTIONS );
+    var checkBoxGroup = new VBox( {
+      spacing: 5,
+      align: 'left',
+      children: [
+        new CheckBox( new Text( CurveString, {font: FONT} ), CurveFittingModel.property( 'isCurve' ), CHECK_BOX_OPTIONS ),
+        residualCheckBox,
+        new CheckBox( new Text( ValuesString, {font: FONT} ), CurveFittingModel.property( 'isValues' ), CHECK_BOX_OPTIONS )
+      ]
+    } );
     checkBoxGroup.localBounds = checkBoxGroup.localBounds.withMaxX( Math.max( checkBoxGroup.localBounds.maxX, PANEL_WIDTH ) );
     var optionsCheckBoxPanel = new Panel( checkBoxGroup, PANEL_OPTIONS );
     this.addChild( optionsCheckBoxPanel );
@@ -94,10 +100,12 @@ define( function( require ) {
       if ( isCurve ) {
         curveTypePanel.visible = true;
         fitTypePanel.visible = true;
+        residualCheckBox.enabled = true;
       }
       else {
         curveTypePanel.visible = false;
         fitTypePanel.visible = false;
+        residualCheckBox.enabled = false;
       }
     } );
   }
