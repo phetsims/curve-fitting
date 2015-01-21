@@ -15,6 +15,7 @@ define( function( require ) {
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
+  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Shape = require( 'KITE/Shape' );
 
   // constants
@@ -39,8 +40,12 @@ define( function( require ) {
     {x: -20, y: 7},
     {x: 33, y: 8}
   ];
-  var POINTS_COLOR = 'rgb( 252, 151, 64 )';
-  var POINTS_RADIUS = 6;
+  var POINT_OPTIONS = {
+    fill: 'rgb( 252, 151, 64 )',
+    radius: 6,
+    stroke: 'black',
+    lineWidth: 1
+  };
   var RADIUS_X = 44;
   var RADIUS_Y = 9;
 
@@ -49,6 +54,8 @@ define( function( require ) {
    * @constructor
    */
   function BucketNode( options ) {
+    var self = this;
+
     Node.call( this, options );
 
     // create bucket
@@ -81,17 +88,33 @@ define( function( require ) {
 
     // create points
     var pointsNode = new Node( {clipArea: clipShape} );
+    var activePoint = new Circle( POINT_OPTIONS );
     POINTS_COORDS.forEach( function( pointsCoord ) {
-      pointsNode.addChild( new Circle( {
-        radius: POINTS_RADIUS,
+      pointsNode.addChild( new Circle( _.extend( POINT_OPTIONS, {
         x: pointsCoord.x,
-        y: pointsCoord.y,
-        fill: POINTS_COLOR,
-        stroke: 'black',
-        lineWidth: 1
-      } ) );
+        y: pointsCoord.y
+      } ) ) );
     } );
     this.addChild( pointsNode );
+
+    // add drag handler
+    this.addChild( activePoint );
+    activePoint.visible = false;
+    pointsNode.addInputListener( new SimpleDragHandler( {
+      start: function( e ) {
+        activePoint.visible = true;
+        activePoint.setTranslation( activePoint.globalToParentPoint( e.pointer.point ) );
+      },
+      drag: function( e ) {
+        if ( activePoint.visible ) {
+          activePoint.setTranslation( activePoint.globalToParentPoint( e.pointer.point ) );
+        }
+      },
+      end: function() {
+        activePoint.visible = false;
+        activePoint.setTranslation( 0, 0 );
+      }
+    } ) );
   }
 
   return inherit( Node, BucketNode );
