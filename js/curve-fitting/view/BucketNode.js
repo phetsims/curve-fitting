@@ -54,8 +54,6 @@ define( function( require ) {
    * @constructor
    */
   function BucketNode( options ) {
-    var self = this;
-
     Node.call( this, options );
 
     // create bucket
