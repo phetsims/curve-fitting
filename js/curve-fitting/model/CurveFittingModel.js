@@ -8,6 +8,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var Curve = require( 'CURVE_FITTING/curve-fitting/model/Curve' );
   var CurveType = require( 'CURVE_FITTING/curve-fitting/model/CurveType' );
   var FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -18,7 +19,6 @@ define( function( require ) {
    * @constructor
    */
   function CurveFittingModel() {
-
     PropertySet.call( this, {
       isCurve: false,
       isResiduals: false,
@@ -26,6 +26,8 @@ define( function( require ) {
       curveType: CurveType.LINEAR,
       fitType: FitType.BEST
     } );
+
+    this.curveModel = new Curve( this.property( 'curveType' ) );
   }
 
   return inherit( PropertySet, CurveFittingModel, {
