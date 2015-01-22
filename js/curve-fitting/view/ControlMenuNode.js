@@ -15,7 +15,7 @@ define( function( require ) {
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var CurveType = require( 'CURVE_FITTING/curve-fitting/model/CurveType' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
+  var FitTypeMenu = require( 'CURVE_FITTING/curve-fitting/view/FitTypeMenu' );
   var Panel = require( 'SUN/Panel' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Text = require( 'SCENERY/nodes/Text' );
@@ -23,8 +23,6 @@ define( function( require ) {
   var VerticalAquaRadioButtonGroup = require( 'SUN/VerticalAquaRadioButtonGroup' );
 
   // strings
-  var AdjustableFitString = require( 'string!CURVE_FITTING/adjustableFit' );
-  var BestFitString = require( 'string!CURVE_FITTING/bestFit' );
   var CubicString = require( 'string!CURVE_FITTING/cubic' );
   var CurveString = require( 'string!CURVE_FITTING/curve' );
   var LinearString = require( 'string!CURVE_FITTING/linear' );
@@ -38,14 +36,13 @@ define( function( require ) {
   var PANEL_OPTIONS = {
     cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
     fill: CurveFittingConstants.PANEL_BACKGROUND_COLOR,
-    xMargin: 10,
-    yMargin: 10
+    xMargin: CurveFittingConstants.PANEL_MARGIN,
+    yMargin: CurveFittingConstants.PANEL_MARGIN
   };
   var RADIO_BUTTON_MENU_OPTIONS = {
     spacing: 5,
     radius: 10
   };
-  var PANEL_WIDTH = 150;
 
   /**
    * @param {CurveFittingModel} CurveFittingModel
@@ -72,7 +69,7 @@ define( function( require ) {
         new CheckBox( new Text( ValuesString, {font: FONT} ), CurveFittingModel.property( 'isValues' ), CHECK_BOX_OPTIONS )
       ]
     } );
-    checkBoxGroup.localBounds = checkBoxGroup.localBounds.withMaxX( Math.max( checkBoxGroup.localBounds.maxX, PANEL_WIDTH ) );
+    checkBoxGroup.localBounds = checkBoxGroup.localBounds.withMaxX( Math.max( checkBoxGroup.localBounds.maxX, CurveFittingConstants.PANEL_WIDTH ) );
     var optionsCheckBoxPanel = new Panel( checkBoxGroup, PANEL_OPTIONS );
     this.addChild( optionsCheckBoxPanel );
 
@@ -82,29 +79,24 @@ define( function( require ) {
       {property: CurveFittingModel.property( 'curveType' ), node: new Text( QuadraticString, {font: FONT} ), value: CurveType.QUADRATIC},
       {property: CurveFittingModel.property( 'curveType' ), node: new Text( CubicString, {font: FONT} ), value: CurveType.CUBIC}
     ], RADIO_BUTTON_MENU_OPTIONS );
-    curveTypeRadioButtonGroup.localBounds = curveTypeRadioButtonGroup.localBounds.withMaxX( Math.max( curveTypeRadioButtonGroup.localBounds.maxX, PANEL_WIDTH - RADIO_BUTTON_MENU_OPTIONS.radius ) );
+    curveTypeRadioButtonGroup.localBounds = curveTypeRadioButtonGroup.localBounds.withMaxX( Math.max( curveTypeRadioButtonGroup.localBounds.maxX, CurveFittingConstants.PANEL_WIDTH - RADIO_BUTTON_MENU_OPTIONS.radius ) );
     var curveTypePanel = new Panel( curveTypeRadioButtonGroup, PANEL_OPTIONS );
     this.addChild( curveTypePanel );
 
-    // create fit type radio buttons
-    var fitTypeRadioButtonGroup = new VerticalAquaRadioButtonGroup( [
-      {property: CurveFittingModel.property( 'fitType' ), node: new Text( BestFitString, {font: FONT} ), value: FitType.BEST},
-      {property: CurveFittingModel.property( 'fitType' ), node: new Text( AdjustableFitString, {font: FONT} ), value: FitType.ADJUSTABLE}
-    ], RADIO_BUTTON_MENU_OPTIONS );
-    fitTypeRadioButtonGroup.localBounds = fitTypeRadioButtonGroup.localBounds.withMaxX( Math.max( fitTypeRadioButtonGroup.localBounds.maxX, PANEL_WIDTH - RADIO_BUTTON_MENU_OPTIONS.radius ) );
-    var fitTypePanel = new Panel( fitTypeRadioButtonGroup, PANEL_OPTIONS );
-    this.addChild( fitTypePanel );
+    // create fit type menu
+    var fitTypeMenu = new FitTypeMenu( CurveFittingModel.curveModel, CurveFittingModel.property( 'fitType' ), CurveFittingModel.property( 'curveType' ) );
+    this.addChild( fitTypeMenu );
 
     // add observers
     CurveFittingModel.property( 'isCurve' ).link( function( isCurve ) {
       if ( isCurve ) {
         curveTypePanel.visible = true;
-        fitTypePanel.visible = true;
+        fitTypeMenu.visible = true;
         residualCheckBox.enabled = true;
       }
       else {
         curveTypePanel.visible = false;
-        fitTypePanel.visible = false;
+        fitTypeMenu.visible = false;
         residualCheckBox.enabled = false;
       }
     } );
