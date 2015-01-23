@@ -28,7 +28,7 @@ define( function( require ) {
   var BestFitString = require( 'string!CURVE_FITTING/bestFit' );
 
   // constants
-  var FONT = new PhetFont( 14 );
+  var FONT = new PhetFont( 13 );
   var RADIO_BUTTON_MENU_OPTIONS = {
     spacing: 5,
     radius: 10
@@ -36,7 +36,7 @@ define( function( require ) {
   var SLIDER_OPTIONS = {
     trackFill: 'black',
     trackSize: new Dimension2( 140, 1 ),
-    thumbSize: new Dimension2( 16, 28 )
+    thumbSize: new Dimension2( 16, 26 )
   };
   var TICK_COLOR = 'black';
   var TICK_LENGTH = 8;

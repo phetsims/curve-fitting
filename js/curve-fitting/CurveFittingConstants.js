@@ -14,6 +14,6 @@ define( function() {
     PANEL_BACKGROUND_COLOR: 'rgb( 254, 235, 214 )',
     PANEL_CORNER_RADIUS: 5,
     PANEL_MARGIN: 10,
-    PANEL_WIDTH: 150
+    PANEL_WIDTH: 125
   };
 } );

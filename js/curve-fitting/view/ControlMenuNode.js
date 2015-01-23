@@ -32,7 +32,7 @@ define( function( require ) {
 
   // constants
   var CHECK_BOX_OPTIONS = {boxWidth: 20};
-  var FONT = new PhetFont( 14 );
+  var FONT = new PhetFont( 13 );
   var PANEL_OPTIONS = {
     cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
     fill: CurveFittingConstants.PANEL_BACKGROUND_COLOR,
