@@ -88,7 +88,6 @@ define( function( require ) {
     } );
 
     content.addChild( fitTypeRadioButtonGroup );
-    content.addChild( slidersBox );
 
     // add slider number observer
     curveTypeProperty.link( function( curveType ) {
@@ -100,6 +99,16 @@ define( function( require ) {
       }
       else if ( curveType === CurveType.CUBIC ) {
         slidersBox.children = [aSlider, bSlider, cSlider, dSlider];
+      }
+    } );
+
+    // add slider visibility observer
+    fitTypeProperty.link( function( fitType ) {
+      if ( fitType === FitType.BEST && content.isChild( slidersBox ) ) {
+        content.removeChild( slidersBox );
+      }
+      else if ( fitType === FitType.ADJUSTABLE ) {
+        content.addChild( slidersBox );
       }
     } );
   }
