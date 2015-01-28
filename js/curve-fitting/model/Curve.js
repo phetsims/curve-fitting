@@ -24,7 +24,9 @@ define( function( require ) {
       a: 0, // parameter with x^3
       b: 0, // parameter with x^2
       c: 0, // parameter with x^1
-      d: 0  // parameter with constant
+      d: 0,  // parameter with constant
+      deviationR: 0, // r-deviation
+      deviationX: 0 // x-deviation
     } );
 
     curveTypeProperty.lazyLink( function( curveType ) {
