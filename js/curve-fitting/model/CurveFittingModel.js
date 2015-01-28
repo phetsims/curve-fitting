@@ -20,11 +20,12 @@ define( function( require ) {
    */
   function CurveFittingModel() {
     PropertySet.call( this, {
-      isCurve: false,
-      isResiduals: false,
-      isValues: false,
-      curveType: CurveType.LINEAR,
-      fitType: FitType.BEST
+      isCurve: false, // curve flag visibility
+      isResiduals: false, // residuals flag
+      isValues: false, // values flag visibility
+      curveType: CurveType.LINEAR, // property to control curve type
+      fitType: FitType.BEST, // property to control fit type
+      isDeviationPanelExpanded: true // property to control deviation panel expansion
     } );
 
     this.curveModel = new Curve( this.property( 'curveType' ) );
