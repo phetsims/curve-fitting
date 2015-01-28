@@ -20,25 +20,25 @@ define( function( require ) {
 
   // constants
   var POINTS_COORDS = [
-    {x: -33, y: 8},
-    {x: -25, y: 3},
-    {x: -19, y: 0},
-    {x: 8, y: -8},
-    {x: -10, y: 1},
-    {x: -5, y: -8},
-    {x: 5, y: 6},
-    {x: 2, y: 2},
-    {x: 18, y: 6},
-    {x: 17, y: -4},
-    {x: 0, y: 8},
-    {x: 24, y: 3},
-    {x: -12, y: -6},
-    {x: 0, y: -6},
-    {x: 12, y: -6},
-    {x: 10, y: 6},
-    {x: -7, y: 6},
-    {x: -20, y: 7},
-    {x: 33, y: 8}
+    { x: -33, y: 8 },
+    { x: -25, y: 3 },
+    { x: -19, y: 0 },
+    { x: 8, y: -8 },
+    { x: -10, y: 1 },
+    { x: -5, y: -8 },
+    { x: 5, y: 6 },
+    { x: 2, y: 2 },
+    { x: 18, y: 6 },
+    { x: 17, y: -4 },
+    { x: 0, y: 8 },
+    { x: 24, y: 3 },
+    { x: -12, y: -6 },
+    { x: 0, y: -6 },
+    { x: 12, y: -6 },
+    { x: 10, y: 6 },
+    { x: -7, y: 6 },
+    { x: -20, y: 7 },
+    { x: 33, y: 8 }
   ];
   var POINT_OPTIONS = {
     fill: 'rgb( 252, 151, 64 )',
@@ -85,7 +85,7 @@ define( function( require ) {
     clipShape.ellipticalArc( 0, 0, RADIUS_X, 4 * RADIUS_Y, 0, 0, Math.PI, true );
 
     // create points
-    var pointsNode = new Node( {clipArea: clipShape} );
+    var pointsNode = new Node( { clipArea: clipShape } );
     var activePoint = new Circle( POINT_OPTIONS );
     POINTS_COORDS.forEach( function( pointsCoord ) {
       pointsNode.addChild( new Circle( _.extend( POINT_OPTIONS, {

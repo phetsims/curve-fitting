@@ -36,7 +36,7 @@ define( function( require ) {
   }
 
   SimLauncher.launch( function() {
-    var sim = new Sim( simTitle, [new CurveFittingScreen()], simOptions );
+    var sim = new Sim( simTitle, [ new CurveFittingScreen() ], simOptions );
     sim.start();
   } );
 } );

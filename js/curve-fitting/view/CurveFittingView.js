@@ -27,13 +27,13 @@ define( function( require ) {
    * @constructor
    */
   function CurveFittingView( CurveFittingModel ) {
-    ScreenView.call( this, {renderer: 'svg', layoutBounds: new Bounds2( 0, 0, 768, 504 )} );
+    ScreenView.call( this, { renderer: 'svg', layoutBounds: new Bounds2( 0, 0, 768, 504 ) } );
 
     // add deviations node
-    var deviationsNode = new DeviationsNode();
+    var deviationsNode = new DeviationsNode( CurveFittingModel.property( 'isDeviationPanelExpanded' ) );
     deviationsNode.centerX = deviationsNode.width / 2 + PADDING;
     deviationsNode.centerY = deviationsNode.height / 2 + PADDING;
-    //this.addChild( deviationsNode );
+    this.addChild( deviationsNode );
 
     // add control menu node
     var controlMenuNode = new ControlMenuNode( CurveFittingModel );

@@ -61,18 +61,18 @@ define( function( require ) {
 
     // create radio buttons
     var fitTypeRadioButtonGroup = new VerticalAquaRadioButtonGroup( [
-      {property: fitTypeProperty, node: new Text( BestFitString, {font: FONT} ), value: FitType.BEST},
-      {property: fitTypeProperty, node: new Text( AdjustableFitString, {font: FONT} ), value: FitType.ADJUSTABLE}
+      { property: fitTypeProperty, node: new Text( BestFitString, { font: FONT } ), value: FitType.BEST },
+      { property: fitTypeProperty, node: new Text( AdjustableFitString, { font: FONT } ), value: FitType.ADJUSTABLE }
     ], RADIO_BUTTON_MENU_OPTIONS );
     fitTypeRadioButtonGroup.localBounds = fitTypeRadioButtonGroup.localBounds.withMaxX( Math.max( fitTypeRadioButtonGroup.localBounds.maxX, CurveFittingConstants.PANEL_WIDTH - RADIO_BUTTON_MENU_OPTIONS.radius ) );
 
     // slider for parameters
-    var aSlider = new HSlider( curveModel.property( 'a' ), {min: -1, max: 1}, SLIDER_OPTIONS ),
-      bSlider = new HSlider( curveModel.property( 'b' ), {min: -2, max: 2}, SLIDER_OPTIONS ),
-      cSlider = new HSlider( curveModel.property( 'c' ), {min: -10, max: 10}, SLIDER_OPTIONS ),
-      dSlider = new HSlider( curveModel.property( 'd' ), {min: -10, max: 10}, SLIDER_OPTIONS );
+    var aSlider = new HSlider( curveModel.property( 'a' ), { min: -1, max: 1 }, SLIDER_OPTIONS ),
+      bSlider = new HSlider( curveModel.property( 'b' ), { min: -2, max: 2 }, SLIDER_OPTIONS ),
+      cSlider = new HSlider( curveModel.property( 'c' ), { min: -10, max: 10 }, SLIDER_OPTIONS ),
+      dSlider = new HSlider( curveModel.property( 'd' ), { min: -10, max: 10 }, SLIDER_OPTIONS );
 
-    [aSlider, bSlider, cSlider, dSlider].forEach( function( slider ) {
+    [ aSlider, bSlider, cSlider, dSlider ].forEach( function( slider ) {
       // make vertical slider
       slider.rotate( -Math.PI / 2 );
 
@@ -84,7 +84,7 @@ define( function( require ) {
     // create slider box
     var slidersBox = new HBox( {
       spacing: 4,
-      children: [aSlider, bSlider, cSlider, dSlider]
+      children: [ aSlider, bSlider, cSlider, dSlider ]
     } );
 
     content.addChild( fitTypeRadioButtonGroup );
@@ -92,13 +92,13 @@ define( function( require ) {
     // add slider number observer
     curveTypeProperty.link( function( curveType ) {
       if ( curveType === CurveType.LINEAR ) {
-        slidersBox.children = [cSlider, dSlider];
+        slidersBox.children = [ cSlider, dSlider ];
       }
       else if ( curveType === CurveType.QUADRATIC ) {
-        slidersBox.children = [bSlider, cSlider, dSlider];
+        slidersBox.children = [ bSlider, cSlider, dSlider ];
       }
       else if ( curveType === CurveType.CUBIC ) {
-        slidersBox.children = [aSlider, bSlider, cSlider, dSlider];
+        slidersBox.children = [ aSlider, bSlider, cSlider, dSlider ];
       }
     } );
 

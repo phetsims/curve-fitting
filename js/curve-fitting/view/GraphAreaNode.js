@@ -32,7 +32,7 @@ define( function( require ) {
     Node.call( this, options );
 
     // add white background
-    this.addChild( new Rectangle( 0, 0, SIZE.width, SIZE.height, {fill: 'white'} ) );
+    this.addChild( new Rectangle( 0, 0, SIZE.width, SIZE.height, { fill: 'white' } ) );
 
     // add X-axis and ticks
     this.addChild( new Line( 0, SIZE.height / 2, SIZE.width, SIZE.height / 2, LINE_OPTIONS ) );
