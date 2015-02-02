@@ -67,10 +67,10 @@ define( function( require ) {
     fitTypeRadioButtonGroup.localBounds = fitTypeRadioButtonGroup.localBounds.withMaxX( Math.max( fitTypeRadioButtonGroup.localBounds.maxX, CurveFittingConstants.PANEL_WIDTH - RADIO_BUTTON_MENU_OPTIONS.radius ) );
 
     // slider for parameters
-    var aSlider = new HSlider( curveModel.property( 'a' ), { min: -1, max: 1 }, SLIDER_OPTIONS ),
-      bSlider = new HSlider( curveModel.property( 'b' ), { min: -2, max: 2 }, SLIDER_OPTIONS ),
-      cSlider = new HSlider( curveModel.property( 'c' ), { min: -10, max: 10 }, SLIDER_OPTIONS ),
-      dSlider = new HSlider( curveModel.property( 'd' ), { min: -10, max: 10 }, SLIDER_OPTIONS );
+    var aSlider = new HSlider( curveModel.aProperty, { min: -1, max: 1 }, SLIDER_OPTIONS ),
+      bSlider = new HSlider( curveModel.bProperty, { min: -2, max: 2 }, SLIDER_OPTIONS ),
+      cSlider = new HSlider( curveModel.cProperty, { min: -10, max: 10 }, SLIDER_OPTIONS ),
+      dSlider = new HSlider( curveModel.dProperty, { min: -10, max: 10 }, SLIDER_OPTIONS );
 
     [ aSlider, bSlider, cSlider, dSlider ].forEach( function( slider ) {
       // make vertical slider

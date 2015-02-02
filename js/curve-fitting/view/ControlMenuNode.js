@@ -59,14 +59,14 @@ define( function( require ) {
     };
 
     // create options check boxes
-    var residualCheckBox = new CheckBox( residualCheckBoxLabel, CurveFittingModel.property( 'isResiduals' ), CHECK_BOX_OPTIONS );
+    var residualCheckBox = new CheckBox( residualCheckBoxLabel, CurveFittingModel.isResidualsProperty, CHECK_BOX_OPTIONS );
     var checkBoxGroup = new VBox( {
       spacing: 5,
       align: 'left',
       children: [
-        new CheckBox( new Text( CurveString, { font: FONT } ), CurveFittingModel.property( 'isCurve' ), CHECK_BOX_OPTIONS ),
+        new CheckBox( new Text( CurveString, { font: FONT } ), CurveFittingModel.isCurveProperty, CHECK_BOX_OPTIONS ),
         residualCheckBox,
-        new CheckBox( new Text( ValuesString, { font: FONT } ), CurveFittingModel.property( 'isValues' ), CHECK_BOX_OPTIONS )
+        new CheckBox( new Text( ValuesString, { font: FONT } ), CurveFittingModel.isValuesProperty, CHECK_BOX_OPTIONS )
       ]
     } );
     checkBoxGroup.localBounds = checkBoxGroup.localBounds.withMaxX( Math.max( checkBoxGroup.localBounds.maxX, CurveFittingConstants.PANEL_WIDTH ) );
@@ -75,20 +75,20 @@ define( function( require ) {
 
     // create curve type radio buttons
     var curveTypeRadioButtonGroup = new VerticalAquaRadioButtonGroup( [
-      { property: CurveFittingModel.property( 'curveType' ), node: new Text( LinearString, { font: FONT } ), value: CurveType.LINEAR },
-      { property: CurveFittingModel.property( 'curveType' ), node: new Text( QuadraticString, { font: FONT } ), value: CurveType.QUADRATIC },
-      { property: CurveFittingModel.property( 'curveType' ), node: new Text( CubicString, { font: FONT } ), value: CurveType.CUBIC }
+      { property: CurveFittingModel.curveTypeProperty, node: new Text( LinearString, { font: FONT } ), value: CurveType.LINEAR },
+      { property: CurveFittingModel.curveTypeProperty, node: new Text( QuadraticString, { font: FONT } ), value: CurveType.QUADRATIC },
+      { property: CurveFittingModel.curveTypeProperty, node: new Text( CubicString, { font: FONT } ), value: CurveType.CUBIC }
     ], RADIO_BUTTON_MENU_OPTIONS );
     curveTypeRadioButtonGroup.localBounds = curveTypeRadioButtonGroup.localBounds.withMaxX( Math.max( curveTypeRadioButtonGroup.localBounds.maxX, CurveFittingConstants.PANEL_WIDTH - RADIO_BUTTON_MENU_OPTIONS.radius ) );
     var curveTypePanel = new Panel( curveTypeRadioButtonGroup, PANEL_OPTIONS );
     this.addChild( curveTypePanel );
 
     // create fit type menu
-    var fitTypeMenu = new FitTypeMenu( CurveFittingModel.curveModel, CurveFittingModel.property( 'fitType' ), CurveFittingModel.property( 'curveType' ) );
+    var fitTypeMenu = new FitTypeMenu( CurveFittingModel.curveModel, CurveFittingModel.fitTypeProperty, CurveFittingModel.curveTypeProperty );
     this.addChild( fitTypeMenu );
 
     // add observers
-    CurveFittingModel.property( 'isCurve' ).link( function( isCurve ) {
+    CurveFittingModel.isCurveProperty.link( function( isCurve ) {
       if ( isCurve ) {
         curveTypePanel.visible = true;
         fitTypeMenu.visible = true;
