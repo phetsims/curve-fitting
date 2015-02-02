@@ -12,6 +12,7 @@ define( function( require ) {
   var CurveType = require( 'CURVE_FITTING/curve-fitting/model/CurveType' );
   var FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var Point = require( 'CURVE_FITTING/curve-fitting/model/Point' );
   var PropertySet = require( 'AXON/PropertySet' );
 
   /**
@@ -25,13 +26,22 @@ define( function( require ) {
       isValues: false, // values flag visibility
       curveType: CurveType.LINEAR, // property to control curve type
       fitType: FitType.BEST, // property to control fit type
-      isDeviationPanelExpanded: true // property to control deviation panel expansion
+      isDeviationPanelExpanded: true, // property to control deviation panel expansion
+      activePoint: null // link to active point
     } );
 
-    this.curveModel = new Curve( this.property( 'curveType' ) );
+    this.curveModel = new Curve( this.curveTypeProperty );
   }
 
   return inherit( PropertySet, CurveFittingModel, {
+    // create new point
+    createNewPoint: function( x, y ) {
+      this.activePoint = new Point( x, y );
+    },
+    // drop active point
+    dropActivePoint: function() {
+      this.activePoint = null;
+    },
 
     // Called by the animation loop. Optional, so if your model has no animation, you can omit this.
     step: function( dt ) {

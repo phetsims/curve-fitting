@@ -50,10 +50,11 @@ define( function( require ) {
   var RADIUS_Y = 9;
 
   /**
+   * @param {CurveFittingModel} CurveFittingModel
    * @param {Object} options for graph node
    * @constructor
    */
-  function BucketNode( options ) {
+  function BucketNode( CurveFittingModel, options ) {
     Node.call( this, options );
 
     // create bucket
@@ -86,7 +87,8 @@ define( function( require ) {
 
     // create points
     var pointsNode = new Node( { clipArea: clipShape } );
-    var activePoint = new Circle( POINT_OPTIONS );
+    var activePointView = new Circle( POINT_OPTIONS );
+    activePointView.visible = false;
     POINTS_COORDS.forEach( function( pointsCoord ) {
       pointsNode.addChild( new Circle( _.extend( POINT_OPTIONS, {
         x: pointsCoord.x,
@@ -96,23 +98,34 @@ define( function( require ) {
     this.addChild( pointsNode );
 
     // add drag handler
-    this.addChild( activePoint );
-    activePoint.visible = false;
+    this.addChild( activePointView );
     pointsNode.addInputListener( new SimpleDragHandler( {
       start: function( e ) {
-        activePoint.visible = true;
-        activePoint.setTranslation( activePoint.globalToParentPoint( e.pointer.point ) );
+        CurveFittingModel.createNewPoint( activePointView.globalToParentPoint( e.pointer.point ).copy() );
       },
       drag: function( e ) {
-        if ( activePoint.visible ) {
-          activePoint.setTranslation( activePoint.globalToParentPoint( e.pointer.point ) );
+        if ( CurveFittingModel.activePoint ) {
+          CurveFittingModel.activePoint.moveTo( activePointView.globalToParentPoint( e.pointer.point ) );
         }
       },
       end: function() {
-        activePoint.visible = false;
-        activePoint.setTranslation( 0, 0 );
+        CurveFittingModel.dropActivePoint();
       }
     } ) );
+
+    CurveFittingModel.activePointProperty.link( function( activePoint ) {
+      if ( activePoint ) {
+        activePointView.visible = true;
+
+        activePoint.positionProperty.link( function( position ) {
+          activePointView.setTranslation( position );
+        } );
+      }
+      else {
+        activePointView.visible = false;
+        activePointView.setTranslation( 0, 0 );
+      }
+    } );
   }
 
   return inherit( Node, BucketNode );

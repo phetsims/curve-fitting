@@ -48,7 +48,7 @@ define( function( require ) {
     this.addChild( graphAreaNode );
 
     // add bucket node
-    var bucketNode = new BucketNode();
+    var bucketNode = new BucketNode( CurveFittingModel );
     bucketNode.centerX = bucketNode.width / 2 + 20;
     bucketNode.centerY = SIM_BOUNDS.height - bucketNode.height - 5;
     this.addChild( bucketNode );
