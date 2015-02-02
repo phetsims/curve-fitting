@@ -101,10 +101,11 @@ define( function( require ) {
     this.addChild( activePointView );
     pointsNode.addInputListener( new SimpleDragHandler( {
       start: function( e ) {
-        CurveFittingModel.createNewPoint( activePointView.globalToParentPoint( e.pointer.point ).copy() );
+        CurveFittingModel.isActivePointVisible = true;
+        CurveFittingModel.activePoint.moveTo( activePointView.globalToParentPoint( e.pointer.point ) );
       },
       drag: function( e ) {
-        if ( CurveFittingModel.activePoint ) {
+        if ( CurveFittingModel.isActivePointVisible ) {
           CurveFittingModel.activePoint.moveTo( activePointView.globalToParentPoint( e.pointer.point ) );
         }
       },
@@ -113,18 +114,12 @@ define( function( require ) {
       }
     } ) );
 
-    CurveFittingModel.activePointProperty.link( function( activePoint ) {
-      if ( activePoint ) {
-        activePointView.visible = true;
+    // add visibility observer
+    CurveFittingModel.isActivePointVisibleProperty.linkAttribute( activePointView, 'visible' );
 
-        activePoint.positionProperty.link( function( position ) {
-          activePointView.setTranslation( position );
-        } );
-      }
-      else {
-        activePointView.visible = false;
-        activePointView.setTranslation( 0, 0 );
-      }
+    // add position observer
+    CurveFittingModel.activePoint.positionProperty.link( function( activePointPosition ) {
+      activePointView.setTranslation( activePointPosition );
     } );
   }
 

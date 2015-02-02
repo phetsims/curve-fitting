@@ -27,20 +27,18 @@ define( function( require ) {
       curveType: CurveType.LINEAR, // property to control curve type
       fitType: FitType.BEST, // property to control fit type
       isDeviationPanelExpanded: true, // property to control deviation panel expansion
-      activePoint: null // link to active point
+      activePoint: new Point(), // link to active point
+      isActivePointVisible: false // property to control visibility of active point
     } );
 
     this.curveModel = new Curve( this.curveTypeProperty );
   }
 
   return inherit( PropertySet, CurveFittingModel, {
-    // create new point
-    createNewPoint: function( x, y ) {
-      this.activePoint = new Point( x, y );
-    },
+
     // drop active point
     dropActivePoint: function() {
-      this.activePoint = null;
+      this.isActivePointVisible = false;
     },
 
     // Called by the animation loop. Optional, so if your model has no animation, you can omit this.
