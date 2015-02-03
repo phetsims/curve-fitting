@@ -42,7 +42,8 @@ define( function( require ) {
     this.addChild( controlMenuNode );
 
     // add graph area node
-    var graphAreaNode = new GraphAreaNode();
+    var graphAreaNode = new GraphAreaNode( CurveFittingModel.curveModel, CurveFittingModel.activePointProperty, CurveFittingModel.isActivePointVisibleProperty, CurveFittingModel.graphArea );
+    CurveFittingModel.graphAreaNode = graphAreaNode;
     graphAreaNode.centerX = controlMenuNode.bounds.minX - graphAreaNode.width / 2 - PADDING;
     graphAreaNode.centerY = graphAreaNode.height / 2 + PADDING;
     this.addChild( graphAreaNode );

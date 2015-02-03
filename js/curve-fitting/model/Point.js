@@ -14,11 +14,15 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   /**
-   * @param {Vector2} position - Initial position vector.
+   * @param {number} x coordinate of point.
+   * @param {number} y coordinate of point.
+   * @param {Vector2} position - Initial position of point.
    * @constructor
    */
-  function Point( position ) {
+  function Point( x, y, position ) {
     PropertySet.call( this, {
+      x: x || 0, // x-coordinate of point
+      y: y || 0, // y-coordinate of point
       position: position || new Vector2( 0, 0 ), // position of point
       delta: 0.8 // delta variation of point
     } );

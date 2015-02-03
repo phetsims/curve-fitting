@@ -11,10 +11,12 @@ define( function( require ) {
 
   // modules
   var Circle = require( 'SCENERY/nodes/Circle' );
+  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
+  var PointNode = require( 'CURVE_FITTING/curve-fitting/view/PointNode' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Shape = require( 'KITE/Shape' );
 
@@ -40,12 +42,6 @@ define( function( require ) {
     { x: -20, y: 7 },
     { x: 33, y: 8 }
   ];
-  var POINT_OPTIONS = {
-    fill: 'rgb( 252, 151, 64 )',
-    radius: 6,
-    stroke: 'black',
-    lineWidth: 1
-  };
   var RADIUS_X = 44;
   var RADIUS_Y = 9;
 
@@ -87,26 +83,29 @@ define( function( require ) {
 
     // create points
     var pointsNode = new Node( { clipArea: clipShape } );
-    var activePointView = new Circle( POINT_OPTIONS );
-    activePointView.visible = false;
     POINTS_COORDS.forEach( function( pointsCoord ) {
-      pointsNode.addChild( new Circle( _.extend( POINT_OPTIONS, {
+      pointsNode.addChild( new Circle( {
+        fill: CurveFittingConstants.POINT_FILL,
+        radius: CurveFittingConstants.POINT_RADIUS,
+        stroke: CurveFittingConstants.POINT_STROKE,
+        lineWidth: CurveFittingConstants.POINT_LINE_WIDTH,
         x: pointsCoord.x,
         y: pointsCoord.y
-      } ) ) );
+      } ) );
     } );
     this.addChild( pointsNode );
 
     // add drag handler
+    var activePointView = new PointNode( CurveFittingModel.activePoint, { visible: false } );
     this.addChild( activePointView );
     pointsNode.addInputListener( new SimpleDragHandler( {
       start: function( e ) {
         CurveFittingModel.isActivePointVisible = true;
-        CurveFittingModel.activePoint.moveTo( activePointView.globalToParentPoint( e.pointer.point ) );
+        CurveFittingModel.activePoint.moveTo( e.pointer.point );
       },
       drag: function( e ) {
         if ( CurveFittingModel.isActivePointVisible ) {
-          CurveFittingModel.activePoint.moveTo( activePointView.globalToParentPoint( e.pointer.point ) );
+          CurveFittingModel.activePoint.moveTo( e.pointer.point );
         }
       },
       end: function() {
@@ -119,7 +118,7 @@ define( function( require ) {
 
     // add position observer
     CurveFittingModel.activePoint.positionProperty.link( function( activePointPosition ) {
-      activePointView.setTranslation( activePointPosition );
+      activePointView.setTranslation( activePointView.globalToParentPoint( activePointPosition ) );
     } );
   }
 

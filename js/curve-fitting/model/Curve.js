@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var CurveType = require( 'CURVE_FITTING/curve-fitting/model/CurveType' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var ObservableArray = require( 'AXON/ObservableArray' );
   var PropertySet = require( 'AXON/PropertySet' );
 
   /**
@@ -28,6 +29,8 @@ define( function( require ) {
       deviationR: 0, // r-deviation
       deviationX: 0 // x-deviation
     } );
+
+    this.points = new ObservableArray();
 
     curveTypeProperty.lazyLink( function( curveType ) {
       if ( curveType === CurveType.LINEAR ) {
