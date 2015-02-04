@@ -15,6 +15,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
   // constants
   var ERROR_BAR_WIDTH = 10;
@@ -35,6 +36,7 @@ define( function( require ) {
       lineWidth: 2
     } );
     this.addChild( errorBarTop );
+    errorBarTop.addInputListener( new SimpleDragHandler( {} ) );
 
     // add central line
     var centralLine = new Line( 0, -LINE_HEIGHT, 0, LINE_HEIGHT, {

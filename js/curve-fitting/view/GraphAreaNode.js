@@ -16,6 +16,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var PointNode = require( 'CURVE_FITTING/curve-fitting/view/PointNode' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Util = require( 'DOT/Util' );
 
   // constants
@@ -80,6 +81,26 @@ define( function( require ) {
       pointNodeView.centerX = position.x;
       pointNodeView.centerY = position.y;
       this.addChild( pointNodeView );
+
+      var controlledPoint = null;
+      pointNodeView.addInputListener( new SimpleDragHandler( {
+        start: function() {
+          controlledPoint = point;
+          //self.removeChild( pointNodeView );
+        },
+        drag: function( e ) {
+          if ( controlledPoint ) {
+            controlledPoint.moveTo( e.pointer.point );
+          }
+        },
+        end: function() {
+          controlledPoint = null;
+        }
+      } ) );
+
+      point.positionProperty.lazyLink( function( position ) {
+        pointNodeView.setTranslation( pointNodeView.globalToParentPoint( position ) );
+      } );
     },
 
     // check that point dropped into graph area
