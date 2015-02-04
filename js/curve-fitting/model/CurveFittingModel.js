@@ -27,14 +27,14 @@ define( function( require ) {
       isValues: false, // values flag visibility
       curveType: CurveType.LINEAR, // property to control curve type
       fitType: FitType.BEST, // property to control fit type
-      isDeviationPanelExpanded: true, // property to control deviation panel expansion
-      activePoint: new Point(), // active point
-      isActivePointVisible: false // property to control visibility of active point
+      isDeviationPanelExpanded: true // property to control deviation panel expansion
     } );
 
-    this.curveModel = new Curve( this.curveTypeProperty );
+    // max order of fit
+    this.maxOrderOfFit = 4;
 
-    this.graphAreaNode = null;
+    // curve model
+    this.curve = new Curve( this.curveTypeProperty );
 
     // graph area size
     this.graphArea = new Bounds2( -22, -24, 22, 24 );
@@ -42,17 +42,8 @@ define( function( require ) {
 
   return inherit( PropertySet, CurveFittingModel, {
 
-    // drop active point
-    dropActivePoint: function() {
-      if ( this.graphAreaNode.checkDropPoint( this.activePoint.position ) ) {
-        var coordinates = this.graphAreaNode.getGraphValuesFromPosition( this.activePoint.position );
-        this.curveModel.points.add( this.getPoint( coordinates.x, coordinates.y ) );
-      }
-      this.isActivePointVisible = false;
-    },
-
-    getPoint: function( x, y ) {
-      return new Point( x, y );
+    getPoint: function( position ) {
+      return new Point( position );
     },
 
     // Called by the animation loop. Optional, so if your model has no animation, you can omit this.

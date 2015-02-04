@@ -1,7 +1,7 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Bucket node in 'Curve Fitting' simulation.
+ * Bucket node view in 'Curve Fitting' simulation.
  *
  * @author Andrey Zelenkov (Mlearner)
  */
@@ -16,8 +16,6 @@ define( function( require ) {
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
-  var PointNode = require( 'CURVE_FITTING/curve-fitting/view/PointNode' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Shape = require( 'KITE/Shape' );
 
   // constants
@@ -46,11 +44,10 @@ define( function( require ) {
   var RADIUS_Y = 9;
 
   /**
-   * @param {CurveFittingModel} CurveFittingModel
    * @param {Object} options for graph node
    * @constructor
    */
-  function BucketNode( CurveFittingModel, options ) {
+  function BucketNode( options ) {
     Node.call( this, options );
 
     // create bucket
@@ -93,33 +90,8 @@ define( function( require ) {
         y: pointsCoord.y
       } ) );
     } );
+    this.pointsNode = pointsNode;
     this.addChild( pointsNode );
-
-    // add drag handler
-    var activePointView = new PointNode( CurveFittingModel.activePoint, { visible: false } );
-    this.addChild( activePointView );
-    pointsNode.addInputListener( new SimpleDragHandler( {
-      start: function( e ) {
-        CurveFittingModel.isActivePointVisible = true;
-        CurveFittingModel.activePoint.moveTo( e.pointer.point );
-      },
-      drag: function( e ) {
-        if ( CurveFittingModel.isActivePointVisible ) {
-          CurveFittingModel.activePoint.moveTo( e.pointer.point );
-        }
-      },
-      end: function() {
-        CurveFittingModel.dropActivePoint();
-      }
-    } ) );
-
-    // add visibility observer
-    CurveFittingModel.isActivePointVisibleProperty.linkAttribute( activePointView, 'visible' );
-
-    // add position observer
-    CurveFittingModel.activePoint.positionProperty.link( function( activePointPosition ) {
-      activePointView.setTranslation( activePointView.globalToParentPoint( activePointPosition ) );
-    } );
   }
 
   return inherit( Node, BucketNode );

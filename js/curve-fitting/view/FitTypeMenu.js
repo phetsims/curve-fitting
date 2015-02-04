@@ -43,13 +43,13 @@ define( function( require ) {
   var TICK_WIDTH = 2;
 
   /**
-   * @param {Curve} curveModel - Model of curve
+   * @param {Curve} curve - Model of curve
    * @param {Property} fitTypeProperty - Property to control fit type of curve
    * @param {Property} curveTypeProperty - Property to control type of curve
    * @param {Object} options for graph node
    * @constructor
    */
-  function FitTypeMenu( curveModel, fitTypeProperty, curveTypeProperty, options ) {
+  function FitTypeMenu( curve, fitTypeProperty, curveTypeProperty, options ) {
     var content = new VBox();
 
     Panel.call( this, content, _.extend( {
@@ -67,10 +67,10 @@ define( function( require ) {
     fitTypeRadioButtonGroup.localBounds = fitTypeRadioButtonGroup.localBounds.withMaxX( Math.max( fitTypeRadioButtonGroup.localBounds.maxX, CurveFittingConstants.PANEL_WIDTH - RADIO_BUTTON_MENU_OPTIONS.radius ) );
 
     // slider for parameters
-    var aSlider = new HSlider( curveModel.aProperty, { min: -1, max: 1 }, SLIDER_OPTIONS ),
-      bSlider = new HSlider( curveModel.bProperty, { min: -2, max: 2 }, SLIDER_OPTIONS ),
-      cSlider = new HSlider( curveModel.cProperty, { min: -10, max: 10 }, SLIDER_OPTIONS ),
-      dSlider = new HSlider( curveModel.dProperty, { min: -10, max: 10 }, SLIDER_OPTIONS );
+    var aSlider = new HSlider( curve.aProperty, { min: -1, max: 1 }, SLIDER_OPTIONS ),
+      bSlider = new HSlider( curve.bProperty, { min: -2, max: 2 }, SLIDER_OPTIONS ),
+      cSlider = new HSlider( curve.cProperty, { min: -10, max: 10 }, SLIDER_OPTIONS ),
+      dSlider = new HSlider( curve.dProperty, { min: -10, max: 10 }, SLIDER_OPTIONS );
 
     [ aSlider, bSlider, cSlider, dSlider ].forEach( function( slider ) {
       // make vertical slider

@@ -10,11 +10,10 @@ define( function( require ) {
 
   // modules
   var Bounds2 = require( 'DOT/Bounds2' );
-  var BucketNode = require( 'CURVE_FITTING/curve-fitting/view/BucketNode' );
+  var BucketAndGraphAreaNode = require( 'CURVE_FITTING/curve-fitting/view/BucketAndGraphAreaNode' );
   var ControlMenuNode = require( 'CURVE_FITTING/curve-fitting/view/ControlMenuNode' );
   var DeviationsNode = require( 'CURVE_FITTING/curve-fitting/view/DeviationsNode' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var GraphAreaNode = require( 'CURVE_FITTING/curve-fitting/view/GraphAreaNode' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
 
@@ -41,18 +40,11 @@ define( function( require ) {
     controlMenuNode.centerY = PADDING + controlMenuNode.height / 2;
     this.addChild( controlMenuNode );
 
-    // add graph area node
-    var graphAreaNode = new GraphAreaNode( CurveFittingModel.curveModel, CurveFittingModel.activePointProperty, CurveFittingModel.isActivePointVisibleProperty, CurveFittingModel.graphArea );
-    CurveFittingModel.graphAreaNode = graphAreaNode;
-    graphAreaNode.centerX = controlMenuNode.bounds.minX - graphAreaNode.width / 2 - PADDING;
-    graphAreaNode.centerY = graphAreaNode.height / 2 + PADDING;
-    this.addChild( graphAreaNode );
-
-    // add bucket node
-    var bucketNode = new BucketNode( CurveFittingModel );
-    bucketNode.centerX = bucketNode.width / 2 + 20;
-    bucketNode.centerY = SIM_BOUNDS.height - bucketNode.height - 5;
-    this.addChild( bucketNode );
+    // add bucket adn graph area node
+    var bucketAndGraphAreaNode = new BucketAndGraphAreaNode( CurveFittingModel );
+    bucketAndGraphAreaNode.centerX = bucketAndGraphAreaNode.width / 2 + 30;
+    bucketAndGraphAreaNode.centerY = bucketAndGraphAreaNode.height / 2 + PADDING;
+    this.addChild( bucketAndGraphAreaNode );
 
     // add reset all button
     var resetAllButton = new ResetAllButton( {

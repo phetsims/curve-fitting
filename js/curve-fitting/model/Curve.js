@@ -32,6 +32,9 @@ define( function( require ) {
 
     this.points = new ObservableArray();
 
+
+    this.points.addListeners(  );
+
     curveTypeProperty.lazyLink( function( curveType ) {
       if ( curveType === CurveType.LINEAR ) {
         self.a = 0;
@@ -43,5 +46,7 @@ define( function( require ) {
     } );
   }
 
-  return inherit( PropertySet, Curve );
+  return inherit( PropertySet, Curve, {
+
+  } );
 } );

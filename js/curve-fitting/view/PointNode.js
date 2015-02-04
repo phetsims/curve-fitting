@@ -19,15 +19,19 @@ define( function( require ) {
 
   // constants
   var ERROR_BAR_WIDTH = 10;
-  var PIXELS_IN_TICK = 10;
   var LINE_COLOR = 'rgb( 19, 52, 248 )';
   var LINE_HEIGHT = 15;
 
   /**
-   * @param {Object} options for graph node
+   * @param {PropertySet} pointModel - Model for single point.
+   * @param {ObservableArray} curveModelPoints - Array of points for plotting curve.
+   * @param {Node} parentNode - Parent node of point
+   * @param {Node} graphAreaNode - Node of graph area.
+   * @param {Object} options for graph node.
    * @constructor
    */
-  function PointNode( pointModel, options ) {
+  function PointNode( pointModel, curveModelPoints, parentNode, graphAreaNode, options ) {
+    var self = this;
     Node.call( this, options );
 
     // add top error bar line
@@ -46,11 +50,33 @@ define( function( require ) {
     this.addChild( centralLine );
 
     // add point view
-    this.addChild( new Circle( {
+    var circleView = new Circle( {
       fill: CurveFittingConstants.POINT_FILL,
       radius: CurveFittingConstants.POINT_RADIUS,
       stroke: CurveFittingConstants.POINT_STROKE,
       lineWidth: CurveFittingConstants.POINT_LINE_WIDTH
+    } );
+    this.addChild( circleView );
+
+    // add drag handler
+    var isUserControlled = false;
+    circleView.addInputListener( new SimpleDragHandler( {
+      start: function() {
+        isUserControlled = true;
+      },
+      drag: function( e ) {
+        if ( isUserControlled ) {
+          pointModel.moveTo( e.pointer.point );
+        }
+      },
+      end: function() {
+        if ( !graphAreaNode.checkDropPointAndSetValues( pointModel ) ) {
+          curveModelPoints.remove( pointModel );
+          var parent = self.getParent();
+          parent.removeChild( self );
+        }
+        isUserControlled = false;
+      }
     } ) );
 
     // add bottom error bar line
@@ -59,6 +85,11 @@ define( function( require ) {
       lineWidth: 2
     } );
     this.addChild( errorBarBottom );
+
+    // add observers
+    pointModel.positionProperty.link( function( position ) {
+      self.setTranslation( parentNode.globalToLocalPoint( position ) );
+    } );
   }
 
   return inherit( Node, PointNode );
