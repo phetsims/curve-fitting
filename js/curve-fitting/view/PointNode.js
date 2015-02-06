@@ -72,8 +72,7 @@ define( function( require ) {
       end: function() {
         if ( !graphAreaNode.checkDropPointAndSetValues( pointModel ) ) {
           curveModelPoints.remove( pointModel );
-          var parent = self.getParent();
-          parent.removeChild( self );
+          self.getParent().removeChild( self );
         }
         isUserControlled = false;
       }

@@ -11,7 +11,6 @@ define( function( require ) {
 
   // modules
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var CurveType = require( 'CURVE_FITTING/curve-fitting/model/CurveType' );
   var Dimension2 = require( 'DOT/Dimension2' );
   var inherit = require( 'PHET_CORE/inherit' );
   var FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
@@ -45,11 +44,11 @@ define( function( require ) {
   /**
    * @param {Curve} curve - Model of curve
    * @param {Property} fitTypeProperty - Property to control fit type of curve
-   * @param {Property} curveTypeProperty - Property to control type of curve
+   * @param {Property} orderOfFitProperty - Property to control type of curve
    * @param {Object} options for graph node
    * @constructor
    */
-  function FitTypeMenu( curve, fitTypeProperty, curveTypeProperty, options ) {
+  function FitTypeMenu( curve, fitTypeProperty, orderOfFitProperty, options ) {
     var content = new VBox();
 
     Panel.call( this, content, _.extend( {
@@ -90,14 +89,14 @@ define( function( require ) {
     content.addChild( fitTypeRadioButtonGroup );
 
     // add slider number observer
-    curveTypeProperty.link( function( curveType ) {
-      if ( curveType === CurveType.LINEAR ) {
+    orderOfFitProperty.link( function( orderOfFit ) {
+      if ( orderOfFit === 1 ) {
         slidersBox.children = [ cSlider, dSlider ];
       }
-      else if ( curveType === CurveType.QUADRATIC ) {
+      else if ( orderOfFit === 2 ) {
         slidersBox.children = [ bSlider, cSlider, dSlider ];
       }
-      else if ( curveType === CurveType.CUBIC ) {
+      else if ( orderOfFit === 3 ) {
         slidersBox.children = [ aSlider, bSlider, cSlider, dSlider ];
       }
     } );

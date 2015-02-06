@@ -13,7 +13,6 @@ define( function( require ) {
   // modules
   var CheckBox = require( 'SUN/CheckBox' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var CurveType = require( 'CURVE_FITTING/curve-fitting/model/CurveType' );
   var inherit = require( 'PHET_CORE/inherit' );
   var FitTypeMenu = require( 'CURVE_FITTING/curve-fitting/view/FitTypeMenu' );
   var Panel = require( 'SUN/Panel' );
@@ -75,16 +74,16 @@ define( function( require ) {
 
     // create curve type radio buttons
     var curveTypeRadioButtonGroup = new VerticalAquaRadioButtonGroup( [
-      { property: CurveFittingModel.curveTypeProperty, node: new Text( LinearString, { font: FONT } ), value: CurveType.LINEAR },
-      { property: CurveFittingModel.curveTypeProperty, node: new Text( QuadraticString, { font: FONT } ), value: CurveType.QUADRATIC },
-      { property: CurveFittingModel.curveTypeProperty, node: new Text( CubicString, { font: FONT } ), value: CurveType.CUBIC }
+      { property: CurveFittingModel.orderOfFitProperty, node: new Text( LinearString, { font: FONT } ), value: 1 },
+      { property: CurveFittingModel.orderOfFitProperty, node: new Text( QuadraticString, { font: FONT } ), value: 2 },
+      { property: CurveFittingModel.orderOfFitProperty, node: new Text( CubicString, { font: FONT } ), value: 3 }
     ], RADIO_BUTTON_MENU_OPTIONS );
     curveTypeRadioButtonGroup.localBounds = curveTypeRadioButtonGroup.localBounds.withMaxX( Math.max( curveTypeRadioButtonGroup.localBounds.maxX, CurveFittingConstants.PANEL_WIDTH - RADIO_BUTTON_MENU_OPTIONS.radius ) );
     var curveTypePanel = new Panel( curveTypeRadioButtonGroup, PANEL_OPTIONS );
     this.addChild( curveTypePanel );
 
     // create fit type menu
-    var fitTypeMenu = new FitTypeMenu( CurveFittingModel.curve, CurveFittingModel.fitTypeProperty, CurveFittingModel.curveTypeProperty );
+    var fitTypeMenu = new FitTypeMenu( CurveFittingModel.curve, CurveFittingModel.fitTypeProperty, CurveFittingModel.orderOfFitProperty );
     this.addChild( fitTypeMenu );
 
     // add observers

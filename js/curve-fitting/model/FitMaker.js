@@ -28,8 +28,8 @@ define( function() {
   }
 
   FitMaker.prototype = {
-    getFit: function() {
-      this.makeAugmentedMatrix();
+    getFit: function( arrPoints, orderOfFit ) {
+      this.makeAugmentedMatrix( arrPoints, orderOfFit );
       this.reduceMatrix();
       this.solveReducedMatrix();
       return this.solutionArr;
@@ -45,20 +45,20 @@ define( function() {
         var deltaSquared = delta * delta;
         var xPos = arrPoints[ i ].x;
         var yPos = arrPoints[ i ].y;
-        for ( var _loc2 = 0; _loc2 < this.m; ++_loc2 ) {
-          for ( var _loc3 = 0; _loc3 < this.m; ++_loc3 ) {
-            this.matrix[ _loc2 ][ _loc3 ] = this.matrix[ _loc2 ][ _loc3 ] + Math.pow( xPos, _loc2 + _loc3 ) / deltaSquared;
+        for ( var j = 0; j < this.m; ++j ) {
+          for ( var k = 0; k < this.m; ++k ) {
+            this.matrix[ j ][ k ] = this.matrix[ j ][ k ] + Math.pow( xPos, j + k ) / deltaSquared;
           }
-          this.matrix[ _loc2 ][ this.m ] = this.matrix[ _loc2 ][ this.m ] + Math.pow( xPos, _loc2 ) * yPos / deltaSquared;
+          this.matrix[ j ][ this.m ] = this.matrix[ j ][ this.m ] + Math.pow( xPos, j ) * yPos / deltaSquared;
         }
       }
     },
     reduceMatrix: function() {
       for ( var i = 0; i < this.m - 1; ++i ) {
         for ( var j = i + 1; j < this.m; ++j ) {
-          var _loc5 = this.matrix[ j ][ i ] / this.matrix[ i ][ i ];
+          var l = this.matrix[ j ][ i ] / this.matrix[ i ][ i ];
           for ( var k = 0; k < this.m + 1; ++k ) {
-            this.matrix[ j ][ k ] = this.matrix[ j ][ k ] - _loc5 * this.matrix[ i ][ k ];
+            this.matrix[ j ][ k ] = this.matrix[ j ][ k ] - l * this.matrix[ i ][ k ];
           }
         }
       }

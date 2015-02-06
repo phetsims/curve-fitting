@@ -29,7 +29,7 @@ define( function( require ) {
     var bucketNode = new BucketNode();
 
     // create graph area node
-    var graphAreaNode = new GraphAreaNode( CurveFittingModel.graphArea );
+    var graphAreaNode = new GraphAreaNode( CurveFittingModel.curve, CurveFittingModel.orderOfFitProperty,  CurveFittingModel.graphArea );
 
     HBox.call( this, _.extend( {
       spacing: 40,

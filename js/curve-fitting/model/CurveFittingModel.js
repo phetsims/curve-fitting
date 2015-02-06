@@ -10,7 +10,6 @@ define( function( require ) {
   // modules
   var Bounds2 = require( 'DOT/Bounds2' );
   var Curve = require( 'CURVE_FITTING/curve-fitting/model/Curve' );
-  var CurveType = require( 'CURVE_FITTING/curve-fitting/model/CurveType' );
   var FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Point = require( 'CURVE_FITTING/curve-fitting/model/Point' );
@@ -25,16 +24,16 @@ define( function( require ) {
       isCurve: false, // curve flag visibility
       isResiduals: false, // residuals flag
       isValues: false, // values flag visibility
-      curveType: CurveType.LINEAR, // property to control curve type
+      orderOfFit: 1, // property to control curve type
       fitType: FitType.BEST, // property to control fit type
       isDeviationPanelExpanded: true // property to control deviation panel expansion
     } );
 
     // max order of fit
-    this.maxOrderOfFit = 4;
+    this.maxOrderOfFit = 3;
 
     // curve model
-    this.curve = new Curve( this.curveTypeProperty );
+    this.curve = new Curve( this.orderOfFitProperty, this.maxOrderOfFit );
 
     // graph area size
     this.graphArea = new Bounds2( -22, -24, 22, 24 );

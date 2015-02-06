@@ -14,7 +14,9 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var Path = require( 'SCENERY/nodes/Path' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var Shape = require( 'KITE/Shape' );
   var Util = require( 'DOT/Util' );
   var Vector2 = require( 'DOT/Vector2' );
 
@@ -27,11 +29,13 @@ define( function( require ) {
   var TICK_LENGTH = 7;
 
   /**
+   * @param {Curve}
    * @param {Bounds2} plotBounds of graph area.
    * @param {Object} options for graph node.
    * @constructor
    */
-  function GraphAreaNode( plotBounds, options ) {
+  function GraphAreaNode( curve, orderOfFitProperty, plotBounds, options ) {
+    var self = this;
     var size = new Dimension2( (plotBounds.maxX - plotBounds.minX) * PIXELS_IN_TICK, (plotBounds.maxY - plotBounds.minY) * PIXELS_IN_TICK );
 
     Node.call( this, options );
@@ -54,17 +58,47 @@ define( function( require ) {
     this.addChild( new Line( size.width / 2 - TICK_LENGTH, size.height / 4, size.width / 2 + TICK_LENGTH, size.height / 4, LINE_OPTIONS ) );
     this.addChild( new Line( size.width / 2 - TICK_LENGTH, 3 * size.height / 4, size.width / 2 + TICK_LENGTH, 3 * size.height / 4, LINE_OPTIONS ) );
     this.addChild( new Line( size.width / 2 - TICK_LENGTH, size.height - LINE_OPTIONS.lineWidth, size.width / 2 + TICK_LENGTH, size.height - LINE_OPTIONS.lineWidth, LINE_OPTIONS ) );
+
+    // add clip area
+    this.clipArea = Shape.rect( 0, 0, size.width, size.height );
+
+    var pathCurve = new Path( null, { stroke: 'black', lineWidth: 2 } );
+    this.addChild( pathCurve );
+
+    var updateShape = function() {
+      var curveShape = new Shape();
+      var orderOfFit = orderOfFitProperty.value;
+      var xMin = self._plotBounds.minX;
+      var xMax = self._plotBounds.maxX;
+
+      var d = curve.d;
+      var c = curve.c;
+      if ( orderOfFit === 1 ) {
+        curveShape.moveToPoint( self.getPositionFromGraphValues( xMin, xMin * c + d ) );
+        curveShape.lineToPoint( self.getPositionFromGraphValues( xMax, xMax * c + d ) );
+      }
+
+      pathCurve.setShape( curveShape );
+    };
+
+    var clearShape = function() {
+      pathCurve.setShape( null );
+    };
+
+    curve.updateCurveTriggerProperty.link( function() {
+      if ( curve.points.getArray().length > 1 ) {
+        updateShape();
+      }
+      else {
+        clearShape();
+      }
+    } );
   }
 
   return inherit( Node, GraphAreaNode, {
     // check that point dropped into graph area
-    checkDropPoint: function( pointPosition ) {
-      return this.bounds.containsPoint( this.globalToParentPoint( pointPosition ) );
-    },
-
     checkDropPointAndSetValues: function( point ) {
       var isDropped = this.bounds.containsPoint( this.globalToParentPoint( point.position ) );
-
 
       if ( isDropped ) {
         var values = this.getGraphValuesFromPosition( point.position );
@@ -77,6 +111,7 @@ define( function( require ) {
       return isDropped;
     },
 
+    // convert graph values to global coordinates
     getGraphValuesFromPosition: function( globalPosition ) {
       var locPosition = this.globalToParentPoint( globalPosition );
 
@@ -86,6 +121,7 @@ define( function( require ) {
       };
     },
 
+    // convert global coordinates to graph values
     getPositionFromGraphValues: function( x, y ) {
       return new Vector2(
         (( x - this._plotBounds.minX ) / (this._plotBounds.width)) * this._size.width,
