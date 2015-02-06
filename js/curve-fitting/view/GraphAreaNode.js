@@ -73,9 +73,16 @@ define( function( require ) {
 
       var d = curve.d;
       var c = curve.c;
+      var b = curve.b;
       if ( orderOfFit === 1 ) {
         curveShape.moveToPoint( self.getPositionFromGraphValues( xMin, xMin * c + d ) );
         curveShape.lineToPoint( self.getPositionFromGraphValues( xMax, xMax * c + d ) );
+      }
+      else if ( orderOfFit === 2 ) {
+        /*curveShape.moveToPoint( self.getPositionFromGraphValues( xMin, b * xMin * xMin + xMin * c + d ) );
+         var controlPoint = self.getPositionFromGraphValues( -c / d, b * (-c / d) * (-c / d) + (-c / d) * c + d );
+         var endPoint = self.getPositionFromGraphValues( xMax, b * xMax * xMax + xMax * c + d );
+         curveShape.quadraticCurveToPoint( controlPoint, endPoint );*/
       }
 
       pathCurve.setShape( curveShape );
@@ -101,14 +108,18 @@ define( function( require ) {
       var isDropped = this.bounds.containsPoint( this.globalToParentPoint( point.position ) );
 
       if ( isDropped ) {
-        var values = this.getGraphValuesFromPosition( point.position );
-        point.x = values.x;
-        point.y = values.y;
+        this.setValues( point );
 
         point.moveTo( this.localToGlobalPoint( this.getPositionFromGraphValues( point.x, point.y ) ) );
       }
 
       return isDropped;
+    },
+
+    setValues: function( point ) {
+      var values = this.getGraphValuesFromPosition( point.position );
+      point.x = values.x;
+      point.y = values.y;
     },
 
     // convert graph values to global coordinates

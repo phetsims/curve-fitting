@@ -50,6 +50,7 @@ define( function( require ) {
       drag: function( e ) {
         if ( point ) {
           point.moveTo( e.pointer.point );
+          graphAreaNode.setValues( point );
         }
       },
       end: function() {

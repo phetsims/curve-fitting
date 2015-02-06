@@ -67,6 +67,7 @@ define( function( require ) {
       drag: function( e ) {
         if ( isUserControlled ) {
           pointModel.moveTo( e.pointer.point );
+          graphAreaNode.setValues( pointModel );
         }
       },
       end: function() {
