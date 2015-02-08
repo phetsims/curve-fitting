@@ -42,7 +42,7 @@ define( function( require ) {
 
     // add bucket adn graph area node
     var bucketAndGraphAreaNode = new BucketAndGraphAreaNode( CurveFittingModel );
-    bucketAndGraphAreaNode.centerX = bucketAndGraphAreaNode.width / 2 + 30;
+    bucketAndGraphAreaNode.centerX = bucketAndGraphAreaNode.width / 2 + 25;
     bucketAndGraphAreaNode.centerY = bucketAndGraphAreaNode.height / 2 + PADDING;
     this.addChild( bucketAndGraphAreaNode );
 

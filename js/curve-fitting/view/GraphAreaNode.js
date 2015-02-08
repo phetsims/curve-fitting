@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var Dimension2 = require( 'DOT/Dimension2' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
@@ -25,7 +26,6 @@ define( function( require ) {
     lineWidth: 1,
     stroke: 'black'
   };
-  var PIXELS_IN_TICK = 10;
   var TICK_LENGTH = 7;
 
   /**
@@ -36,7 +36,7 @@ define( function( require ) {
    */
   function GraphAreaNode( curve, orderOfFitProperty, plotBounds, options ) {
     var self = this;
-    var size = new Dimension2( (plotBounds.maxX - plotBounds.minX) * PIXELS_IN_TICK, (plotBounds.maxY - plotBounds.minY) * PIXELS_IN_TICK );
+    var size = new Dimension2( (plotBounds.maxX - plotBounds.minX) * CurveFittingConstants.PIXELS_IN_TICK, (plotBounds.maxY - plotBounds.minY) * CurveFittingConstants.PIXELS_IN_TICK );
 
     Node.call( this, options );
     this._plotBounds = plotBounds;
