@@ -1,7 +1,7 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Bucket node in 'Curve Fitting' simulation.
+ * Single point node in 'Curve Fitting' simulation.
  *
  * @author Andrey Zelenkov (Mlearner)
  */

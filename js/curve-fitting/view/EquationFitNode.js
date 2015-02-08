@@ -1,7 +1,7 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Node with fit types and adjusting sliders in 'Curve Fitting' simulation.
+ * Equation node in adjustable fit node and sliders in 'Curve Fitting' simulation.
  *
  * @author Andrey Zelenkov (Mlearner)
  */

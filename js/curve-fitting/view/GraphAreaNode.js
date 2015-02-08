@@ -1,7 +1,8 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Node with fit types and adjusting sliders in 'Curve Fitting' simulation.
+ * Graph area node in 'Curve Fitting' simulation.
+ * Contains points, curve and panel with equation parameters.
  *
  * @author Andrey Zelenkov (Mlearner)
  */

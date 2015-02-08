@@ -1,7 +1,7 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Fit maker.
+ * Fit maker for 'Curve Fitting' simulation.
  *
  * @author Andrey Zelenkov (Mlearner)
  */

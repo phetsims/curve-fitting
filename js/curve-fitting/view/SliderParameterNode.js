@@ -1,7 +1,7 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Node with fit types and adjusting sliders in 'Curve Fitting' simulation.
+ * Node with single parameter slider in 'Curve Fitting' simulation.
  *
  * @author Andrey Zelenkov (Mlearner)
  */

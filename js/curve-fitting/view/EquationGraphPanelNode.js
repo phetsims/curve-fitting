@@ -1,7 +1,7 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Node equation parameters in 'Curve Fitting' simulation.
+ * Node with equation parameters in 'Curve Fitting' simulation.
  *
  * @author Andrey Zelenkov (Mlearner)
  */

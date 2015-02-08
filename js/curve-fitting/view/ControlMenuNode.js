@@ -1,8 +1,8 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Deviations node in 'Curve Fitting' simulation.
- * Contains X^2 barometer, r^2 barometer and menu dialog.
+ * Control menu node in 'Curve Fitting' simulation.
+ * Contains radio buttons, checkboxes and sliders.
  *
  * @author Andrey Zelenkov (Mlearner)
  */

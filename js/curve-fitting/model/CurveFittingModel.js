@@ -1,8 +1,9 @@
 //  Copyright 2002-2014, University of Colorado Boulder
 
 /**
+ * Main model constructor for 'Curve Fitting' simulation.
  *
- * @author John Blanco (PhET)
+ * @author Andrey Zelenkov (Mlearner)
  */
 define( function( require ) {
   'use strict';
