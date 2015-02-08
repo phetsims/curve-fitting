@@ -19,9 +19,9 @@ define( function( require ) {
   var VBox = require( 'SCENERY/nodes/VBox' );
 
   // constants
-  var FONT_PARAMETER = new PhetFont( {
+  var FONT = new PhetFont( {
     weight: 'bold',
-    size: 14
+    size: 13
   } );
   var SLIDER_OPTIONS = {
     trackFill: 'black',
@@ -52,7 +52,7 @@ define( function( require ) {
     VBox.call( this, _.extend( {
       children: [
         sliderNode,
-        new Text( label, { font: FONT_PARAMETER, fill: CurveFittingConstants.BLUE_COLOR } )
+        new Text( label, { font: FONT, fill: CurveFittingConstants.BLUE_COLOR } )
       ]
     }, options ) );
   }

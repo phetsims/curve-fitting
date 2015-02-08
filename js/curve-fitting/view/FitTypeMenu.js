@@ -11,6 +11,7 @@ define( function( require ) {
 
   // modules
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  var EquationFitNode = require( 'CURVE_FITTING/curve-fitting/view/EquationFitNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
   var HBox = require( 'SCENERY/nodes/HBox' );
@@ -33,13 +34,14 @@ define( function( require ) {
   };
 
   /**
-   * @param {Curve} curve - Model of curve
-   * @param {Property} fitTypeProperty - Property to control fit type of curve
-   * @param {Property} orderOfFitProperty - Property to control type of curve
-   * @param {Object} options for graph node
+   * @param {Curve} curve model.
+   * @param {Property} fitTypeProperty - Property to control fit type of curve.
+   * @param {Property} orderOfFitProperty - Property to control type of curve.
+   * @param {number} maxOrderOfFit - Max order of fit.
+   * @param {Object} options for graph node.
    * @constructor
    */
-  function FitTypeMenu( curve, fitTypeProperty, orderOfFitProperty, options ) {
+  function FitTypeMenu( curve, fitTypeProperty, orderOfFitProperty, maxOrderOfFit, options ) {
     var content = new VBox();
 
     Panel.call( this, content, _.extend( {
@@ -55,6 +57,10 @@ define( function( require ) {
       { property: fitTypeProperty, node: new Text( AdjustableFitString, { font: FONT } ), value: FitType.ADJUSTABLE }
     ], RADIO_BUTTON_MENU_OPTIONS );
     fitTypeRadioButtonGroup.localBounds = fitTypeRadioButtonGroup.localBounds.withMaxX( Math.max( fitTypeRadioButtonGroup.localBounds.maxX, CurveFittingConstants.PANEL_WIDTH - RADIO_BUTTON_MENU_OPTIONS.radius ) );
+    content.addChild( fitTypeRadioButtonGroup );
+
+    // create equation node
+    content.addChild( new EquationFitNode( orderOfFitProperty, maxOrderOfFit ) );
 
     // create slider for parameters
     var aSliderBox = new SliderParameterNode( curve.aProperty, { min: -1, max: 1 }, 'a' );
@@ -67,8 +73,6 @@ define( function( require ) {
       spacing: 4,
       children: [ aSliderBox, bSliderBox, cSliderBox, dSliderBox ]
     } );
-
-    content.addChild( fitTypeRadioButtonGroup );
 
     // add slider number observer
     orderOfFitProperty.link( function( orderOfFit ) {

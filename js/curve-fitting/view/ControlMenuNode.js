@@ -83,7 +83,7 @@ define( function( require ) {
     this.addChild( curveTypePanel );
 
     // create fit type menu
-    var fitTypeMenu = new FitTypeMenu( CurveFittingModel.curve, CurveFittingModel.fitTypeProperty, CurveFittingModel.orderOfFitProperty );
+    var fitTypeMenu = new FitTypeMenu( CurveFittingModel.curve, CurveFittingModel.fitTypeProperty, CurveFittingModel.orderOfFitProperty, CurveFittingModel.maxOrderOfFit );
     this.addChild( fitTypeMenu );
 
     // add observers
