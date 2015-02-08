@@ -12,6 +12,8 @@ define( function() {
   return {
     // colors
     BLUE_COLOR: 'rgb( 19, 52, 248 )',
+    GRAY_COLOR: 'rgb( 107, 107, 107 )',
+    LIGHT_GRAY_COLOR: 'rgb( 201, 201, 202 )',
 
     // graph
     PIXELS_IN_TICK: 24,

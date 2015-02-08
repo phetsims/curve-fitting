@@ -58,14 +58,14 @@ define( function( require ) {
     };
 
     // create options check boxes
-    var residualCheckBox = new CheckBox( residualCheckBoxLabel, CurveFittingModel.isResidualsProperty, CHECK_BOX_OPTIONS );
+    var residualCheckBox = new CheckBox( residualCheckBoxLabel, CurveFittingModel.isResidualsVisibleProperty, CHECK_BOX_OPTIONS );
     var checkBoxGroup = new VBox( {
       spacing: 5,
       align: 'left',
       children: [
         new CheckBox( new Text( CurveString, { font: FONT } ), CurveFittingModel.curve.isVisibleProperty, CHECK_BOX_OPTIONS ),
         residualCheckBox,
-        new CheckBox( new Text( ValuesString, { font: FONT } ), CurveFittingModel.isValuesProperty, CHECK_BOX_OPTIONS )
+        new CheckBox( new Text( ValuesString, { font: FONT } ), CurveFittingModel.isValuesVisibleProperty, CHECK_BOX_OPTIONS )
       ]
     } );
     checkBoxGroup.localBounds = checkBoxGroup.localBounds.withMaxX( Math.max( checkBoxGroup.localBounds.maxX, CurveFittingConstants.PANEL_WIDTH ) );

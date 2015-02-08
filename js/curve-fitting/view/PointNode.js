@@ -44,12 +44,13 @@ define( function( require ) {
    * @param {PropertySet} pointModel - Model for single point.
    * @param {ObservableArray} curveModelPoints - Array of points for plotting curve.
    * @param {Property} isValuesVisibleProperty - Property to control visibility of values.
+   * @param {Property} isResidualsVisibleProperty - Property to track residuals visibility.
    * @param {Node} parentNode - Parent node of point
    * @param {Node} graphAreaNode - Node of graph area.
    * @param {Object} options for graph node.
    * @constructor
    */
-  function PointNode( pointModel, curveModelPoints, isValuesVisibleProperty, parentNode, graphAreaNode, options ) {
+  function PointNode( pointModel, curveModelPoints, isValuesVisibleProperty, isResidualsVisibleProperty, parentNode, graphAreaNode, options ) {
     var self = this;
 
     Node.call( this, options );
@@ -185,6 +186,20 @@ define( function( require ) {
     isValuesVisibleProperty.onValue( true, updateDeltaText );
     isValuesVisibleProperty.linkAttribute( deltaTextLabel, 'visible' );
     pointModel.deltaProperty.lazyLink( updateDeltaText );
+
+    // change appearance when residuals active
+    isResidualsVisibleProperty.link( function( isResidualsVisible ) {
+      if ( isResidualsVisible ) {
+        centralLine.visible = false;
+        errorBarTop.setFill( CurveFittingConstants.LIGHT_GRAY_COLOR );
+        errorBarBottom.setFill( CurveFittingConstants.LIGHT_GRAY_COLOR );
+      }
+      else {
+        centralLine.visible = true;
+        errorBarTop.setFill( CurveFittingConstants.BLUE_COLOR );
+        errorBarBottom.setFill( CurveFittingConstants.BLUE_COLOR );
+      }
+    } );
   }
 
   return inherit( Node, PointNode );

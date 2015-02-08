@@ -29,7 +29,7 @@ define( function( require ) {
     var bucketNode = new BucketNode();
 
     // create graph area node
-    var graphAreaNode = new GraphAreaNode( CurveFittingModel.curve, CurveFittingModel.orderOfFitProperty, CurveFittingModel.isEquationPanelExpandedProperty, CurveFittingModel.graphArea );
+    var graphAreaNode = new GraphAreaNode( CurveFittingModel.curve, CurveFittingModel.orderOfFitProperty, CurveFittingModel.isEquationPanelExpandedProperty, CurveFittingModel.isResidualsVisibleProperty, CurveFittingModel.graphArea );
 
     HBox.call( this, _.extend( {
       spacing: 19,
@@ -45,7 +45,7 @@ define( function( require ) {
       start: function( e ) {
         point = CurveFittingModel.getPoint( e.pointer.point );
         graphAreaNode.setValues( point );
-        pointView = new PointNode( point, CurveFittingModel.curve.points, CurveFittingModel.isValuesProperty, self, graphAreaNode );
+        pointView = new PointNode( point, CurveFittingModel.curve.points, CurveFittingModel.isValuesVisibleProperty, CurveFittingModel.isResidualsVisibleProperty, self, graphAreaNode );
         self.addChild( pointView );
       },
       drag: function( e ) {

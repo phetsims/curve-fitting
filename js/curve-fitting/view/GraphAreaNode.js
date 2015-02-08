@@ -34,12 +34,12 @@ define( function( require ) {
    * @param {Curve} curve model.
    * @param {Property} orderOfFitProperty - Property with current order of fit.
    * @param {Property} isEquationPanelExpandedProperty - Property to control equation panel expansion.
-   * @param {number} maxOrderFit - Possible range for property.
+   * @param {Property} isResidualsVisibleProperty - Property to track residuals visibility.
    * @param {Bounds2} plotBounds of graph area.
    * @param {Object} options for graph node.
    * @constructor
    */
-  function GraphAreaNode( curve, orderOfFitProperty, isEquationPanelExpandedProperty, plotBounds, options ) {
+  function GraphAreaNode( curve, orderOfFitProperty, isEquationPanelExpandedProperty, isResidualsVisibleProperty, plotBounds, options ) {
     var self = this;
     var size = new Dimension2( (plotBounds.maxX - plotBounds.minX) * CurveFittingConstants.PIXELS_IN_TICK, (plotBounds.maxY - plotBounds.minY) * CurveFittingConstants.PIXELS_IN_TICK );
 
@@ -74,14 +74,19 @@ define( function( require ) {
     // add clip area
     this.clipArea = Shape.rect( 0, 0, size.width, size.height );
 
-    var pathCurve = new Path( null, { stroke: 'black', lineWidth: 2 } );
-    this.addChild( pathCurve );
+    var curvePath = new Path( null, { stroke: 'black', lineWidth: 2 } );
+    this.addChild( curvePath );
+
+    var residualsPath = new Path( null, { stroke: CurveFittingConstants.GRAY_COLOR, lineWidth: 2 } );
+    this.addChild( residualsPath );
 
     var updateShape = function() {
       var curveShape = new Shape();
       var orderOfFit = orderOfFitProperty.value;
       var xMin = self._plotBounds.minX;
       var xMax = self._plotBounds.maxX;
+      var points;
+      var residualsShape;
 
       var d = curve.d;
       var c = curve.c;
@@ -97,11 +102,29 @@ define( function( require ) {
          curveShape.quadraticCurveToPoint( controlPoint, endPoint );*/
       }
 
-      pathCurve.setShape( curveShape );
+      curvePath.setShape( curveShape );
+
+      // update residuals
+      if ( isResidualsVisibleProperty.value ) {
+        points = curve.points.getArray();
+        residualsShape = new Shape();
+
+        points.forEach( function( point ) {
+          if ( orderOfFit === 1 ) {
+            residualsShape.moveToPoint( self.getPositionFromGraphValues( point.x, point.y ) );
+            residualsShape.lineToPoint( self.getPositionFromGraphValues( point.x, point.x * c + d ) );
+          }
+        } );
+
+        residualsPath.setShape( residualsShape );
+      }
+      else {
+        residualsPath.setShape( null );
+      }
     };
 
     var clearShape = function() {
-      pathCurve.setShape( null );
+      curvePath.setShape( null );
     };
 
     curve.updateCurveTriggerProperty.link( function() {
@@ -113,8 +136,9 @@ define( function( require ) {
       }
     } );
 
-    curve.isVisibleProperty.linkAttribute( pathCurve, 'visible' );
+    curve.isVisibleProperty.linkAttribute( curvePath, 'visible' );
     curve.isVisibleProperty.linkAttribute( equationGraphPanelNode, 'visible' );
+    isResidualsVisibleProperty.link( updateShape );
   }
 
   return inherit( Node, GraphAreaNode, {
