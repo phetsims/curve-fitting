@@ -10,6 +10,9 @@ define( function() {
   'use strict';
 
   return {
+    // colors
+    BLUE_COLOR: 'rgb( 19, 52, 248 )',
+
     // point
     POINT_FILL: 'rgb( 252, 151, 64 )',
     POINT_RADIUS: 6,

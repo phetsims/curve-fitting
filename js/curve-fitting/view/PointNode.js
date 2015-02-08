@@ -19,7 +19,6 @@ define( function( require ) {
 
   // constants
   var ERROR_BAR_WIDTH = 10;
-  var LINE_COLOR = 'rgb( 19, 52, 248 )';
   var LINE_HEIGHT = 15;
 
   /**
@@ -36,7 +35,7 @@ define( function( require ) {
 
     // add top error bar line
     var errorBarTop = new Line( -ERROR_BAR_WIDTH, -LINE_HEIGHT, ERROR_BAR_WIDTH, -LINE_HEIGHT, {
-      stroke: LINE_COLOR,
+      stroke: CurveFittingConstants.BLUE_COLOR,
       lineWidth: 2
     } );
     this.addChild( errorBarTop );
@@ -44,7 +43,7 @@ define( function( require ) {
 
     // add central line
     var centralLine = new Line( 0, -LINE_HEIGHT, 0, LINE_HEIGHT, {
-      stroke: 'rgb( 19, 52, 248 )',
+      stroke: CurveFittingConstants.BLUE_COLOR,
       lineWidth: 1
     } );
     this.addChild( centralLine );
@@ -81,7 +80,7 @@ define( function( require ) {
 
     // add bottom error bar line
     var errorBarBottom = new Line( -ERROR_BAR_WIDTH, LINE_HEIGHT, ERROR_BAR_WIDTH, LINE_HEIGHT, {
-      stroke: LINE_COLOR,
+      stroke: CurveFittingConstants.BLUE_COLOR,
       lineWidth: 2
     } );
     this.addChild( errorBarBottom );

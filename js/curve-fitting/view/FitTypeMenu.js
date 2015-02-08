@@ -11,13 +11,12 @@ define( function( require ) {
 
   // modules
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var Dimension2 = require( 'DOT/Dimension2' );
   var inherit = require( 'PHET_CORE/inherit' );
   var FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
   var HBox = require( 'SCENERY/nodes/HBox' );
-  var HSlider = require( 'SUN/HSlider' );
   var Panel = require( 'SUN/Panel' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var SliderParameterNode = require( 'CURVE_FITTING/curve-fitting/view/SliderParameterNode' );
   var Text = require( 'SCENERY/nodes/Text' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var VerticalAquaRadioButtonGroup = require( 'SUN/VerticalAquaRadioButtonGroup' );
@@ -32,14 +31,6 @@ define( function( require ) {
     spacing: 5,
     radius: 10
   };
-  var SLIDER_OPTIONS = {
-    trackFill: 'black',
-    trackSize: new Dimension2( 140, 1 ),
-    thumbSize: new Dimension2( 16, 26 )
-  };
-  var TICK_COLOR = 'black';
-  var TICK_LENGTH = 8;
-  var TICK_WIDTH = 2;
 
   /**
    * @param {Curve} curve - Model of curve
@@ -65,25 +56,16 @@ define( function( require ) {
     ], RADIO_BUTTON_MENU_OPTIONS );
     fitTypeRadioButtonGroup.localBounds = fitTypeRadioButtonGroup.localBounds.withMaxX( Math.max( fitTypeRadioButtonGroup.localBounds.maxX, CurveFittingConstants.PANEL_WIDTH - RADIO_BUTTON_MENU_OPTIONS.radius ) );
 
-    // slider for parameters
-    var aSlider = new HSlider( curve.aProperty, { min: -1, max: 1 }, SLIDER_OPTIONS ),
-      bSlider = new HSlider( curve.bProperty, { min: -2, max: 2 }, SLIDER_OPTIONS ),
-      cSlider = new HSlider( curve.cProperty, { min: -10, max: 10 }, SLIDER_OPTIONS ),
-      dSlider = new HSlider( curve.dProperty, { min: -10, max: 10 }, SLIDER_OPTIONS );
-
-    [ aSlider, bSlider, cSlider, dSlider ].forEach( function( slider ) {
-      // make vertical slider
-      slider.rotate( -Math.PI / 2 );
-
-      // add central tick
-      slider.addTick( 0, '', TICK_LENGTH, TICK_COLOR, TICK_WIDTH );
-      slider.addTick( 0, '', -TICK_LENGTH - 2 * SLIDER_OPTIONS.trackSize.height, TICK_COLOR, TICK_WIDTH );
-    } );
+    // create slider for parameters
+    var aSliderBox = new SliderParameterNode( curve.aProperty, { min: -1, max: 1 }, 'a' );
+    var bSliderBox = new SliderParameterNode( curve.bProperty, { min: -2, max: 2 }, 'b' );
+    var cSliderBox = new SliderParameterNode( curve.cProperty, { min: -10, max: 10 }, 'c' );
+    var dSliderBox = new SliderParameterNode( curve.dProperty, { min: -10, max: 10 }, 'd' );
 
     // create slider box
     var slidersBox = new HBox( {
       spacing: 4,
-      children: [ aSlider, bSlider, cSlider, dSlider ]
+      children: [ aSliderBox, bSliderBox, cSliderBox, dSliderBox ]
     } );
 
     content.addChild( fitTypeRadioButtonGroup );
@@ -91,13 +73,13 @@ define( function( require ) {
     // add slider number observer
     orderOfFitProperty.link( function( orderOfFit ) {
       if ( orderOfFit === 1 ) {
-        slidersBox.children = [ cSlider, dSlider ];
+        slidersBox.children = [ cSliderBox, dSliderBox ];
       }
       else if ( orderOfFit === 2 ) {
-        slidersBox.children = [ bSlider, cSlider, dSlider ];
+        slidersBox.children = [ bSliderBox, cSliderBox, dSliderBox ];
       }
       else if ( orderOfFit === 3 ) {
-        slidersBox.children = [ aSlider, bSlider, cSlider, dSlider ];
+        slidersBox.children = [ aSliderBox, bSliderBox, cSliderBox, dSliderBox ];
       }
     } );
 
