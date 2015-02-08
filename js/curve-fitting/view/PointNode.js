@@ -15,8 +15,17 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  var SubSupText = require( 'SCENERY_PHET/SubSupText' );
+  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+  var Text = require( 'SCENERY/nodes/Text' );
+  var Util = require( 'DOT/Util' );
+
+  // strings
+  var pattern_0valueX_1valueY = require( 'string!CURVE_FITTING/pattern.0valueX.1valueY' );
+  var pattern_delta_0valueDelta = require( 'string!CURVE_FITTING/pattern.delta.0valueDelta' );
 
   // constants
   var CENTRAL_LINE_OPTIONS = {
@@ -29,20 +38,23 @@ define( function( require ) {
   var ERROR_BAR_OPTIONS = {
     fill: CurveFittingConstants.BLUE_COLOR
   };
+  var FONT = new PhetFont( 11 );
 
   /**
    * @param {PropertySet} pointModel - Model for single point.
    * @param {ObservableArray} curveModelPoints - Array of points for plotting curve.
+   * @param {Property} isValuesVisibleProperty - Property to control visibility of values.
    * @param {Node} parentNode - Parent node of point
    * @param {Node} graphAreaNode - Node of graph area.
    * @param {Object} options for graph node.
    * @constructor
    */
-  function PointNode( pointModel, curveModelPoints, parentNode, graphAreaNode, options ) {
+  function PointNode( pointModel, curveModelPoints, isValuesVisibleProperty, parentNode, graphAreaNode, options ) {
     var self = this;
 
     Node.call( this, options );
 
+    // create common drag and drop functions for top and bottom error bars
     var clickYOffset;
     var deltaInitial;
     var isUserControlledDelta = false;
@@ -68,7 +80,6 @@ define( function( require ) {
       },
       end: deltaEndDragHandler
     } ) );
-
 
     // add bottom error bar line
     var errorBarBottom = new Rectangle( -ERROR_BAR_WIDTH / 2, 0, ERROR_BAR_WIDTH, ERROR_BAR_HEIGHT, ERROR_BAR_OPTIONS );
@@ -118,6 +129,21 @@ define( function( require ) {
       }
     } ) );
 
+    // add value text label
+    var valueTextLabel = new Text( StringUtils.format( pattern_0valueX_1valueY, Util.toFixed( pointModel.x, 1 ), Util.toFixed( pointModel.y, 1 ) ), {
+      font: FONT,
+      x: circleView.localBounds.maxX + 2,
+      centerY: circleView.centerY
+    } );
+    this.addChild( valueTextLabel );
+
+    var deltaTextLabel = new SubSupText( StringUtils.format( pattern_delta_0valueDelta, Util.toFixed( pointModel.delta, 1 ) ), {
+      font: FONT,
+      x: errorBarTop.localBounds.maxX + 2,
+      centerY: errorBarTop.centerY
+    } );
+    this.addChild( deltaTextLabel );
+
     // add observers
     pointModel.positionProperty.link( function( position ) {
       self.setTranslation( parentNode.globalToLocalPoint( position ) );
@@ -130,6 +156,7 @@ define( function( require ) {
       errorBarTop.setRectY( -lineHeight - ERROR_BAR_HEIGHT / 2 );
       errorBarTop.touchArea = errorBarTop.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
       errorBarTop.mouseArea = errorBarTop.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
+      deltaTextLabel.centerY = -lineHeight;
 
       // update central line
       centralLine.setY1( -lineHeight );
@@ -140,6 +167,24 @@ define( function( require ) {
       errorBarBottom.touchArea = errorBarBottom.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
       errorBarBottom.mouseArea = errorBarBottom.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
     } );
+
+    var updateValueText = function() {
+      if ( valueTextLabel.visible ) {
+        valueTextLabel.setText( StringUtils.format( pattern_0valueX_1valueY, Util.toFixed( pointModel.x, 1 ), Util.toFixed( pointModel.y, 1 ) ) );
+      }
+    };
+    isValuesVisibleProperty.linkAttribute( valueTextLabel, 'visible' );
+    isValuesVisibleProperty.onValue( true, updateValueText );
+    pointModel.positionProperty.lazyLink( updateValueText );
+
+    var updateDeltaText = function() {
+      if ( deltaTextLabel.visible ) {
+        deltaTextLabel.setText( StringUtils.format( pattern_delta_0valueDelta, Util.toFixed( pointModel.delta, 1 ) ) );
+      }
+    };
+    isValuesVisibleProperty.onValue( true, updateDeltaText );
+    isValuesVisibleProperty.linkAttribute( deltaTextLabel, 'visible' );
+    pointModel.deltaProperty.lazyLink( updateDeltaText );
   }
 
   return inherit( Node, PointNode );

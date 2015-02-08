@@ -6,6 +6,8 @@
   "curve-fitting.name": "Curve Fitting",
   "equation": "Equation",
   "linear": "Linear",
+  "pattern.delta.0valueDelta": "D<sub>y</sub>={0}",
+  "pattern.0valueX.1valueY": "({0},{1})",
   "quadratic": "Quadratic",
   "residuals": "Residuals",
   "values": "Values"
