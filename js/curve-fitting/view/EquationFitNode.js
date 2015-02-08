@@ -11,11 +11,12 @@ define( function( require ) {
 
   // modules
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  var HBox = require( 'SCENERY/nodes/HBox' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var SubSupText = require( 'SCENERY_PHET/SubSupText' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
 
   // constants
   var TEXT_OPTIONS = { font: new PhetFont( 13 ) };
@@ -39,7 +40,7 @@ define( function( require ) {
     var boxNode;
 
     for ( var i = 1; i < maxOrderFit + 1; i++ ) {
-      boxNode = new HBox();
+      boxNode = new HBox( { align: 'bottom' } );
       boxNode.addChild( new Text( 'y = ', TEXT_OPTIONS ) );
 
       // first order of fit
@@ -51,13 +52,13 @@ define( function( require ) {
         // second order of fit
         if ( i > 1 ) {
           boxNode.insertChild( 1, new Text( ' + ', TEXT_OPTIONS ) );
-          boxNode.insertChild( 1, new Text( 'x2', TEXT_OPTIONS ) );
+          boxNode.insertChild( 1, new SubSupText( 'x<sup>2</sup>', TEXT_OPTIONS ) );
           boxNode.insertChild( 1, new Text( 'b', PARAMETER_TEXT_OPTIONS ) );
 
           // third order of fit
           if ( i > 2 ) {
             boxNode.insertChild( 1, new Text( ' + ', TEXT_OPTIONS ) );
-            boxNode.insertChild( 1, new Text( 'x3', TEXT_OPTIONS ) );
+            boxNode.insertChild( 1, new SubSupText( 'x<sup>3</sup>', TEXT_OPTIONS ) );
             boxNode.insertChild( 1, new Text( 'a', PARAMETER_TEXT_OPTIONS ) );
           }
         }
