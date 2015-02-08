@@ -28,6 +28,9 @@ define( function( require ) {
   var TextPushButton = require( 'SUN/buttons/TextPushButton' );
   var VBox = require( 'SCENERY/nodes/VBox' );
 
+  // strings
+  var deviationsString = require( 'string!CURVE_FITTING/deviations' );
+
   // constants
   var BAROMETER_HEIGHT = 200;
   var BAROMETER_X2_OPTIONS = {
@@ -42,6 +45,10 @@ define( function( require ) {
   var LINE_OPTIONS = {
     lineWidth: 2,
     stroke: 'black'
+  };
+  var PANEL_OPTIONS = {
+    cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
+    fill: CurveFittingConstants.PANEL_BACKGROUND_COLOR
   };
 
   /**
@@ -64,31 +71,45 @@ define( function( require ) {
     // r^2 barometer
     var BarometerR2 = new BarometerR2Node();
 
-    Panel.call( this, new VBox( _.extend( {
-      align: 'left',
+    // help menu button
+    var helpButtonNode = new TextPushButton( '?', {
+      font: TEXT_FONT,
+      baseColor: 'rgb( 204, 204, 204 )'
+    } );
+
+    // title
+    var titleNode = new Text( deviationsString, { font: TEXT_FONT } );
+
+    var deviationArrowsNode = new HBox( {
+      align: 'top',
+      spacing: 5,
+      children: [ expandCollapseButton, BarometerX2, BarometerR2 ]
+    } );
+    var deviationTextNode = new HBox( {
+      spacing: 5,
       children: [
-        new HBox( {
-          align: 'top',
-          spacing: 5,
-          children: [ expandCollapseButton, BarometerX2, BarometerR2 ]
-        } ),
-        new HBox( {
-          spacing: 5,
-          children: [
-            new SubSupText( 'X<sup>2</sup>=', { font: TEXT_FONT } ),
-            new Rectangle( 0, 0, 30, 20, 4, 4, { fill: 'white', stroke: 'black', lineWidth: 1 } ),
-            new SubSupText( 'r<sup>2</sup>=', { font: TEXT_FONT } ),
-            new Rectangle( 0, 0, 30, 20, 4, 4, { fill: 'white', stroke: 'black', lineWidth: 1 } )
-          ]
-        } ),
-        new TextPushButton( '?', {
-          font: TEXT_FONT,
-          baseColor: 'rgb( 204, 204, 204 )'
-        } )
+        new SubSupText( 'X<sup>2</sup>=', { font: TEXT_FONT } ),
+        new Rectangle( 0, 0, 30, 20, 4, 4, { fill: 'white', stroke: 'black', lineWidth: 1 } ),
+        new SubSupText( 'r<sup>2</sup>=', { font: TEXT_FONT } ),
+        new Rectangle( 0, 0, 30, 20, 4, 4, { fill: 'white', stroke: 'black', lineWidth: 1 } )
       ]
-    }, options ) ), {
-      cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
-      fill: CurveFittingConstants.PANEL_BACKGROUND_COLOR
+    } );
+
+    var content = new VBox( _.extend( {
+      align: 'left'
+    }, options ) );
+
+    Panel.call( this, content, PANEL_OPTIONS );
+
+    isDeviationPanelExpandedProperty.link( function( isDeviationPanelExpanded ) {
+      if ( isDeviationPanelExpanded ) {
+        deviationArrowsNode.children = [ expandCollapseButton, BarometerX2, BarometerR2 ];
+        content.children = [ deviationArrowsNode, deviationTextNode, helpButtonNode ];
+      }
+      else {
+        deviationArrowsNode.children = [ expandCollapseButton, titleNode ];
+        content.children = [ deviationArrowsNode ];
+      }
     } );
   }
 
