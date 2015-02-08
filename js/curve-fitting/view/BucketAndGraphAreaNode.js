@@ -44,6 +44,7 @@ define( function( require ) {
     bucketNode.pointsNode.addInputListener( new SimpleDragHandler( {
       start: function( e ) {
         point = CurveFittingModel.getPoint( e.pointer.point );
+        graphAreaNode.setValues( point );
         pointView = new PointNode( point, CurveFittingModel.curve.points, CurveFittingModel.isValuesProperty, self, graphAreaNode );
         self.addChild( pointView );
       },
