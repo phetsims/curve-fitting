@@ -21,7 +21,6 @@ define( function( require ) {
    */
   function CurveFittingModel() {
     PropertySet.call( this, {
-      isCurve: false, // curve flag visibility
       isResiduals: false, // residuals flag
       isValues: false, // values flag visibility
       orderOfFit: 1, // property to control curve type

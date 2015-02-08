@@ -23,6 +23,7 @@ define( function( require ) {
     var self = this;
 
     PropertySet.call( this, {
+      isVisible: false, // curve flag visibility
       updateCurveTrigger: true,
       a: 0, // parameter with x^3
       b: 0, // parameter with x^2
@@ -49,6 +50,8 @@ define( function( require ) {
         self.a = 0;
       }
     } );
+
+    this.isVisibleProperty.onValue( true, this._updateFitBinded );
   }
 
   return inherit( PropertySet, Curve, {
@@ -65,14 +68,17 @@ define( function( require ) {
     },
 
     updateFit: function() {
-      var fit = this.fitMaker.getFit( this.points.getArray(), this._orderOfFit.value );
+      // update only when curve visible
+      if ( this.isVisible ) {
+        var fit = this.fitMaker.getFit( this.points.getArray(), this._orderOfFit.value );
 
-      this.d = fit[ 0 ];
-      this.c = fit[ 1 ];
-      this.b = fit[ 2 ];
-      this.a = fit[ 3 ];
+        this.d = fit[ 0 ];
+        this.c = fit[ 1 ];
+        this.b = fit[ 2 ];
+        this.a = fit[ 3 ];
 
-      this.updateCurveTrigger = !this.updateCurveTrigger;
+        this.updateCurveTrigger = !this.updateCurveTrigger;
+      }
     }
   } );
 } );

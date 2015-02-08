@@ -63,7 +63,7 @@ define( function( require ) {
       spacing: 5,
       align: 'left',
       children: [
-        new CheckBox( new Text( CurveString, { font: FONT } ), CurveFittingModel.isCurveProperty, CHECK_BOX_OPTIONS ),
+        new CheckBox( new Text( CurveString, { font: FONT } ), CurveFittingModel.curve.isVisibleProperty, CHECK_BOX_OPTIONS ),
         residualCheckBox,
         new CheckBox( new Text( ValuesString, { font: FONT } ), CurveFittingModel.isValuesProperty, CHECK_BOX_OPTIONS )
       ]
@@ -87,8 +87,8 @@ define( function( require ) {
     this.addChild( fitTypeMenu );
 
     // add observers
-    CurveFittingModel.isCurveProperty.link( function( isCurve ) {
-      if ( isCurve ) {
+    CurveFittingModel.curve.isVisibleProperty.link( function( isCurveVisible ) {
+      if ( isCurveVisible ) {
         curveTypePanel.visible = true;
         fitTypeMenu.visible = true;
         residualCheckBox.enabled = true;

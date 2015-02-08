@@ -100,6 +100,8 @@ define( function( require ) {
         clearShape();
       }
     } );
+
+    curve.isVisibleProperty.linkAttribute( pathCurve, 'visible' );
   }
 
   return inherit( Node, GraphAreaNode, {
