@@ -14,7 +14,7 @@ define( function() {
     BLUE_COLOR: 'rgb( 19, 52, 248 )',
 
     // graph
-    PIXELS_IN_TICK: 20,
+    PIXELS_IN_TICK: 24,
 
     // point
     POINT_FILL: 'rgb( 252, 151, 64 )',
@@ -26,6 +26,6 @@ define( function() {
     PANEL_BACKGROUND_COLOR: 'rgb( 254, 235, 214 )',
     PANEL_CORNER_RADIUS: 5,
     PANEL_MARGIN: 10,
-    PANEL_WIDTH: 135
+    PANEL_WIDTH: 118
   };
 } );

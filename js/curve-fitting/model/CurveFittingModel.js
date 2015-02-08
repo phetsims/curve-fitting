@@ -25,7 +25,8 @@ define( function( require ) {
       isValues: false, // values flag visibility
       orderOfFit: 1, // property to control curve type
       fitType: FitType.BEST, // property to control fit type
-      isDeviationPanelExpanded: true // property to control deviation panel expansion
+      isDeviationPanelExpanded: true, // property to control deviation panel expansion
+      isEquationPanelExpanded: true // property to control equation panel expansion
     } );
 
     // max order of fit
@@ -35,7 +36,7 @@ define( function( require ) {
     this.curve = new Curve( this.orderOfFitProperty, this.maxOrderOfFit );
 
     // graph area size
-    this.graphArea = new Bounds2( -11, -12, 11, 12 );
+    this.graphArea = new Bounds2( -10, -10, 10, 10 );
   }
 
   return inherit( PropertySet, CurveFittingModel, {

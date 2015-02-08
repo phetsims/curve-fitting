@@ -26,7 +26,7 @@ define( function( require ) {
   var SLIDER_OPTIONS = {
     trackFill: 'black',
     trackSize: new Dimension2( 140, 1 ),
-    thumbSize: new Dimension2( 16, 26 )
+    thumbSize: new Dimension2( 15, 24 )
   };
   var TICK_COLOR = 'black';
   var TICK_LENGTH = 8;

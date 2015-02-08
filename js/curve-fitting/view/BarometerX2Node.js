@@ -27,7 +27,7 @@ define( function( require ) {
     stroke: 'black'
   };
   var TICK_FONT = new PhetFont( 12 );
-  var TICK_WIDTH = 15;
+  var TICK_WIDTH = 12;
 
   /**
    * @param {Property} deviationXProperty - Property that represents r-deviation.

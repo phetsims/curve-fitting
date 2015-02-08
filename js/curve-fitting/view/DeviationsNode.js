@@ -39,8 +39,8 @@ define( function( require ) {
     tailWidth: 1
   };
   var BUTTON_LENGTH = 16;
-  var TICK_FONT = new PhetFont( 12 );
-  var TEXT_FONT = new PhetFont( 16 );
+  var TICK_FONT = new PhetFont( 11 );
+  var TEXT_FONT = new PhetFont( 13 );
   var TICK_WIDTH = 15;
   var LINE_OPTIONS = {
     lineWidth: 2,
@@ -52,7 +52,7 @@ define( function( require ) {
   };
 
   /**
-   * @param {Property} isDeviationPanelExpandedProperty - Property to control deviation panel expansion
+   * @param {Property} isDeviationPanelExpandedProperty - Property to control deviation panel expansion.
    * @param {Object} options for graph node
    * @constructor
    */
@@ -89,9 +89,9 @@ define( function( require ) {
       spacing: 5,
       children: [
         new SubSupText( 'X<sup>2</sup>=', { font: TEXT_FONT } ),
-        new Rectangle( 0, 0, 30, 20, 4, 4, { fill: 'white', stroke: 'black', lineWidth: 1 } ),
+        new Rectangle( 0, 0, 25, 18, 4, 4, { fill: 'white', stroke: 'black', lineWidth: 1 } ),
         new SubSupText( 'r<sup>2</sup>=', { font: TEXT_FONT } ),
-        new Rectangle( 0, 0, 30, 20, 4, 4, { fill: 'white', stroke: 'black', lineWidth: 1 } )
+        new Rectangle( 0, 0, 25, 18, 4, 4, { fill: 'white', stroke: 'black', lineWidth: 1 } )
       ]
     } );
 

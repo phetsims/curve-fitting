@@ -12,6 +12,7 @@ define( function( require ) {
   // modules
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var Dimension2 = require( 'DOT/Dimension2' );
+  var EquationGraphPanelNode = require( 'CURVE_FITTING/curve-fitting/view/EquationGraphPanelNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -29,12 +30,15 @@ define( function( require ) {
   var TICK_LENGTH = 7;
 
   /**
-   * @param {Curve}
+   * @param {Curve} curve model.
+   * @param {Property} orderOfFitProperty - Property with current order of fit.
+   * @param {Property} isEquationPanelExpandedProperty - Property to control equation panel expansion.
+   * @param {number} maxOrderFit - Possible range for property.
    * @param {Bounds2} plotBounds of graph area.
    * @param {Object} options for graph node.
    * @constructor
    */
-  function GraphAreaNode( curve, orderOfFitProperty, plotBounds, options ) {
+  function GraphAreaNode( curve, orderOfFitProperty, isEquationPanelExpandedProperty, plotBounds, options ) {
     var self = this;
     var size = new Dimension2( (plotBounds.maxX - plotBounds.minX) * CurveFittingConstants.PIXELS_IN_TICK, (plotBounds.maxY - plotBounds.minY) * CurveFittingConstants.PIXELS_IN_TICK );
 
@@ -58,6 +62,13 @@ define( function( require ) {
     this.addChild( new Line( size.width / 2 - TICK_LENGTH, size.height / 4, size.width / 2 + TICK_LENGTH, size.height / 4, LINE_OPTIONS ) );
     this.addChild( new Line( size.width / 2 - TICK_LENGTH, 3 * size.height / 4, size.width / 2 + TICK_LENGTH, 3 * size.height / 4, LINE_OPTIONS ) );
     this.addChild( new Line( size.width / 2 - TICK_LENGTH, size.height - LINE_OPTIONS.lineWidth, size.width / 2 + TICK_LENGTH, size.height - LINE_OPTIONS.lineWidth, LINE_OPTIONS ) );
+
+    // add equation node
+    var equationGraphPanelNode = new EquationGraphPanelNode( isEquationPanelExpandedProperty, curve, orderOfFitProperty, {
+      centerX: 55,
+      centerY: 20
+    } );
+    this.addChild( equationGraphPanelNode );
 
     // add clip area
     this.clipArea = Shape.rect( 0, 0, size.width, size.height );
@@ -102,6 +113,7 @@ define( function( require ) {
     } );
 
     curve.isVisibleProperty.linkAttribute( pathCurve, 'visible' );
+    curve.isVisibleProperty.linkAttribute( equationGraphPanelNode, 'visible' );
   }
 
   return inherit( Node, GraphAreaNode, {

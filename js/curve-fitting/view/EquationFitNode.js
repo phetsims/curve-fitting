@@ -19,11 +19,11 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
 
   // constants
-  var TEXT_OPTIONS = { font: new PhetFont( 13 ) };
+  var TEXT_OPTIONS = { font: new PhetFont( 12 ) };
   var PARAMETER_TEXT_OPTIONS = {
     font: new PhetFont( {
       weight: 'bold',
-      size: 13
+      size: 12
     } ),
     fill: CurveFittingConstants.BLUE_COLOR
   };
