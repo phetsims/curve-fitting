@@ -15,6 +15,7 @@ define( function( require ) {
   var BarometerR2Node = require( 'CURVE_FITTING/curve-fitting/view/BarometerR2Node' );
   var BarometerX2Node = require( 'CURVE_FITTING/curve-fitting/view/BarometerX2Node' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  var Dialog = require( 'JOIST/Dialog' );
   var ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
   var inherit = require( 'PHET_CORE/inherit' );
   var HBox = require( 'SCENERY/nodes/HBox' );
@@ -70,6 +71,14 @@ define( function( require ) {
 
     // r^2 barometer
     var BarometerR2 = new BarometerR2Node();
+
+    /* var dialogHelpNode = new Dialog(
+     new Rectangle( 0, 0, 50, 20, 4, 4, { fill: 'white', stroke: 'black', lineWidth: 1 } ),
+     {
+     modal: true,
+     hasCloseButton: false
+     } );
+     this.addChild( dialogHelpNode );*/
 
     // help menu button
     var helpButtonNode = new TextPushButton( '?', {
