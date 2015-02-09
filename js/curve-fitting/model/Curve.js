@@ -52,6 +52,7 @@ define( function( require ) {
     } );
 
     this.isVisibleProperty.onValue( true, this._updateFitBinded );
+    orderOfFitProperty.link( this._updateFitBinded );
   }
 
   return inherit( PropertySet, Curve, {

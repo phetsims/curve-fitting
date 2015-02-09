@@ -28,6 +28,7 @@ define( function( require ) {
     lineWidth: 1,
     stroke: 'black'
   };
+  var PLOT_STEP = 0.1;
   var TICK_LENGTH = 7;
 
   /**
@@ -81,63 +82,68 @@ define( function( require ) {
     this.addChild( residualsPath );
 
     var updateShape = function() {
-      var curveShape = new Shape();
+      var curveShape = null;
+      var residualsShape = null;
       var orderOfFit = orderOfFitProperty.value;
       var xMin = self._plotBounds.minX;
       var xMax = self._plotBounds.maxX;
-      var points;
-      var residualsShape;
-
-      var d = curve.d;
-      var c = curve.c;
+      var points = curve.points.getArray();
+      var a = curve.a;
       var b = curve.b;
-      if ( orderOfFit === 1 ) {
-        curveShape.moveToPoint( self.getPositionFromGraphValues( xMin, xMin * c + d ) );
-        curveShape.lineToPoint( self.getPositionFromGraphValues( xMax, xMax * c + d ) );
-      }
-      else if ( orderOfFit === 2 ) {
-        /*curveShape.moveToPoint( self.getPositionFromGraphValues( xMin, b * xMin * xMin + xMin * c + d ) );
-         var controlPoint = self.getPositionFromGraphValues( -c / d, b * (-c / d) * (-c / d) + (-c / d) * c + d );
-         var endPoint = self.getPositionFromGraphValues( xMax, b * xMax * xMax + xMax * c + d );
-         curveShape.quadraticCurveToPoint( controlPoint, endPoint );*/
+      var c = curve.c;
+      var d = curve.d;
+      var x;
+
+      if ( points.length > 1 && !isNaN( a ) && !isNaN( b ) && !isNaN( c ) && !isNaN( d ) ) {
+        curveShape = new Shape();
+
+        // update curve view
+        if ( orderOfFit === 1 ) {
+          curveShape.moveToPoint( self.getPositionFromGraphValues( xMin, xMin * c + d ) );
+          curveShape.lineToPoint( self.getPositionFromGraphValues( xMax, xMax * c + d ) );
+        }
+        else if ( orderOfFit === 2 ) {
+          for ( x = xMin; x < xMax; x += PLOT_STEP ) {
+            curveShape.moveToPoint( self.getPositionFromGraphValues( x, a * Math.pow( x, 3 ) + b * Math.pow( x, 2 ) + c * x + d ) );
+            curveShape.lineToPoint( self.getPositionFromGraphValues( x + PLOT_STEP, a * Math.pow( x + PLOT_STEP, 3 ) + b * Math.pow( x + PLOT_STEP, 2 ) + c * (x + PLOT_STEP) + d ) );
+          }
+        }
+        else if ( orderOfFit === 3 ) {
+          for ( x = xMin; x < xMax; x += PLOT_STEP ) {
+            curveShape.moveToPoint( self.getPositionFromGraphValues( x, a * Math.pow( x, 3 ) + b * Math.pow( x, 2 ) + c * x + d ) );
+            curveShape.lineToPoint( self.getPositionFromGraphValues( x + PLOT_STEP, a * Math.pow( x + PLOT_STEP, 3 ) + b * Math.pow( x + PLOT_STEP, 2 ) + c * (x + PLOT_STEP) + d ) );
+          }
+        }
+
+        // update residuals
+        if ( isResidualsVisibleProperty.value ) {
+          residualsShape = new Shape();
+
+          points.forEach( function( point ) {
+            if ( orderOfFit === 1 ) {
+              residualsShape.moveToPoint( self.getPositionFromGraphValues( point.x, point.y ) );
+              residualsShape.lineToPoint( self.getPositionFromGraphValues( point.x, c * point.x + d ) );
+            }
+            else if ( orderOfFit === 2 ) {
+              residualsShape.moveToPoint( self.getPositionFromGraphValues( point.x, point.y ) );
+              residualsShape.lineToPoint( self.getPositionFromGraphValues( point.x, b * Math.pow( point.x, 2 ) + c * point.x + d ) );
+            }
+            else if ( orderOfFit === 3 ) {
+              residualsShape.moveToPoint( self.getPositionFromGraphValues( point.x, point.y ) );
+              residualsShape.lineToPoint( self.getPositionFromGraphValues( point.x, a * Math.pow( point.x, 3 ) + b * Math.pow( point.x, 2 ) + c * point.x + d ) );
+            }
+          } );
+        }
       }
 
       curvePath.setShape( curveShape );
-
-      // update residuals
-      if ( isResidualsVisibleProperty.value ) {
-        points = curve.points.getArray();
-        residualsShape = new Shape();
-
-        points.forEach( function( point ) {
-          if ( orderOfFit === 1 ) {
-            residualsShape.moveToPoint( self.getPositionFromGraphValues( point.x, point.y ) );
-            residualsShape.lineToPoint( self.getPositionFromGraphValues( point.x, point.x * c + d ) );
-          }
-        } );
-
-        residualsPath.setShape( residualsShape );
-      }
-      else {
-        residualsPath.setShape( null );
-      }
+      residualsPath.setShape( residualsShape );
     };
-
-    var clearShape = function() {
-      curvePath.setShape( null );
-    };
-
-    curve.updateCurveTriggerProperty.link( function() {
-      if ( curve.points.getArray().length > 1 ) {
-        updateShape();
-      }
-      else {
-        clearShape();
-      }
-    } );
 
     curve.isVisibleProperty.linkAttribute( curvePath, 'visible' );
     curve.isVisibleProperty.linkAttribute( equationGraphPanelNode, 'visible' );
+    curve.updateCurveTriggerProperty.lazyLink( updateShape );
+    orderOfFitProperty.lazyLink( updateShape );
     isResidualsVisibleProperty.link( updateShape );
   }
 
