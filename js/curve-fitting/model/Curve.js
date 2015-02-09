@@ -31,9 +31,12 @@ define( function( require ) {
       b: 0, // parameter with x^2
       c: 0, // parameter with x^1
       d: 0, // parameter with constant
-      deviationR: 0, // r-deviation
-      deviationX: 0 // x-deviation
+      chiSquare: 0, // x^2 deviation value
+      rSquare: 0 // r^2 deviation value
     } );
+
+    // property for storing calculation result
+    this.yDeviationSquaredSum = 0;
 
     // save link to property
     this._orderOfFit = orderOfFitProperty;
@@ -62,7 +65,7 @@ define( function( require ) {
     this.isVisibleProperty.onValue( true, this._updateFitBinded );
     orderOfFitProperty.link( this._updateFitBinded );
 
-    this._storage = { a: 0, b: 0, c: 0, d: 0 };
+    this._storage = { a: 0, b: 0, c: 0, d: 2.7 };
     fitTypeProperty.lazyLink( function( fitTypeNew, fitTypePrev ) {
       if ( fitTypeNew === FitType.BEST ) {
         self.swapValueFromStorage();
@@ -90,6 +93,69 @@ define( function( require ) {
   }
 
   return inherit( PropertySet, Curve, {
+
+    computeSum: function() {
+      var points = this.points.getArray();
+      var sum = 0;
+      var yApproximated;
+      var yDeviationSquared;
+      var x;
+      var y;
+
+      this.yDeviationSquaredSum = 0;
+      for ( var i = 0; i < points.length; ++i ) {
+        y = points[ i ].y;
+        x = points[ i ].x;
+        yApproximated = this.d + this.c * x + this.b * x * x + this.a * x * x * x;
+        yDeviationSquared = (y - yApproximated) * (y - yApproximated);
+        sum = sum + yDeviationSquared / ( points[ i ].delta * points[ i ].delta);
+        this.yDeviationSquaredSum += yDeviationSquared;
+      }
+
+      return sum;
+    },
+
+    setRSquared: function() {
+      var points = this.points.getArray();
+      var rSquare;
+      var ySum = 0;
+      var yDelta = 0;
+      var yDeviation;
+      var pointsLength = points.length;
+
+      for ( var i = 0; i < pointsLength; ++i ) {
+        ySum = ySum + points[ i ].y;
+      }
+
+      ySum = ySum / pointsLength;
+
+      for ( i = 0; i < pointsLength; ++i ) {
+        yDeviation = points[ i ].y - ySum;
+        yDelta = yDelta + yDeviation * yDeviation;
+      }
+
+      rSquare = 1 - this.yDeviationSquaredSum / yDelta;
+
+      if ( rSquare < 0 || isNaN( rSquare ) ) {
+        this.rSquare = 0;
+      }
+      else {
+        this.rSquare = rSquare;
+      }
+    },
+
+    setReducedChiSquare: function() {
+      var points = this.points.getArray();
+      var orderOfFit = this._orderOfFit.value;
+      var degOfFreedom = points.length - orderOfFit - 1;
+
+      if ( points.length > orderOfFit + 1 ) {
+        this.chiSquare = this.computeSum() / degOfFreedom;
+      }
+      else {
+        this.chiSquare = 0;
+      }
+    },
 
     swapValueFromStorage: function() {
       var storedValue = this._storage.a;
@@ -132,6 +198,8 @@ define( function( require ) {
           this.a = fit[ 3 ];
         }
 
+        this.setReducedChiSquare();
+        this.setRSquared();
         this.updateCurveTrigger = !this.updateCurveTrigger;
       }
     }
