@@ -118,7 +118,7 @@ define( function( require ) {
 
     var updateAParameter = function() {
       if ( isEquationPanelExpandedProperty.value && curve.isVisible ) {
-        aParameterNode.setText( Util.toFixed( curve.aProperty.value, 5 ) );
+        aParameterNode.setText( Util.toFixedNumber( curve.aProperty.value, 5 ).toString() );
       }
     };
     curve.aProperty.lazyLink( updateAParameter );
@@ -127,7 +127,7 @@ define( function( require ) {
 
     var updateBParameter = function() {
       if ( isEquationPanelExpandedProperty.value && curve.isVisible ) {
-        bParameterNode.setText( Util.toFixed( curve.bProperty.value, 4 ) );
+        bParameterNode.setText( Util.toFixedNumber( curve.bProperty.value, 4 ).toString() );
       }
     };
     curve.bProperty.lazyLink( updateBParameter );
@@ -136,7 +136,7 @@ define( function( require ) {
 
     var updateCParameter = function() {
       if ( isEquationPanelExpandedProperty.value && curve.isVisible ) {
-        cParameterNode.setText( Util.toFixed( curve.cProperty.value, 4 ) );
+        cParameterNode.setText( Util.toFixedNumber( curve.cProperty.value, 4 ).toString() );
       }
     };
     curve.cProperty.lazyLink( updateCParameter );
@@ -144,7 +144,7 @@ define( function( require ) {
     isEquationPanelExpandedProperty.link( updateCParameter );
 
     var updateDParameter = function() {
-      dParameterNode.setText( Util.toFixed( curve.dProperty.value, 1 ) );
+      dParameterNode.setText( Util.toFixedNumber( curve.dProperty.value, 1 ).toString() );
     };
     curve.dProperty.lazyLink( updateDParameter );
     curve.isVisibleProperty.lazyLink( updateDParameter );
