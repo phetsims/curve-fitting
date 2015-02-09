@@ -34,7 +34,7 @@ define( function( require ) {
     this.maxOrderOfFit = 3;
 
     // curve model
-    this.curve = new Curve( this.orderOfFitProperty, this.maxOrderOfFit );
+    this.curve = new Curve( this.orderOfFitProperty, this.fitTypeProperty, this.maxOrderOfFit );
 
     // graph area size
     this.graphArea = new Bounds2( -10, -10, 10, 10 );
