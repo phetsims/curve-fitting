@@ -70,7 +70,7 @@ define( function( require ) {
 
     // create slider box
     var slidersBox = new HBox( {
-      spacing: 4,
+      spacing: 5,
       children: [ aSliderBox, bSliderBox, cSliderBox, dSliderBox ]
     } );
 

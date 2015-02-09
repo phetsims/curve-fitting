@@ -41,7 +41,9 @@ define( function( require ) {
 
     for ( var i = 1; i < maxOrderFit + 1; i++ ) {
       boxNode = new HBox( { align: 'bottom' } );
-      boxNode.addChild( new Text( 'y = ', TEXT_OPTIONS ) );
+      var yNode = new Text( 'y = ', TEXT_OPTIONS );
+      boxNode.addChild( yNode );
+
 
       // first order of fit
       if ( i > 0 ) {
@@ -64,9 +66,8 @@ define( function( require ) {
         }
       }
 
-
       boxNode.addChild( new Text( 'd', PARAMETER_TEXT_OPTIONS ) );
-
+      boxNode.localBounds = boxNode.localBounds.withMinX( boxNode.localBounds.minX + yNode.width - 2 );
       equationTextArray.push( boxNode );
     }
 
