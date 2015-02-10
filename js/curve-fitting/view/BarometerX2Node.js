@@ -72,7 +72,7 @@ define( function( require ) {
       return HEIGHT * (MIN_VALUE + (value - MIN_VALUE) / (MAX_VALUE - MIN_VALUE));
     }
     else {
-      return HEIGHT * (MIN_VALUE + 1 + Math.log( value - MIN_VALUE )) / (MAX_VALUE - MIN_VALUE);
+      return Math.min( HEIGHT, HEIGHT * (MIN_VALUE + 1 + Math.log( value - MIN_VALUE )) / (MAX_VALUE - MIN_VALUE) );
     }
   };
 

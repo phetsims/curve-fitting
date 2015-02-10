@@ -18,7 +18,8 @@ define( function( require ) {
   var ScreenView = require( 'JOIST/ScreenView' );
 
   // constants
-  var PADDING = 10;
+  var PADDING_LEFT_RIGHT = 10;
+  var PADDING_TOP_BOTTOM = 15
   var SIM_BOUNDS = new Bounds2( 0, 0, 768, 504 );
 
   /**
@@ -30,20 +31,20 @@ define( function( require ) {
 
     // add deviations node
     var deviationsNode = new DeviationsNode( CurveFittingModel.isDeviationPanelExpandedProperty, CurveFittingModel.curve.chiSquareProperty, CurveFittingModel.curve.chiFillProperty, CurveFittingModel.curve.rSquareProperty );
-    deviationsNode.centerX = deviationsNode.width / 2 + PADDING;
-    deviationsNode.centerY = deviationsNode.height / 2 + PADDING;
+    deviationsNode.centerX = deviationsNode.width / 2 + PADDING_LEFT_RIGHT;
+    deviationsNode.centerY = deviationsNode.height / 2 + PADDING_TOP_BOTTOM;
     this.addChild( deviationsNode );
 
     // add control menu node
     var controlMenuNode = new ControlMenuNode( CurveFittingModel );
-    controlMenuNode.centerX = SIM_BOUNDS.width - PADDING - controlMenuNode.width / 2;
-    controlMenuNode.centerY = PADDING + controlMenuNode.height / 2;
+    controlMenuNode.centerX = SIM_BOUNDS.width - PADDING_LEFT_RIGHT - controlMenuNode.width / 2;
+    controlMenuNode.centerY = PADDING_TOP_BOTTOM + controlMenuNode.height / 2;
     this.addChild( controlMenuNode );
 
     // add bucket adn graph area node
     var bucketAndGraphAreaNode = new BucketAndGraphAreaNode( CurveFittingModel );
-    bucketAndGraphAreaNode.centerX = bucketAndGraphAreaNode.width / 2 + 25;
-    bucketAndGraphAreaNode.centerY = bucketAndGraphAreaNode.height / 2 + PADDING;
+    bucketAndGraphAreaNode.centerX = bucketAndGraphAreaNode.width / 2 + PADDING_LEFT_RIGHT + 26;
+    bucketAndGraphAreaNode.centerY = bucketAndGraphAreaNode.height / 2 + PADDING_TOP_BOTTOM;
     this.addChild( bucketAndGraphAreaNode );
 
     // add reset all button

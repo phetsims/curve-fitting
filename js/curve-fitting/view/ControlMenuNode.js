@@ -30,8 +30,8 @@ define( function( require ) {
   var ValuesString = require( 'string!CURVE_FITTING/values' );
 
   // constants
-  var CHECK_BOX_OPTIONS = { boxWidth: 20 };
-  var FONT = new PhetFont( 13 );
+  var CHECK_BOX_OPTIONS = { boxWidth: 16 };
+  var FONT = new PhetFont( 12 );
   var PANEL_OPTIONS = {
     cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
     fill: CurveFittingConstants.PANEL_BACKGROUND_COLOR,
@@ -40,7 +40,7 @@ define( function( require ) {
   };
   var RADIO_BUTTON_MENU_OPTIONS = {
     spacing: 5,
-    radius: 10
+    radius: 8
   };
 
   /**

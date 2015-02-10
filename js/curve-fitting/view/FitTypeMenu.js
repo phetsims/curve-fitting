@@ -27,10 +27,10 @@ define( function( require ) {
   var BestFitString = require( 'string!CURVE_FITTING/bestFit' );
 
   // constants
-  var FONT = new PhetFont( 13 );
+  var FONT = new PhetFont( 12 );
   var RADIO_BUTTON_MENU_OPTIONS = {
     spacing: 5,
-    radius: 10
+    radius: 8
   };
 
   /**
