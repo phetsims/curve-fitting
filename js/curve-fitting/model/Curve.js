@@ -32,6 +32,7 @@ define( function( require ) {
       c: 0, // parameter with x^1
       d: 0, // parameter with constant
       chiSquare: 0, // x^2 deviation value
+      chiFill: '', // color of x^2 deviation barometer
       rSquare: 0 // r^2 deviation value
     } );
 
@@ -92,8 +93,86 @@ define( function( require ) {
     } );
   }
 
+  var lowerLimitArray = [ 0.004000, 0.052000, 0.118000, 0.178000, 0.230000, 0.273000, 0.310000, 0.342000, 0.369000, 0.394000, 0.545000, 0.695000, 0.779000, 0.927000 ];
+  var upperLimitArr = [ 3.800000, 3, 2.600000, 2.370000, 2.210000, 2.100000, 2.010000, 1.940000, 1.880000, 1.830000, 1.570000, 1.350000, 1.240000, 1.070000 ];
+
+  var getBarometerFillFromChiValue = function( chiValue, numberOfPoints ) {
+    var red;
+    var green;
+    var blue;
+    var lowerBound;
+    var upperBound;
+
+    if ( numberOfPoints >= 1 && numberOfPoints < 11 ) {
+      lowerBound = lowerLimitArray[ numberOfPoints - 1 ];
+      upperBound = upperLimitArr[ numberOfPoints - 1 ];
+    }
+    else if ( numberOfPoints >= 11 || numberOfPoints < 20 ) {
+      lowerBound = (lowerLimitArray[ 9 ] + lowerLimitArray[ 10 ]) / 2;
+      upperBound = (upperLimitArr[ 9 ] + upperLimitArr[ 10 ]) / 2;
+    }
+    else if ( numberOfPoints >= 20 || numberOfPoints < 50 ) {
+      lowerBound = (lowerLimitArray[ 10 ] + lowerLimitArray[ 11 ]) / 2;
+      upperBound = (upperLimitArr[ 10 ] + upperLimitArr[ 11 ]) / 2;
+    }
+    else if ( numberOfPoints >= 50 ) {
+      lowerBound = lowerLimitArray[ 12 ];
+      upperBound = upperLimitArr[ 12 ];
+    }
+
+    var step1 = (1 + upperBound) / 2;
+    var step2 = (lowerBound + 1) / 2;
+    var step3 = (upperBound + step1) / 2;
+    var step4 = (lowerBound + step2) / 2;
+
+    if ( chiValue < lowerBound ) {
+      red = 0;
+      green = 0;
+      blue = 255;
+    }
+    else if ( chiValue >= lowerBound && chiValue < step4 ) {
+      red = 0;
+      green = 255 * (chiValue - lowerBound) / (step4 - lowerBound);
+      blue = 255;
+    }
+    else if ( chiValue >= step4 && chiValue < step2 ) {
+      blue = 255 * (step2 - chiValue) / (step2 - step4);
+      green = 255;
+      red = 0;
+    }
+    else if ( chiValue >= step2 && chiValue <= step1 ) {
+      red = 0;
+      green = 255;
+      blue = 0;
+    }
+    else if ( chiValue > step1 && chiValue < step3 ) {
+      red = 255 * (chiValue - step1) / (step3 - step1);
+      green = 255;
+      blue = 0;
+    }
+    else if ( chiValue >= step3 && chiValue < upperBound ) {
+      red = 255;
+      green = 255 * (upperBound - chiValue) / (upperBound - step3);
+      blue = 0;
+    }
+    else if ( chiValue >= upperBound ) {
+      red = 255;
+      green = 0;
+      blue = 0;
+    }
+
+    return 'rgb(' + Math.round( red ) + ', ' + Math.round( green ) + ', ' + Math.round( blue ) + ')';
+  };
+
   return inherit( PropertySet, Curve, {
 
+    // add point to curve
+    addPoint: function( point ) {
+      point.positionProperty.lazyLink( this._updateFitBinded );
+      point.deltaProperty.link( this._updateFitBinded );
+    },
+
+    // return deviation sum for all points
     computeSum: function() {
       var points = this.points.getArray();
       var sum = 0;
@@ -115,6 +194,20 @@ define( function( require ) {
       return sum;
     },
 
+    // remove point from curve
+    removePoint: function( point ) {
+      point.positionProperty.unlink( this._updateFitBinded );
+      point.deltaProperty.unlink( this._updateFitBinded );
+      this.updateFit();
+    },
+
+    reset: function() {
+      PropertySet.prototype.reset.call( this );
+
+      this.points.reset();
+    },
+
+    // set r^2-deviation for current point
     setRSquared: function() {
       var points = this.points.getArray();
       var rSquare;
@@ -144,6 +237,7 @@ define( function( require ) {
       }
     },
 
+    // set x^2-deviation for current point
     setReducedChiSquare: function() {
       var points = this.points.getArray();
       var orderOfFit = this._orderOfFit.value;
@@ -155,8 +249,11 @@ define( function( require ) {
       else {
         this.chiSquare = 0;
       }
+
+      this.chiFill = getBarometerFillFromChiValue( this.chiSquare, points.length );
     },
 
+    // swap value from storage. Necessary when switch to and back from adjustable mode
     swapValueFromStorage: function() {
       var storedValue = this._storage.a;
       this._storage.a = this.a;
@@ -175,17 +272,7 @@ define( function( require ) {
       this.d = storedValue;
     },
 
-    addPoint: function( point ) {
-      point.positionProperty.lazyLink( this._updateFitBinded );
-      point.deltaProperty.link( this._updateFitBinded );
-    },
-
-    removePoint: function( point ) {
-      point.positionProperty.unlink( this._updateFitBinded );
-      point.deltaProperty.unlink( this._updateFitBinded );
-      this.updateFit();
-    },
-
+    // update fir for current points
     updateFit: function() {
       // update only when curve visible
       if ( this.isVisible ) {

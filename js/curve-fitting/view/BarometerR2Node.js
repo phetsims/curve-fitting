@@ -35,8 +35,8 @@ define( function( require ) {
    * @constructor
    */
   function BarometerR2Node( rSquareProperty, options ) {
-    var rectValue = new Rectangle( -2 * TICK_WIDTH / 3, 0, 2 * TICK_WIDTH / 3, 0, { fill: CurveFittingConstants.BLUE_COLOR } );
-    rectValue.rotation = Math.PI;
+    var valueRectNode = new Rectangle( -2 * TICK_WIDTH / 3 - 1, 0, 2 * TICK_WIDTH / 3, 0, { fill: CurveFittingConstants.BLUE_COLOR } );
+    valueRectNode.rotation = Math.PI;
 
     Node.call( this, _.extend( {
       children: [
@@ -44,7 +44,7 @@ define( function( require ) {
         new Line( 0, 0, 0, -HEIGHT, LINE_OPTIONS ),
 
         // barometer value
-        rectValue
+        valueRectNode
       ]
     }, options ) );
 
@@ -52,7 +52,7 @@ define( function( require ) {
 
     // add observer
     rSquareProperty.link( function( rSquare ) {
-      rectValue.setRectHeight( (RANGE.min + rSquare / RANGE.max) * HEIGHT );
+      valueRectNode.setRectHeight( (RANGE.min + rSquare / RANGE.max) * HEIGHT );
     } );
   }
 

@@ -47,11 +47,12 @@ define( function( require ) {
   /**
    * @param {Property} isDeviationPanelExpandedProperty - Property to control deviation panel expansion.
    * @param {Property} chiSquareProperty - Property that represents x-deviation.
+   * @param {Property} chiFillProperty - Property that represent color of x^2 barometer.
    * @param {Property} rSquareProperty - Property that represents r-deviation.
    * @param {Object} options for graph node
    * @constructor
    */
-  function DeviationsNode( isDeviationPanelExpandedProperty, chiSquareProperty, rSquareProperty, options ) {
+  function DeviationsNode( isDeviationPanelExpandedProperty, chiSquareProperty, chiFillProperty, rSquareProperty, options ) {
 
     // create expand button
     var expandCollapseButton = new ExpandCollapseButton( isDeviationPanelExpandedProperty, {
@@ -61,7 +62,7 @@ define( function( require ) {
     expandCollapseButton.mouseArea = expandCollapseButton.localBounds.dilatedXY( BUTTON_LENGTH, BUTTON_LENGTH );
 
     // X^2 barometer
-    var BarometerX2 = new BarometerX2Node( chiSquareProperty );
+    var BarometerX2 = new BarometerX2Node( chiSquareProperty, chiFillProperty );
 
     // r^2 barometer
     var BarometerR2 = new BarometerR2Node( rSquareProperty );

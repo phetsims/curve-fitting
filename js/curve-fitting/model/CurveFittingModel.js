@@ -42,13 +42,16 @@ define( function( require ) {
 
   return inherit( PropertySet, CurveFittingModel, {
 
-    getPoint: function( position ) {
-      return new Point( position );
+    reset: function() {
+      PropertySet.prototype.reset.call( this );
+
+      // reset curve
+      this.curve.reset();
     },
 
-    // Called by the animation loop. Optional, so if your model has no animation, you can omit this.
-    step: function( dt ) {
-      // Handle model animation here.
+    // return new point model
+    getPoint: function( position ) {
+      return new Point( position );
     }
   } );
 } );
