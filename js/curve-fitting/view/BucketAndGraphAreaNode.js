@@ -40,13 +40,11 @@ define( function( require ) {
 
     // add drag handler
     var point = null;
-    var pointView = null;
     bucketNode.pointsNode.addInputListener( new SimpleDragHandler( {
       start: function( e ) {
         point = CurveFittingModel.getPoint( e.pointer.point );
         graphAreaNode.setValues( point );
-        pointView = new PointNode( point, CurveFittingModel.curve.points, CurveFittingModel.isValuesVisibleProperty, CurveFittingModel.isResidualsVisibleProperty, self, graphAreaNode );
-        self.addChild( pointView );
+        CurveFittingModel.curve.points.add( point );
       },
       drag: function( e ) {
         if ( point ) {
@@ -55,16 +53,24 @@ define( function( require ) {
         }
       },
       end: function() {
-        if ( graphAreaNode.checkDropPointAndSetValues( point ) ) {
-          CurveFittingModel.curve.points.add( point );
-        }
-        else {
+        if ( !graphAreaNode.checkDropPointAndSetValues( point ) ) {
           CurveFittingModel.curve.points.remove( point );
-          self.removeChild( pointView );
         }
+
         point = null;
       }
     } ) );
+
+    var pointStorage = [];
+    CurveFittingModel.curve.points.addItemAddedListener( function( pointModel ) {
+      var pointView = new PointNode( pointModel, CurveFittingModel.curve.points, CurveFittingModel.isValuesVisibleProperty, CurveFittingModel.isResidualsVisibleProperty, self, graphAreaNode );
+      pointStorage.push( { model: pointModel, view: pointView } );
+      self.addChild( pointView );
+    } );
+
+    CurveFittingModel.curve.points.addItemRemovedListener( function( pointModel ) {
+      self.removeChild( _.find( pointStorage, { model: pointModel } ).view );
+    } );
   }
 
   return inherit( HBox, BucketAndGraphAreaNode );

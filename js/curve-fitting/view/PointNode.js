@@ -124,8 +124,8 @@ define( function( require ) {
       end: function() {
         if ( !graphAreaNode.checkDropPointAndSetValues( pointModel ) ) {
           curveModelPoints.remove( pointModel );
-          self.getParent().removeChild( self );
         }
+
         isUserControlledPoint = false;
       }
     } ) );
