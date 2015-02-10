@@ -44,13 +44,6 @@ define( function( require ) {
   function FitTypeMenu( curve, fitTypeProperty, orderOfFitProperty, maxOrderOfFit, options ) {
     var content = new VBox();
 
-    Panel.call( this, content, _.extend( {
-      cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
-      fill: CurveFittingConstants.PANEL_BACKGROUND_COLOR,
-      xMargin: CurveFittingConstants.PANEL_MARGIN,
-      yMargin: CurveFittingConstants.PANEL_MARGIN
-    }, options ) );
-
     // create radio buttons
     var fitTypeRadioButtonGroup = new VerticalAquaRadioButtonGroup( [
       { property: fitTypeProperty, node: new Text( BestFitString, { font: FONT } ), value: FitType.BEST },
@@ -96,6 +89,13 @@ define( function( require ) {
         content.addChild( slidersBox );
       }
     } );
+
+    Panel.call( this, content, _.extend( {
+      cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
+      fill: CurveFittingConstants.PANEL_BACKGROUND_COLOR,
+      xMargin: CurveFittingConstants.PANEL_MARGIN,
+      yMargin: CurveFittingConstants.PANEL_MARGIN
+    }, options ) );
   }
 
   return inherit( Panel, FitTypeMenu );

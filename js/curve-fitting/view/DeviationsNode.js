@@ -113,8 +113,6 @@ define( function( require ) {
 
     var content = new VBox( _.extend( { align: 'left' }, options ) );
 
-    Panel.call( this, content, PANEL_OPTIONS );
-
     isDeviationPanelExpandedProperty.link( function( isDeviationPanelExpanded ) {
       if ( isDeviationPanelExpanded ) {
         deviationArrowsNode.children = [ expandCollapseButton, BarometerX2, BarometerR2 ];
@@ -135,6 +133,8 @@ define( function( require ) {
       rSquareTextNode.setText( Util.toFixedNumber( rSquare, 2 ).toString() );
       rSquareTextNode.centerX = rSquarePanelNode.width / 2;
     } );
+
+    Panel.call( this, content, PANEL_OPTIONS );
   }
 
   return inherit( Panel, DeviationsNode );
