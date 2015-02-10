@@ -19,7 +19,7 @@ define( function( require ) {
 
   // constants
   var PADDING_LEFT_RIGHT = 10;
-  var PADDING_TOP_BOTTOM = 15
+  var PADDING_TOP_BOTTOM = 15;
   var SIM_BOUNDS = new Bounds2( 0, 0, 768, 504 );
 
   /**
