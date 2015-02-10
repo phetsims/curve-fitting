@@ -36,8 +36,8 @@ define( function( require ) {
   var TICK_WIDTH = 15;
 
   /**
-   * @param {Property} chiSquareProperty - Property that represents x-deviation.
-   * @param {Property} chiFillProperty - Property that represents color of barometer.
+   * @param {Property.<number>} chiSquareProperty - Property that represents x-deviation.
+   * @param {Property.<string>} chiFillProperty - Property that represents color of barometer.
    * @param {Object} options for graph node.
    * @constructor
    */

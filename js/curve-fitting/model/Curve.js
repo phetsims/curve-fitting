@@ -16,8 +16,8 @@ define( function( require ) {
   var PropertySet = require( 'AXON/PropertySet' );
 
   /**
-   * @param {Property} orderOfFitProperty - Property to control curve type.
-   * @param {Property} fitTypeProperty - Property to control fit type.
+   * @param {Property.<number>} orderOfFitProperty - Property to control curve type.
+   * @param {Property.<string>} fitTypeProperty - Property to control fit type.
    * @param {number} maxFitOrder - Max order of fit.
    * @constructor
    */

@@ -33,7 +33,7 @@ define( function( require ) {
   var TICK_WIDTH = 2;
 
   /**
-   * @param {Property} property parameter to track.
+   * @param {Property.<number>} property parameter to track.
    * @param {Range} range - Possible range for property.
    * @param {string} label - Label for slider.
    * @param {Object} options for slider node.

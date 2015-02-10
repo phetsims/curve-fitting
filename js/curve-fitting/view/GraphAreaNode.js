@@ -33,9 +33,9 @@ define( function( require ) {
 
   /**
    * @param {Curve} curve model.
-   * @param {Property} orderOfFitProperty - Property with current order of fit.
-   * @param {Property} isEquationPanelExpandedProperty - Property to control equation panel expansion.
-   * @param {Property} isResidualsVisibleProperty - Property to track residuals visibility.
+   * @param {Property.<number>} orderOfFitProperty - Property with current order of fit.
+   * @param {Property.<boolean>} isEquationPanelExpandedProperty - Property to control equation panel expansion.
+   * @param {Property.<boolean>} isResidualsVisibleProperty - Property to track residuals visibility.
    * @param {Bounds2} plotBounds of graph area.
    * @param {Object} options for graph node.
    * @constructor

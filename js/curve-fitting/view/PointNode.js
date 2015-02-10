@@ -43,8 +43,8 @@ define( function( require ) {
   /**
    * @param {PropertySet} pointModel - Model for single point.
    * @param {ObservableArray} curveModelPoints - Array of points for plotting curve.
-   * @param {Property} isValuesVisibleProperty - Property to control visibility of values.
-   * @param {Property} isResidualsVisibleProperty - Property to track residuals visibility.
+   * @param {Property.<boolean>} isValuesVisibleProperty - Property to control visibility of values.
+   * @param {Property.<boolean>} isResidualsVisibleProperty - Property to track residuals visibility.
    * @param {Node} parentNode - Parent node of point
    * @param {Node} graphAreaNode - Node of graph area.
    * @param {Object} options for graph node.

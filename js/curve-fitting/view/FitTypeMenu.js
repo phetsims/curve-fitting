@@ -35,8 +35,8 @@ define( function( require ) {
 
   /**
    * @param {Curve} curve model.
-   * @param {Property} fitTypeProperty - Property to control fit type of curve.
-   * @param {Property} orderOfFitProperty - Property to control type of curve.
+   * @param {Property.<string>} fitTypeProperty - Property to control fit type of curve.
+   * @param {Property.<number>} orderOfFitProperty - Property to control type of curve.
    * @param {number} maxOrderOfFit - Max order of fit.
    * @param {Object} options for graph node.
    * @constructor

@@ -45,10 +45,10 @@ define( function( require ) {
   };
 
   /**
-   * @param {Property} isDeviationPanelExpandedProperty - Property to control deviation panel expansion.
-   * @param {Property} chiSquareProperty - Property that represents x-deviation.
-   * @param {Property} chiFillProperty - Property that represent color of x^2 barometer.
-   * @param {Property} rSquareProperty - Property that represents r-deviation.
+   * @param {Property.<boolean>} isDeviationPanelExpandedProperty - Property to control deviation panel expansion.
+   * @param {Property.<number>} chiSquareProperty - Property that represents x-deviation.
+   * @param {Property.<string>} chiFillProperty - Property that represent color of x^2 barometer.
+   * @param {Property.<number>} rSquareProperty - Property that represents r-deviation.
    * @param {Object} options for graph node
    * @constructor
    */

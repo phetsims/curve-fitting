@@ -29,7 +29,7 @@ define( function( require ) {
   };
 
   /**
-   * @param {Property} orderFitProperty parameter to track.
+   * @param {Property.<number>} orderFitProperty parameter to track.
    * @param {number} maxOrderFit - Possible range for property.
    * @param {Object} options for slider node.
    * @constructor

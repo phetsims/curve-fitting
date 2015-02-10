@@ -39,9 +39,9 @@ define( function( require ) {
   var TEXT_OPTIONS = { font: new PhetFont( 12 ) };
 
   /**
-   * @param {Property} isEquationPanelExpandedProperty - Property to control equation panel expansion.
+   * @param {Property.<boolean>} isEquationPanelExpandedProperty - Property to control equation panel expansion.
    * @param {Curve} curve model.
-   * @param {Property} orderFitProperty parameter to track.
+   * @param {Property.<number>} orderFitProperty parameter to track.
    * @param {Object} options for slider node.
    * @constructor
    */

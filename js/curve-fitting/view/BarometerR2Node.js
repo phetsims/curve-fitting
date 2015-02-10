@@ -30,7 +30,7 @@ define( function( require ) {
   var TICK_WIDTH = 15;
 
   /**
-   * @param {Property} rSquareProperty - Property that represents r-deviation.
+   * @param {Property.<number>} rSquareProperty - Property that represents r-deviation.
    * @param {Object} options for graph node.
    * @constructor
    */
