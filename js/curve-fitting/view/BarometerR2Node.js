@@ -10,11 +10,13 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
   var Node = require( 'SCENERY/nodes/Node' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Range = require( 'DOT/Range' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
 
   // constants
@@ -25,22 +27,33 @@ define( function( require ) {
     stroke: 'black'
   };
   var TICK_FONT = new PhetFont( 12 );
-  var TICK_WIDTH = 12;
+  var TICK_WIDTH = 15;
 
   /**
-   * @param {Property} deviationRProperty - Property that represents r-deviation.
+   * @param {Property} rSquareProperty - Property that represents r-deviation.
    * @param {Object} options for graph node.
    * @constructor
    */
-  function BarometerR2Node( deviationRProperty, options ) {
+  function BarometerR2Node( rSquareProperty, options ) {
+    var rectValue = new Rectangle( -2 * TICK_WIDTH / 3, 0, 2 * TICK_WIDTH / 3, 0, { fill: CurveFittingConstants.BLUE_COLOR } );
+    rectValue.rotation = Math.PI;
+
     Node.call( this, _.extend( {
       children: [
         // axis
-        new Line( 0, 0, 0, -HEIGHT, LINE_OPTIONS )
+        new Line( 0, 0, 0, -HEIGHT, LINE_OPTIONS ),
+
+        // barometer value
+        rectValue
       ]
     }, options ) );
 
     this.addTicks( [ 0, 0.25, 0.5, 0.75, 1 ] );
+
+    // add observer
+    rSquareProperty.link( function( rSquare ) {
+      rectValue.setRectHeight( (RANGE.min + rSquare / RANGE.max) * HEIGHT );
+    } );
   }
 
   return inherit( Node, BarometerR2Node, {

@@ -11,41 +11,33 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
   var BarometerR2Node = require( 'CURVE_FITTING/curve-fitting/view/BarometerR2Node' );
   var BarometerX2Node = require( 'CURVE_FITTING/curve-fitting/view/BarometerX2Node' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var Dialog = require( 'JOIST/Dialog' );
+  //var Dialog = require( 'JOIST/Dialog' );
   var ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
   var inherit = require( 'PHET_CORE/inherit' );
   var HBox = require( 'SCENERY/nodes/HBox' );
-  var Line = require( 'SCENERY/nodes/Line' );
-  var Node = require( 'SCENERY/nodes/Node' );
   var Panel = require( 'SUN/Panel' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var SubSupText = require( 'SCENERY_PHET/SubSupText' );
   var Text = require( 'SCENERY/nodes/Text' );
   var TextPushButton = require( 'SUN/buttons/TextPushButton' );
   var VBox = require( 'SCENERY/nodes/VBox' );
+  var Util = require( 'DOT/Util' );
 
   // strings
   var deviationsString = require( 'string!CURVE_FITTING/deviations' );
 
   // constants
-  var BAROMETER_HEIGHT = 200;
-  var BAROMETER_X2_OPTIONS = {
-    headHeight: 12,
-    headWidth: 8,
-    tailWidth: 1
-  };
   var BUTTON_LENGTH = 16;
-  var TICK_FONT = new PhetFont( 11 );
-  var TEXT_FONT = new PhetFont( 13 );
-  var TICK_WIDTH = 15;
-  var LINE_OPTIONS = {
-    lineWidth: 2,
-    stroke: 'black'
+  var TEXT_FONT = new PhetFont( 12 );
+  var VALUE_PANEL_OPTIONS = {
+    fill: 'white',
+    cornerRadius: 4,
+    xMargin: 3,
+    yMargin: 3,
+    resize: false
   };
   var PANEL_OPTIONS = {
     cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
@@ -54,10 +46,12 @@ define( function( require ) {
 
   /**
    * @param {Property} isDeviationPanelExpandedProperty - Property to control deviation panel expansion.
+   * @param {Property} chiSquareProperty - Property that represents x-deviation.
+   * @param {Property} rSquareProperty - Property that represents r-deviation.
    * @param {Object} options for graph node
    * @constructor
    */
-  function DeviationsNode( isDeviationPanelExpandedProperty, options ) {
+  function DeviationsNode( isDeviationPanelExpandedProperty, chiSquareProperty, rSquareProperty, options ) {
 
     // create expand button
     var expandCollapseButton = new ExpandCollapseButton( isDeviationPanelExpandedProperty, {
@@ -67,11 +61,12 @@ define( function( require ) {
     expandCollapseButton.mouseArea = expandCollapseButton.localBounds.dilatedXY( BUTTON_LENGTH, BUTTON_LENGTH );
 
     // X^2 barometer
-    var BarometerX2 = new BarometerX2Node();
+    var BarometerX2 = new BarometerX2Node( chiSquareProperty );
 
     // r^2 barometer
-    var BarometerR2 = new BarometerR2Node();
+    var BarometerR2 = new BarometerR2Node( rSquareProperty );
 
+    // TODO: help dialog window
     /* var dialogHelpNode = new Dialog(
      new Rectangle( 0, 0, 50, 20, 4, 4, { fill: 'white', stroke: 'black', lineWidth: 1 } ),
      {
@@ -94,19 +89,28 @@ define( function( require ) {
       spacing: 5,
       children: [ expandCollapseButton, BarometerX2, BarometerR2 ]
     } );
+
+    // create chiSquare text and panel
+    var chiSquareTextNode = new Text( '00.00', { font: TEXT_FONT } );
+    var chiSquarePanelNode = new Panel( chiSquareTextNode, VALUE_PANEL_OPTIONS );
+
+    // create rSquare text and panel
+    var rSquareTextNode = new Text( '0.00', { font: TEXT_FONT } );
+    var rSquarePanelNode = new Panel( rSquareTextNode, VALUE_PANEL_OPTIONS );
+
     var deviationTextNode = new HBox( {
       spacing: 5,
+      resize: false,
       children: [
         new SubSupText( 'X<sup>2</sup>=', { font: TEXT_FONT } ),
-        new Rectangle( 0, 0, 25, 18, 4, 4, { fill: 'white', stroke: 'black', lineWidth: 1 } ),
+        chiSquarePanelNode,
+
         new SubSupText( 'r<sup>2</sup>=', { font: TEXT_FONT } ),
-        new Rectangle( 0, 0, 25, 18, 4, 4, { fill: 'white', stroke: 'black', lineWidth: 1 } )
+        rSquarePanelNode
       ]
     } );
 
-    var content = new VBox( _.extend( {
-      align: 'left'
-    }, options ) );
+    var content = new VBox( _.extend( { align: 'left' }, options ) );
 
     Panel.call( this, content, PANEL_OPTIONS );
 
@@ -119,6 +123,16 @@ define( function( require ) {
         deviationArrowsNode.children = [ expandCollapseButton, titleNode ];
         content.children = [ deviationArrowsNode ];
       }
+    } );
+
+    chiSquareProperty.link( function( chiSquare ) {
+      chiSquareTextNode.setText( Util.toFixedNumber( chiSquare, 2 ).toString() );
+      chiSquareTextNode.centerX = chiSquarePanelNode.width / 2;
+    } );
+
+    rSquareProperty.link( function( rSquare ) {
+      rSquareTextNode.setText( Util.toFixedNumber( rSquare, 2 ).toString() );
+      rSquareTextNode.centerX = rSquarePanelNode.width / 2;
     } );
   }
 

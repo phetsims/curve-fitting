@@ -29,7 +29,7 @@ define( function( require ) {
     ScreenView.call( this, { renderer: 'svg', layoutBounds: new Bounds2( 0, 0, 768, 504 ) } );
 
     // add deviations node
-    var deviationsNode = new DeviationsNode( CurveFittingModel.isDeviationPanelExpandedProperty );
+    var deviationsNode = new DeviationsNode( CurveFittingModel.isDeviationPanelExpandedProperty, CurveFittingModel.curve.chiSquareProperty, CurveFittingModel.curve.rSquareProperty );
     deviationsNode.centerX = deviationsNode.width / 2 + PADDING;
     deviationsNode.centerY = deviationsNode.height / 2 + PADDING;
     this.addChild( deviationsNode );

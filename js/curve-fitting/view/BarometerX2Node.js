@@ -30,11 +30,11 @@ define( function( require ) {
   var TICK_WIDTH = 12;
 
   /**
-   * @param {Property} deviationXProperty - Property that represents r-deviation.
+   * @param {Property} chiSquareProperty - Property that represents x-deviation.
    * @param {Object} options for graph node.
    * @constructor
    */
-  function BarometerR2Node( deviationXProperty, options ) {
+  function BarometerX2Node( chiSquareProperty, options ) {
     Node.call( this, _.extend( {
       children: [
         new ArrowNode( 0, 0, 0, -HEIGHT - HEAD_HEIGHT * 1.5, {
@@ -48,7 +48,7 @@ define( function( require ) {
     this.addTicks( [ 0, 0.5, 1, 2, 3, 10, 30, 100 ] );
   }
 
-  return inherit( Node, BarometerR2Node, {
+  return inherit( Node, BarometerX2Node, {
     // add single tick
     addTick: function( value ) {
       var y = HEIGHT * (value - RANGE.min) / (RANGE.max - RANGE.min);
