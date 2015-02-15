@@ -17,6 +17,7 @@ define( function( require ) {
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Text = require( 'SCENERY/nodes/Text' );
   var VBox = require( 'SCENERY/nodes/VBox' );
+  var VStrut = require( 'SUN/VStrut' );
 
   // constants
   var FONT = new PhetFont( {
@@ -50,8 +51,15 @@ define( function( require ) {
     sliderNode.addTick( 0, '', -TICK_LENGTH - 2 * SLIDER_OPTIONS.trackSize.height, TICK_COLOR, TICK_WIDTH );
 
     VBox.call( this, _.extend( {
+      resize: false,
       children: [
+        // necessary to prevent expanding box by thumb
+        new VStrut( SLIDER_OPTIONS.thumbSize.width / 2 ),
+
         sliderNode,
+
+        // necessary to prevent expanding box by thumb
+        new VStrut( SLIDER_OPTIONS.thumbSize.width / 2 ),
         new Text( label, { font: FONT, fill: CurveFittingConstants.BLUE_COLOR } )
       ]
     }, options ) );
