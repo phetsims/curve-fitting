@@ -116,6 +116,8 @@ define( function( require ) {
       }
     } );
 
+    curve.isVisibleProperty.linkAttribute( this, 'visible' );
+
     var updateAParameter = function() {
       if ( isEquationPanelExpandedProperty.value && curve.isVisible ) {
         aParameterNode.setText( Util.toFixedNumber( curve.aProperty.value, 5 ).toString() );

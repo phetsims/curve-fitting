@@ -11,6 +11,7 @@ define( function( require ) {
 
   // modules
   var BucketNode = require( 'CURVE_FITTING/curve-fitting/view/BucketNode' );
+  var EquationGraphPanelNode = require( 'CURVE_FITTING/curve-fitting/view/EquationGraphPanelNode' );
   var GraphAreaNode = require( 'CURVE_FITTING/curve-fitting/view/GraphAreaNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var HBox = require( 'SCENERY/nodes/HBox' );
@@ -29,7 +30,10 @@ define( function( require ) {
     var bucketNode = new BucketNode();
 
     // create graph area node
-    var graphAreaNode = new GraphAreaNode( CurveFittingModel.curve, CurveFittingModel.orderOfFitProperty, CurveFittingModel.isEquationPanelExpandedProperty, CurveFittingModel.isResidualsVisibleProperty, CurveFittingModel.graphArea );
+    var graphAreaNode = new GraphAreaNode( CurveFittingModel.curve, CurveFittingModel.orderOfFitProperty, CurveFittingModel.isResidualsVisibleProperty, CurveFittingModel.graphArea );
+
+    // add equation node
+    var equationGraphPanelNode = new EquationGraphPanelNode( CurveFittingModel.isEquationPanelExpandedProperty, CurveFittingModel.curve, CurveFittingModel.orderOfFitProperty, { centerY: 20 } );
 
     HBox.call( this, _.extend( {
       spacing: 19,
@@ -37,6 +41,8 @@ define( function( require ) {
       resize: false,
       align: 'bottom'
     }, options ) );
+    this.addChild( equationGraphPanelNode );
+    equationGraphPanelNode.centerX = graphAreaNode.bounds.minX + equationGraphPanelNode.width / 2 + 10;
 
     // add drag handler
     var point = null;
@@ -65,7 +71,7 @@ define( function( require ) {
     CurveFittingModel.curve.points.addItemAddedListener( function( pointModel ) {
       var pointView = new PointNode( pointModel, CurveFittingModel.curve.points, CurveFittingModel.isValuesVisibleProperty, CurveFittingModel.isResidualsVisibleProperty, self, graphAreaNode );
       pointStorage.push( { model: pointModel, view: pointView } );
-      self.addChild( pointView );
+      self.insertChild( 2, pointView );
     } );
 
     CurveFittingModel.curve.points.addItemRemovedListener( function( pointModel ) {
