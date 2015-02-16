@@ -65,7 +65,7 @@ define( function( require ) {
       this.addChild( label );
 
       // add tick
-      this.addChild( new Line( 0, -y, CurveFittingConstants.BAROMETER_TICK_WIDTH, -y, LINE_OPTIONS ) );
+      this.addChild( new Line( -0.5, -y, CurveFittingConstants.BAROMETER_TICK_WIDTH, -y, LINE_OPTIONS ) );
     },
 
     // add array of tick

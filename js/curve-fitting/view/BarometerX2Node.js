@@ -105,7 +105,7 @@ define( function( require ) {
       else {
         tickWidth = CurveFittingConstants.BAROMETER_TICK_WIDTH / 2;
       }
-      this._content.addChild( new Line( 0, -y, tickWidth, -y, LINE_OPTIONS ) );
+      this._content.addChild( new Line( -0.5, -y, tickWidth, -y, LINE_OPTIONS ) );
     },
 
     // add array of tick
