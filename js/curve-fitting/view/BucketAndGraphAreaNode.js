@@ -36,7 +36,7 @@ define( function( require ) {
     var equationGraphPanelNode = new EquationGraphPanelNode( CurveFittingModel.isEquationPanelExpandedProperty, CurveFittingModel.curve, CurveFittingModel.orderOfFitProperty, { centerY: 20 } );
 
     HBox.call( this, _.extend( {
-      spacing: 19,
+      spacing: 30,
       children: [ bucketNode, graphAreaNode ],
       resize: false,
       align: 'bottom'

@@ -10,13 +10,17 @@ define( function() {
   'use strict';
 
   return {
+    // barometer
+    BAROMETER_HEIGHT: 270,
+    BAROMETER_TICK_WIDTH: 15,
+
     // colors
     BLUE_COLOR: 'rgb( 19, 52, 248 )',
     GRAY_COLOR: 'rgb( 107, 107, 107 )',
     LIGHT_GRAY_COLOR: 'rgb( 201, 201, 202 )',
 
     // graph
-    PIXELS_IN_TICK: 23.5,
+    PIXELS_IN_TICK: 22,
 
     // point
     POINT_FILL: 'rgb( 252, 151, 64 )',
@@ -28,6 +32,6 @@ define( function() {
     PANEL_BACKGROUND_COLOR: 'rgb( 254, 235, 214 )',
     PANEL_CORNER_RADIUS: 5,
     PANEL_MARGIN: 10,
-    PANEL_WIDTH: 118
+    PANEL_WIDTH: 130
   };
 } );

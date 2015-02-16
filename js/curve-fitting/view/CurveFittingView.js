@@ -19,7 +19,7 @@ define( function( require ) {
 
   // constants
   var PADDING_LEFT_RIGHT = 10;
-  var PADDING_TOP_BOTTOM = 15;
+  var PADDING_TOP_BOTTOM = 30;
   var SIM_BOUNDS = new Bounds2( 0, 0, 768, 504 );
 
   /**
@@ -43,7 +43,7 @@ define( function( require ) {
 
     // add bucket adn graph area node
     var bucketAndGraphAreaNode = new BucketAndGraphAreaNode( CurveFittingModel );
-    bucketAndGraphAreaNode.centerX = bucketAndGraphAreaNode.width / 2 + PADDING_LEFT_RIGHT + 26;
+    bucketAndGraphAreaNode.centerX = bucketAndGraphAreaNode.width / 2 + PADDING_LEFT_RIGHT + 25;
     bucketAndGraphAreaNode.centerY = bucketAndGraphAreaNode.height / 2 + PADDING_TOP_BOTTOM;
     this.addChild( bucketAndGraphAreaNode );
 
@@ -51,9 +51,9 @@ define( function( require ) {
     var resetAllButton = new ResetAllButton( {
       listener: CurveFittingModel.reset.bind( CurveFittingModel )
     } );
-    resetAllButton.centerX = SIM_BOUNDS.width - resetAllButton.width / 2;
-    resetAllButton.centerY = SIM_BOUNDS.height - resetAllButton.height / 2;
     resetAllButton.scale( 0.75 );
+    resetAllButton.centerX = SIM_BOUNDS.width - resetAllButton.width / 2 - PADDING_LEFT_RIGHT;
+    resetAllButton.centerY = SIM_BOUNDS.height - resetAllButton.height / 2 - PADDING_TOP_BOTTOM;
     this.addChild( resetAllButton );
   }
 

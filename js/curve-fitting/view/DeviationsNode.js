@@ -62,10 +62,10 @@ define( function( require ) {
     expandCollapseButton.mouseArea = expandCollapseButton.localBounds.dilatedXY( BUTTON_LENGTH, BUTTON_LENGTH );
 
     // X^2 barometer
-    var BarometerX2 = new BarometerX2Node( chiSquareProperty, chiFillProperty );
+    var barometerX2 = new BarometerX2Node( chiSquareProperty, chiFillProperty );
 
     // r^2 barometer
-    var BarometerR2 = new BarometerR2Node( rSquareProperty );
+    var barometerR2 = new BarometerR2Node( rSquareProperty );
 
     // TODO: help dialog window
     /* var dialogHelpNode = new Dialog(
@@ -88,7 +88,7 @@ define( function( require ) {
     var deviationArrowsNode = new HBox( {
       align: 'top',
       spacing: 5,
-      children: [ expandCollapseButton, BarometerX2, BarometerR2 ]
+      children: [ expandCollapseButton, barometerX2, barometerR2 ]
     } );
 
     // create chiSquare text and panel
@@ -115,7 +115,7 @@ define( function( require ) {
 
     isDeviationPanelExpandedProperty.link( function( isDeviationPanelExpanded ) {
       if ( isDeviationPanelExpanded ) {
-        deviationArrowsNode.children = [ expandCollapseButton, BarometerX2, BarometerR2 ];
+        deviationArrowsNode.children = [ expandCollapseButton, barometerX2, barometerR2 ];
         content.children = [ deviationArrowsNode, deviationTextNode, helpButtonNode ];
       }
       else {

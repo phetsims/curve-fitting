@@ -21,19 +21,23 @@ define( function( require ) {
   var Range = require( 'DOT/Range' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
+  var VStrut = require( 'SUN/VStrut' );
 
   // constants
+  var FONT_SIZE = 12;
+  var TICK_FONT = new PhetFont( FONT_SIZE );
+  var OFFSET = FONT_SIZE / 2;
   var RANGE = new Range( 0, 100 );
   var MIN_VALUE = RANGE.min;
   var MAX_VALUE = 1 + Math.log( RANGE.max );
   var HEAD_HEIGHT = 12;
-  var HEIGHT = 200 - HEAD_HEIGHT;
+  var HEIGHT = CurveFittingConstants.BAROMETER_HEIGHT - HEAD_HEIGHT - OFFSET;
   var LINE_OPTIONS = {
-    lineWidth: 2,
+    lineWidth: 1.5,
     stroke: 'black'
   };
-  var TICK_FONT = new PhetFont( 12 );
-  var TICK_WIDTH = 15;
+
 
   /**
    * @param {Property.<number>} chiSquareProperty - Property that represents x-deviation.
@@ -42,17 +46,24 @@ define( function( require ) {
    * @constructor
    */
   function BarometerX2Node( chiSquareProperty, chiFillProperty, options ) {
-    var valueRectNode = new Rectangle( -2 * TICK_WIDTH / 3 - 1, 0, 2 * TICK_WIDTH / 3, 0, { fill: CurveFittingConstants.BLUE_COLOR } );
+    var valueRectNode = new Rectangle( -2 * CurveFittingConstants.BAROMETER_TICK_WIDTH / 3 - 1, 0, 2 * CurveFittingConstants.BAROMETER_TICK_WIDTH / 3, 0, { fill: CurveFittingConstants.BLUE_COLOR } );
     valueRectNode.rotation = Math.PI;
 
-    Node.call( this, _.extend( {
+    this._content = new Node( {
       children: [
+        valueRectNode,
         new ArrowNode( 0, 0, 0, -HEIGHT - HEAD_HEIGHT * 1.5, {
           headHeight: HEAD_HEIGHT,
           headWidth: 8,
-          tailWidth: 1
-        } ),
-        valueRectNode
+          tailWidth: 0.5
+        } )
+      ]
+    } );
+
+    VBox.call( this, _.extend( {
+      children: [
+        new VStrut( OFFSET ),
+        this._content
       ]
     }, options ) );
 
@@ -76,18 +87,25 @@ define( function( require ) {
     }
   };
 
-  return inherit( Node, BarometerX2Node, {
+  return inherit( VBox, BarometerX2Node, {
     // add single tick
     addTick: function( value ) {
       var y = valueToYPosition( value );
+      var tickWidth;
 
       // add label
       var label = new Text( value.toString(), { font: TICK_FONT, centerY: -y } );
       label.centerX = -label.width / 2 - 3;
-      this.addChild( label );
+      this._content.addChild( label );
 
       // add tick
-      this.addChild( new Line( 0, -y, TICK_WIDTH, -y, LINE_OPTIONS ) );
+      if ( value === 0 ) {
+        tickWidth = CurveFittingConstants.BAROMETER_TICK_WIDTH;
+      }
+      else {
+        tickWidth = CurveFittingConstants.BAROMETER_TICK_WIDTH / 2;
+      }
+      this._content.addChild( new Line( 0, -y, tickWidth, -y, LINE_OPTIONS ) );
     },
 
     // add array of tick

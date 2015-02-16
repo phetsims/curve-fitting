@@ -26,7 +26,7 @@ define( function( require ) {
   } );
   var SLIDER_OPTIONS = {
     trackFill: 'black',
-    trackSize: new Dimension2( 140, 1 ),
+    trackSize: new Dimension2( 120, 1 ),
     thumbSize: new Dimension2( 15, 24 )
   };
   var TICK_COLOR = 'black';
