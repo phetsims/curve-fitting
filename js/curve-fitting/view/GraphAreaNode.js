@@ -47,14 +47,14 @@ define( function( require ) {
     this._size = size;
 
     // add white background
-    this.addChild( new Rectangle( 0, 0, size.width, size.height, { fill: 'white' } ) );
+    this.addChild( new Rectangle( 0, 0, size.width, size.height, { fill: 'white', lineWidth: 2, stroke: 'rgb( 214, 223, 226 )' } ) );
 
     // add X-axis and ticks
     this.addChild( new Line( 0, size.height / 2, size.width, size.height / 2, LINE_OPTIONS ) );
     this.addChild( new Line( LINE_OPTIONS.lineWidth / 2, size.height / 2 - TICK_LENGTH, LINE_OPTIONS.lineWidth / 2, size.height / 2 + TICK_LENGTH, LINE_OPTIONS ) );
     this.addChild( new Line( size.width / 4, size.height / 2 - TICK_LENGTH, size.width / 4, size.height / 2 + TICK_LENGTH, LINE_OPTIONS ) );
     this.addChild( new Line( 3 * size.width / 4, size.height / 2 - TICK_LENGTH, 3 * size.width / 4, size.height / 2 + TICK_LENGTH, LINE_OPTIONS ) );
-    this.addChild( new Line( size.width - LINE_OPTIONS.lineWidth, size.height / 2 - TICK_LENGTH, size.width - LINE_OPTIONS.lineWidth, size.height / 2 + TICK_LENGTH, LINE_OPTIONS ) );
+    this.addChild( new Line( size.width - LINE_OPTIONS.lineWidth / 2, size.height / 2 - TICK_LENGTH, size.width - LINE_OPTIONS.lineWidth / 2, size.height / 2 + TICK_LENGTH, LINE_OPTIONS ) );
 
     // add Y-axis
     this.addChild( new Line( size.width / 2, 0, size.width / 2, size.height, LINE_OPTIONS ) );
