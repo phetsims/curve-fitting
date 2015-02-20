@@ -18,6 +18,7 @@ define( function( require ) {
   var ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
   var inherit = require( 'PHET_CORE/inherit' );
   var HBox = require( 'SCENERY/nodes/HBox' );
+  var HStrut = require( 'SUN/HStrut' );
   var Panel = require( 'SUN/Panel' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var SubSupText = require( 'SCENERY_PHET/SubSupText' );
@@ -85,18 +86,14 @@ define( function( require ) {
     // title
     var titleNode = new Text( deviationsString, { font: TEXT_FONT } );
 
-    var deviationArrowsNode = new HBox( {
-      align: 'top',
-      spacing: 5,
-      children: [ expandCollapseButton, barometerX2, barometerR2 ]
-    } );
+    var deviationArrowsNode = new HBox( { align: 'top' } );
 
     // create chiSquare text and panel
-    var chiSquareTextNode = new Text( '00.00', { font: TEXT_FONT } );
+    var chiSquareTextNode = new Text( '00.00', { font: TEXT_FONT, textAlign: 'left' } );
     var chiSquarePanelNode = new Panel( chiSquareTextNode, VALUE_PANEL_OPTIONS );
 
     // create rSquare text and panel
-    var rSquareTextNode = new Text( '0.00', { font: TEXT_FONT } );
+    var rSquareTextNode = new Text( '0.00', { font: TEXT_FONT, textAlign: 'left' } );
     var rSquarePanelNode = new Panel( rSquareTextNode, VALUE_PANEL_OPTIONS );
 
     var deviationTextNode = new HBox( {
@@ -113,9 +110,10 @@ define( function( require ) {
 
     var content = new VBox( _.extend( { align: 'left' }, options ) );
 
+    var spaceBetweenBarometers = new HStrut( 10 );
     isDeviationPanelExpandedProperty.link( function( isDeviationPanelExpanded ) {
       if ( isDeviationPanelExpanded ) {
-        deviationArrowsNode.children = [ expandCollapseButton, barometerX2, barometerR2 ];
+        deviationArrowsNode.children = [ expandCollapseButton, barometerX2, spaceBetweenBarometers, barometerR2 ];
         content.children = [ deviationArrowsNode, deviationTextNode, helpButtonNode ];
       }
       else {
@@ -126,12 +124,10 @@ define( function( require ) {
 
     chiSquareProperty.link( function( chiSquare ) {
       chiSquareTextNode.setText( Util.toFixedNumber( chiSquare, 2 ).toString() );
-      chiSquareTextNode.centerX = chiSquarePanelNode.width / 2;
     } );
 
     rSquareProperty.link( function( rSquare ) {
       rSquareTextNode.setText( Util.toFixedNumber( rSquare, 2 ).toString() );
-      rSquareTextNode.centerX = rSquarePanelNode.width / 2;
     } );
 
     Panel.call( this, content, PANEL_OPTIONS );
