@@ -80,7 +80,8 @@ define( function( require ) {
 
   var valueToYPosition = function( value ) {
     if ( value <= 1 ) {
-      return HEIGHT * (MIN_VALUE + (value - MIN_VALUE) / (MAX_VALUE - MIN_VALUE));
+      // expression "0.5 + (HEIGHT - 1)" need to prevent bad graph view in corners
+      return 0.5 + (HEIGHT - 1) * (MIN_VALUE + (value - MIN_VALUE) / (MAX_VALUE - MIN_VALUE));
     }
     else {
       return Math.min( HEIGHT, HEIGHT * (MIN_VALUE + 1 + Math.log( value - MIN_VALUE )) / (MAX_VALUE - MIN_VALUE) );

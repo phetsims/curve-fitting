@@ -57,7 +57,8 @@ define( function( require ) {
   return inherit( Node, BarometerR2Node, {
     // add single tick
     addTick: function( value ) {
-      var y = CurveFittingConstants.BAROMETER_HEIGHT * (value - RANGE.min) / (RANGE.max - RANGE.min);
+      // expression "0.5 + (CurveFittingConstants.BAROMETER_HEIGHT - 1)" need to prevent bad graph view in corners
+      var y = 0.5 + (CurveFittingConstants.BAROMETER_HEIGHT - 1) * (value - RANGE.min) / (RANGE.max - RANGE.min);
 
       // add label
       var label = new Text( value.toString(), { font: TICK_FONT, centerY: -y } );
