@@ -46,7 +46,7 @@ define( function( require ) {
    * @constructor
    */
   function BarometerX2Node( chiSquareProperty, chiFillProperty, options ) {
-    var valueRectNode = new Rectangle( -2 * CurveFittingConstants.BAROMETER_TICK_WIDTH / 3 - 1, 0, 2 * CurveFittingConstants.BAROMETER_TICK_WIDTH / 3, 0, { fill: CurveFittingConstants.BLUE_COLOR } );
+    var valueRectNode = new Rectangle( -2 * CurveFittingConstants.BAROMETER_TICK_WIDTH / 3 - 0.5, 0, 2 * CurveFittingConstants.BAROMETER_TICK_WIDTH / 3, 0, { fill: CurveFittingConstants.BLUE_COLOR } );
     valueRectNode.rotation = Math.PI;
 
     this._content = new Node( {
