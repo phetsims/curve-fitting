@@ -27,7 +27,7 @@ define( function( require ) {
    * @constructor
    */
   function CurveFittingView( CurveFittingModel ) {
-    ScreenView.call( this, { renderer: 'svg', layoutBounds: new Bounds2( 0, 0, 768, 504 ) } );
+    ScreenView.call( this, { layoutBounds: new Bounds2( 0, 0, 768, 504 ) } );
 
     // add deviations node
     var deviationsNode = new DeviationsNode( CurveFittingModel.isDeviationPanelExpandedProperty, CurveFittingModel.curve.chiSquareProperty, CurveFittingModel.curve.chiFillProperty, CurveFittingModel.curve.rSquareProperty );
