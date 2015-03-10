@@ -33,11 +33,12 @@ define( function( require ) {
   // constants
   var BUTTON_LENGTH = 16;
   var TEXT_FONT = new PhetFont( 12 );
+  var TEXT_PANEL_FONT = new PhetFont( 10 );
   var VALUE_PANEL_OPTIONS = {
     fill: 'white',
     cornerRadius: 4,
-    xMargin: 3,
-    yMargin: 3,
+    xMargin: 4,
+    yMargin: 4,
     resize: false
   };
   var PANEL_OPTIONS = {
@@ -89,11 +90,17 @@ define( function( require ) {
     var deviationArrowsNode = new HBox( { align: 'top' } );
 
     // create chiSquare text and panel
-    var chiSquareTextNode = new Text( '00.00', { font: TEXT_FONT, textAlign: 'left' } );
+    var chiSquareTextNode = new Text( '000.00', {
+      font: TEXT_PANEL_FONT,
+      textAlign: 'left'
+    } );
     var chiSquarePanelNode = new Panel( chiSquareTextNode, VALUE_PANEL_OPTIONS );
 
     // create rSquare text and panel
-    var rSquareTextNode = new Text( '0.00', { font: TEXT_FONT, textAlign: 'left' } );
+    var rSquareTextNode = new Text( '0.00', {
+      font: TEXT_PANEL_FONT,
+      textAlign: 'left'
+    } );
     var rSquarePanelNode = new Panel( rSquareTextNode, VALUE_PANEL_OPTIONS );
 
     var deviationTextNode = new HBox( {
