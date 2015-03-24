@@ -47,7 +47,7 @@ define( function( require ) {
    * @param {Property.<boolean>} isResidualsVisibleProperty - Property to track residuals visibility.
    * @param {Node} parentNode - Parent node of point
    * @param {Node} graphAreaNode - Node of graph area.
-   * @param {Object} options for graph node.
+   * @param {Object} [options] for graph node.
    * @constructor
    */
   function PointNode( pointModel, curveModelPoints, isValuesVisibleProperty, isResidualsVisibleProperty, parentNode, graphAreaNode, options ) {

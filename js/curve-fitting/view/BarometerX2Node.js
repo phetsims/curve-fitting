@@ -42,7 +42,7 @@ define( function( require ) {
   /**
    * @param {Property.<number>} chiSquareProperty - Property that represents x-deviation.
    * @param {Property.<string>} chiFillProperty - Property that represents color of barometer.
-   * @param {Object} options for graph node.
+   * @param {Object} [options] for graph node.
    * @constructor
    */
   function BarometerX2Node( chiSquareProperty, chiFillProperty, options ) {

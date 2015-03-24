@@ -44,7 +44,7 @@ define( function( require ) {
   var RADIUS_Y = 9;
 
   /**
-   * @param {Object} options for graph node
+   * @param {Object} [options] for graph node
    * @constructor
    */
   function BucketNode( options ) {

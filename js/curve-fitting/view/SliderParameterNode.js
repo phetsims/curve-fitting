@@ -37,7 +37,7 @@ define( function( require ) {
    * @param {Property.<number>} property parameter to track.
    * @param {Range} range - Possible range for property.
    * @param {string} label - Label for slider.
-   * @param {Object} options for slider node.
+   * @param {Object} [options] for slider node.
    * @constructor
    */
   function SliderParameterNode( property, range, label, options ) {

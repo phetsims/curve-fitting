@@ -42,7 +42,7 @@ define( function( require ) {
    * @param {Property.<boolean>} isEquationPanelExpandedProperty - Property to control equation panel expansion.
    * @param {Curve} curve model.
    * @param {Property.<number>} orderFitProperty parameter to track.
-   * @param {Object} options for slider node.
+   * @param {Object} [options] for slider node.
    * @constructor
    */
   function EquationGraphPanelNode( isEquationPanelExpandedProperty, curve, orderFitProperty, options ) {

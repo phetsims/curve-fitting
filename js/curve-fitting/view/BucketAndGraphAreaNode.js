@@ -20,7 +20,7 @@ define( function( require ) {
 
   /**
    * @param {CurveFittingModel} CurveFittingModel
-   * @param {Object} options for graph node
+   * @param {Object} [options] for graph node
    * @constructor
    */
   function BucketAndGraphAreaNode( CurveFittingModel, options ) {

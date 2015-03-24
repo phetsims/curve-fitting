@@ -38,7 +38,7 @@ define( function( require ) {
    * @param {Property.<string>} fitTypeProperty - Property to control fit type of curve.
    * @param {Property.<number>} orderOfFitProperty - Property to control type of curve.
    * @param {number} maxOrderOfFit - Max order of fit.
-   * @param {Object} options for graph node.
+   * @param {Object} [options] for graph node.
    * @constructor
    */
   function FitTypeMenu( curve, fitTypeProperty, orderOfFitProperty, maxOrderOfFit, options ) {

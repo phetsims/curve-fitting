@@ -29,7 +29,7 @@ define( function( require ) {
 
   /**
    * @param {Property.<number>} rSquareProperty - Property that represents r-deviation.
-   * @param {Object} options for graph node.
+   * @param {Object} [options] for graph node.
    * @constructor
    */
   function BarometerR2Node( rSquareProperty, options ) {

@@ -35,7 +35,7 @@ define( function( require ) {
    * @param {Property.<number>} orderOfFitProperty - Property with current order of fit.
    * @param {Property.<boolean>} isResidualsVisibleProperty - Property to track residuals visibility.
    * @param {Bounds2} plotBounds of graph area.
-   * @param {Object} options for graph node.
+   * @param {Object} [options] for graph node.
    * @constructor
    */
   function GraphAreaNode( curve, orderOfFitProperty, isResidualsVisibleProperty, plotBounds, options ) {

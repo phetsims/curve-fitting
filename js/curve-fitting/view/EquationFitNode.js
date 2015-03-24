@@ -31,7 +31,7 @@ define( function( require ) {
   /**
    * @param {Property.<number>} orderFitProperty parameter to track.
    * @param {number} maxOrderFit - Possible range for property.
-   * @param {Object} options for slider node.
+   * @param {Object} [options] for slider node.
    * @constructor
    */
   function EquationFitNode( orderFitProperty, maxOrderFit, options ) {
