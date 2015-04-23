@@ -1,0 +1,41 @@
+{
+  "adjustableFit": {
+    "value": "Adjustable fit"
+  },
+  "bestFit": {
+    "value": "Best fit"
+  },
+  "cubic": {
+    "value": "Cubic"
+  },
+  "curve": {
+    "value": "Curve"
+  },
+  "curve-fitting.name": {
+    "value": "Curve Fitting"
+  },
+  "deviations": {
+    "value": "Deviations"
+  },
+  "equation": {
+    "value": "Equation"
+  },
+  "linear": {
+    "value": "Linear"
+  },
+  "pattern.delta.0valueDelta": {
+    "value": "D<sub>y</sub>={0}"
+  },
+  "pattern.0valueX.1valueY": {
+    "value": "({0},{1})"
+  },
+  "quadratic": {
+    "value": "Quadratic"
+  },
+  "residuals": {
+    "value": "Residuals"
+  },
+  "values": {
+    "value": "Values"
+  }
+}
