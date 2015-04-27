@@ -46,7 +46,7 @@ define( function( require ) {
 
     // add drag handler
     var point = null;
-    bucketNode.pointsNode.addInputListener( new SimpleDragHandler( {
+    bucketNode.addInputListener( new SimpleDragHandler( {
       start: function( e ) {
         point = CurveFittingModel.getPoint( e.pointer.point );
         graphAreaNode.setValues( point );

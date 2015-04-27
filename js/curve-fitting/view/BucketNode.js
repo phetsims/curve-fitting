@@ -90,7 +90,6 @@ define( function( require ) {
         y: pointsCoord.y
       } ) );
     } );
-    this.pointsNode = pointsNode;
     this.addChild( pointsNode );
   }
 
