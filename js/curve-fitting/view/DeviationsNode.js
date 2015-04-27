@@ -118,14 +118,19 @@ define( function( require ) {
     var content = new VBox( _.extend( { align: 'left' }, options ) );
 
     var spaceBetweenBarometers = new HStrut( 10 );
+    var spaceBetweenButtonAndTitle = new HStrut( 5 );
     isDeviationPanelExpandedProperty.link( function( isDeviationPanelExpanded ) {
       if ( isDeviationPanelExpanded ) {
         deviationArrowsNode.children = [ expandCollapseButton, barometerX2, spaceBetweenBarometers, barometerR2 ];
         content.children = [ deviationArrowsNode, deviationTextNode, helpButtonNode ];
+        deviationArrowsNode.options.align = 'top';
+        deviationArrowsNode.updateLayout();
       }
       else {
-        deviationArrowsNode.children = [ expandCollapseButton, titleNode ];
+        deviationArrowsNode.children = [ expandCollapseButton, spaceBetweenButtonAndTitle, titleNode ];
         content.children = [ deviationArrowsNode ];
+        deviationArrowsNode.options.align = 'center';
+        deviationArrowsNode.updateLayout();
       }
     } );
 
