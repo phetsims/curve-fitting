@@ -24,10 +24,10 @@
     "value": "Linear"
   },
   "pattern.delta.0valueDelta": {
-    "value": "D<sub>y</sub>={0}"
+    "value": "D<sub>y</sub> = {0}"
   },
   "pattern.0valueX.1valueY": {
-    "value": "({0},{1})"
+    "value": "({0}, {1})"
   },
   "quadratic": {
     "value": "Quadratic"
