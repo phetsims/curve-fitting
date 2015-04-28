@@ -163,7 +163,7 @@ define( function( require ) {
 
       return {
         x: Util.toFixedNumber( this._plotBounds.minX + this._plotBounds.width * (locPosition.x - this.bounds.minX) / this.width, 1 ),
-        y: Util.toFixedNumber( this._plotBounds.minY + this._plotBounds.height * (locPosition.y - this.bounds.minY) / this.height, 1 )
+        y: -Util.toFixedNumber( this._plotBounds.minY + this._plotBounds.height * (locPosition.y - this.bounds.minY) / this.height, 1 )
       };
     },
 
@@ -171,7 +171,7 @@ define( function( require ) {
     getPositionFromGraphValues: function( x, y ) {
       return new Vector2(
         (( x - this._plotBounds.minX ) / (this._plotBounds.width)) * this._size.width,
-        (( y - this._plotBounds.minY ) / (this._plotBounds.height)) * this._size.height
+        (( - y - this._plotBounds.minY ) / (this._plotBounds.height)) * this._size.height
       );
     }
   } );
