@@ -91,6 +91,14 @@ define( function( require ) {
       } ) );
     } );
     this.addChild( pointsNode );
+
+    // expand touch area
+    var clickableRadius = Math.max( (this.bounds.maxX - this.bounds.minX) / 2, (this.bounds.maxY - this.bounds.minY) / 2 );
+    this.addChild( new Circle( {
+      opacity: 0,
+      fill: 'red',
+      radius: clickableRadius
+    } ) );
   }
 
   return inherit( Node, BucketNode );
