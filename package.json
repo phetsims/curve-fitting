@@ -1,6 +1,6 @@
 {
   "name": "curve-fitting",
-  "version": "1.0.0-dev.2",
+  "version": "1.0.0-dev.3",
   "license": "GPLv3",
   "simTitleStringKey": "CURVE_FITTING/curve-fitting.name",
   "phetLibs": [
