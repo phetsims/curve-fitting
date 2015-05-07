@@ -18,7 +18,9 @@
     "scenery",
     "scenery-phet",
     "sherpa",
-    "sun"
+    "sun",
+    "vegas",
+    "vibe"
   ],
   "repository": {
     "type": "git",
