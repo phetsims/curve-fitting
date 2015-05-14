@@ -20,9 +20,11 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var HStrut = require( 'SUN/HStrut' );
+  var HTMLText = require( 'SCENERY/nodes/HTMLText' );
   var Panel = require( 'SUN/Panel' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var SubSupText = require( 'SCENERY_PHET/SubSupText' );
+  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Text = require( 'SCENERY/nodes/Text' );
   var TextPushButton = require( 'SUN/buttons/TextPushButton' );
   var VBox = require( 'SCENERY/nodes/VBox' );
@@ -31,11 +33,14 @@ define( function( require ) {
   // strings
   var deviationsString = require( 'string!CURVE_FITTING/deviations' );
   var numberOfDataPointsString = require( 'string!CURVE_FITTING/numberOfDataPoints' );
-  var numberOfParametersInFitEGfForACubicFitString = require( 'string!CURVE_FITTING/numberOfParametersInFitEGfForACubicFit' );
+  var pattern_numberOfParametersInFitEG_0value_ForACubicFitString = require( 'string!CURVE_FITTING/pattern.numberOfParametersInFitEG.0value.ForACubicFit' );
   var theReducedChiSquaredStatisticIsString = require( 'string!CURVE_FITTING/theReducedChiSquaredStatisticIs' );
 
   // images
   var equationHelpImage = require( 'image!CURVE_FITTING/equation-help.png' );
+  var fSymbolImage = require( 'image!CURVE_FITTING/f-symbol.png' );
+  var fEqualFourImage = require( 'image!CURVE_FITTING/f-equal-four.png' );
+  var nSymbolImage = require( 'image!CURVE_FITTING/n-symbol.png' );
 
   // constants
   var BUTTON_LENGTH = 16;
@@ -92,14 +97,18 @@ define( function( require ) {
         } ),
         new HBox( {
           children: [
-            new Text( "N ", { font: TEXT_DIALOG, fontStyle: 'italic' } ),
-            new Text( "= " + numberOfDataPointsString, { font: TEXT_DIALOG })
+            new Image( nSymbolImage ),
+            new Text( "= " + numberOfDataPointsString, { font: TEXT_DIALOG } )
           ]
         } ),
         new HBox( {
           children: [
-            new Text( "f ", { font: TEXT_DIALOG, fontStyle: 'italic' } ),
-            new Text( "= " + numberOfParametersInFitEGfForACubicFitString, { font: TEXT_DIALOG })
+            new Image( fSymbolImage ),
+            new Text( "= " + StringUtils.format(
+                pattern_numberOfParametersInFitEG_0value_ForACubicFitString,
+                ""/*new Image( fEqualFourImage ) */
+              ),
+              { font: TEXT_DIALOG } )
           ]
         } )
       ]

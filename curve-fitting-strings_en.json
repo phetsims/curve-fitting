@@ -23,8 +23,8 @@
   "linear": {
     "value": "Linear"
   },
-  "numberOfParametersInFitEGfForACubicFit": {
-    "value": "number of parameters in fit (e.g. f = 4 for a cubic fit)"
+  "pattern.numberOfParametersInFitEG.0value.ForACubicFit": {
+    "value": "number of parameters in fit (e.g. {0} for a cubic fit)"
   },
   "numberOfDataPoints": {
     "value": "number of data points"
