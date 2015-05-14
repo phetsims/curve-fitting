@@ -23,11 +23,20 @@
   "linear": {
     "value": "Linear"
   },
+  "numberOfParametersInFitEGfForACubicFit": {
+    "value": "number of parameters in fit (e.g. f = 4 for a cubic fit)"
+  },
+  "numberOfDataPoints": {
+    "value": "number of data points"
+  },
   "pattern.delta.0valueDelta": {
     "value": "D<sub>y</sub> = {0}"
   },
   "pattern.0valueX.1valueY": {
     "value": "({0}, {1})"
+  },
+  "theReducedChiSquaredStatisticIs": {
+    "value": "The reduced chi-squared statistic is"
   },
   "quadratic": {
     "value": "Quadratic"

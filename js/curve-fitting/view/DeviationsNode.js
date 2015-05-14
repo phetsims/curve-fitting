@@ -14,8 +14,9 @@ define( function( require ) {
   var BarometerR2Node = require( 'CURVE_FITTING/curve-fitting/view/BarometerR2Node' );
   var BarometerX2Node = require( 'CURVE_FITTING/curve-fitting/view/BarometerX2Node' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  //var Dialog = require( 'JOIST/Dialog' );
+  var Dialog = require( 'JOIST/Dialog' );
   var ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
+  var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var HStrut = require( 'SUN/HStrut' );
@@ -29,9 +30,17 @@ define( function( require ) {
 
   // strings
   var deviationsString = require( 'string!CURVE_FITTING/deviations' );
+  var numberOfDataPointsString = require( 'string!CURVE_FITTING/numberOfDataPoints' );
+  var numberOfParametersInFitEGfForACubicFitString = require( 'string!CURVE_FITTING/numberOfParametersInFitEGfForACubicFit' );
+  var theReducedChiSquaredStatisticIsString = require( 'string!CURVE_FITTING/theReducedChiSquaredStatisticIs' );
+
+  // images
+  var equationHelpImage = require( 'image!CURVE_FITTING/equation-help.png' );
 
   // constants
   var BUTTON_LENGTH = 16;
+  var EQUATION_OFFSET = 20;
+  var TEXT_DIALOG = new PhetFont( 14 );
   var TEXT_FONT = new PhetFont( 12 );
   var TEXT_PANEL_FONT = new PhetFont( 10 );
   var VALUE_PANEL_OPTIONS = {
@@ -69,17 +78,39 @@ define( function( require ) {
     // r^2 barometer
     var barometerR2 = new BarometerR2Node( rSquareProperty );
 
-    // TODO: help dialog window
-    /* var dialogHelpNode = new Dialog(
-     new Rectangle( 0, 0, 50, 20, 4, 4, { fill: 'white', stroke: 'black', lineWidth: 1 } ),
-     {
-     modal: true,
-     hasCloseButton: false
-     } );
-     this.addChild( dialogHelpNode );*/
-
     // help menu button
+    var dialogContentNode = new VBox( {
+      align: "left",
+      spacing: 5,
+      children: [
+        new Text( theReducedChiSquaredStatisticIsString, { font: TEXT_DIALOG } ),
+        new HBox( {
+          children: [
+            new HStrut( EQUATION_OFFSET ),
+            new Image( equationHelpImage )
+          ]
+        } ),
+        new HBox( {
+          children: [
+            new Text( "N ", { font: TEXT_DIALOG, fontStyle: 'italic' } ),
+            new Text( "= " + numberOfDataPointsString, { font: TEXT_DIALOG })
+          ]
+        } ),
+        new HBox( {
+          children: [
+            new Text( "f ", { font: TEXT_DIALOG, fontStyle: 'italic' } ),
+            new Text( "= " + numberOfParametersInFitEGfForACubicFitString, { font: TEXT_DIALOG })
+          ]
+        } )
+      ]
+    } );
     var helpButtonNode = new TextPushButton( '?', {
+      listener: function() {
+        new Dialog( dialogContentNode, {
+          modal: true,
+          hasCloseButton: true
+        } ).show();
+      },
       font: TEXT_FONT,
       baseColor: 'rgb( 204, 204, 204 )'
     } );
