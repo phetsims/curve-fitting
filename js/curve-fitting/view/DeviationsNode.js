@@ -104,9 +104,9 @@ define( function( require ) {
         new HBox( {
           children: [
             new Image( fSymbolImage ),
-            new Text( "= " + StringUtils.format(
+            new HTMLText( "= " + StringUtils.format(
                 pattern_numberOfParametersInFitEG_0value_ForACubicFitString,
-                ""/*new Image( fEqualFourImage ) */
+                '<img style="vertical-align: bottom" src="' + fEqualFourImage.src + '">'
               ),
               { font: TEXT_DIALOG } )
           ]
