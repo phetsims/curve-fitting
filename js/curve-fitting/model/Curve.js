@@ -174,7 +174,7 @@ define( function( require ) {
 
     // return deviation sum for all points
     computeSum: function() {
-      var points = this.points.getArray();
+      var points = this.getPoints();
       var sum = 0;
       var yApproximated;
       var yDeviationSquared;
@@ -194,6 +194,13 @@ define( function( require ) {
       return sum;
     },
 
+    // select points above graph area
+    getPoints: function() {
+      return this.points.getArray().filter( function( point ) {
+        return (!isNaN( point.x ) && !isNaN( point.y ));
+      } );
+    },
+
     // remove point from curve
     removePoint: function( point ) {
       point.positionProperty.unlink( this._updateFitBinded );
@@ -209,7 +216,7 @@ define( function( require ) {
 
     // set r^2-deviation for current point
     setRSquared: function() {
-      var points = this.points.getArray();
+      var points = this.getPoints();
       var rSquare;
       var ySum = 0;
       var yDelta = 0;
@@ -239,7 +246,7 @@ define( function( require ) {
 
     // set x^2-deviation for current point
     setReducedChiSquare: function() {
-      var points = this.points.getArray();
+      var points = this.getPoints();
       var orderOfFit = this._orderOfFit.value;
       var degOfFreedom = points.length - orderOfFit - 1;
 
@@ -277,7 +284,7 @@ define( function( require ) {
       // update only when curve visible
       if ( this.isVisible ) {
         if ( this._fitType.value === FitType.BEST ) {
-          var fit = this.fitMaker.getFit( this.points.getArray(), this._orderOfFit.value );
+          var fit = this.fitMaker.getFit( this.getPoints(), this._orderOfFit.value );
 
           this.d = fit[ 0 ];
           this.c = fit[ 1 ];

@@ -53,7 +53,7 @@ define( function( require ) {
   function PointNode( pointModel, curveModelPoints, isValuesVisibleProperty, isResidualsVisibleProperty, parentNode, graphAreaNode, options ) {
     var self = this;
 
-    Node.call( this, _.extend( {cursor: 'pointer'}, options ) );
+    Node.call( this, _.extend( { cursor: 'pointer' }, options ) );
 
     // create common drag and drop functions for top and bottom error bars
     var clickYOffset;
@@ -170,8 +170,11 @@ define( function( require ) {
     } );
 
     var updateValueText = function() {
-      if ( valueTextLabel.visible ) {
+      if ( valueTextLabel.visible && !isNaN( pointModel.x ) && !isNaN( pointModel.y ) ) {
         valueTextLabel.setText( StringUtils.format( pattern_0valueX_1valueY, Util.toFixed( pointModel.x, 1 ), Util.toFixed( pointModel.y, 1 ) ) );
+      }
+      else {
+        valueTextLabel.setText( '' );
       }
     };
     isValuesVisibleProperty.linkAttribute( valueTextLabel, 'visible' );

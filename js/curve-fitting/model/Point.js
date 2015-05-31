@@ -20,8 +20,8 @@ define( function( require ) {
   function Point( position ) {
     PropertySet.call( this, {
       position: position || new Vector2( 0, 0 ), // position of point
-      x: 0, // x-coordinate of point
-      y: 0, // y-coordinate of point
+      x: NaN, // x-coordinate of point
+      y: NaN, // y-coordinate of point
       delta: 0.8 // delta variation of point
     } );
 

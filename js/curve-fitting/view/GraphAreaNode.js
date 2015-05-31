@@ -78,7 +78,7 @@ define( function( require ) {
       var orderOfFit = orderOfFitProperty.value;
       var xMin = self._plotBounds.minX;
       var xMax = self._plotBounds.maxX;
-      var points = curve.points.getArray();
+      var points = curve.getPoints();
       var a = curve.a;
       var b = curve.b;
       var c = curve.c;
@@ -140,7 +140,7 @@ define( function( require ) {
   return inherit( Node, GraphAreaNode, {
     // check that point dropped into graph area
     checkDropPointAndSetValues: function( point ) {
-      var isDropped = this.bounds.containsPoint( this.globalToParentPoint( point.position ) );
+      var isDropped = this.isContainsPoint( point );
 
       if ( isDropped ) {
         this.setValues( point );
@@ -149,12 +149,6 @@ define( function( require ) {
       }
 
       return isDropped;
-    },
-
-    setValues: function( point ) {
-      var values = this.getGraphValuesFromPosition( point.position );
-      point.x = values.x;
-      point.y = values.y;
     },
 
     // convert graph values to global coordinates
@@ -171,8 +165,27 @@ define( function( require ) {
     getPositionFromGraphValues: function( x, y ) {
       return new Vector2(
         (( x - this._plotBounds.minX ) / (this._plotBounds.width)) * this._size.width,
-        (( - y - this._plotBounds.minY ) / (this._plotBounds.height)) * this._size.height
+        (( -y - this._plotBounds.minY ) / (this._plotBounds.height)) * this._size.height
       );
+    },
+
+    // whether the point is inside the GraphAreaNode (or on the boundary)
+    isContainsPoint: function( point ) {
+      return this.localBounds.containsPoint( this.globalToLocalPoint( point.position ) );
+    },
+
+    // set value of point
+    setValues: function( point ) {
+      var values;
+      if ( this.isContainsPoint( point ) ) {
+        values = this.getGraphValuesFromPosition( point.position );
+        point.x = values.x;
+        point.y = values.y;
+      }
+      else {
+        point.x = NaN;
+        point.y = NaN;
+      }
     }
   } );
 } );
