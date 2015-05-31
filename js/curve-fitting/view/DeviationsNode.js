@@ -45,6 +45,7 @@ define( function( require ) {
   // constants
   var BUTTON_LENGTH = 16;
   var EQUATION_OFFSET = 20;
+  var IMAGE_SCALE = 0.23;
   var TEXT_DIALOG = new PhetFont( 14 );
   var TEXT_FONT = new PhetFont( 12 );
   var TEXT_PANEL_FONT = new PhetFont( 10 );
@@ -92,21 +93,21 @@ define( function( require ) {
         new HBox( {
           children: [
             new HStrut( EQUATION_OFFSET ),
-            new Image( equationHelpImage )
+            new Image( equationHelpImage, { scale: IMAGE_SCALE } )
           ]
         } ),
         new HBox( {
           children: [
-            new Image( nSymbolImage ),
+            new Image( nSymbolImage, { scale: IMAGE_SCALE } ),
             new Text( "= " + numberOfDataPointsString, { font: TEXT_DIALOG } )
           ]
         } ),
         new HBox( {
           children: [
-            new Image( fSymbolImage ),
+            new Image( fSymbolImage, { scale: IMAGE_SCALE } ),
             new HTMLText( "= " + StringUtils.format(
                 pattern_numberOfParametersInFitEG_0value_ForACubicFitString,
-                '<img style="vertical-align: bottom" src="' + fEqualFourImage.src + '">'
+                          '<img style="vertical-align: bottom; width:' + parseInt( fEqualFourImage.width * IMAGE_SCALE, 10 ) + 'px" src="' + fEqualFourImage.src + '">'
               ),
               { font: TEXT_DIALOG } )
           ]
