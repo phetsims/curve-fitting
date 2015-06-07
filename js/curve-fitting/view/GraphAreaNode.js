@@ -14,6 +14,7 @@ define( function( require ) {
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var Dimension2 = require( 'DOT/Dimension2' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
   var Line = require( 'SCENERY/nodes/Line' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
@@ -98,7 +99,7 @@ define( function( require ) {
       var d = curve.d;
       var x;
 
-      if ( points.length > 1 && !isNaN( a ) && !isNaN( b ) && !isNaN( c ) && !isNaN( d ) ) {
+      if ( (points.length > 1 || curve._fitType.value === FitType.ADJUSTABLE) && !isNaN( a ) && !isNaN( b ) && !isNaN( c ) && !isNaN( d ) ) {
         curveShape = new Shape();
 
         // update curve view
