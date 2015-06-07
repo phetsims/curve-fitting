@@ -60,19 +60,25 @@ define( function( require ) {
     this.points.addListeners( this.addPoint.bind( this ), this.removePoint.bind( this ) );
 
     orderOfFitProperty.lazyLink( function( orderOfFit ) {
-      if ( orderOfFit === 1 ) {
-        self.a = 0;
-        self.b = 0;
+      if ( fitTypeProperty.value === FitType.BEST ) {
+        if ( orderOfFit === 1 ) {
+          self.a = 0;
+          self.b = 0;
+        }
+        else if ( orderOfFit === 2 ) {
+          self.a = 0;
+        }
       }
-      else if ( orderOfFit === 2 ) {
-        self.a = 0;
+      else if ( fitTypeProperty.value === FitType.ADJUSTABLE ) {
+        setDefaultAdjustableValues( self );
       }
     } );
 
     this.isVisibleProperty.onValue( true, this._updateFitBinded );
     orderOfFitProperty.link( this._updateFitBinded );
 
-    this._storage = { a: A_DEFAULT_ADJUSTABLE_VALUE, b: B_DEFAULT_ADJUSTABLE_VALUE, c: C_DEFAULT_ADJUSTABLE_VALUE, d: D_DEFAULT_ADJUSTABLE_VALUE };
+    this._storage = {};
+    setDefaultAdjustableValues( this._storage );
     fitTypeProperty.lazyLink( function( fitTypeNew, fitTypePrev ) {
       if ( fitTypeNew === FitType.BEST ) {
         self.swapValueFromStorage();
@@ -170,6 +176,13 @@ define( function( require ) {
     return 'rgb(' + Math.round( red ) + ', ' + Math.round( green ) + ', ' + Math.round( blue ) + ')';
   };
 
+  var setDefaultAdjustableValues = function( obj ) {
+    obj.a = A_DEFAULT_ADJUSTABLE_VALUE;
+    obj.b = B_DEFAULT_ADJUSTABLE_VALUE;
+    obj.c = C_DEFAULT_ADJUSTABLE_VALUE;
+    obj.d = D_DEFAULT_ADJUSTABLE_VALUE;
+  };
+
   return inherit( PropertySet, Curve, {
 
     // add point to curve
@@ -217,10 +230,7 @@ define( function( require ) {
     reset: function() {
       PropertySet.prototype.reset.call( this );
 
-      this._storage.a = A_DEFAULT_ADJUSTABLE_VALUE;
-      this._storage.b = B_DEFAULT_ADJUSTABLE_VALUE;
-      this._storage.c = C_DEFAULT_ADJUSTABLE_VALUE;
-      this._storage.d = D_DEFAULT_ADJUSTABLE_VALUE;
+      setDefaultAdjustableValues( this._storage );
       this.points.reset();
     },
 
