@@ -15,6 +15,7 @@ define( function( require ) {
   var GraphAreaNode = require( 'CURVE_FITTING/curve-fitting/view/GraphAreaNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var HBox = require( 'SCENERY/nodes/HBox' );
+  var Node = require( 'SCENERY/nodes/Node' );
   var PointNode = require( 'CURVE_FITTING/curve-fitting/view/PointNode' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
@@ -68,14 +69,16 @@ define( function( require ) {
     } ) );
 
     var pointStorage = [];
+    var pointsNode = new Node();
+    this.addChild( pointsNode );
     CurveFittingModel.curve.points.addItemAddedListener( function( pointModel ) {
       var pointView = new PointNode( pointModel, CurveFittingModel.curve.points, CurveFittingModel.isValuesVisibleProperty, CurveFittingModel.isResidualsVisibleProperty, self, graphAreaNode );
       pointStorage.push( { model: pointModel, view: pointView } );
-      self.insertChild( 2, pointView );
+      pointsNode.addChild( pointView );
     } );
 
     CurveFittingModel.curve.points.addItemRemovedListener( function( pointModel ) {
-      self.removeChild( _.find( pointStorage, { model: pointModel } ).view );
+      pointsNode.removeChild( _.find( pointStorage, { model: pointModel } ).view );
     } );
   }
 
