@@ -15,6 +15,12 @@ define( function( require ) {
   var ObservableArray = require( 'AXON/ObservableArray' );
   var PropertySet = require( 'AXON/PropertySet' );
 
+  // constants
+  var A_DEFAULT_ADJUSTABLE_VALUE = 0;
+  var B_DEFAULT_ADJUSTABLE_VALUE = 0;
+  var C_DEFAULT_ADJUSTABLE_VALUE = 0;
+  var D_DEFAULT_ADJUSTABLE_VALUE = 2.7;
+
   /**
    * @param {Property.<number>} orderOfFitProperty - Property to control curve type.
    * @param {Property.<string>} fitTypeProperty - Property to control fit type.
@@ -66,7 +72,7 @@ define( function( require ) {
     this.isVisibleProperty.onValue( true, this._updateFitBinded );
     orderOfFitProperty.link( this._updateFitBinded );
 
-    this._storage = { a: 0, b: 0, c: 0, d: 2.7 };
+    this._storage = { a: A_DEFAULT_ADJUSTABLE_VALUE, b: B_DEFAULT_ADJUSTABLE_VALUE, c: C_DEFAULT_ADJUSTABLE_VALUE, d: D_DEFAULT_ADJUSTABLE_VALUE };
     fitTypeProperty.lazyLink( function( fitTypeNew, fitTypePrev ) {
       if ( fitTypeNew === FitType.BEST ) {
         self.swapValueFromStorage();
@@ -211,6 +217,10 @@ define( function( require ) {
     reset: function() {
       PropertySet.prototype.reset.call( this );
 
+      this._storage.a = A_DEFAULT_ADJUSTABLE_VALUE;
+      this._storage.b = B_DEFAULT_ADJUSTABLE_VALUE;
+      this._storage.c = C_DEFAULT_ADJUSTABLE_VALUE;
+      this._storage.d = D_DEFAULT_ADJUSTABLE_VALUE;
       this.points.reset();
     },
 
