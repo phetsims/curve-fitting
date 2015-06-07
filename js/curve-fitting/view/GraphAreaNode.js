@@ -23,7 +23,7 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   // constants
-  var LINE_OPTIONS = {
+  var AXIS_OPTIONS = {
     lineWidth: 1,
     stroke: 'black'
   };
@@ -49,19 +49,32 @@ define( function( require ) {
     // add white background
     this.addChild( new Rectangle( 0, 0, size.width, size.height, { fill: 'white', lineWidth: 2, stroke: 'rgb( 214, 223, 226 )' } ) );
 
-    // add X-axis and ticks
-    this.addChild( new Line( 0, size.height / 2, size.width, size.height / 2, LINE_OPTIONS ) );
-    this.addChild( new Line( LINE_OPTIONS.lineWidth / 2, size.height / 2 - TICK_LENGTH, LINE_OPTIONS.lineWidth / 2, size.height / 2 + TICK_LENGTH, LINE_OPTIONS ) );
-    this.addChild( new Line( size.width / 4, size.height / 2 - TICK_LENGTH, size.width / 4, size.height / 2 + TICK_LENGTH, LINE_OPTIONS ) );
-    this.addChild( new Line( 3 * size.width / 4, size.height / 2 - TICK_LENGTH, 3 * size.width / 4, size.height / 2 + TICK_LENGTH, LINE_OPTIONS ) );
-    this.addChild( new Line( size.width - LINE_OPTIONS.lineWidth / 2, size.height / 2 - TICK_LENGTH, size.width - LINE_OPTIONS.lineWidth / 2, size.height / 2 + TICK_LENGTH, LINE_OPTIONS ) );
+    var axisShape = new Shape();
+    this.addChild( new Path( axisShape, AXIS_OPTIONS ) );
 
-    // add Y-axis
-    this.addChild( new Line( size.width / 2, 0, size.width / 2, size.height, LINE_OPTIONS ) );
-    this.addChild( new Line( size.width / 2 - TICK_LENGTH, LINE_OPTIONS.lineWidth / 2, size.width / 2 + TICK_LENGTH, LINE_OPTIONS.lineWidth / 2, LINE_OPTIONS ) );
-    this.addChild( new Line( size.width / 2 - TICK_LENGTH, size.height / 4, size.width / 2 + TICK_LENGTH, size.height / 4, LINE_OPTIONS ) );
-    this.addChild( new Line( size.width / 2 - TICK_LENGTH, 3 * size.height / 4, size.width / 2 + TICK_LENGTH, 3 * size.height / 4, LINE_OPTIONS ) );
-    this.addChild( new Line( size.width / 2 - TICK_LENGTH, size.height - LINE_OPTIONS.lineWidth, size.width / 2 + TICK_LENGTH, size.height - LINE_OPTIONS.lineWidth, LINE_OPTIONS ) );
+    // add X-axis and ticks
+    axisShape.moveTo( 0, size.height / 2 );
+    axisShape.lineTo( size.width, size.height / 2 );
+    axisShape.moveTo( AXIS_OPTIONS.lineWidth / 2, size.height / 2 - TICK_LENGTH );
+    axisShape.lineTo( AXIS_OPTIONS.lineWidth / 2, size.height / 2 + TICK_LENGTH );
+    axisShape.moveTo( size.width / 4, size.height / 2 - TICK_LENGTH );
+    axisShape.lineTo( size.width / 4, size.height / 2 + TICK_LENGTH );
+    axisShape.moveTo( 3 * size.width / 4, size.height / 2 - TICK_LENGTH );
+    axisShape.lineTo( 3 * size.width / 4, size.height / 2 + TICK_LENGTH );
+    axisShape.moveTo( size.width - AXIS_OPTIONS.lineWidth / 2, size.height / 2 - TICK_LENGTH );
+    axisShape.lineTo( size.width - AXIS_OPTIONS.lineWidth / 2, size.height / 2 + TICK_LENGTH );
+
+    // add Y-axis and ticks
+    axisShape.moveTo( size.width / 2, 0 );
+    axisShape.lineTo( size.width / 2, size.height );
+    axisShape.moveTo( size.width / 2 - TICK_LENGTH, AXIS_OPTIONS.lineWidth / 2 );
+    axisShape.lineTo( size.width / 2 + TICK_LENGTH, AXIS_OPTIONS.lineWidth / 2 );
+    axisShape.moveTo( size.width / 2 - TICK_LENGTH, size.height / 4 );
+    axisShape.lineTo( size.width / 2 + TICK_LENGTH, size.height / 4 );
+    axisShape.moveTo( size.width / 2 - TICK_LENGTH, 3 * size.height / 4 );
+    axisShape.lineTo( size.width / 2 + TICK_LENGTH, 3 * size.height / 4 );
+    axisShape.moveTo( size.width / 2 - TICK_LENGTH, size.height - AXIS_OPTIONS.lineWidth );
+    axisShape.lineTo( size.width / 2 + TICK_LENGTH, size.height - AXIS_OPTIONS.lineWidth );
 
     // add clip area
     this.clipArea = Shape.rect( 0, 0, size.width, size.height );
