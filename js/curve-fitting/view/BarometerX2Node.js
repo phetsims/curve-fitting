@@ -22,7 +22,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
   var VBox = require( 'SCENERY/nodes/VBox' );
-  var VStrut = require( 'SUN/VStrut' );
+  var VStrut = require( 'SCENERY/nodes/VStrut' );
 
   // constants
   var FONT_SIZE = 12;
