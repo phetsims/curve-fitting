@@ -10,7 +10,9 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var Circle = require( 'SCENERY/nodes/Circle' );
+  var Color = require( 'SCENERY/util/Color' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
@@ -39,6 +41,7 @@ define( function( require ) {
     fill: CurveFittingConstants.BLUE_COLOR
   };
   var FONT = new PhetFont( 11 );
+  var POINT_CORLOR = Color.toColor( CurveFittingConstants.POINT_FILL );
 
   /**
    * @param {PropertySet} pointModel - Model for single point.
@@ -102,7 +105,7 @@ define( function( require ) {
 
     // add point view
     var circleView = new Circle( {
-      fill: CurveFittingConstants.POINT_FILL,
+      fill: POINT_CORLOR,
       radius: CurveFittingConstants.POINT_RADIUS,
       stroke: CurveFittingConstants.POINT_STROKE,
       lineWidth: CurveFittingConstants.POINT_LINE_WIDTH
@@ -203,6 +206,18 @@ define( function( require ) {
         errorBarBottom.setFill( CurveFittingConstants.BLUE_COLOR );
       }
     } );
+
+    // add halo to point
+    var haloNode = new Circle( 1.75 * CurveFittingConstants.POINT_RADIUS,
+      { fill: POINT_CORLOR.withAlpha( 0.30 ), pickable: false, visible: false } );
+
+    this.addChild( haloNode );
+    this.addInputListener( new ButtonListener( {
+        up: function() { haloNode.visible = false; },
+        down: function() { haloNode.visible = true; },
+        over: function() { haloNode.visible = true; }
+      } )
+    );
   }
 
   return inherit( Node, PointNode );
