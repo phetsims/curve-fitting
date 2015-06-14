@@ -30,18 +30,21 @@ define( function( require ) {
   var pattern_delta_0valueDelta = require( 'string!CURVE_FITTING/pattern.delta.0valueDelta' );
 
   // constants
+  var BAR_COLOR = Color.toColor( CurveFittingConstants.BLUE_COLOR );
   var CENTRAL_LINE_OPTIONS = {
     stroke: CurveFittingConstants.BLUE_COLOR,
     lineWidth: 1
   };
-  var DILATION_SIZE = 4;
+  var DILATION_SIZE = 8;
   var ERROR_BAR_WIDTH = 20;
   var ERROR_BAR_HEIGHT = 2;
   var ERROR_BAR_OPTIONS = {
     fill: CurveFittingConstants.BLUE_COLOR
   };
   var FONT = new PhetFont( 11 );
-  var POINT_CORLOR = Color.toColor( CurveFittingConstants.POINT_FILL );
+  var HALO_ALPHA = 0.3;
+  var HALO_RECT_OFFSET = 4;
+  var POINT_COLOR = Color.toColor( CurveFittingConstants.POINT_FILL );
 
   /**
    * @param {PropertySet} pointModel - Model for single point.
@@ -71,10 +74,9 @@ define( function( require ) {
       isUserControlledDelta = false;
     };
 
-    // add top error bar line
-    var errorBarTop = new Rectangle( -ERROR_BAR_WIDTH / 2, 0, ERROR_BAR_WIDTH, ERROR_BAR_HEIGHT, ERROR_BAR_OPTIONS );
-    this.addChild( errorBarTop );
-    errorBarTop.addInputListener( new SimpleDragHandler( {
+    // top error bar line node
+    var errorBarTopNode = new Rectangle( -ERROR_BAR_WIDTH / 2, 0, ERROR_BAR_WIDTH, ERROR_BAR_HEIGHT, ERROR_BAR_OPTIONS );
+    errorBarTopNode.addInputListener( new SimpleDragHandler( {
       start: deltaStartDragHandler,
       drag: function( e ) {
         if ( isUserControlledDelta ) {
@@ -85,10 +87,21 @@ define( function( require ) {
       end: deltaEndDragHandler
     } ) );
 
-    // add bottom error bar line
-    var errorBarBottom = new Rectangle( -ERROR_BAR_WIDTH / 2, 0, ERROR_BAR_WIDTH, ERROR_BAR_HEIGHT, ERROR_BAR_OPTIONS );
-    this.addChild( errorBarBottom );
-    errorBarBottom.addInputListener( new SimpleDragHandler( {
+    // top error bar line halo node
+    var haloErrorBarTopNode = new Rectangle( -(ERROR_BAR_WIDTH + HALO_RECT_OFFSET) / 2, -HALO_RECT_OFFSET / 2,
+      HALO_RECT_OFFSET + ERROR_BAR_WIDTH, HALO_RECT_OFFSET + ERROR_BAR_HEIGHT,
+      { fill: BAR_COLOR.withAlpha( HALO_ALPHA ), pickable: false, visible: false } );
+    errorBarTopNode.addInputListener( getHaloListener( haloErrorBarTopNode ) );
+
+    // top error bar
+    var errorBarTop = new Node( {
+      children: [ errorBarTopNode, haloErrorBarTopNode ]
+    } );
+    this.addChild( errorBarTop );
+
+    // add bottom error bar line node
+    var errorBarBottomNode = new Rectangle( -ERROR_BAR_WIDTH / 2, 0, ERROR_BAR_WIDTH, ERROR_BAR_HEIGHT, ERROR_BAR_OPTIONS );
+    errorBarBottomNode.addInputListener( new SimpleDragHandler( {
       start: deltaStartDragHandler,
       drag: function( e ) {
         if ( isUserControlledDelta ) {
@@ -99,13 +112,25 @@ define( function( require ) {
       end: deltaEndDragHandler
     } ) );
 
+    // bottom error bar line halo node
+    var haloTopBarBottomNode = new Rectangle( -(ERROR_BAR_WIDTH + HALO_RECT_OFFSET) / 2, -HALO_RECT_OFFSET / 2,
+      HALO_RECT_OFFSET + ERROR_BAR_WIDTH, HALO_RECT_OFFSET + ERROR_BAR_HEIGHT,
+      { fill: BAR_COLOR.withAlpha( HALO_ALPHA ), pickable: false, visible: false } );
+    errorBarBottomNode.addInputListener( getHaloListener( haloTopBarBottomNode ) );
+
+    // bottom error bar
+    var errorBarBottom = new Node( {
+      children: [ errorBarBottomNode, haloTopBarBottomNode ]
+    } );
+    this.addChild( errorBarBottom );
+
     // add central line
     var centralLine = new Line( 0, 0, 0, 0, CENTRAL_LINE_OPTIONS );
     this.addChild( centralLine );
 
     // add point view
     var circleView = new Circle( {
-      fill: POINT_CORLOR,
+      fill: POINT_COLOR,
       radius: CurveFittingConstants.POINT_RADIUS,
       stroke: CurveFittingConstants.POINT_STROKE,
       lineWidth: CurveFittingConstants.POINT_LINE_WIDTH
@@ -143,8 +168,8 @@ define( function( require ) {
 
     var deltaTextLabel = new SubSupText( StringUtils.format( pattern_delta_0valueDelta, Util.toFixed( pointModel.delta, 1 ) ), {
       font: FONT,
-      x: errorBarTop.localBounds.maxX + 2,
-      centerY: errorBarTop.centerY
+      x: errorBarTopNode.localBounds.maxX + 2,
+      centerY: errorBarTopNode.centerY
     } );
     this.addChild( deltaTextLabel );
 
@@ -157,7 +182,7 @@ define( function( require ) {
       var lineHeight = CurveFittingConstants.PIXELS_IN_TICK * delta;
 
       // update top error bar
-      errorBarTop.setRectY( -lineHeight - ERROR_BAR_HEIGHT / 2 );
+      errorBarTop.setTranslation( 0, -lineHeight - ERROR_BAR_HEIGHT / 2 );
       errorBarTop.touchArea = errorBarTop.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
       errorBarTop.mouseArea = errorBarTop.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
       deltaTextLabel.centerY = -lineHeight;
@@ -167,7 +192,7 @@ define( function( require ) {
       centralLine.setY2( lineHeight );
 
       // update bottom error bar
-      errorBarBottom.setRectY( lineHeight - ERROR_BAR_HEIGHT / 2 );
+      errorBarBottom.setTranslation( 0, lineHeight - ERROR_BAR_HEIGHT / 2 );
       errorBarBottom.touchArea = errorBarBottom.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
       errorBarBottom.mouseArea = errorBarBottom.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
     } );
@@ -197,28 +222,30 @@ define( function( require ) {
     isResidualsVisibleProperty.link( function( isResidualsVisible ) {
       if ( isResidualsVisible ) {
         centralLine.visible = false;
-        errorBarTop.setFill( CurveFittingConstants.LIGHT_GRAY_COLOR );
-        errorBarBottom.setFill( CurveFittingConstants.LIGHT_GRAY_COLOR );
+        errorBarTopNode.setFill( CurveFittingConstants.LIGHT_GRAY_COLOR );
+        errorBarBottomNode.setFill( CurveFittingConstants.LIGHT_GRAY_COLOR );
       }
       else {
         centralLine.visible = true;
-        errorBarTop.setFill( CurveFittingConstants.BLUE_COLOR );
-        errorBarBottom.setFill( CurveFittingConstants.BLUE_COLOR );
+        errorBarTopNode.setFill( CurveFittingConstants.BLUE_COLOR );
+        errorBarBottomNode.setFill( CurveFittingConstants.BLUE_COLOR );
       }
     } );
 
     // add halo to point
-    var haloNode = new Circle( 1.75 * CurveFittingConstants.POINT_RADIUS,
-      { fill: POINT_CORLOR.withAlpha( 0.30 ), pickable: false, visible: false } );
-
-    this.addChild( haloNode );
-    this.addInputListener( new ButtonListener( {
-        up: function() { haloNode.visible = false; },
-        down: function() { haloNode.visible = true; },
-        over: function() { haloNode.visible = true; }
-      } )
-    );
+    var haloPointNode = new Circle( 1.75 * CurveFittingConstants.POINT_RADIUS,
+      { fill: POINT_COLOR.withAlpha( HALO_ALPHA ), pickable: false, visible: false } );
+    this.addChild( haloPointNode );
+    circleView.addInputListener( getHaloListener( haloPointNode ) );
   }
+
+  var getHaloListener = function( haloNode ) {
+    return new ButtonListener( {
+      up: function() { haloNode.visible = false; },
+      down: function() { haloNode.visible = true; },
+      over: function() { haloNode.visible = true; }
+    } );
+  };
 
   return inherit( Node, PointNode );
 } );
