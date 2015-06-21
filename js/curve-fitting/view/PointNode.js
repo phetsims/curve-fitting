@@ -64,27 +64,28 @@ define( function( require ) {
     // create common drag and drop vars and functions for top and bottom error bars
     var clickYOffset;
     var deltaInitial;
-    var isUserControlledDelta = false;
-    var deltaStartDragHandler = function( e ) {
-      isUserControlledDelta = true;
-      clickYOffset = self.globalToParentPoint( e.pointer.point ).y - e.currentTarget.y;
-      deltaInitial = pointModel.delta;
-    };
-    var deltaEndDragHandler = function() {
-      isUserControlledDelta = false;
-    };
+    var isUserControlledDeltaTop = false;
+    var isUserControlledDeltaBottom = false;
 
     // top error bar line node
     var errorBarTopNode = new Rectangle( -ERROR_BAR_WIDTH / 2, 0, ERROR_BAR_WIDTH, ERROR_BAR_HEIGHT, ERROR_BAR_OPTIONS );
     errorBarTopNode.addInputListener( new SimpleDragHandler( {
-      start: deltaStartDragHandler,
+      start: function( e ) {
+        if ( !isUserControlledDeltaBottom ) {
+          isUserControlledDeltaTop = true;
+          clickYOffset = self.globalToParentPoint( e.pointer.point ).y - e.currentTarget.y;
+          deltaInitial = pointModel.delta;
+        }
+      },
       drag: function( e ) {
-        if ( isUserControlledDelta ) {
+        if ( isUserControlledDeltaTop ) {
           var y = self.globalToParentPoint( e.pointer.point ).y - clickYOffset;
           pointModel.delta = Math.max( 0.1, deltaInitial - y / CurveFittingConstants.PIXELS_IN_TICK );
         }
       },
-      end: deltaEndDragHandler
+      end: function() {
+        isUserControlledDeltaTop = false;
+      }
     } ) );
 
     // top error bar line halo node
@@ -101,14 +102,22 @@ define( function( require ) {
     // add bottom error bar line node
     var errorBarBottomNode = new Rectangle( -ERROR_BAR_WIDTH / 2, 0, ERROR_BAR_WIDTH, ERROR_BAR_HEIGHT, ERROR_BAR_OPTIONS );
     errorBarBottomNode.addInputListener( new SimpleDragHandler( {
-      start: deltaStartDragHandler,
+      start: function( e ) {
+        if ( !isUserControlledDeltaTop ) {
+          isUserControlledDeltaBottom = true;
+          clickYOffset = self.globalToParentPoint( e.pointer.point ).y - e.currentTarget.y;
+          deltaInitial = pointModel.delta;
+        }
+      },
       drag: function( e ) {
-        if ( isUserControlledDelta ) {
+        if ( isUserControlledDeltaBottom ) {
           var y = self.globalToParentPoint( e.pointer.point ).y - clickYOffset;
           pointModel.delta = Math.max( 0.1, deltaInitial + y / CurveFittingConstants.PIXELS_IN_TICK );
         }
       },
-      end: deltaEndDragHandler
+      end: function() {
+        isUserControlledDeltaBottom = false;
+      }
     } ) );
 
     // bottom error bar line halo node
@@ -199,7 +208,8 @@ define( function( require ) {
 
       // update top error bar
       errorBarTop.setTranslation( 0, -lineHeight - ERROR_BAR_HEIGHT / 2 );
-      errorBarTop.touchArea = errorBarTop.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
+      errorBarTopNode.touchArea = errorBarTop.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
+      errorBarTopNode.mouseArea = errorBarTop.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
       deltaTextLabel.centerY = -lineHeight;
 
       // update central line
@@ -208,8 +218,8 @@ define( function( require ) {
 
       // update bottom error bar
       errorBarBottom.setTranslation( 0, lineHeight - ERROR_BAR_HEIGHT / 2 );
-      errorBarBottom.touchArea = errorBarBottom.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
-      errorBarBottom.mouseArea = errorBarBottom.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
+      errorBarBottomNode.touchArea = errorBarBottom.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
+      errorBarBottomNode.mouseArea = errorBarBottom.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
     } );
 
     var updateValueText = function() {
