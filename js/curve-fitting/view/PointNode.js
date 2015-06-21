@@ -61,7 +61,7 @@ define( function( require ) {
 
     Node.call( this, _.extend( { cursor: 'pointer' }, options ) );
 
-    // create common drag and drop functions for top and bottom error bars
+    // create common drag and drop vars and functions for top and bottom error bars
     var clickYOffset;
     var deltaInitial;
     var isUserControlledDelta = false;
@@ -91,7 +91,6 @@ define( function( require ) {
     var haloErrorBarTopNode = new Rectangle( -(ERROR_BAR_WIDTH + HALO_RECT_OFFSET) / 2, -HALO_RECT_OFFSET / 2,
       HALO_RECT_OFFSET + ERROR_BAR_WIDTH, HALO_RECT_OFFSET + ERROR_BAR_HEIGHT,
       { fill: BAR_COLOR.withAlpha( HALO_ALPHA ), pickable: false, visible: false } );
-    errorBarTopNode.addInputListener( getHaloListener( haloErrorBarTopNode ) );
 
     // top error bar
     var errorBarTop = new Node( {
@@ -116,13 +115,30 @@ define( function( require ) {
     var haloTopBarBottomNode = new Rectangle( -(ERROR_BAR_WIDTH + HALO_RECT_OFFSET) / 2, -HALO_RECT_OFFSET / 2,
       HALO_RECT_OFFSET + ERROR_BAR_WIDTH, HALO_RECT_OFFSET + ERROR_BAR_HEIGHT,
       { fill: BAR_COLOR.withAlpha( HALO_ALPHA ), pickable: false, visible: false } );
-    errorBarBottomNode.addInputListener( getHaloListener( haloTopBarBottomNode ) );
 
     // bottom error bar
     var errorBarBottom = new Node( {
       children: [ errorBarBottomNode, haloTopBarBottomNode ]
     } );
     this.addChild( errorBarBottom );
+
+    // add halo bar nodes handler
+    var barHaloHandler = new ButtonListener( {
+      up: function() {
+        haloErrorBarTopNode.visible = false;
+        haloTopBarBottomNode.visible = false;
+      },
+      down: function() {
+        haloErrorBarTopNode.visible = true;
+        haloTopBarBottomNode.visible = true;
+      },
+      over: function() {
+        haloErrorBarTopNode.visible = true;
+        haloTopBarBottomNode.visible = true;
+      }
+    } );
+    errorBarBottomNode.addInputListener( barHaloHandler );
+    errorBarTopNode.addInputListener( barHaloHandler );
 
     // add central line
     var centralLine = new Line( 0, 0, 0, 0, CENTRAL_LINE_OPTIONS );
@@ -184,7 +200,6 @@ define( function( require ) {
       // update top error bar
       errorBarTop.setTranslation( 0, -lineHeight - ERROR_BAR_HEIGHT / 2 );
       errorBarTop.touchArea = errorBarTop.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
-      errorBarTop.mouseArea = errorBarTop.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
       deltaTextLabel.centerY = -lineHeight;
 
       // update central line
@@ -236,16 +251,12 @@ define( function( require ) {
     var haloPointNode = new Circle( 1.75 * CurveFittingConstants.POINT_RADIUS,
       { fill: POINT_COLOR.withAlpha( HALO_ALPHA ), pickable: false, visible: false } );
     this.addChild( haloPointNode );
-    circleView.addInputListener( getHaloListener( haloPointNode ) );
+    circleView.addInputListener( new ButtonListener( {
+      up: function() { haloPointNode.visible = false; },
+      down: function() { haloPointNode.visible = true; },
+      over: function() { haloPointNode.visible = true; }
+    } ) );
   }
-
-  var getHaloListener = function( haloNode ) {
-    return new ButtonListener( {
-      up: function() { haloNode.visible = false; },
-      down: function() { haloNode.visible = true; },
-      over: function() { haloNode.visible = true; }
-    } );
-  };
 
   return inherit( Node, PointNode );
 } );
