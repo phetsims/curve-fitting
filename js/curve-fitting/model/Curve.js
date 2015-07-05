@@ -60,47 +60,56 @@ define( function( require ) {
     this.points.addListeners( this.addPoint.bind( this ), this.removePoint.bind( this ) );
 
     orderOfFitProperty.lazyLink( function( orderOfFit ) {
-      if ( fitTypeProperty.value === FitType.BEST ) {
-        if ( orderOfFit === 1 ) {
-          self.a = 0;
+      if ( orderOfFit < 3 ) {
+        self.a = 0;
+        self._storage.a = 0;
+
+        if ( orderOfFit < 2 ) {
           self.b = 0;
+          self._storage.b = 0;
         }
-        else if ( orderOfFit === 2 ) {
-          self.a = 0;
-        }
+      }
+
+      self.updateFit();
+    } );
+
+    this._storage = {};
+    setDefaultAdjustableValues( this._storage );
+    this.isVisibleProperty.link( function( isVisible ) {
+      if ( isVisible ) {
+        self.updateFit();
+      }
+      else if ( fitTypeProperty.value === FitType.BEST ) {
+        setDefaultAdjustableValues( self._storage );
       }
       else if ( fitTypeProperty.value === FitType.ADJUSTABLE ) {
         setDefaultAdjustableValues( self );
       }
     } );
 
-    this.isVisibleProperty.onValue( true, this._updateFitBinded );
-    orderOfFitProperty.link( this._updateFitBinded );
-
-    this._storage = {};
-    setDefaultAdjustableValues( this._storage );
     fitTypeProperty.lazyLink( function( fitTypeNew, fitTypePrev ) {
       if ( fitTypeNew === FitType.BEST ) {
-        self.swapValueFromStorage();
-        self.updateCurveTrigger = !self.updateCurveTrigger;
-
         // remove update listeners for parameters
         if ( fitTypePrev === FitType.ADJUSTABLE ) {
+          self.saveValuesToStorage();
           self.aProperty.unlink( self._updateFitBinded );
           self.bProperty.unlink( self._updateFitBinded );
           self.cProperty.unlink( self._updateFitBinded );
           self.dProperty.unlink( self._updateFitBinded );
         }
+
+        self.updateFit();
+        self.updateCurveTrigger = !self.updateCurveTrigger;
       }
       else if ( fitTypeNew === FitType.ADJUSTABLE ) {
-        self.swapValueFromStorage();
-        self.updateCurveTrigger = !self.updateCurveTrigger;
-
         // add update listeners for parameters
         self.aProperty.lazyLink( self._updateFitBinded );
         self.bProperty.lazyLink( self._updateFitBinded );
         self.cProperty.lazyLink( self._updateFitBinded );
-        self.dProperty.link( self._updateFitBinded );
+        self.dProperty.lazyLink( self._updateFitBinded );
+        self.restoreValuesFromStorage();
+
+        self.updateCurveTrigger = !self.updateCurveTrigger;
       }
     } );
   }
@@ -230,6 +239,7 @@ define( function( require ) {
     reset: function() {
       PropertySet.prototype.reset.call( this );
 
+      this.yDeviationSquaredSum = 0;
       setDefaultAdjustableValues( this._storage );
       this.points.reset();
     },
@@ -280,23 +290,20 @@ define( function( require ) {
       this.chiFill = getBarometerFillFromChiValue( this.chiSquare, points.length );
     },
 
-    // swap value from storage. Necessary when switch to and back from adjustable mode
-    swapValueFromStorage: function() {
-      var storedValue = this._storage.a;
+    // save values to storage. Necessary when switch to adjustable mode
+    saveValuesToStorage: function() {
       this._storage.a = this.a;
-      this.a = storedValue;
-
-      storedValue = this._storage.b;
       this._storage.b = this.b;
-      this.b = storedValue;
-
-      storedValue = this._storage.c;
       this._storage.c = this.c;
-      this.c = storedValue;
-
-      storedValue = this._storage.d;
       this._storage.d = this.d;
-      this.d = storedValue;
+    },
+
+    // restore values from storage. Necessary when switching back from adjustable mode
+    restoreValuesFromStorage: function(){
+      this.a = this._storage.a;
+      this.b = this._storage.b;
+      this.c = this._storage.c;
+      this.d = this._storage.d;
     },
 
     // update fir for current points
