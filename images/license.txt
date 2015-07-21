@@ -1,0 +1,4 @@
+equation-help.png source=PhET notes=generated from latex see https://github.com/phetsims/curve-fitting/issues/5
+f-equal-four.png source=PhET notes=generated from latex see https://github.com/phetsims/curve-fitting/issues/5
+f-symbol.png source=PhET notes=generated from latex see https://github.com/phetsims/curve-fitting/issues/5
+n-symbol.png source=PhET notes=generated from latex see https://github.com/phetsims/curve-fitting/issues/5
