@@ -164,13 +164,11 @@ define( function( require ) {
       if ( isDeviationPanelExpanded ) {
         deviationArrowsNode.children = [ expandCollapseButton, barometerX2, spaceBetweenBarometers, barometerR2 ];
         content.children = [ deviationArrowsNode, deviationTextNode, helpButtonNode ];
-        deviationArrowsNode.options.align = 'top';
         deviationArrowsNode.updateLayout();
       }
       else {
         deviationArrowsNode.children = [ expandCollapseButton, spaceBetweenButtonAndTitle, titleNode ];
         content.children = [ deviationArrowsNode ];
-        deviationArrowsNode.options.align = 'center';
         deviationArrowsNode.updateLayout();
       }
     } );
