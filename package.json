@@ -17,7 +17,6 @@
     "requirejsNamespace": "CURVE_FITTING",
     "simTitleStringKey": "CURVE_FITTING/curve-fitting.name",
     "phetLibs": [
-      "curve-fitting",
       "vegas",
       "vibe"
     ]
