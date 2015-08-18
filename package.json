@@ -2,13 +2,6 @@
   "name": "curve-fitting",
   "version": "1.0.0-dev.4",
   "license": "GPLv3",
-  "requirejsNamespace": "CURVE_FITTING",
-  "simTitleStringKey": "CURVE_FITTING/curve-fitting.name",
-  "phetLibs": [
-    "curve-fitting",
-    "vegas",
-    "vibe"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/phetsims/curve-fitting.git"
@@ -19,5 +12,14 @@
     "grunt-contrib-jshint": "~0.6.4",
     "uglify-js": "~2.4.0",
     "requirejs": "~2.1.8"
+  },
+  "phet": {
+    "requirejsNamespace": "CURVE_FITTING",
+    "simTitleStringKey": "CURVE_FITTING/curve-fitting.name",
+    "phetLibs": [
+      "curve-fitting",
+      "vegas",
+      "vibe"
+    ]
   }
 }
