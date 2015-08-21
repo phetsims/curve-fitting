@@ -55,13 +55,5 @@
   "sun": {
     "sha": "5ae6c12634dc188f5b9ba8bc3aca76dcf96448c8",
     "branch": "master"
-  },
-  "vegas": {
-    "sha": "5d1f054ececac34752bbd2edcf940a6fdfdcb017",
-    "branch": "master"
-  },
-  "vibe": {
-    "sha": "bad425472494babb88c260adbd718230d567ec3a",
-    "branch": "master"
   }
 }

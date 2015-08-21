@@ -36,8 +36,6 @@ require.config( {
     SCENERY: '../../scenery/js',
     SCENERY_PHET: '../../scenery-phet/js',
     SUN: '../../sun/js',
-    VEGAS: '../../vegas/js',
-    VIBE: '../../vibe/js',
 
     // this sim
     CURVE_FITTING: '.'
