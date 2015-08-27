@@ -13,7 +13,6 @@ define( function( require ) {
   var Curve = require( 'CURVE_FITTING/curve-fitting/model/Curve' );
   var FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Point = require( 'CURVE_FITTING/curve-fitting/model/Point' );
   var PropertySet = require( 'AXON/PropertySet' );
 
   /**
@@ -48,10 +47,5 @@ define( function( require ) {
       // reset curve
       this.curve.reset();
     },
-
-    // return new point model
-    getPoint: function( position ) {
-      return new Point( position );
-    }
   } );
 } );

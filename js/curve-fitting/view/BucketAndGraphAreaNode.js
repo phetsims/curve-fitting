@@ -16,6 +16,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var Point = require( 'CURVE_FITTING/curve-fitting/model/Point' );
   var PointNode = require( 'CURVE_FITTING/curve-fitting/view/PointNode' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
@@ -49,7 +50,7 @@ define( function( require ) {
     var point = null;
     bucketNode.addInputListener( new SimpleDragHandler( {
       start: function( e ) {
-        point = CurveFittingModel.getPoint( e.pointer.point );
+        point = new Point( e.pointer.point );
         graphAreaNode.setValues( point );
         CurveFittingModel.curve.points.add( point );
       },
