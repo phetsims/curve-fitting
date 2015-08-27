@@ -313,33 +313,10 @@ define( function( require ) {
         if ( this._fitType.value === FitType.BEST ) {
           var fit = this.fitMaker.getFit( this.getPoints(), this._orderOfFit.value );
 
-          if ( !isNaN( fit[ 0 ] ) && isFinite( fit[ 0 ] ) ) {
-            this.d = fit[ 0 ];
-          }
-          else {
-            this.d = 0;
-          }
-
-          if ( !isNaN( fit[ 1 ] ) && isFinite( fit[ 1 ] ) ) {
-            this.c = fit[ 1 ];
-          }
-          else {
-            this.c = 0;
-          }
-
-          if ( !isNaN( fit[ 2 ] ) && isFinite( fit[ 2 ] ) ) {
-            this.b = fit[ 2 ];
-          }
-          else {
-            this.b = 0;
-          }
-
-          if ( !isNaN( fit[ 3 ] ) && isFinite( fit[ 3 ] ) ) {
-            this.a = fit[ 3 ];
-          }
-          else {
-            this.a = 0;
-          }
+          this.d = isFinite( fit[ 0 ] ) ? fit[ 0 ] : 0;
+          this.c = isFinite( fit[ 1 ] ) ? fit[ 1 ] : 0;
+          this.b = isFinite( fit[ 2 ] ) ? fit[ 2 ] : 0;
+          this.a = isFinite( fit[ 3 ] ) ? fit[ 3 ] : 0;
         }
 
         this.setReducedChiSquare();
