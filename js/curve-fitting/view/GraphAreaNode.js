@@ -33,12 +33,12 @@ define( function( require ) {
   /**
    * @param {Curve} curve model.
    * @param {Property.<number>} orderOfFitProperty - Property with current order of fit.
-   * @param {Property.<boolean>} isResidualsVisibleProperty - Property to track residuals visibility.
+   * @param {Property.<boolean>} areResidualsVisibleProperty - Property to track residuals visibility.
    * @param {Bounds2} plotBounds of graph area.
    * @param {Object} [options] for graph node.
    * @constructor
    */
-  function GraphAreaNode( curve, orderOfFitProperty, isResidualsVisibleProperty, plotBounds, options ) {
+  function GraphAreaNode( curve, orderOfFitProperty, areResidualsVisibleProperty, plotBounds, options ) {
     var self = this;
     var size = new Dimension2( (plotBounds.maxX - plotBounds.minX) * CurveFittingConstants.PIXELS_IN_TICK, (plotBounds.maxY - plotBounds.minY) * CurveFittingConstants.PIXELS_IN_TICK );
 
@@ -120,7 +120,7 @@ define( function( require ) {
         }
 
         // update residuals
-        if ( isResidualsVisibleProperty.value ) {
+        if ( areResidualsVisibleProperty.value ) {
           residualsShape = new Shape();
 
           points.forEach( function( point ) {
@@ -147,7 +147,7 @@ define( function( require ) {
     curve.isVisibleProperty.linkAttribute( curvePath, 'visible' );
     curve.updateCurveTriggerProperty.lazyLink( updateShape );
     orderOfFitProperty.lazyLink( updateShape );
-    isResidualsVisibleProperty.link( updateShape );
+    areResidualsVisibleProperty.link( updateShape );
   }
 
   return inherit( Node, GraphAreaNode, {

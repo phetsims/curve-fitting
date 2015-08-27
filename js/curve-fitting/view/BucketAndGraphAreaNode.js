@@ -31,7 +31,7 @@ define( function( require ) {
     var bucketNode = new BucketNode();
 
     // create graph area node
-    var graphAreaNode = new GraphAreaNode( CurveFittingModel.curve, CurveFittingModel.orderOfFitProperty, CurveFittingModel.isResidualsVisibleProperty, CurveFittingModel.graphArea );
+    var graphAreaNode = new GraphAreaNode( CurveFittingModel.curve, CurveFittingModel.orderOfFitProperty, CurveFittingModel.areResidualsVisibleProperty, CurveFittingModel.graphArea );
 
     // add equation node
     var equationGraphPanelNode = new EquationGraphPanelNode( CurveFittingModel.isEquationPanelExpandedProperty, CurveFittingModel.curve, CurveFittingModel.orderOfFitProperty, { centerY: 20 } );
@@ -72,7 +72,7 @@ define( function( require ) {
     var pointsNode = new Node();
     this.addChild( pointsNode );
     CurveFittingModel.curve.points.addItemAddedListener( function( pointModel ) {
-      var pointView = new PointNode( pointModel, CurveFittingModel.curve.points, CurveFittingModel.isValuesVisibleProperty, CurveFittingModel.isResidualsVisibleProperty, self, graphAreaNode );
+      var pointView = new PointNode( pointModel, CurveFittingModel.curve.points, CurveFittingModel.areValuesVisibleProperty, CurveFittingModel.areResidualsVisibleProperty, self, graphAreaNode );
       pointStorage.push( { model: pointModel, view: pointView } );
       pointsNode.addChild( pointView );
     } );

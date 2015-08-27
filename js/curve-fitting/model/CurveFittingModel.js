@@ -22,8 +22,8 @@ define( function( require ) {
    */
   function CurveFittingModel() {
     PropertySet.call( this, {
-      isResidualsVisible: false, // residuals visibility flag
-      isValuesVisible: false, // values visibility flag
+      areResidualsVisible: false, // residuals visibility flag
+      areValuesVisible: false, // values visibility flag
       orderOfFit: 1, // property to control curve type
       fitType: FitType.BEST, // property to control fit type
       isDeviationPanelExpanded: true, // property to control deviation panel expansion

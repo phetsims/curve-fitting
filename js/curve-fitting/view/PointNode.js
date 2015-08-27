@@ -49,14 +49,14 @@ define( function( require ) {
   /**
    * @param {PropertySet} pointModel - Model for single point.
    * @param {ObservableArray} curveModelPoints - Array of points for plotting curve.
-   * @param {Property.<boolean>} isValuesVisibleProperty - Property to control visibility of values.
-   * @param {Property.<boolean>} isResidualsVisibleProperty - Property to track residuals visibility.
+   * @param {Property.<boolean>} areValuesVisibleProperty - Property to control visibility of values.
+   * @param {Property.<boolean>} areResidualsVisibleProperty - Property to track residuals visibility.
    * @param {Node} parentNode - Parent node of point
    * @param {Node} graphAreaNode - Node of graph area.
    * @param {Object} [options] for graph node.
    * @constructor
    */
-  function PointNode( pointModel, curveModelPoints, isValuesVisibleProperty, isResidualsVisibleProperty, parentNode, graphAreaNode, options ) {
+  function PointNode( pointModel, curveModelPoints, areValuesVisibleProperty, areResidualsVisibleProperty, parentNode, graphAreaNode, options ) {
     var self = this;
 
     Node.call( this, _.extend( { cursor: 'pointer' }, options ) );
@@ -230,8 +230,8 @@ define( function( require ) {
         valueTextLabel.setText( '' );
       }
     };
-    isValuesVisibleProperty.linkAttribute( valueTextLabel, 'visible' );
-    isValuesVisibleProperty.onValue( true, updateValueText );
+    areValuesVisibleProperty.linkAttribute( valueTextLabel, 'visible' );
+    areValuesVisibleProperty.onValue( true, updateValueText );
     pointModel.positionProperty.lazyLink( updateValueText );
 
     var updateDeltaText = function() {
@@ -239,13 +239,13 @@ define( function( require ) {
         deltaTextLabel.setText( StringUtils.format( pattern_delta_0valueDelta, Util.toFixed( pointModel.delta, 1 ) ) );
       }
     };
-    isValuesVisibleProperty.onValue( true, updateDeltaText );
-    isValuesVisibleProperty.linkAttribute( deltaTextLabel, 'visible' );
+    areValuesVisibleProperty.onValue( true, updateDeltaText );
+    areValuesVisibleProperty.linkAttribute( deltaTextLabel, 'visible' );
     pointModel.deltaProperty.lazyLink( updateDeltaText );
 
     // change appearance when residuals active
-    isResidualsVisibleProperty.link( function( isResidualsVisible ) {
-      if ( isResidualsVisible ) {
+    areResidualsVisibleProperty.link( function( areResidualsVisible ) {
+      if ( areResidualsVisible ) {
         centralLine.visible = false;
         errorBarTopNode.setFill( CurveFittingConstants.LIGHT_GRAY_COLOR );
         errorBarBottomNode.setFill( CurveFittingConstants.LIGHT_GRAY_COLOR );
