@@ -98,7 +98,7 @@ define( function( require ) {
       var d = curve.d;
       var x;
 
-      if ( (points.length > 1 || curve._fitType.value === FitType.ADJUSTABLE) && !isNaN( a ) && !isNaN( b ) && !isNaN( c ) && !isNaN( d ) ) {
+      if ( (points.length > 1 || curve._fitTypeProperty.value === FitType.ADJUSTABLE) && !isNaN( a ) && !isNaN( b ) && !isNaN( c ) && !isNaN( d ) ) {
         curveShape = new Shape();
 
         // update curve view

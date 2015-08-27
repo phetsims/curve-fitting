@@ -46,8 +46,8 @@ define( function( require ) {
     this.yDeviationSquaredSum = 0;
 
     // save link to property
-    this._orderOfFit = orderOfFitProperty;
-    this._fitType = fitTypeProperty;
+    this._orderOfFitProperty = orderOfFitProperty;
+    this._fitTypeProperty = fitTypeProperty;
 
     // points for plotting curve
     this.points = new ObservableArray();
@@ -277,7 +277,7 @@ define( function( require ) {
     // set x^2-deviation for current point
     setReducedChiSquare: function() {
       var points = this.getPoints();
-      var orderOfFit = this._orderOfFit.value;
+      var orderOfFit = this._orderOfFitProperty.value;
       var degOfFreedom = points.length - orderOfFit - 1;
 
       if ( points.length > orderOfFit + 1 ) {
@@ -310,8 +310,8 @@ define( function( require ) {
     updateFit: function() {
       // update only when curve visible
       if ( this.isVisible ) {
-        if ( this._fitType.value === FitType.BEST ) {
-          var fit = this.fitMaker.getFit( this.getPoints(), this._orderOfFit.value );
+        if ( this._fitTypeProperty.value === FitType.BEST ) {
+          var fit = this.fitMaker.getFit( this.getPoints(), this._orderOfFitProperty.value );
 
           this.d = isFinite( fit[ 0 ] ) ? fit[ 0 ] : 0;
           this.c = isFinite( fit[ 1 ] ) ? fit[ 1 ] : 0;
