@@ -40,7 +40,7 @@ define( function( require ) {
    */
   function GraphAreaNode( curve, orderOfFitProperty, areResidualsVisibleProperty, plotBounds, options ) {
     var self = this;
-    var size = new Dimension2( (plotBounds.maxX - plotBounds.minX) * CurveFittingConstants.PIXELS_IN_TICK, (plotBounds.maxY - plotBounds.minY) * CurveFittingConstants.PIXELS_IN_TICK );
+    var size = new Dimension2( ( plotBounds.maxX - plotBounds.minX ) * CurveFittingConstants.PIXELS_IN_TICK, ( plotBounds.maxY - plotBounds.minY ) * CurveFittingConstants.PIXELS_IN_TICK );
 
     Node.call( this, options );
     this._plotBounds = plotBounds;
@@ -98,7 +98,7 @@ define( function( require ) {
       var d = curve.d;
       var x;
 
-      if ( (points.length > 1 || curve._fitTypeProperty.value === FitType.ADJUSTABLE) && !isNaN( a ) && !isNaN( b ) && !isNaN( c ) && !isNaN( d ) ) {
+      if ( ( points.length > 1 || curve._fitTypeProperty.value === FitType.ADJUSTABLE ) && !isNaN( a ) && !isNaN( b ) && !isNaN( c ) && !isNaN( d ) ) {
         curveShape = new Shape();
 
         // update curve view
@@ -109,13 +109,13 @@ define( function( require ) {
         else if ( orderOfFit === 2 ) {
           for ( x = xMin; x < xMax; x += PLOT_STEP ) {
             curveShape.moveToPoint( self.getPositionFromGraphValues( x, a * Math.pow( x, 3 ) + b * Math.pow( x, 2 ) + c * x + d ) );
-            curveShape.lineToPoint( self.getPositionFromGraphValues( x + PLOT_STEP, a * Math.pow( x + PLOT_STEP, 3 ) + b * Math.pow( x + PLOT_STEP, 2 ) + c * (x + PLOT_STEP) + d ) );
+            curveShape.lineToPoint( self.getPositionFromGraphValues( x + PLOT_STEP, a * Math.pow( x + PLOT_STEP, 3 ) + b * Math.pow( x + PLOT_STEP, 2 ) + c * ( x + PLOT_STEP ) + d ) );
           }
         }
         else if ( orderOfFit === 3 ) {
           for ( x = xMin; x < xMax; x += PLOT_STEP ) {
             curveShape.moveToPoint( self.getPositionFromGraphValues( x, a * Math.pow( x, 3 ) + b * Math.pow( x, 2 ) + c * x + d ) );
-            curveShape.lineToPoint( self.getPositionFromGraphValues( x + PLOT_STEP, a * Math.pow( x + PLOT_STEP, 3 ) + b * Math.pow( x + PLOT_STEP, 2 ) + c * (x + PLOT_STEP) + d ) );
+            curveShape.lineToPoint( self.getPositionFromGraphValues( x + PLOT_STEP, a * Math.pow( x + PLOT_STEP, 3 ) + b * Math.pow( x + PLOT_STEP, 2 ) + c * ( x + PLOT_STEP ) + d ) );
           }
         }
 
@@ -169,16 +169,16 @@ define( function( require ) {
       var locPosition = this.globalToParentPoint( globalPosition );
 
       return {
-        x: Util.toFixedNumber( this._plotBounds.minX + this._plotBounds.width * (locPosition.x - this.bounds.minX) / this.width, 1 ),
-        y: -Util.toFixedNumber( this._plotBounds.minY + this._plotBounds.height * (locPosition.y - this.bounds.minY) / this.height, 1 )
+        x: Util.toFixedNumber( this._plotBounds.minX + this._plotBounds.width * ( locPosition.x - this.bounds.minX ) / this.width, 1 ),
+        y: -Util.toFixedNumber( this._plotBounds.minY + this._plotBounds.height * ( locPosition.y - this.bounds.minY ) / this.height, 1 )
       };
     },
 
     // convert global coordinates to graph values
     getPositionFromGraphValues: function( x, y ) {
       return new Vector2(
-        (( x - this._plotBounds.minX ) / (this._plotBounds.width)) * this._size.width,
-        (( -y - this._plotBounds.minY ) / (this._plotBounds.height)) * this._size.height
+        (( x - this._plotBounds.minX ) / ( this._plotBounds.width )) * this._size.width,
+        (( -y - this._plotBounds.minY ) / ( this._plotBounds.height )) * this._size.height
       );
     },
 

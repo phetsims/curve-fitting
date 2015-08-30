@@ -89,7 +89,7 @@ define( function( require ) {
     } ) );
 
     // top error bar line halo node
-    var haloErrorBarTopNode = new Rectangle( -(ERROR_BAR_WIDTH + HALO_RECT_OFFSET) / 2, -HALO_RECT_OFFSET / 2,
+    var haloErrorBarTopNode = new Rectangle( -( ERROR_BAR_WIDTH + HALO_RECT_OFFSET ) / 2, -HALO_RECT_OFFSET / 2,
       HALO_RECT_OFFSET + ERROR_BAR_WIDTH, HALO_RECT_OFFSET + ERROR_BAR_HEIGHT,
       { fill: BAR_COLOR.withAlpha( HALO_ALPHA ), pickable: false, visible: false } );
 
@@ -121,7 +121,7 @@ define( function( require ) {
     } ) );
 
     // bottom error bar line halo node
-    var haloTopBarBottomNode = new Rectangle( -(ERROR_BAR_WIDTH + HALO_RECT_OFFSET) / 2, -HALO_RECT_OFFSET / 2,
+    var haloTopBarBottomNode = new Rectangle( -( ERROR_BAR_WIDTH + HALO_RECT_OFFSET ) / 2, -HALO_RECT_OFFSET / 2,
       HALO_RECT_OFFSET + ERROR_BAR_WIDTH, HALO_RECT_OFFSET + ERROR_BAR_HEIGHT,
       { fill: BAR_COLOR.withAlpha( HALO_ALPHA ), pickable: false, visible: false } );
 

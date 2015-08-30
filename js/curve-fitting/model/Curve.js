@@ -129,22 +129,22 @@ define( function( require ) {
       upperBound = upperLimitArr[ numberOfPoints - 1 ];
     }
     else if ( numberOfPoints >= 11 || numberOfPoints < 20 ) {
-      lowerBound = (lowerLimitArray[ 9 ] + lowerLimitArray[ 10 ]) / 2;
-      upperBound = (upperLimitArr[ 9 ] + upperLimitArr[ 10 ]) / 2;
+      lowerBound = ( lowerLimitArray[ 9 ] + lowerLimitArray[ 10 ] ) / 2;
+      upperBound = ( upperLimitArr[ 9 ] + upperLimitArr[ 10 ] ) / 2;
     }
     else if ( numberOfPoints >= 20 || numberOfPoints < 50 ) {
-      lowerBound = (lowerLimitArray[ 10 ] + lowerLimitArray[ 11 ]) / 2;
-      upperBound = (upperLimitArr[ 10 ] + upperLimitArr[ 11 ]) / 2;
+      lowerBound = ( lowerLimitArray[ 10 ] + lowerLimitArray[ 11 ] ) / 2;
+      upperBound = ( upperLimitArr[ 10 ] + upperLimitArr[ 11 ] ) / 2;
     }
     else if ( numberOfPoints >= 50 ) {
       lowerBound = lowerLimitArray[ 12 ];
       upperBound = upperLimitArr[ 12 ];
     }
 
-    var step1 = (1 + upperBound) / 2;
-    var step2 = (lowerBound + 1) / 2;
-    var step3 = (upperBound + step1) / 2;
-    var step4 = (lowerBound + step2) / 2;
+    var step1 = ( 1 + upperBound ) / 2;
+    var step2 = ( lowerBound + 1 ) / 2;
+    var step3 = ( upperBound + step1 ) / 2;
+    var step4 = ( lowerBound + step2 ) / 2;
 
     if ( chiValue < lowerBound ) {
       red = 0;
@@ -153,11 +153,11 @@ define( function( require ) {
     }
     else if ( chiValue >= lowerBound && chiValue < step4 ) {
       red = 0;
-      green = 255 * (chiValue - lowerBound) / (step4 - lowerBound);
+      green = 255 * ( chiValue - lowerBound ) / ( step4 - lowerBound );
       blue = 255;
     }
     else if ( chiValue >= step4 && chiValue < step2 ) {
-      blue = 255 * (step2 - chiValue) / (step2 - step4);
+      blue = 255 * ( step2 - chiValue ) / ( step2 - step4 );
       green = 255;
       red = 0;
     }
@@ -167,13 +167,13 @@ define( function( require ) {
       blue = 0;
     }
     else if ( chiValue > step1 && chiValue < step3 ) {
-      red = 255 * (chiValue - step1) / (step3 - step1);
+      red = 255 * ( chiValue - step1 ) / ( step3 - step1 );
       green = 255;
       blue = 0;
     }
     else if ( chiValue >= step3 && chiValue < upperBound ) {
       red = 255;
-      green = 255 * (upperBound - chiValue) / (upperBound - step3);
+      green = 255 * ( upperBound - chiValue ) / ( upperBound - step3 );
       blue = 0;
     }
     else if ( chiValue >= upperBound ) {
@@ -214,8 +214,8 @@ define( function( require ) {
         y = points[ i ].y;
         x = points[ i ].x;
         yApproximated = this.d + this.c * x + this.b * x * x + this.a * x * x * x;
-        yDeviationSquared = (y - yApproximated) * (y - yApproximated);
-        sum = sum + yDeviationSquared / ( points[ i ].delta * points[ i ].delta);
+        yDeviationSquared = ( y - yApproximated ) * ( y - yApproximated );
+        sum = sum + yDeviationSquared / ( points[ i ].delta * points[ i ].delta );
         this.yDeviationSquaredSum += yDeviationSquared;
       }
 
@@ -299,7 +299,7 @@ define( function( require ) {
     },
 
     // restore values from storage. Necessary when switching back from adjustable mode
-    restoreValuesFromStorage: function(){
+    restoreValuesFromStorage: function() {
       this.a = this._storage.a;
       this.b = this._storage.b;
       this.c = this._storage.c;
