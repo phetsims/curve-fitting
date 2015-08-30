@@ -12,7 +12,7 @@ define( function( require ) {
   var Bounds2 = require( 'DOT/Bounds2' );
   var BucketAndGraphAreaNode = require( 'CURVE_FITTING/curve-fitting/view/BucketAndGraphAreaNode' );
   var ControlMenuNode = require( 'CURVE_FITTING/curve-fitting/view/ControlMenuNode' );
-  var DeviationsNode = require( 'CURVE_FITTING/curve-fitting/view/DeviationsNode' );
+  var DeviationsPanel = require( 'CURVE_FITTING/curve-fitting/view/DeviationsPanel' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
@@ -30,10 +30,10 @@ define( function( require ) {
     ScreenView.call( this, { layoutBounds: SIM_BOUNDS } );
 
     // add deviations node
-    var deviationsNode = new DeviationsNode( curveFittingModel.isDeviationPanelExpandedProperty, curveFittingModel.curve.chiSquareProperty, curveFittingModel.curve.chiFillProperty, curveFittingModel.curve.rSquareProperty );
-    deviationsNode.centerX = deviationsNode.width / 2 + PADDING_LEFT_RIGHT;
-    deviationsNode.centerY = deviationsNode.height / 2 + PADDING_TOP_BOTTOM;
-    this.addChild( deviationsNode );
+    var deviationsPanel = new DeviationsPanel( curveFittingModel.isDeviationPanelExpandedProperty, curveFittingModel.curve.chiSquareProperty, curveFittingModel.curve.chiFillProperty, curveFittingModel.curve.rSquareProperty );
+    deviationsPanel.centerX = deviationsPanel.width / 2 + PADDING_LEFT_RIGHT;
+    deviationsPanel.centerY = deviationsPanel.height / 2 + PADDING_TOP_BOTTOM;
+    this.addChild( deviationsPanel );
 
     // add control menu node
     var controlMenuNode = new ControlMenuNode( curveFittingModel );

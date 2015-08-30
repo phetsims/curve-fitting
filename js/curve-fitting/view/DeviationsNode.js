@@ -1,7 +1,7 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Deviations node in 'Curve Fitting' simulation.
+ * Deviations panel in 'Curve Fitting' simulation.
  * Contains X^2 barometer, r^2 barometer and menu dialog.
  *
  * @author Andrey Zelenkov (Mlearner)
@@ -69,7 +69,7 @@ define( function( require ) {
    * @param {Object} [options] for graph node
    * @constructor
    */
-  function DeviationsNode( isDeviationPanelExpandedProperty, chiSquareProperty, chiFillProperty, rSquareProperty, options ) {
+  function DeviationsPanel( isDeviationPanelExpandedProperty, chiSquareProperty, chiFillProperty, rSquareProperty, options ) {
 
     // create expand button
     var expandCollapseButton = new ExpandCollapseButton( isDeviationPanelExpandedProperty, {
@@ -184,5 +184,5 @@ define( function( require ) {
     Panel.call( this, content, PANEL_OPTIONS );
   }
 
-  return inherit( Panel, DeviationsNode );
+  return inherit( Panel, DeviationsPanel );
 } );
