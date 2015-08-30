@@ -40,7 +40,7 @@ define( function( require ) {
    */
   function GraphAreaNode( curve, orderOfFitProperty, areResidualsVisibleProperty, plotBounds, options ) {
     var self = this;
-    var size = new Dimension2( ( plotBounds.maxX - plotBounds.minX ) * CurveFittingConstants.PIXELS_IN_TICK, ( plotBounds.maxY - plotBounds.minY ) * CurveFittingConstants.PIXELS_IN_TICK );
+    var size = new Dimension2( plotBounds.width * CurveFittingConstants.PIXELS_IN_TICK, plotBounds.height * CurveFittingConstants.PIXELS_IN_TICK );
 
     Node.call( this, options );
     this._plotBounds = plotBounds;
