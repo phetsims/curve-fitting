@@ -306,7 +306,7 @@ define( function( require ) {
       this.d = this._storage.d;
     },
 
-    // update fir for current points
+    // update fit for current points
     updateFit: function() {
       // update only when curve visible
       if ( this.isVisible ) {

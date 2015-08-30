@@ -41,7 +41,7 @@ define( function( require ) {
     controlMenuNode.centerY = PADDING_TOP_BOTTOM + controlMenuNode.height / 2;
     this.addChild( controlMenuNode );
 
-    // add bucket adn graph area node
+    // add bucket and graph area node
     var bucketAndGraphAreaNode = new BucketAndGraphAreaNode( curveFittingModel );
     bucketAndGraphAreaNode.centerX = bucketAndGraphAreaNode.width / 2 + PADDING_LEFT_RIGHT + 25;
     bucketAndGraphAreaNode.centerY = bucketAndGraphAreaNode.height / 2 + PADDING_TOP_BOTTOM;
