@@ -21,21 +21,21 @@ define( function( require ) {
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
   /**
-   * @param {CurveFittingModel} CurveFittingModel
+   * @param {CurveFittingModel} curveFittingModel
    * @param {Object} [options] for graph node
    * @constructor
    */
-  function BucketAndGraphAreaNode( CurveFittingModel, options ) {
+  function BucketAndGraphAreaNode( curveFittingModel, options ) {
     var self = this;
 
     // create bucket node
     var bucketNode = new BucketNode();
 
     // create graph area node
-    var graphAreaNode = new GraphAreaNode( CurveFittingModel.curve, CurveFittingModel.orderOfFitProperty, CurveFittingModel.areResidualsVisibleProperty, CurveFittingModel.graphArea );
+    var graphAreaNode = new GraphAreaNode( curveFittingModel.curve, curveFittingModel.orderOfFitProperty, curveFittingModel.areResidualsVisibleProperty, curveFittingModel.graphArea );
 
     // add equation node
-    var equationGraphPanelNode = new EquationGraphPanelNode( CurveFittingModel.isEquationPanelExpandedProperty, CurveFittingModel.curve, CurveFittingModel.orderOfFitProperty, { centerY: 20 } );
+    var equationGraphPanelNode = new EquationGraphPanelNode( curveFittingModel.isEquationPanelExpandedProperty, curveFittingModel.curve, curveFittingModel.orderOfFitProperty, { centerY: 20 } );
 
     HBox.call( this, _.extend( {
       spacing: 30,
@@ -52,7 +52,7 @@ define( function( require ) {
       start: function( e ) {
         point = new Point( e.pointer.point );
         graphAreaNode.setValues( point );
-        CurveFittingModel.curve.points.add( point );
+        curveFittingModel.curve.points.add( point );
       },
       drag: function( e ) {
         if ( point ) {
@@ -62,7 +62,7 @@ define( function( require ) {
       },
       end: function() {
         if ( !graphAreaNode.checkDropPointAndSetValues( point ) ) {
-          CurveFittingModel.curve.points.remove( point );
+          curveFittingModel.curve.points.remove( point );
         }
 
         point = null;
@@ -72,13 +72,13 @@ define( function( require ) {
     var pointStorage = [];
     var pointsNode = new Node();
     this.addChild( pointsNode );
-    CurveFittingModel.curve.points.addItemAddedListener( function( pointModel ) {
-      var pointView = new PointNode( pointModel, CurveFittingModel.curve.points, CurveFittingModel.areValuesVisibleProperty, CurveFittingModel.areResidualsVisibleProperty, self, graphAreaNode );
+    curveFittingModel.curve.points.addItemAddedListener( function( pointModel ) {
+      var pointView = new PointNode( pointModel, curveFittingModel.curve.points, curveFittingModel.areValuesVisibleProperty, curveFittingModel.areResidualsVisibleProperty, self, graphAreaNode );
       pointStorage.push( { model: pointModel, view: pointView } );
       pointsNode.addChild( pointView );
     } );
 
-    CurveFittingModel.curve.points.addItemRemovedListener( function( pointModel ) {
+    curveFittingModel.curve.points.addItemRemovedListener( function( pointModel ) {
       pointsNode.removeChild( _.find( pointStorage, { model: pointModel } ).view );
     } );
   }

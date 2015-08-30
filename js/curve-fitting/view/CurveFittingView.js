@@ -23,33 +23,33 @@ define( function( require ) {
   var SIM_BOUNDS = new Bounds2( 0, 0, 768, 504 );
 
   /**
-   * @param {CurveFittingModel} CurveFittingModel
+   * @param {CurveFittingModel} curveFittingModel
    * @constructor
    */
-  function CurveFittingView( CurveFittingModel ) {
+  function CurveFittingView( curveFittingModel ) {
     ScreenView.call( this, { layoutBounds: SIM_BOUNDS } );
 
     // add deviations node
-    var deviationsNode = new DeviationsNode( CurveFittingModel.isDeviationPanelExpandedProperty, CurveFittingModel.curve.chiSquareProperty, CurveFittingModel.curve.chiFillProperty, CurveFittingModel.curve.rSquareProperty );
+    var deviationsNode = new DeviationsNode( curveFittingModel.isDeviationPanelExpandedProperty, curveFittingModel.curve.chiSquareProperty, curveFittingModel.curve.chiFillProperty, curveFittingModel.curve.rSquareProperty );
     deviationsNode.centerX = deviationsNode.width / 2 + PADDING_LEFT_RIGHT;
     deviationsNode.centerY = deviationsNode.height / 2 + PADDING_TOP_BOTTOM;
     this.addChild( deviationsNode );
 
     // add control menu node
-    var controlMenuNode = new ControlMenuNode( CurveFittingModel );
+    var controlMenuNode = new ControlMenuNode( curveFittingModel );
     controlMenuNode.centerX = SIM_BOUNDS.width - PADDING_LEFT_RIGHT - controlMenuNode.width / 2;
     controlMenuNode.centerY = PADDING_TOP_BOTTOM + controlMenuNode.height / 2;
     this.addChild( controlMenuNode );
 
     // add bucket adn graph area node
-    var bucketAndGraphAreaNode = new BucketAndGraphAreaNode( CurveFittingModel );
+    var bucketAndGraphAreaNode = new BucketAndGraphAreaNode( curveFittingModel );
     bucketAndGraphAreaNode.centerX = bucketAndGraphAreaNode.width / 2 + PADDING_LEFT_RIGHT + 25;
     bucketAndGraphAreaNode.centerY = bucketAndGraphAreaNode.height / 2 + PADDING_TOP_BOTTOM;
     this.addChild( bucketAndGraphAreaNode );
 
     // add reset all button
     var resetAllButton = new ResetAllButton( {
-      listener: CurveFittingModel.reset.bind( CurveFittingModel )
+      listener: curveFittingModel.reset.bind( curveFittingModel )
     } );
     resetAllButton.scale( 0.75 );
     resetAllButton.centerX = SIM_BOUNDS.width - resetAllButton.width / 2 - PADDING_LEFT_RIGHT;

@@ -44,11 +44,11 @@ define( function( require ) {
   };
 
   /**
-   * @param {CurveFittingModel} CurveFittingModel
+   * @param {CurveFittingModel} curveFittingModel
    * @param {Object} [options] for graph node
    * @constructor
    */
-  function ControlMenuNode( CurveFittingModel, options ) {
+  function ControlMenuNode( curveFittingModel, options ) {
     VBox.call( this, _.extend( { spacing: 10 }, options ) );
 
     // create label for residual check box
@@ -58,14 +58,14 @@ define( function( require ) {
     };
 
     // create options check boxes
-    var residualCheckBox = new CheckBox( residualCheckBoxLabel, CurveFittingModel.areResidualsVisibleProperty, CHECK_BOX_OPTIONS );
+    var residualCheckBox = new CheckBox( residualCheckBoxLabel, curveFittingModel.areResidualsVisibleProperty, CHECK_BOX_OPTIONS );
     var checkBoxGroup = new VBox( {
       spacing: 5,
       align: 'left',
       children: [
-        new CheckBox( new Text( CurveString, { font: FONT } ), CurveFittingModel.curve.isVisibleProperty, CHECK_BOX_OPTIONS ),
+        new CheckBox( new Text( CurveString, { font: FONT } ), curveFittingModel.curve.isVisibleProperty, CHECK_BOX_OPTIONS ),
         residualCheckBox,
-        new CheckBox( new Text( ValuesString, { font: FONT } ), CurveFittingModel.areValuesVisibleProperty, CHECK_BOX_OPTIONS )
+        new CheckBox( new Text( ValuesString, { font: FONT } ), curveFittingModel.areValuesVisibleProperty, CHECK_BOX_OPTIONS )
       ]
     } );
     checkBoxGroup.localBounds = checkBoxGroup.localBounds.withMaxX( Math.max( checkBoxGroup.localBounds.maxX, CurveFittingConstants.PANEL_WIDTH ) );
@@ -74,20 +74,20 @@ define( function( require ) {
 
     // create curve type radio buttons
     var curveTypeRadioButtonGroup = new VerticalAquaRadioButtonGroup( [
-      { property: CurveFittingModel.orderOfFitProperty, node: new Text( LinearString, { font: FONT } ), value: 1 },
-      { property: CurveFittingModel.orderOfFitProperty, node: new Text( QuadraticString, { font: FONT } ), value: 2 },
-      { property: CurveFittingModel.orderOfFitProperty, node: new Text( CubicString, { font: FONT } ), value: 3 }
+      { property: curveFittingModel.orderOfFitProperty, node: new Text( LinearString, { font: FONT } ), value: 1 },
+      { property: curveFittingModel.orderOfFitProperty, node: new Text( QuadraticString, { font: FONT } ), value: 2 },
+      { property: curveFittingModel.orderOfFitProperty, node: new Text( CubicString, { font: FONT } ), value: 3 }
     ], RADIO_BUTTON_MENU_OPTIONS );
     curveTypeRadioButtonGroup.localBounds = curveTypeRadioButtonGroup.localBounds.withMaxX( Math.max( curveTypeRadioButtonGroup.localBounds.maxX, CurveFittingConstants.PANEL_WIDTH - RADIO_BUTTON_MENU_OPTIONS.radius ) );
     var curveTypePanel = new Panel( curveTypeRadioButtonGroup, PANEL_OPTIONS );
     this.addChild( curveTypePanel );
 
     // create fit type menu
-    var fitTypeMenu = new FitTypeMenu( CurveFittingModel.curve, CurveFittingModel.fitTypeProperty, CurveFittingModel.orderOfFitProperty, CurveFittingModel.maxOrderOfFit );
+    var fitTypeMenu = new FitTypeMenu( curveFittingModel.curve, curveFittingModel.fitTypeProperty, curveFittingModel.orderOfFitProperty, curveFittingModel.maxOrderOfFit );
     this.addChild( fitTypeMenu );
 
     // add observers
-    CurveFittingModel.curve.isVisibleProperty.link( function( isCurveVisible ) {
+    curveFittingModel.curve.isVisibleProperty.link( function( isCurveVisible ) {
       if ( isCurveVisible ) {
         curveTypePanel.visible = true;
         fitTypeMenu.visible = true;
