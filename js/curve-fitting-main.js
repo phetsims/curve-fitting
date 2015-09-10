@@ -14,7 +14,7 @@ define( function( require ) {
   var SimLauncher = require( 'JOIST/SimLauncher' );
 
   // strings
-  var simTitle = require( 'string!CURVE_FITTING/curve-fitting.name' );
+  var simTitle = require( 'string!CURVE_FITTING/curve-fitting.title' );
 
   var simOptions = {
     credits: {

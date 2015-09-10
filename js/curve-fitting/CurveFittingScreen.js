@@ -15,7 +15,7 @@ define( function( require ) {
   var Screen = require( 'JOIST/Screen' );
 
   // strings
-  var curveFittingSimString = require( 'string!CURVE_FITTING/curve-fitting.name' );
+  var curveFittingSimString = require( 'string!CURVE_FITTING/curve-fitting.title' );
 
   /**
    * @constructor
