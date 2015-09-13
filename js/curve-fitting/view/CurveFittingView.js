@@ -42,6 +42,8 @@ define( function( require ) {
     this.addChild( controlMenuNode );
 
     // add bucket and graph area node
+    var graphAreaWidth = SIM_BOUNDS.width - deviationsPanel.bounds.width - controlMenuNode.bounds.width - 50;
+    curveFittingModel.graphArea.bounds.setMinMax( 0, 0, graphAreaWidth, graphAreaWidth );
     var bucketAndGraphAreaNode = new BucketAndGraphAreaNode( curveFittingModel );
     bucketAndGraphAreaNode.centerX = bucketAndGraphAreaNode.width / 2 + PADDING_LEFT_RIGHT + 25;
     bucketAndGraphAreaNode.centerY = bucketAndGraphAreaNode.height / 2 + PADDING_TOP_BOTTOM;

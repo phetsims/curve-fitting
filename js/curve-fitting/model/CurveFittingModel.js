@@ -36,7 +36,13 @@ define( function( require ) {
     this.curve = new Curve( this.orderOfFitProperty, this.fitTypeProperty, this.maxOrderOfFit );
 
     // graph area size
-    this.graphArea = new Bounds2( -10, -10, 10, 10 );
+    this.graphArea = {
+      // x-y size for point position
+      size: new Bounds2( -10, -10, 10, 10 ),
+
+      // real bounds of graph area, will be set according to available space
+      bounds: new Bounds2( 0, 0, 0, 0 )
+    };
   }
 
   return inherit( PropertySet, CurveFittingModel, {

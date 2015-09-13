@@ -80,7 +80,7 @@ define( function( require ) {
       drag: function( e ) {
         if ( isUserControlledDeltaTop ) {
           var y = self.globalToParentPoint( e.pointer.point ).y - clickYOffset;
-          pointModel.delta = Math.max( 0.1, deltaInitial - y / CurveFittingConstants.PIXELS_IN_TICK );
+          pointModel.delta = Math.max( 0.1, deltaInitial - y / graphAreaNode._graphScale );
         }
       },
       end: function() {
@@ -112,7 +112,7 @@ define( function( require ) {
       drag: function( e ) {
         if ( isUserControlledDeltaBottom ) {
           var y = self.globalToParentPoint( e.pointer.point ).y - clickYOffset;
-          pointModel.delta = Math.max( 0.1, deltaInitial + y / CurveFittingConstants.PIXELS_IN_TICK );
+          pointModel.delta = Math.max( 0.1, deltaInitial + y / graphAreaNode._graphScale );
         }
       },
       end: function() {
@@ -204,7 +204,7 @@ define( function( require ) {
     } );
 
     pointModel.deltaProperty.link( function( delta ) {
-      var lineHeight = CurveFittingConstants.PIXELS_IN_TICK * delta;
+      var lineHeight = graphAreaNode._graphScale * delta;
 
       // update top error bar
       errorBarTop.setTranslation( 0, -lineHeight - ERROR_BAR_HEIGHT / 2 );

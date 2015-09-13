@@ -19,9 +19,6 @@ define( function() {
     GRAY_COLOR: 'rgb( 107, 107, 107 )',
     LIGHT_GRAY_COLOR: 'rgb( 201, 201, 202 )',
 
-    // graph
-    PIXELS_IN_TICK: 22,
-
     // point
     POINT_FILL: 'rgb( 252, 151, 64 )',
     POINT_RADIUS: 6,

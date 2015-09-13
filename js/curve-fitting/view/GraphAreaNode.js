@@ -34,50 +34,56 @@ define( function( require ) {
    * @param {Curve} curve model.
    * @param {Property.<number>} orderOfFitProperty - Property with current order of fit.
    * @param {Property.<boolean>} areResidualsVisibleProperty - Property to track residuals visibility.
-   * @param {Bounds2} plotBounds of graph area.
+   * @param {Object} graphAreaModel - Model of graph area.
    * @param {Object} [options] for graph node.
    * @constructor
    */
-  function GraphAreaNode( curve, orderOfFitProperty, areResidualsVisibleProperty, plotBounds, options ) {
+  function GraphAreaNode( curve, orderOfFitProperty, areResidualsVisibleProperty, graphAreaModel, options ) {
     var self = this;
-    var size = new Dimension2( plotBounds.width * CurveFittingConstants.PIXELS_IN_TICK, plotBounds.height * CurveFittingConstants.PIXELS_IN_TICK );
+    var graphAreaSize = graphAreaModel.size;
+    var graphAreaBounds = graphAreaModel.bounds;
 
     Node.call( this, options );
-    this._plotBounds = plotBounds;
-    this._size = size;
+    this._graphAreaSize = graphAreaSize;
+    this._graphAreaBounds = graphAreaBounds;
+    this._graphScale = graphAreaBounds.width / graphAreaSize.width;
 
     // add white background
-    this.addChild( new Rectangle( 0, 0, size.width, size.height, { fill: 'white', lineWidth: 2, stroke: 'rgb( 214, 223, 226 )' } ) );
+    this.addChild( new Rectangle( 0, 0, graphAreaBounds.width, graphAreaBounds.height, {
+      fill: 'white',
+      lineWidth: 2,
+      stroke: 'rgb( 214, 223, 226 )'
+    } ) );
 
     var axisShape = new Shape();
     this.addChild( new Path( axisShape, AXIS_OPTIONS ) );
 
     // add X-axis and ticks
-    axisShape.moveTo( 0, size.height / 2 );
-    axisShape.lineTo( size.width, size.height / 2 );
-    axisShape.moveTo( AXIS_OPTIONS.lineWidth / 2, size.height / 2 - TICK_LENGTH );
-    axisShape.lineTo( AXIS_OPTIONS.lineWidth / 2, size.height / 2 + TICK_LENGTH );
-    axisShape.moveTo( size.width / 4, size.height / 2 - TICK_LENGTH );
-    axisShape.lineTo( size.width / 4, size.height / 2 + TICK_LENGTH );
-    axisShape.moveTo( 3 * size.width / 4, size.height / 2 - TICK_LENGTH );
-    axisShape.lineTo( 3 * size.width / 4, size.height / 2 + TICK_LENGTH );
-    axisShape.moveTo( size.width - AXIS_OPTIONS.lineWidth / 2, size.height / 2 - TICK_LENGTH );
-    axisShape.lineTo( size.width - AXIS_OPTIONS.lineWidth / 2, size.height / 2 + TICK_LENGTH );
+    axisShape.moveTo( 0, graphAreaBounds.height / 2 );
+    axisShape.lineTo( graphAreaBounds.width, graphAreaBounds.height / 2 );
+    axisShape.moveTo( AXIS_OPTIONS.lineWidth / 2, graphAreaBounds.height / 2 - TICK_LENGTH );
+    axisShape.lineTo( AXIS_OPTIONS.lineWidth / 2, graphAreaBounds.height / 2 + TICK_LENGTH );
+    axisShape.moveTo( graphAreaBounds.width / 4, graphAreaBounds.height / 2 - TICK_LENGTH );
+    axisShape.lineTo( graphAreaBounds.width / 4, graphAreaBounds.height / 2 + TICK_LENGTH );
+    axisShape.moveTo( 3 * graphAreaBounds.width / 4, graphAreaBounds.height / 2 - TICK_LENGTH );
+    axisShape.lineTo( 3 * graphAreaBounds.width / 4, graphAreaBounds.height / 2 + TICK_LENGTH );
+    axisShape.moveTo( graphAreaBounds.width - AXIS_OPTIONS.lineWidth / 2, graphAreaBounds.height / 2 - TICK_LENGTH );
+    axisShape.lineTo( graphAreaBounds.width - AXIS_OPTIONS.lineWidth / 2, graphAreaBounds.height / 2 + TICK_LENGTH );
 
     // add Y-axis and ticks
-    axisShape.moveTo( size.width / 2, 0 );
-    axisShape.lineTo( size.width / 2, size.height );
-    axisShape.moveTo( size.width / 2 - TICK_LENGTH, AXIS_OPTIONS.lineWidth / 2 );
-    axisShape.lineTo( size.width / 2 + TICK_LENGTH, AXIS_OPTIONS.lineWidth / 2 );
-    axisShape.moveTo( size.width / 2 - TICK_LENGTH, size.height / 4 );
-    axisShape.lineTo( size.width / 2 + TICK_LENGTH, size.height / 4 );
-    axisShape.moveTo( size.width / 2 - TICK_LENGTH, 3 * size.height / 4 );
-    axisShape.lineTo( size.width / 2 + TICK_LENGTH, 3 * size.height / 4 );
-    axisShape.moveTo( size.width / 2 - TICK_LENGTH, size.height - AXIS_OPTIONS.lineWidth );
-    axisShape.lineTo( size.width / 2 + TICK_LENGTH, size.height - AXIS_OPTIONS.lineWidth );
+    axisShape.moveTo( graphAreaBounds.width / 2, 0 );
+    axisShape.lineTo( graphAreaBounds.width / 2, graphAreaBounds.height );
+    axisShape.moveTo( graphAreaBounds.width / 2 - TICK_LENGTH, AXIS_OPTIONS.lineWidth / 2 );
+    axisShape.lineTo( graphAreaBounds.width / 2 + TICK_LENGTH, AXIS_OPTIONS.lineWidth / 2 );
+    axisShape.moveTo( graphAreaBounds.width / 2 - TICK_LENGTH, graphAreaBounds.height / 4 );
+    axisShape.lineTo( graphAreaBounds.width / 2 + TICK_LENGTH, graphAreaBounds.height / 4 );
+    axisShape.moveTo( graphAreaBounds.width / 2 - TICK_LENGTH, 3 * graphAreaBounds.height / 4 );
+    axisShape.lineTo( graphAreaBounds.width / 2 + TICK_LENGTH, 3 * graphAreaBounds.height / 4 );
+    axisShape.moveTo( graphAreaBounds.width / 2 - TICK_LENGTH, graphAreaBounds.height - AXIS_OPTIONS.lineWidth );
+    axisShape.lineTo( graphAreaBounds.width / 2 + TICK_LENGTH, graphAreaBounds.height - AXIS_OPTIONS.lineWidth );
 
     // add clip area
-    this.clipArea = Shape.rect( 0, 0, size.width, size.height );
+    this.clipArea = Shape.rect( 0, 0, graphAreaBounds.width, graphAreaBounds.height );
 
     var curvePath = new Path( null, { stroke: 'black', lineWidth: 2 } );
     this.addChild( curvePath );
@@ -89,8 +95,8 @@ define( function( require ) {
       var curveShape = null;
       var residualsShape = null;
       var orderOfFit = orderOfFitProperty.value;
-      var xMin = self._plotBounds.minX;
-      var xMax = self._plotBounds.maxX;
+      var xMin = graphAreaSize.minX;
+      var xMax = graphAreaSize.maxX;
       var points = curve.getPoints();
       var a = curve.a;
       var b = curve.b;
@@ -169,16 +175,16 @@ define( function( require ) {
       var locPosition = this.globalToParentPoint( globalPosition );
 
       return {
-        x: Util.toFixedNumber( this._plotBounds.minX + this._plotBounds.width * ( locPosition.x - this.bounds.minX ) / this.width, 1 ),
-        y: -Util.toFixedNumber( this._plotBounds.minY + this._plotBounds.height * ( locPosition.y - this.bounds.minY ) / this.height, 1 )
+        x: Util.toFixedNumber( this._graphAreaSize.minX + this._graphAreaSize.width * ( locPosition.x - this.bounds.minX ) / this.width, 1 ),
+        y: -Util.toFixedNumber( this._graphAreaSize.minY + this._graphAreaSize.height * ( locPosition.y - this.bounds.minY ) / this.height, 1 )
       };
     },
 
     // convert global coordinates to graph values
     getPositionFromGraphValues: function( x, y ) {
       return new Vector2(
-        (( x - this._plotBounds.minX ) / ( this._plotBounds.width )) * this._size.width,
-        (( -y - this._plotBounds.minY ) / ( this._plotBounds.height )) * this._size.height
+        (( x - this._graphAreaSize.minX ) / ( this._graphAreaSize.width )) * this._graphAreaBounds.width,
+        (( -y - this._graphAreaSize.minY ) / ( this._graphAreaSize.height )) * this._graphAreaBounds.height
       );
     },
 

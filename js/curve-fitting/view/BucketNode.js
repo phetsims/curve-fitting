@@ -48,7 +48,7 @@ define( function( require ) {
    * @constructor
    */
   function BucketNode( options ) {
-    Node.call( this, _.extend( {cursor: 'pointer'}, options ) );
+    Node.call( this, _.extend( { cursor: 'pointer' }, options ) );
 
     // create bucket
     var bucketShape = new Shape();

@@ -49,7 +49,7 @@ define( function( require ) {
    * @constructor
    */
   function ControlMenuNode( curveFittingModel, options ) {
-    VBox.call( this, _.extend( { spacing: 10 }, options ) );
+    VBox.call( this, _.extend( { align: 'left', spacing: 10 }, options ) );
 
     // create label for residual check box
     var residualCheckBoxLabel = new Text( ResidualsString, { font: FONT } );
