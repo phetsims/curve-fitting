@@ -153,7 +153,7 @@ define( function( require ) {
   return inherit( Node, GraphAreaNode, {
     // check that point dropped into graph area
     checkDropPointAndSetValues: function( point ) {
-      var isDropped = this.isContainsPoint( point );
+      var isDropped = this.isPointInsideGraph( point );
 
       if ( isDropped ) {
         this.setValues( point );
@@ -183,14 +183,14 @@ define( function( require ) {
     },
 
     // whether the point is inside the GraphAreaNode (or on the boundary)
-    isContainsPoint: function( point ) {
+    isPointInsideGraph: function( point ) {
       return this.localBounds.containsPoint( this.globalToLocalPoint( point.position ) );
     },
 
     // set value of point
     setValues: function( point ) {
       var values;
-      if ( this.isContainsPoint( point ) ) {
+      if ( this.isPointInsideGraph( point ) ) {
         values = this.getGraphValuesFromPosition( point.position );
         point.x = values.x;
         point.y = values.y;
