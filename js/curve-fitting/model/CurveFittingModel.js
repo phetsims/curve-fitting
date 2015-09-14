@@ -16,6 +16,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
   var SphereBucket = require( 'PHETCOMMON/model/SphereBucket' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   /**
    * Main constructor for CurveFittingModel, which contains all of the model logic for the entire sim screen.
@@ -38,6 +39,7 @@ define( function( require ) {
     var BUCKET_WIDTH = 90;
     var BUCKET_HEIGHT = BUCKET_WIDTH * 0.50;
     this.bucket = new SphereBucket( {
+      position: new Vector2( 0, 0 ),
       size: new Dimension2( BUCKET_WIDTH, BUCKET_HEIGHT ),
       caption: '',
       baseColor: 'rgb( 65, 63, 117 )'

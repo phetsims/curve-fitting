@@ -44,6 +44,7 @@ define( function( require ) {
     var graphAreaBounds = graphAreaModel.bounds;
 
     Node.call( this, options );
+    this.translate( graphAreaBounds.minX, graphAreaBounds.minY );
     this._graphAreaSize = graphAreaSize;
     this._graphAreaBounds = graphAreaBounds;
     this._graphScale = graphAreaBounds.width / graphAreaSize.width;

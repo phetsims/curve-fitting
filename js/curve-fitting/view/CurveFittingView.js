@@ -44,10 +44,9 @@ define( function( require ) {
 
     // add bucket and graph area node
     var graphAreaWidth = SIM_BOUNDS.width - deviationsPanel.bounds.width - controlMenuNode.bounds.width - 50;
-    curveFittingModel.graphArea.bounds.setMinMax( 0, 0, graphAreaWidth, graphAreaWidth );
+    curveFittingModel.graphArea.bounds.setMinMax( deviationsPanel.bounds.maxX + 15, PADDING_TOP_BOTTOM, deviationsPanel.bounds.maxX + 15 + graphAreaWidth, graphAreaWidth + PADDING_TOP_BOTTOM );
+    curveFittingModel.bucket.position.setXY( deviationsPanel.centerX, SIM_BOUNDS.height - PADDING_TOP_BOTTOM - curveFittingModel.bucket.size.height );
     var bucketAndGraphAreaNode = new BucketAndGraphAreaNode( curveFittingModel, modelViewTransform );
-    bucketAndGraphAreaNode.centerX = bucketAndGraphAreaNode.width / 2 + PADDING_LEFT_RIGHT + 25;
-    bucketAndGraphAreaNode.centerY = bucketAndGraphAreaNode.height / 2 + PADDING_TOP_BOTTOM;
     this.addChild( bucketAndGraphAreaNode );
 
     // add reset all button

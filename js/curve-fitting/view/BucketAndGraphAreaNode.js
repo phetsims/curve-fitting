@@ -14,7 +14,6 @@ define( function( require ) {
   var EquationGraphPanelNode = require( 'CURVE_FITTING/curve-fitting/view/EquationGraphPanelNode' );
   var GraphAreaNode = require( 'CURVE_FITTING/curve-fitting/view/GraphAreaNode' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Point = require( 'CURVE_FITTING/curve-fitting/model/Point' );
   var PointNode = require( 'CURVE_FITTING/curve-fitting/view/PointNode' );
@@ -38,13 +37,9 @@ define( function( require ) {
     // add equation node
     var equationGraphPanelNode = new EquationGraphPanelNode( curveFittingModel.isEquationPanelExpandedProperty, curveFittingModel.curve, curveFittingModel.orderOfFitProperty, { centerY: 20 } );
 
-    HBox.call( this, _.extend( {
-      spacing: 30,
-      children: [ bucketNode, graphAreaNode ],
-      resize: false,
-      align: 'bottom'
-    }, options ) );
-    this.addChild( equationGraphPanelNode );
+    Node.call( this, _.extend( { children: [
+      graphAreaNode, bucketNode, equationGraphPanelNode
+    ] }, options ) );
     equationGraphPanelNode.centerX = graphAreaNode.bounds.minX + equationGraphPanelNode.width / 2 + 10;
 
     // add drag handler
@@ -84,5 +79,5 @@ define( function( require ) {
     } );
   }
 
-  return inherit( HBox, BucketAndGraphAreaNode );
+  return inherit( Node, BucketAndGraphAreaNode );
 } );
