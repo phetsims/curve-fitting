@@ -12,7 +12,6 @@ define( function( require ) {
 
   // modules
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var Dimension2 = require( 'DOT/Dimension2' );
   var inherit = require( 'PHET_CORE/inherit' );
   var FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
   var Node = require( 'SCENERY/nodes/Node' );
