@@ -37,11 +37,10 @@ define( function( require ) {
    * @param {Curve} curve model.
    * @param {Property.<string>} fitTypeProperty - Property to control fit type of curve.
    * @param {Property.<number>} orderOfFitProperty - Property to control type of curve.
-   * @param {number} maxOrderOfFit - Max order of fit.
    * @param {Object} [options] for graph node.
    * @constructor
    */
-  function FitTypeMenu( curve, fitTypeProperty, orderOfFitProperty, maxOrderOfFit, options ) {
+  function FitTypeMenu( curve, fitTypeProperty, orderOfFitProperty, options ) {
     var content = new VBox();
 
     // create radio buttons
@@ -53,7 +52,7 @@ define( function( require ) {
     content.addChild( fitTypeRadioButtonGroup );
 
     // create equation node
-    content.addChild( new EquationFitNode( orderOfFitProperty, maxOrderOfFit ) );
+    content.addChild( new EquationFitNode( orderOfFitProperty ) );
 
     // create slider for parameters
     var aSliderBox = new SliderParameterNode( curve.aProperty, { min: -1, max: 1 }, 'a' );

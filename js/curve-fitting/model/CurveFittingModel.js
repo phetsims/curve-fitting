@@ -32,9 +32,6 @@ define( function( require ) {
       isEquationPanelExpanded: true // property to control equation panel expansion
     } );
 
-    // max order of fit
-    this.maxOrderOfFit = 3;
-
     // bucket model
     var BUCKET_WIDTH = 90;
     var BUCKET_HEIGHT = BUCKET_WIDTH * 0.50;
@@ -46,7 +43,7 @@ define( function( require ) {
     } );
 
     // curve model
-    this.curve = new Curve( this.orderOfFitProperty, this.fitTypeProperty, this.maxOrderOfFit );
+    this.curve = new Curve( this.orderOfFitProperty, this.fitTypeProperty );
 
     // graph area size
     this.graphArea = {

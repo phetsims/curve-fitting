@@ -24,10 +24,9 @@ define( function( require ) {
   /**
    * @param {Property.<number>} orderOfFitProperty - Property to control curve type.
    * @param {Property.<string>} fitTypeProperty - Property to control fit type.
-   * @param {number} maxFitOrder - Max order of fit.
    * @constructor
    */
-  function Curve( orderOfFitProperty, fitTypeProperty, maxFitOrder ) {
+  function Curve( orderOfFitProperty, fitTypeProperty ) {
     var self = this;
 
     PropertySet.call( this, {
@@ -53,7 +52,7 @@ define( function( require ) {
     this.points = new ObservableArray();
 
     // special object to getting fit for points
-    this.fitMaker = new FitMaker( maxFitOrder );
+    this.fitMaker = new FitMaker();
 
     this._updateFitBound = this.updateFit.bind( this );
 

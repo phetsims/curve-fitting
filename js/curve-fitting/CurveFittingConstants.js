@@ -10,6 +10,8 @@ define( function() {
   'use strict';
 
   return {
+    MAX_ORDER_OF_FIT: 3,
+
     // barometer
     BAROMETER_HEIGHT: 270,
     BAROMETER_TICK_WIDTH: 15,

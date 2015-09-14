@@ -5,16 +5,18 @@
  *
  * @author Andrey Zelenkov (Mlearner)
  */
-define( function() {
+define( function( require ) {
   'use strict';
 
+  // modules
+  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+
   /**
-   * @param {number} maxOrderOfFit - Max order of fit.
    * @constructor
    */
-  function FitMaker( maxOrderOfFit ) {
+  function FitMaker() {
     // set max size of matrix
-    this.maxM = maxOrderOfFit + 1;
+    this.maxM = CurveFittingConstants.MAX_ORDER_OF_FIT + 1;
     this.m = null;
 
     // create solution array

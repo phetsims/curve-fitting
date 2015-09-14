@@ -30,16 +30,15 @@ define( function( require ) {
 
   /**
    * @param {Property.<number>} orderFitProperty parameter to track.
-   * @param {number} maxOrderFit - Possible range for property.
    * @param {Object} [options] for slider node.
    * @constructor
    */
-  function EquationFitNode( orderFitProperty, maxOrderFit, options ) {
+  function EquationFitNode( orderFitProperty, options ) {
     var self = this;
     var equationTextArray = [];
     var boxNode;
 
-    for ( var i = 1; i < maxOrderFit + 1; i++ ) {
+    for ( var i = 1; i < CurveFittingConstants.MAX_ORDER_OF_FIT + 1; i++ ) {
       boxNode = new HBox( { align: 'bottom' } );
       var yNode = new Text( 'y = ', TEXT_OPTIONS );
       boxNode.addChild( yNode );
