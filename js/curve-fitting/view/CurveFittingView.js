@@ -24,9 +24,10 @@ define( function( require ) {
 
   /**
    * @param {CurveFittingModel} curveFittingModel
+   * @param {ModelViewTransform2} modelViewTransform
    * @constructor
    */
-  function CurveFittingView( curveFittingModel ) {
+  function CurveFittingView( curveFittingModel, modelViewTransform ) {
     ScreenView.call( this, { layoutBounds: SIM_BOUNDS } );
 
     // add deviations node
@@ -44,7 +45,7 @@ define( function( require ) {
     // add bucket and graph area node
     var graphAreaWidth = SIM_BOUNDS.width - deviationsPanel.bounds.width - controlMenuNode.bounds.width - 50;
     curveFittingModel.graphArea.bounds.setMinMax( 0, 0, graphAreaWidth, graphAreaWidth );
-    var bucketAndGraphAreaNode = new BucketAndGraphAreaNode( curveFittingModel );
+    var bucketAndGraphAreaNode = new BucketAndGraphAreaNode( curveFittingModel, modelViewTransform );
     bucketAndGraphAreaNode.centerX = bucketAndGraphAreaNode.width / 2 + PADDING_LEFT_RIGHT + 25;
     bucketAndGraphAreaNode.centerY = bucketAndGraphAreaNode.height / 2 + PADDING_TOP_BOTTOM;
     this.addChild( bucketAndGraphAreaNode );

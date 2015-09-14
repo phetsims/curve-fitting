@@ -22,14 +22,15 @@ define( function( require ) {
 
   /**
    * @param {CurveFittingModel} curveFittingModel
+   * @param {ModelViewTransform2} modelViewTransform
    * @param {Object} [options] for graph node
    * @constructor
    */
-  function BucketAndGraphAreaNode( curveFittingModel, options ) {
+  function BucketAndGraphAreaNode( curveFittingModel, modelViewTransform, options ) {
     var self = this;
 
     // create bucket node
-    var bucketNode = new BucketNode();
+    var bucketNode = new BucketNode( curveFittingModel.bucket, modelViewTransform );
 
     // create graph area node
     var graphAreaNode = new GraphAreaNode( curveFittingModel.curve, curveFittingModel.orderOfFitProperty, curveFittingModel.areResidualsVisibleProperty, curveFittingModel.graphArea );

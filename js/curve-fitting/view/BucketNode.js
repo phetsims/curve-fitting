@@ -17,6 +17,8 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Shape = require( 'KITE/Shape' );
+  var BucketFront = require( 'SCENERY_PHET/bucket/BucketFront' );
+  var BucketHole = require( 'SCENERY_PHET/bucket/BucketHole' );
 
   // constants
   var POINTS_COORDS = [
@@ -40,43 +42,28 @@ define( function( require ) {
     { x: -20, y: 7 },
     { x: 33, y: 8 }
   ];
-  var RADIUS_X = 44;
-  var RADIUS_Y = 9;
 
   /**
+   * @param {SphereBucket} bucketModel - Model of bucket.
+   * @param {ModelViewTransform2} modelViewTransform
    * @param {Object} [options] for graph node
    * @constructor
    */
-  function BucketNode( options ) {
+  function BucketNode( bucketModel, modelViewTransform, options ) {
     Node.call( this, _.extend( { cursor: 'pointer' }, options ) );
 
-    // create bucket
-    var bucketShape = new Shape();
-    bucketShape.ellipticalArc( 0, 0, RADIUS_X, RADIUS_Y, 0, Math.PI, 0, false );
-    bucketShape.ellipticalArc( 0, 30, RADIUS_X * 0.7, RADIUS_Y * 0.7, 0, 0, Math.PI, false );
-    bucketShape.ellipticalArc( 0, 0, RADIUS_X, RADIUS_Y, 0, Math.PI, 2 * Math.PI, true );
+    var bucketNode = new BucketFront( bucketModel, modelViewTransform );
+    bucketNode.rotate( Math.PI );
+    this.addChild( bucketNode );
 
-    var bucketPath = new Path( bucketShape, {
-      fill: new LinearGradient( 0, 0, RADIUS_X, 0 ).
-        addColorStop( 0, 'rgb( 68, 66, 123 )' ).
-        addColorStop( 1, 'rgb( 26, 25, 79 )' ),
-      stroke: 'rgb( 24, 25, 74 )',
-      lineWidth: 1
-    } );
-    this.addChild( bucketPath );
-
-    // create hole
-    var bucketHolePath = new Path( Shape.ellipse( 0, 0, RADIUS_X, RADIUS_Y ), {
-      fill: new LinearGradient( 0, 0, RADIUS_X, 0 ).
-        addColorStop( 0, 'rgb( 62, 62, 62 )' ).
-        addColorStop( 1, 'rgb( 201, 201, 201 )' )
-    } );
-    this.addChild( bucketHolePath );
+    var bucketHoleNode = new BucketHole( bucketModel, modelViewTransform );
+    bucketHoleNode.rotate( Math.PI );
+    this.addChild( bucketHoleNode );
 
     // create clip shape for points
     var clipShape = new Shape();
-    clipShape.ellipticalArc( 0, 0, RADIUS_X, RADIUS_Y, 0, Math.PI, 2 * Math.PI, true );
-    clipShape.ellipticalArc( 0, 0, RADIUS_X, 4 * RADIUS_Y, 0, 0, Math.PI, true );
+    clipShape.ellipticalArc( 0, 0, bucketHoleNode.bounds.width / 2, bucketHoleNode.bounds.height / 2, 0, Math.PI, 2 * Math.PI, true );
+    clipShape.ellipticalArc( 0, 0, bucketHoleNode.bounds.width / 2, bucketHoleNode.bounds.height * 2, 0, 0, Math.PI, true );
 
     // create points
     var pointsNode = new Node( { clipArea: clipShape } );
