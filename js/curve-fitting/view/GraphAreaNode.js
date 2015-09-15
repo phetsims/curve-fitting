@@ -151,9 +151,9 @@ define( function( require ) {
     };
 
     curve.isVisibleProperty.linkAttribute( curvePath, 'visible' );
-    curve.updateCurveTriggerProperty.lazyLink( updateShape );
     orderOfFitProperty.lazyLink( updateShape );
     areResidualsVisibleProperty.link( updateShape );
+    curve.on( 'update', updateShape );
   }
 
   return inherit( Node, GraphAreaNode, {

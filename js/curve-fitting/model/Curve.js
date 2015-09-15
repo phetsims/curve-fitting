@@ -31,7 +31,6 @@ define( function( require ) {
 
     PropertySet.call( this, {
       isVisible: false, // curve flag visibility
-      updateCurveTrigger: true,
       a: 0, // parameter with x^3
       b: 0, // parameter with x^2
       c: 0, // parameter with x^1
@@ -98,7 +97,7 @@ define( function( require ) {
         }
 
         self.updateFit();
-        self.updateCurveTrigger = !self.updateCurveTrigger;
+        self.trigger( 'update' );
       }
       else if ( fitTypeNew === FitType.ADJUSTABLE ) {
         // add update listeners for parameters
@@ -107,8 +106,7 @@ define( function( require ) {
         self.cProperty.lazyLink( self._updateFitBound );
         self.dProperty.lazyLink( self._updateFitBound );
         self.restoreValuesFromStorage();
-
-        self.updateCurveTrigger = !self.updateCurveTrigger;
+        self.trigger( 'update' );
       }
     } );
   }
@@ -320,7 +318,7 @@ define( function( require ) {
 
         this.setReducedChiSquare();
         this.setRSquared();
-        this.updateCurveTrigger = !this.updateCurveTrigger;
+        this.trigger( 'update' );
       }
     }
   } );
