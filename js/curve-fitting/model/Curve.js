@@ -21,6 +21,9 @@ define( function( require ) {
   var C_DEFAULT_ADJUSTABLE_VALUE = 0;
   var D_DEFAULT_ADJUSTABLE_VALUE = 2.7;
 
+  var lowerLimitArray = [ 0.004000, 0.052000, 0.118000, 0.178000, 0.230000, 0.273000, 0.310000, 0.342000, 0.369000, 0.394000, 0.545000, 0.695000, 0.779000, 0.927000 ];
+  var upperLimitArr = [ 3.800000, 3, 2.600000, 2.370000, 2.210000, 2.100000, 2.010000, 1.940000, 1.880000, 1.830000, 1.570000, 1.350000, 1.240000, 1.070000 ];
+
   function getBarometerFillFromChiValue( chiValue, numberOfPoints ) {
     var red;
     var green;
@@ -189,9 +192,6 @@ define( function( require ) {
       }
     } );
   }
-
-  var lowerLimitArray = [ 0.004000, 0.052000, 0.118000, 0.178000, 0.230000, 0.273000, 0.310000, 0.342000, 0.369000, 0.394000, 0.545000, 0.695000, 0.779000, 0.927000 ];
-  var upperLimitArr = [ 3.800000, 3, 2.600000, 2.370000, 2.210000, 2.100000, 2.010000, 1.940000, 1.880000, 1.830000, 1.570000, 1.350000, 1.240000, 1.070000 ];
 
   return inherit( PropertySet, Curve, {
 
