@@ -14,7 +14,6 @@ define( function( require ) {
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var Shape = require( 'KITE/Shape' );
   var BucketFront = require( 'SCENERY_PHET/bucket/BucketFront' );
   var BucketHole = require( 'SCENERY_PHET/bucket/BucketHole' );
 
@@ -52,19 +51,12 @@ define( function( require ) {
 
     var bucketNode = new BucketFront( bucketModel, modelViewTransform );
     bucketNode.rotate( Math.PI );
-    this.addChild( bucketNode );
 
     var bucketHoleNode = new BucketHole( bucketModel, modelViewTransform );
     bucketHoleNode.rotate( Math.PI );
-    this.addChild( bucketHoleNode );
-
-    // create clip shape for points
-    var clipShape = new Shape();
-    clipShape.ellipticalArc( 0, 0, bucketHoleNode.bounds.width / 2, bucketHoleNode.bounds.height / 2, 0, Math.PI, 2 * Math.PI, true );
-    clipShape.ellipticalArc( 0, 0, bucketHoleNode.bounds.width / 2, bucketHoleNode.bounds.height * 2, 0, 0, Math.PI, true );
 
     // create points
-    var pointsNode = new Node( { clipArea: clipShape } );
+    var pointsNode = new Node();
     POINTS_COORDS.forEach( function( pointsCoord ) {
       pointsNode.addChild( new Circle( {
         fill: CurveFittingConstants.POINT_FILL,
@@ -77,7 +69,10 @@ define( function( require ) {
     } );
     pointsNode.center = bucketHoleNode.center.copy();
     pointsNode.translate( 0, -6 ); // tuned by hand to place point slightly above bucket
+
+    this.addChild( bucketHoleNode );
     this.addChild( pointsNode );
+    this.addChild( bucketNode );
 
     // expand touch area
     var clickableRadius = Math.max( this.bounds.width, this.bounds.height ) / 2;
