@@ -135,7 +135,7 @@ define( function( require ) {
     // special object to getting fit for points
     this.fitMaker = new FitMaker();
 
-    this._updateFitBound = this.updateFit.bind( this );
+    this._updateFitBinded = this.updateFit.bind( this );
 
     this.points.addListeners( this.addPoint.bind( this ), this.removePoint.bind( this ) );
 
@@ -167,15 +167,15 @@ define( function( require ) {
       }
     } );
 
+    this.aProperty.lazyLink( this._updateFitBinded );
+    this.bProperty.lazyLink( this._updateFitBinded );
+    this.cProperty.lazyLink( this._updateFitBinded );
+    this.dProperty.lazyLink( this._updateFitBinded );
     fitTypeProperty.lazyLink( function( fitTypeNew, fitTypePrev ) {
       if ( fitTypeNew === FitType.BEST ) {
         // remove update listeners for parameters
         if ( fitTypePrev === FitType.ADJUSTABLE ) {
           self.saveValuesToStorage();
-          self.aProperty.unlink( self._updateFitBound );
-          self.bProperty.unlink( self._updateFitBound );
-          self.cProperty.unlink( self._updateFitBound );
-          self.dProperty.unlink( self._updateFitBound );
         }
 
         self.updateFit();
@@ -183,10 +183,6 @@ define( function( require ) {
       }
       else if ( fitTypeNew === FitType.ADJUSTABLE ) {
         // add update listeners for parameters
-        self.aProperty.lazyLink( self._updateFitBound );
-        self.bProperty.lazyLink( self._updateFitBound );
-        self.cProperty.lazyLink( self._updateFitBound );
-        self.dProperty.lazyLink( self._updateFitBound );
         self.restoreValuesFromStorage();
         self.trigger( 'update' );
       }
@@ -197,8 +193,8 @@ define( function( require ) {
 
     // add point to curve
     addPoint: function( point ) {
-      point.positionProperty.lazyLink( this._updateFitBound );
-      point.deltaProperty.link( this._updateFitBound );
+      point.positionProperty.lazyLink( this._updateFitBinded );
+      point.deltaProperty.link( this._updateFitBinded );
     },
 
     // return deviation sum for all points
@@ -232,8 +228,8 @@ define( function( require ) {
 
     // remove point from curve
     removePoint: function( point ) {
-      point.positionProperty.unlink( this._updateFitBound );
-      point.deltaProperty.unlink( this._updateFitBound );
+      point.positionProperty.unlink( this._updateFitBinded );
+      point.deltaProperty.unlink( this._updateFitBinded );
       this.updateFit();
     },
 
