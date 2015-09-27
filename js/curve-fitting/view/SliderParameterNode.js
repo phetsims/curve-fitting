@@ -27,11 +27,9 @@ define( function( require ) {
   var SLIDER_OPTIONS = {
     trackFill: 'black',
     trackSize: new Dimension2( 120, 1 ),
-    thumbSize: new Dimension2( 15, 24 )
+    thumbSize: new Dimension2( 15, 24 ),
+    minorTickLineWidth: 2
   };
-  var TICK_COLOR = 'black';
-  var TICK_LENGTH = 8;
-  var TICK_WIDTH = 2;
 
   /**
    * @param {Property.<number>} property parameter to track.
@@ -47,8 +45,7 @@ define( function( require ) {
     sliderNode.rotate( -Math.PI / 2 );
 
     // add central tick
-    sliderNode.addTick( 0, '', TICK_LENGTH, TICK_COLOR, TICK_WIDTH );
-    sliderNode.addTick( 0, '', -TICK_LENGTH - 2 * SLIDER_OPTIONS.trackSize.height, TICK_COLOR, TICK_WIDTH );
+    sliderNode.addMinorTick( 0, '' );
 
     VBox.call( this, _.extend( {
       resize: false,
