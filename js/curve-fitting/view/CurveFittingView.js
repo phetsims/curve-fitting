@@ -31,7 +31,7 @@ define( function( require ) {
     ScreenView.call( this, { layoutBounds: SIM_BOUNDS } );
 
     // add deviations node
-    var deviationsPanel = new DeviationsPanel( curveFittingModel.isDeviationPanelExpandedProperty, curveFittingModel.curve.chiSquareProperty, curveFittingModel.curve.chiFillProperty, curveFittingModel.curve.rSquareProperty );
+    var deviationsPanel = new DeviationsPanel( curveFittingModel.isDeviationPanelExpandedProperty, curveFittingModel.curve );
     deviationsPanel.centerX = deviationsPanel.width / 2 + PADDING_LEFT_RIGHT;
     deviationsPanel.centerY = deviationsPanel.height / 2 + PADDING_TOP_BOTTOM;
     this.addChild( deviationsPanel );

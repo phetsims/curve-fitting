@@ -63,13 +63,11 @@ define( function( require ) {
 
   /**
    * @param {Property.<boolean>} isDeviationPanelExpandedProperty - Property to control deviation panel expansion.
-   * @param {Property.<number>} chiSquareProperty - Property that represents x-deviation.
-   * @param {Property.<string>} chiFillProperty - Property that represent color of x^2 barometer.
-   * @param {Property.<number>} rSquareProperty - Property that represents r-deviation.
+   * @param {Curve} curve - Curve model.
    * @param {Object} [options] for graph node
    * @constructor
    */
-  function DeviationsPanel( isDeviationPanelExpandedProperty, chiSquareProperty, chiFillProperty, rSquareProperty, options ) {
+  function DeviationsPanel( isDeviationPanelExpandedProperty, curve, options ) {
 
     // create expand button
     var expandCollapseButton = new ExpandCollapseButton( isDeviationPanelExpandedProperty, {
@@ -79,10 +77,10 @@ define( function( require ) {
     expandCollapseButton.mouseArea = expandCollapseButton.localBounds.dilatedXY( BUTTON_LENGTH, BUTTON_LENGTH );
 
     // X^2 barometer
-    var barometerX2 = new BarometerX2Node( chiSquareProperty, chiFillProperty );
+    var barometerX2 = new BarometerX2Node( curve.chiSquareProperty, curve.points );
 
     // r^2 barometer
-    var barometerR2 = new BarometerR2Node( rSquareProperty );
+    var barometerR2 = new BarometerR2Node( curve.rSquareProperty );
 
     // help menu button
     var dialogContentNode = new VBox( {
@@ -173,11 +171,11 @@ define( function( require ) {
       }
     } );
 
-    chiSquareProperty.link( function( chiSquare ) {
+    curve.chiSquareProperty.link( function( chiSquare ) {
       chiSquareTextNode.setText( Util.toFixedNumber( chiSquare, 2 ).toString() );
     } );
 
-    rSquareProperty.link( function( rSquare ) {
+    curve.rSquareProperty.link( function( rSquare ) {
       rSquareTextNode.setText( Util.toFixedNumber( rSquare, 2 ).toString() );
     } );
 
