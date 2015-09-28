@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var Bounds2 = require( 'DOT/Bounds2' );
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var Color = require( 'SCENERY/util/Color' );
@@ -30,21 +31,29 @@ define( function( require ) {
   var pattern_delta_0valueDelta = require( 'string!CURVE_FITTING/pattern.delta.0valueDelta' );
 
   // constants
+  var FONT = new PhetFont( 11 );
   var BAR_COLOR = Color.toColor( CurveFittingConstants.BLUE_COLOR );
   var CENTRAL_LINE_OPTIONS = {
     stroke: CurveFittingConstants.BLUE_COLOR,
     lineWidth: 1
   };
   var DILATION_SIZE = 8;
-  var ERROR_BAR_WIDTH = 20;
-  var ERROR_BAR_HEIGHT = 2;
+  var ERROR_BAR_BOUNDS = new Bounds2( -10, 0, 10, 2 );
   var ERROR_BAR_OPTIONS = {
     fill: CurveFittingConstants.BLUE_COLOR
   };
-  var FONT = new PhetFont( 11 );
-  var HALO_ALPHA = 0.3;
-  var HALO_RECT_OFFSET = 4;
+  var HALO_BOUNDS = new Bounds2( -12, -2, 12, 4 );
   var POINT_COLOR = Color.toColor( CurveFittingConstants.POINT_FILL );
+  var HALO_BAR_OPTIONS = {
+    fill: BAR_COLOR.withAlpha( 0.3 ),
+    pickable: false,
+    visible: false
+  };
+  var HALO_POINT_OPTIONS = {
+    fill: POINT_COLOR.withAlpha( 0.3 ),
+    pickable: false,
+    visible: false
+  };
 
   /**
    * @param {PropertySet} pointModel - Model for single point.
@@ -68,7 +77,7 @@ define( function( require ) {
     var isUserControlledDeltaBottom = false;
 
     // top error bar line node
-    var errorBarTopNode = new Rectangle( -ERROR_BAR_WIDTH / 2, 0, ERROR_BAR_WIDTH, ERROR_BAR_HEIGHT, ERROR_BAR_OPTIONS );
+    var errorBarTopNode = new Rectangle( ERROR_BAR_BOUNDS, ERROR_BAR_OPTIONS );
     errorBarTopNode.addInputListener( new SimpleDragHandler( {
       start: function( e ) {
         if ( !isUserControlledDeltaBottom ) {
@@ -89,9 +98,7 @@ define( function( require ) {
     } ) );
 
     // top error bar line halo node
-    var haloErrorBarTopNode = new Rectangle( -( ERROR_BAR_WIDTH + HALO_RECT_OFFSET ) / 2, -HALO_RECT_OFFSET / 2,
-      HALO_RECT_OFFSET + ERROR_BAR_WIDTH, HALO_RECT_OFFSET + ERROR_BAR_HEIGHT,
-      { fill: BAR_COLOR.withAlpha( HALO_ALPHA ), pickable: false, visible: false } );
+    var haloErrorBarTopNode = new Rectangle( HALO_BOUNDS, HALO_BAR_OPTIONS );
 
     // top error bar
     var errorBarTop = new Node( {
@@ -100,7 +107,7 @@ define( function( require ) {
     this.addChild( errorBarTop );
 
     // add bottom error bar line node
-    var errorBarBottomNode = new Rectangle( -ERROR_BAR_WIDTH / 2, 0, ERROR_BAR_WIDTH, ERROR_BAR_HEIGHT, ERROR_BAR_OPTIONS );
+    var errorBarBottomNode = new Rectangle( ERROR_BAR_BOUNDS, ERROR_BAR_OPTIONS );
     errorBarBottomNode.addInputListener( new SimpleDragHandler( {
       start: function( e ) {
         if ( !isUserControlledDeltaTop ) {
@@ -121,9 +128,7 @@ define( function( require ) {
     } ) );
 
     // bottom error bar line halo node
-    var haloTopBarBottomNode = new Rectangle( -( ERROR_BAR_WIDTH + HALO_RECT_OFFSET ) / 2, -HALO_RECT_OFFSET / 2,
-      HALO_RECT_OFFSET + ERROR_BAR_WIDTH, HALO_RECT_OFFSET + ERROR_BAR_HEIGHT,
-      { fill: BAR_COLOR.withAlpha( HALO_ALPHA ), pickable: false, visible: false } );
+    var haloTopBarBottomNode = new Rectangle( HALO_BOUNDS, HALO_BAR_OPTIONS );
 
     // bottom error bar
     var errorBarBottom = new Node( {
@@ -207,7 +212,7 @@ define( function( require ) {
       var lineHeight = graphAreaNode._graphScale * delta;
 
       // update top error bar
-      errorBarTop.setTranslation( 0, -lineHeight - ERROR_BAR_HEIGHT / 2 );
+      errorBarTop.setTranslation( 0, -lineHeight - ERROR_BAR_BOUNDS.height / 2 );
       errorBarTopNode.touchArea = errorBarTop.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
       errorBarTopNode.mouseArea = errorBarTop.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
       deltaTextLabel.centerY = -lineHeight;
@@ -217,7 +222,7 @@ define( function( require ) {
       centralLine.setY2( lineHeight );
 
       // update bottom error bar
-      errorBarBottom.setTranslation( 0, lineHeight - ERROR_BAR_HEIGHT / 2 );
+      errorBarBottom.setTranslation( 0, lineHeight - ERROR_BAR_BOUNDS.height / 2 );
       errorBarBottomNode.touchArea = errorBarBottom.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
       errorBarBottomNode.mouseArea = errorBarBottom.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
     } );
@@ -258,8 +263,7 @@ define( function( require ) {
     } );
 
     // add halo to point
-    var haloPointNode = new Circle( 1.75 * CurveFittingConstants.POINT_RADIUS,
-      { fill: POINT_COLOR.withAlpha( HALO_ALPHA ), pickable: false, visible: false } );
+    var haloPointNode = new Circle( 1.75 * CurveFittingConstants.POINT_RADIUS, HALO_POINT_OPTIONS );
     this.addChild( haloPointNode );
     circleView.addInputListener( new ButtonListener( {
       up: function() { haloPointNode.visible = false; },
