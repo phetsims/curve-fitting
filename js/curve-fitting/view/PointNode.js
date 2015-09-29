@@ -56,7 +56,7 @@ define( function( require ) {
   };
 
   /**
-   * @param {PropertySet} pointModel - Model for single point.
+   * @param {Point} pointModel - Model for single point.
    * @param {ObservableArray.<Point>} pointsProperty - Array of points for plotting curve.
    * @param {Property.<boolean>} areValuesVisibleProperty - Property to control visibility of values.
    * @param {Property.<boolean>} areResidualsVisibleProperty - Property to track residuals visibility.
