@@ -38,9 +38,12 @@ define( function( require ) {
     stroke: 'black'
   };
 
-  var lowerLimitArray = [ 0.004000, 0.052000, 0.118000, 0.178000, 0.230000, 0.273000, 0.310000, 0.342000, 0.369000, 0.394000, 0.545000, 0.695000, 0.779000, 0.927000 ];
-  var upperLimitArr = [ 3.800000, 3, 2.600000, 2.370000, 2.210000, 2.100000, 2.010000, 1.940000, 1.880000, 1.830000, 1.570000, 1.350000, 1.240000, 1.070000 ];
+  // arrays that necessary for calculating chi value bounds while getting barometer color
+  var lowerLimitArray = [ 0.004, 0.052, 0.118, 0.178, 0.23, 0.273, 0.31, 0.342, 0.369, 0.394, 0.545, 0.695, 0.779, 0.927 ];
+  var upperLimitArr = [ 3.8, 3, 2.6, 2.37, 2.21, 2.1, 2.01, 1.94, 1.88, 1.83, 1.57, 1.35, 1.24, 1.07 ];
 
+  // Convert chi values into barometer color depend on number of points.
+  // This algorithm was copied directly from flash simulation.
   function getChiFillFromChiValue( chiValue, numberOfPoints ) {
     var red;
     var green;
