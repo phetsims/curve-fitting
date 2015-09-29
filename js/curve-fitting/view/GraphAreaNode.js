@@ -2,7 +2,7 @@
 
 /**
  * Graph area node in 'Curve Fitting' simulation.
- * Contains points, curve and panel with equation parameters.
+ * Contains graph area, curve and panel with equation parameters.
  *
  * @author Andrey Zelenkov (Mlearner)
  */
