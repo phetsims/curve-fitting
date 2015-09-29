@@ -15,17 +15,12 @@ define( function( require ) {
   var ObservableArray = require( 'AXON/ObservableArray' );
   var PropertySet = require( 'AXON/PropertySet' );
 
-  // constants
-  var A_DEFAULT_ADJUSTABLE_VALUE = 0;
-  var B_DEFAULT_ADJUSTABLE_VALUE = 0;
-  var C_DEFAULT_ADJUSTABLE_VALUE = 0;
-  var D_DEFAULT_ADJUSTABLE_VALUE = 2.7;
-
+  // set default adjustable values
   function setDefaultAdjustableValues( obj ) {
-    obj.a = A_DEFAULT_ADJUSTABLE_VALUE;
-    obj.b = B_DEFAULT_ADJUSTABLE_VALUE;
-    obj.c = C_DEFAULT_ADJUSTABLE_VALUE;
-    obj.d = D_DEFAULT_ADJUSTABLE_VALUE;
+    obj.a = 0;
+    obj.b = 0;
+    obj.c = 0;
+    obj.d = 2.7;
   }
 
   /**
@@ -59,7 +54,7 @@ define( function( require ) {
     // special object to getting fit for points
     this.fitMaker = new FitMaker();
 
-    this._updateFitBinded = this.updateFit.bind( this );
+    this._updateFitBinded = this.updateFit.bind( this ); // @private
 
     this.points.addListeners( this.addPoint.bind( this ), this.removePoint.bind( this ) );
 
@@ -77,16 +72,21 @@ define( function( require ) {
       self.updateFit();
     } );
 
-    this._storage = {};
+    // Storage necessary to store and restore user's adjustable values on call.
+    // Values are putting into storage when user switch to "Best fit". If after that user switch back "Adjustable fit" (without turn on/off
+    // "Curve" between operations) adjustable values will be restored from storage. If "Curve" is turn off then storage values is flush.
+    this._storage = {}; // @private
     setDefaultAdjustableValues( this._storage );
     this.isVisibleProperty.link( function( isVisible ) {
       if ( isVisible ) {
         self.updateFit();
       }
       else if ( fitTypeProperty.value === FitType.BEST ) {
+        // flush storage values
         setDefaultAdjustableValues( self._storage );
       }
       else if ( fitTypeProperty.value === FitType.ADJUSTABLE ) {
+        // set default values
         setDefaultAdjustableValues( self );
       }
     } );
@@ -97,8 +97,8 @@ define( function( require ) {
     this.dProperty.lazyLink( this._updateFitBinded );
     fitTypeProperty.lazyLink( function( fitTypeNew, fitTypePrev ) {
       if ( fitTypeNew === FitType.BEST ) {
-        // remove update listeners for parameters
         if ( fitTypePrev === FitType.ADJUSTABLE ) {
+          // save adjustable values in storage
           self.saveValuesToStorage();
         }
 
@@ -106,7 +106,7 @@ define( function( require ) {
         self.trigger( 'update' );
       }
       else if ( fitTypeNew === FitType.ADJUSTABLE ) {
-        // add update listeners for parameters
+        // restore adjustable values from storage
         self.restoreValuesFromStorage();
         self.trigger( 'update' );
       }
