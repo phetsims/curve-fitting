@@ -53,7 +53,7 @@ define( function( require ) {
     this._orderOfFitProperty = orderOfFitProperty;
     this._fitTypeProperty = fitTypeProperty;
 
-    // points for plotting curve
+    // Contains points for plotting curve. Only point above graph will be taken for calculations. Order doesn't matter.
     this.points = new ObservableArray();
 
     // special object to getting fit for points
