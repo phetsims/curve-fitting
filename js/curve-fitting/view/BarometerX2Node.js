@@ -126,7 +126,7 @@ define( function( require ) {
 
   /**
    * @param {Property.<number>} chiSquareProperty - Property that represents x-deviation.
-   * @param {Property.<ObservableArray>} pointsProperty - Array with all points at graph.
+   * @param {ObservableArray.<Point>} pointsProperty - Array of points for plotting curve.
    * @param {Object} [options] for graph node.
    * @constructor
    */

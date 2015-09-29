@@ -57,7 +57,7 @@ define( function( require ) {
 
   /**
    * @param {PropertySet} pointModel - Model for single point.
-   * @param {ObservableArray} curveModelPoints - Array of points for plotting curve.
+   * @param {ObservableArray.<Point>} pointsProperty - Array of points for plotting curve.
    * @param {Property.<boolean>} areValuesVisibleProperty - Property to control visibility of values.
    * @param {Property.<boolean>} areResidualsVisibleProperty - Property to track residuals visibility.
    * @param {Node} parentNode - Parent node of point
@@ -65,7 +65,7 @@ define( function( require ) {
    * @param {Object} [options] for graph node.
    * @constructor
    */
-  function PointNode( pointModel, curveModelPoints, areValuesVisibleProperty, areResidualsVisibleProperty, parentNode, graphAreaNode, options ) {
+  function PointNode( pointModel, pointsProperty, areValuesVisibleProperty, areResidualsVisibleProperty, parentNode, graphAreaNode, options ) {
     var self = this;
 
     Node.call( this, _.extend( { cursor: 'pointer' }, options ) );
@@ -181,7 +181,7 @@ define( function( require ) {
       },
       end: function() {
         if ( !graphAreaNode.checkDropPointAndSetValues( pointModel ) ) {
-          curveModelPoints.remove( pointModel );
+          pointsProperty.remove( pointModel );
         }
 
         isUserControlledPoint = false;
