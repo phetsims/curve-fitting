@@ -157,19 +157,6 @@ define( function( require ) {
   }
 
   return inherit( Node, GraphAreaNode, {
-    // check that point dropped into graph area
-    checkDropPointAndSetValues: function( point ) {
-      var isDropped = this.isPointInsideGraph( point );
-
-      if ( isDropped ) {
-        this.setValues( point );
-
-        point.moveTo( this.localToGlobalPoint( this.getPositionFromGraphValues( point.x, point.y ) ) );
-      }
-
-      return isDropped;
-    },
-
     // convert graph values to global coordinates
     getGraphValuesFromPosition: function( globalPosition ) {
       var locPosition = this.globalToParentPoint( globalPosition );
@@ -189,22 +176,8 @@ define( function( require ) {
     },
 
     // whether the point is inside the GraphAreaNode (or on the boundary)
-    isPointInsideGraph: function( point ) {
-      return this.localBounds.containsPoint( this.globalToLocalPoint( point.position ) );
-    },
-
-    // set value of point
-    setValues: function( point ) {
-      var values;
-      if ( this.isPointInsideGraph( point ) ) {
-        values = this.getGraphValuesFromPosition( point.position );
-        point.x = values.x;
-        point.y = values.y;
-      }
-      else {
-        point.x = NaN;
-        point.y = NaN;
-      }
+    isPointInsideGraph: function( pointPosition ) {
+      return this.localBounds.containsPoint( this.globalToLocalPoint( pointPosition ) );
     }
   } );
 } );

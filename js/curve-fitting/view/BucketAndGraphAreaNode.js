@@ -37,46 +37,55 @@ define( function( require ) {
     // add equation node
     var equationGraphPanelNode = new EquationGraphPanelNode( curveFittingModel.isEquationPanelExpandedProperty, curveFittingModel.curve, curveFittingModel.orderOfFitProperty, { centerY: 20 } );
 
-    Node.call( this, _.extend( { children: [
-      graphAreaNode, bucketNode, equationGraphPanelNode
-    ] }, options ) );
+    Node.call( this, _.extend( {
+      children: [
+        graphAreaNode, bucketNode, equationGraphPanelNode
+      ]
+    }, options ) );
     equationGraphPanelNode.centerX = graphAreaNode.bounds.minX + equationGraphPanelNode.width / 2 + 10;
 
     // add drag handler
-    var point = null;
+    var pointsNode = new Node();
+    this.addChild( pointsNode );
+
+    var pointModel = null;
+    var pointView = null;
     bucketNode.addInputListener( new SimpleDragHandler( {
       start: function( e ) {
-        point = new Point( e.pointer.point );
-        graphAreaNode.setValues( point );
-        curveFittingModel.curve.points.add( point );
+        // create point model
+        pointModel = new Point();
+        curveFittingModel.curve.points.add( pointModel );
+
+        // create point view
+        pointView = new PointNode( pointModel, curveFittingModel.curve.points, curveFittingModel.areValuesVisibleProperty, curveFittingModel.areResidualsVisibleProperty, pointsNode, graphAreaNode );
+        pointsNode.addChild( pointView );
+
+        // update point position
+        pointView.setTranslation( pointsNode.globalToLocalPoint( e.pointer.point ) );
+        pointModel.trigger( 'updatePosition' );
       },
       drag: function( e ) {
-        if ( point ) {
-          point.moveTo( e.pointer.point );
-          graphAreaNode.setValues( point );
+        if ( pointModel ) {
+          // update point position
+          pointView.setTranslation( pointsNode.globalToLocalPoint( e.pointer.point ) );
+          pointModel.trigger( 'updatePosition' );
         }
       },
       end: function() {
-        if ( !graphAreaNode.checkDropPointAndSetValues( point ) ) {
-          curveFittingModel.curve.points.remove( point );
+        if ( !pointModel.isInsideGraph ) {
+          // remove point model and view
+          pointsNode.removeChild( pointView );
+          curveFittingModel.curve.points.remove( pointModel );
+        }
+        else {
+          // round point position
+          pointModel.trigger( 'roundPosition' );
         }
 
-        point = null;
+        pointModel = null;
+        pointView = null;
       }
     } ) );
-
-    var pointStorage = [];
-    var pointsNode = new Node();
-    this.addChild( pointsNode );
-    curveFittingModel.curve.points.addItemAddedListener( function( pointModel ) {
-      var pointView = new PointNode( pointModel, curveFittingModel.curve.points, curveFittingModel.areValuesVisibleProperty, curveFittingModel.areResidualsVisibleProperty, self, graphAreaNode );
-      pointStorage.push( { model: pointModel, view: pointView } );
-      pointsNode.addChild( pointView );
-    } );
-
-    curveFittingModel.curve.points.addItemRemovedListener( function( pointModel ) {
-      pointsNode.removeChild( _.find( pointStorage, { model: pointModel } ).view );
-    } );
   }
 
   return inherit( Node, BucketAndGraphAreaNode );

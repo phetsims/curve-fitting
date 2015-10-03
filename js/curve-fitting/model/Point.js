@@ -11,27 +11,24 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
-  var Vector2 = require( 'DOT/Vector2' );
 
   /**
-   * @param {Vector2} position - Initial position of point.
    * @constructor
    */
-  function Point( position ) {
+  function Point() {
     PropertySet.call( this, {
-      position: position || new Vector2( 0, 0 ), // position of point
-      x: NaN, // x-coordinate of point
-      y: NaN, // y-coordinate of point
+      isInsideGraph: false, // flag to control graph area affiliation
+      x: 0, // x-coordinate of point
+      y: 0, // y-coordinate of point
       delta: 0.8 // delta variation of point
     } );
-
-    this.moveTo( this.position );
   }
 
   return inherit( PropertySet, Point, {
-    moveTo: function( positionNew ) {
-      this.position.set( positionNew );
-      this.positionProperty.notifyObserversStatic();
+    setXY: function( obj ) {
+      this.x = obj.x;
+      this.y = obj.y;
+      this.trigger( 'updateXY' );
     }
   } );
 } );

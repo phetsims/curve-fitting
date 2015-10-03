@@ -175,13 +175,17 @@ define( function( require ) {
       },
       drag: function( e ) {
         if ( isUserControlledPoint ) {
-          pointModel.moveTo( e.pointer.point );
-          graphAreaNode.setValues( pointModel );
+          self.setTranslation( parentNode.globalToLocalPoint( e.pointer.point ) );
+          pointModel.trigger( 'updatePosition' );
         }
       },
       end: function() {
-        if ( !graphAreaNode.checkDropPointAndSetValues( pointModel ) ) {
+        if ( !pointModel.isInsideGraph ) {
+          parentNode.removeChild( self );
           pointsProperty.remove( pointModel );
+        }
+        else {
+          pointModel.trigger( 'roundPosition' );
         }
 
         isUserControlledPoint = false;
@@ -203,9 +207,19 @@ define( function( require ) {
     } );
     this.addChild( deltaTextLabel );
 
-    // add observers
-    pointModel.positionProperty.link( function( position ) {
-      self.setTranslation( parentNode.globalToLocalPoint( position ) );
+    // set isInsideGraph and if necessary recalculate X and Y
+    pointModel.on( 'updatePosition', function() {
+      var globalPointPosition = parentNode.localToGlobalPoint( self.translation );
+      pointModel.isInsideGraph = graphAreaNode.isPointInsideGraph( globalPointPosition );
+
+      if ( pointModel.isInsideGraph ) {
+        pointModel.setXY( graphAreaNode.getGraphValuesFromPosition( globalPointPosition ) );
+      }
+    } );
+
+    // round position according to X and Y
+    pointModel.on( 'roundPosition', function() {
+      self.setTranslation( parentNode.globalToLocalPoint( graphAreaNode.localToGlobalPoint( graphAreaNode.getPositionFromGraphValues( pointModel.x, pointModel.y ) ) ) );
     } );
 
     pointModel.deltaProperty.link( function( delta ) {
@@ -228,7 +242,7 @@ define( function( require ) {
     } );
 
     var updateValueText = function() {
-      if ( valueTextLabel.visible && !isNaN( pointModel.x ) && !isNaN( pointModel.y ) ) {
+      if ( valueTextLabel.visible && pointModel.isInsideGraph ) {
         valueTextLabel.setText( StringUtils.format( pattern_0valueX_1valueY, Util.toFixed( pointModel.x, 1 ), Util.toFixed( pointModel.y, 1 ) ) );
       }
       else {
@@ -237,7 +251,7 @@ define( function( require ) {
     };
     areValuesVisibleProperty.linkAttribute( valueTextLabel, 'visible' );
     areValuesVisibleProperty.onValue( true, updateValueText );
-    pointModel.positionProperty.lazyLink( updateValueText );
+    pointModel.on( 'updateXY', updateValueText );
 
     var updateDeltaText = function() {
       if ( deltaTextLabel.visible ) {

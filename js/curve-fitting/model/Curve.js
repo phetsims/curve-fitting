@@ -117,7 +117,8 @@ define( function( require ) {
 
     // add point to curve
     addPoint: function( point ) {
-      point.positionProperty.lazyLink( this._updateFitBinded );
+      point.on( 'updateXY', this._updateFitBinded );
+      point.isInsideGraphProperty.lazyLink( this._updateFitBinded );
       point.deltaProperty.link( this._updateFitBinded );
     },
 
@@ -143,16 +144,17 @@ define( function( require ) {
       return sum;
     },
 
-    // select points above graph area
+    // select points inside graph area
     getPoints: function() {
       return this.points.getArray().filter( function( point ) {
-        return (!isNaN( point.x ) && !isNaN( point.y ));
+        return point.isInsideGraph;
       } );
     },
 
     // remove point from curve
     removePoint: function( point ) {
-      point.positionProperty.unlink( this._updateFitBinded );
+      point.off( 'updateXY', this._updateFitBinded );
+      point.isInsideGraphProperty.unlink( this._updateFitBinded );
       point.deltaProperty.unlink( this._updateFitBinded );
       this.updateFit();
     },
