@@ -26,8 +26,6 @@ define( function( require ) {
    * @constructor
    */
   function BucketAndGraphAreaNode( curveFittingModel, modelViewTransform, options ) {
-    var self = this;
-
     // create bucket node
     var bucketNode = new BucketNode( curveFittingModel.bucket, modelViewTransform );
 

@@ -55,7 +55,11 @@ define( function( require ) {
   }
 
   return inherit( Node, BarometerR2Node, {
-    // add single tick
+    /**
+     * Add single tick.
+     *
+     * @param {number} value for which necessary draw tick.
+     */
     addTick: function( value ) {
       // expression "0.5 + ( CurveFittingConstants.BAROMETER_HEIGHT - 1 )" need to prevent bad graph view in corners
       var y = 0.5 + ( CurveFittingConstants.BAROMETER_HEIGHT - 1 ) * ( value - RANGE.min ) / ( RANGE.max - RANGE.min );
@@ -69,7 +73,11 @@ define( function( require ) {
       this.addChild( new Line( -0.5, -y, CurveFittingConstants.BAROMETER_TICK_WIDTH, -y, LINE_OPTIONS ) );
     },
 
-    // add array of tick
+    /**
+     * Add array of ticks.
+     *
+     * @param {Array.<number>} arrayOfTicks - Array of number for which necessary draw tick.
+     */
     addTicks: function( arrayOfTicks ) {
       var self = this;
       arrayOfTicks.forEach( function( tickValue ) {

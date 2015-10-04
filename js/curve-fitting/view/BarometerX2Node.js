@@ -42,8 +42,13 @@ define( function( require ) {
   var lowerLimitArray = [ 0.004, 0.052, 0.118, 0.178, 0.23, 0.273, 0.31, 0.342, 0.369, 0.394, 0.545, 0.695, 0.779, 0.927 ];
   var upperLimitArr = [ 3.8, 3, 2.6, 2.37, 2.21, 2.1, 2.01, 1.94, 1.88, 1.83, 1.57, 1.35, 1.24, 1.07 ];
 
-  // Convert chi values into barometer color depend on number of points.
-  // This algorithm was copied directly from flash simulation.
+  /**
+   * Convert chi values into barometer color depend on number of points.
+   * This algorithm was copied directly from flash simulation.
+   *
+   * @param {number} chiValue - Chi value.
+   * @param {number} numberOfPoints - Number of points that have been taken to plot curve.
+   */
   function getChiFillFromChiValue( chiValue, numberOfPoints ) {
     var red;
     var green;
@@ -116,7 +121,12 @@ define( function( require ) {
     return 'rgb(' + Math.round( red ) + ', ' + Math.round( green ) + ', ' + Math.round( blue ) + ')';
   }
 
-
+  /**
+   * Convert X^2 value to corresponded y position.
+   *
+   * @param {number} value - Barometer's X^2 value.
+   * @returns {number}
+   */
   function valueToYPosition( value ) {
     if ( value <= 1 ) {
       // expression "0.5 + ( HEIGHT - 1 )" need to prevent bad graph view in corners
@@ -170,7 +180,11 @@ define( function( require ) {
   }
 
   return inherit( VBox, BarometerX2Node, {
-    // add single tick
+    /**
+     * Add single tick.
+     *
+     * @param {number} value for which necessary draw tick.
+     */
     addTick: function( value ) {
       var y = valueToYPosition( value );
       var tickWidth;
@@ -190,7 +204,11 @@ define( function( require ) {
       this._content.addChild( new Line( -0.5, -y, tickWidth, -y, LINE_OPTIONS ) );
     },
 
-    // add array of tick
+    /**
+     * Add array of ticks.
+     *
+     * @param {Array.<number>} arrayOfTicks - Array of number for which necessary draw tick.
+     */
     addTicks: function( arrayOfTicks ) {
       var self = this;
       arrayOfTicks.forEach( function( tickValue ) {

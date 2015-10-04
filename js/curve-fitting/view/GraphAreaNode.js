@@ -157,7 +157,12 @@ define( function( require ) {
   }
 
   return inherit( Node, GraphAreaNode, {
-    // convert graph values to global coordinates
+    /**
+     * Convert global coordinates to graph values.
+     *
+     * @param {Vector2} globalPosition - Global point position.
+     * @returns {Object}
+     */
     getGraphValuesFromPosition: function( globalPosition ) {
       var locPosition = this.globalToParentPoint( globalPosition );
 
@@ -167,6 +172,13 @@ define( function( require ) {
       };
     },
 
+    /**
+     * Convert graph values to global coordinates.
+     *
+     * @param {number} x graph value.
+     * @param {number} y graph value.
+     * @returns {Vector2}
+     */
     // convert global coordinates to graph values
     getPositionFromGraphValues: function( x, y ) {
       return new Vector2(
@@ -175,7 +187,12 @@ define( function( require ) {
       );
     },
 
-    // whether the point is inside the GraphAreaNode (or on the boundary)
+    /**
+     * Check is point inside the GraphAreaNode (or on the boundary).
+     *
+     * @param {Vector2} pointPosition - Position of point that need to check.
+     * @returns {boolean}
+     */
     isPointInsideGraph: function( pointPosition ) {
       return this.localBounds.containsPoint( this.globalToLocalPoint( pointPosition ) );
     }
