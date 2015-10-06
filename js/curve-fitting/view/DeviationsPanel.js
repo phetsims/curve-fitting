@@ -84,7 +84,7 @@ define( function( require ) {
 
     // help menu button
     var dialogContentNode = new VBox( {
-      align: "left",
+      align: 'left',
       spacing: 5,
       children: [
         new Text( theReducedChiSquaredStatisticIsString, { font: TEXT_DIALOG } ),
@@ -97,13 +97,13 @@ define( function( require ) {
         new HBox( {
           children: [
             new Image( nSymbolImage, { scale: IMAGE_SCALE } ),
-            new Text( "= " + numberOfDataPointsString, { font: TEXT_DIALOG } )
+            new Text( '= ' + numberOfDataPointsString, { font: TEXT_DIALOG } )
           ]
         } ),
         new HBox( {
           children: [
             new Image( fSymbolImage, { scale: IMAGE_SCALE } ),
-            new HTMLText( "= " + StringUtils.format(
+            new HTMLText( '= ' + StringUtils.format(
                 pattern_numberOfParametersInFitEG_0value_ForACubicFitString,
                           '<img style="vertical-align: bottom; width:' + parseInt( fEqualFourImage.width * IMAGE_SCALE, 10 ) + 'px" src="' + fEqualFourImage.src + '">'
               ),
