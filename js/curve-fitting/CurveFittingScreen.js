@@ -16,7 +16,7 @@ define( function( require ) {
   var Screen = require( 'JOIST/Screen' );
 
   // strings
-  var curveFittingSimString = require( 'string!CURVE_FITTING/curve-fitting.title' );
+  var curveFittingTitleString = require( 'string!CURVE_FITTING/curve-fitting.title' );
 
   /**
    * @constructor
@@ -30,7 +30,7 @@ define( function( require ) {
     // model coordinates are the same as view coordinates
     var modelViewTransform = ModelViewTransform2.createIdentity();
 
-    Screen.call( this, curveFittingSimString, icon,
+    Screen.call( this, curveFittingTitleString, icon,
       function() { return new CurveFittingModel(); },
       function( model ) { return new CurveFittingView( model, modelViewTransform ); },
       { backgroundColor: 'rgb( 187, 230, 246 )' }

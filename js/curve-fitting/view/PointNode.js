@@ -27,8 +27,8 @@ define( function( require ) {
   var Util = require( 'DOT/Util' );
 
   // strings
-  var pattern_0valueX_1valueY = require( 'string!CURVE_FITTING/pattern.0valueX.1valueY' );
-  var pattern_delta_0valueDelta = require( 'string!CURVE_FITTING/pattern.delta.0valueDelta' );
+  var pattern0ValueX1ValueYString = require( 'string!CURVE_FITTING/pattern.0valueX.1valueY' );
+  var patternDelta0ValueDeltaString = require( 'string!CURVE_FITTING/pattern.delta.0valueDelta' );
 
   // constants
   var FONT = new PhetFont( 11 );
@@ -193,14 +193,14 @@ define( function( require ) {
     } ) );
 
     // add value text label
-    var valueTextLabel = new Text( StringUtils.format( pattern_0valueX_1valueY, Util.toFixed( pointModel.x, 1 ), Util.toFixed( pointModel.y, 1 ) ), {
+    var valueTextLabel = new Text( StringUtils.format( pattern0ValueX1ValueYString, Util.toFixed( pointModel.x, 1 ), Util.toFixed( pointModel.y, 1 ) ), {
       font: FONT,
       x: circleView.localBounds.maxX + 2,
       centerY: circleView.centerY
     } );
     this.addChild( valueTextLabel );
 
-    var deltaTextLabel = new SubSupText( StringUtils.format( pattern_delta_0valueDelta, Util.toFixed( pointModel.delta, 1 ) ), {
+    var deltaTextLabel = new SubSupText( StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( pointModel.delta, 1 ) ), {
       font: FONT,
       x: errorBarTopNode.localBounds.maxX + 2,
       centerY: errorBarTopNode.centerY
@@ -243,7 +243,7 @@ define( function( require ) {
 
     var updateValueText = function() {
       if ( valueTextLabel.visible && pointModel.isInsideGraph ) {
-        valueTextLabel.setText( StringUtils.format( pattern_0valueX_1valueY, Util.toFixed( pointModel.x, 1 ), Util.toFixed( pointModel.y, 1 ) ) );
+        valueTextLabel.setText( StringUtils.format( pattern0ValueX1ValueYString, Util.toFixed( pointModel.x, 1 ), Util.toFixed( pointModel.y, 1 ) ) );
       }
       else {
         valueTextLabel.setText( '' );
@@ -255,7 +255,7 @@ define( function( require ) {
 
     var updateDeltaText = function() {
       if ( deltaTextLabel.visible ) {
-        deltaTextLabel.setText( StringUtils.format( pattern_delta_0valueDelta, Util.toFixed( pointModel.delta, 1 ) ) );
+        deltaTextLabel.setText( StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( pointModel.delta, 1 ) ) );
       }
     };
     areValuesVisibleProperty.onValue( true, updateDeltaText );

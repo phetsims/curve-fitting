@@ -23,8 +23,8 @@ define( function( require ) {
   var VerticalAquaRadioButtonGroup = require( 'SUN/VerticalAquaRadioButtonGroup' );
 
   // strings
-  var AdjustableFitString = require( 'string!CURVE_FITTING/adjustableFit' );
-  var BestFitString = require( 'string!CURVE_FITTING/bestFit' );
+  var adjustableFitString = require( 'string!CURVE_FITTING/adjustableFit' );
+  var bestFitString = require( 'string!CURVE_FITTING/bestFit' );
 
   // constants
   var FONT = new PhetFont( 12 );
@@ -45,8 +45,8 @@ define( function( require ) {
 
     // create radio buttons
     var fitTypeRadioButtonGroup = new VerticalAquaRadioButtonGroup( [
-      { property: fitTypeProperty, node: new Text( BestFitString, { font: FONT } ), value: FitType.BEST },
-      { property: fitTypeProperty, node: new Text( AdjustableFitString, { font: FONT } ), value: FitType.ADJUSTABLE }
+      { property: fitTypeProperty, node: new Text( bestFitString, { font: FONT } ), value: FitType.BEST },
+      { property: fitTypeProperty, node: new Text( adjustableFitString, { font: FONT } ), value: FitType.ADJUSTABLE }
     ], RADIO_BUTTON_MENU_OPTIONS );
     fitTypeRadioButtonGroup.localBounds = fitTypeRadioButtonGroup.localBounds.withMaxX( Math.max( fitTypeRadioButtonGroup.localBounds.maxX, CurveFittingConstants.PANEL_WIDTH - RADIO_BUTTON_MENU_OPTIONS.radius ) );
     content.addChild( fitTypeRadioButtonGroup );

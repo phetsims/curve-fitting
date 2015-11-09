@@ -33,7 +33,7 @@ define( function( require ) {
   // strings
   var deviationsString = require( 'string!CURVE_FITTING/deviations' );
   var numberOfDataPointsString = require( 'string!CURVE_FITTING/numberOfDataPoints' );
-  var pattern_numberOfParametersInFitEG_0value_ForACubicFitString = require( 'string!CURVE_FITTING/pattern.numberOfParametersInFitEG.0value.ForACubicFit' );
+  var patternNumberOfParametersInFitEG0ValueForACubicFitString = require( 'string!CURVE_FITTING/pattern.numberOfParametersInFitEG.0value.ForACubicFit' );
   var theReducedChiSquaredStatisticIsString = require( 'string!CURVE_FITTING/theReducedChiSquaredStatisticIs' );
 
   // images
@@ -104,7 +104,7 @@ define( function( require ) {
           children: [
             new Image( fSymbolImage, { scale: IMAGE_SCALE } ),
             new HTMLText( '= ' + StringUtils.format(
-                pattern_numberOfParametersInFitEG_0value_ForACubicFitString,
+                patternNumberOfParametersInFitEG0ValueForACubicFitString,
                           '<img style="vertical-align: bottom; width:' + parseInt( fEqualFourImage.width * IMAGE_SCALE, 10 ) + 'px" src="' + fEqualFourImage.src + '">'
               ),
               { font: TEXT_DIALOG } )

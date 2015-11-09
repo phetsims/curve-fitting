@@ -22,12 +22,12 @@ define( function( require ) {
   var VerticalAquaRadioButtonGroup = require( 'SUN/VerticalAquaRadioButtonGroup' );
 
   // strings
-  var CubicString = require( 'string!CURVE_FITTING/cubic' );
-  var CurveString = require( 'string!CURVE_FITTING/curve' );
-  var LinearString = require( 'string!CURVE_FITTING/linear' );
-  var QuadraticString = require( 'string!CURVE_FITTING/quadratic' );
-  var ResidualsString = require( 'string!CURVE_FITTING/residuals' );
-  var ValuesString = require( 'string!CURVE_FITTING/values' );
+  var cubicString = require( 'string!CURVE_FITTING/cubic' );
+  var curveString = require( 'string!CURVE_FITTING/curve' );
+  var linearString = require( 'string!CURVE_FITTING/linear' );
+  var quadraticString = require( 'string!CURVE_FITTING/quadratic' );
+  var residualsString = require( 'string!CURVE_FITTING/residuals' );
+  var valuesString = require( 'string!CURVE_FITTING/values' );
 
   // constants
   var CHECK_BOX_OPTIONS = { boxWidth: 16 };
@@ -52,7 +52,7 @@ define( function( require ) {
     VBox.call( this, _.extend( { align: 'left', spacing: 10 }, options ) );
 
     // create label for residual check box
-    var residualCheckBoxLabel = new Text( ResidualsString, { font: FONT } );
+    var residualCheckBoxLabel = new Text( residualsString, { font: FONT } );
     residualCheckBoxLabel.setEnabled = function( enabled ) {
       residualCheckBoxLabel.opacity = ( enabled ? 1 : 0.5 ); // gray out when disabled
     };
@@ -63,9 +63,9 @@ define( function( require ) {
       spacing: 5,
       align: 'left',
       children: [
-        new CheckBox( new Text( CurveString, { font: FONT } ), curveFittingModel.curve.isVisibleProperty, CHECK_BOX_OPTIONS ),
+        new CheckBox( new Text( curveString, { font: FONT } ), curveFittingModel.curve.isVisibleProperty, CHECK_BOX_OPTIONS ),
         residualCheckBox,
-        new CheckBox( new Text( ValuesString, { font: FONT } ), curveFittingModel.areValuesVisibleProperty, CHECK_BOX_OPTIONS )
+        new CheckBox( new Text( valuesString, { font: FONT } ), curveFittingModel.areValuesVisibleProperty, CHECK_BOX_OPTIONS )
       ]
     } );
     checkBoxGroup.localBounds = checkBoxGroup.localBounds.withMaxX( Math.max( checkBoxGroup.localBounds.maxX, CurveFittingConstants.PANEL_WIDTH ) );
@@ -74,9 +74,9 @@ define( function( require ) {
 
     // create curve type radio buttons
     var curveTypeRadioButtonGroup = new VerticalAquaRadioButtonGroup( [
-      { property: curveFittingModel.orderOfFitProperty, node: new Text( LinearString, { font: FONT } ), value: 1 },
-      { property: curveFittingModel.orderOfFitProperty, node: new Text( QuadraticString, { font: FONT } ), value: 2 },
-      { property: curveFittingModel.orderOfFitProperty, node: new Text( CubicString, { font: FONT } ), value: 3 }
+      { property: curveFittingModel.orderOfFitProperty, node: new Text( linearString, { font: FONT } ), value: 1 },
+      { property: curveFittingModel.orderOfFitProperty, node: new Text( quadraticString, { font: FONT } ), value: 2 },
+      { property: curveFittingModel.orderOfFitProperty, node: new Text( cubicString, { font: FONT } ), value: 3 }
     ], RADIO_BUTTON_MENU_OPTIONS );
     curveTypeRadioButtonGroup.localBounds = curveTypeRadioButtonGroup.localBounds.withMaxX( Math.max( curveTypeRadioButtonGroup.localBounds.maxX, CurveFittingConstants.PANEL_WIDTH - RADIO_BUTTON_MENU_OPTIONS.radius ) );
     var curveTypePanel = new Panel( curveTypeRadioButtonGroup, PANEL_OPTIONS );
