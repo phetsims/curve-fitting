@@ -81,7 +81,7 @@ define( function( require ) {
 
     // add slider visibility observer
     fitTypeProperty.link( function( fitType ) {
-      if ( fitType === FitType.BEST && content.isChild( slidersBox ) ) {
+      if ( fitType === FitType.BEST && content.hasChild( slidersBox ) ) {
         content.removeChild( slidersBox );
       }
       else if ( fitType === FitType.ADJUSTABLE ) {
