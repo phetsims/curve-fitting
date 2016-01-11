@@ -30,7 +30,8 @@ define( function( require ) {
   var FONT = new PhetFont( 12 );
   var RADIO_BUTTON_MENU_OPTIONS = {
     spacing: 5,
-    radius: 8
+    radius: 8,
+    touchXPadding: 5
   };
 
   /**

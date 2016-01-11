@@ -40,7 +40,8 @@ define( function( require ) {
   };
   var RADIO_BUTTON_MENU_OPTIONS = {
     spacing: 5,
-    radius: 8
+    radius: 8,
+    touchXPadding: 5
   };
 
   /**
