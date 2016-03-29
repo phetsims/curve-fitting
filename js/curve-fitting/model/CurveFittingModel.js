@@ -38,7 +38,6 @@ define( function( require ) {
     this.bucket = new SphereBucket( {
       position: new Vector2( 0, 0 ),
       size: new Dimension2( BUCKET_WIDTH, BUCKET_HEIGHT ),
-      caption: '',
       baseColor: 'rgb( 65, 63, 117 )'
     } );
 
