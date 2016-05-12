@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingModel = require( 'CURVE_FITTING/curve-fitting/model/CurveFittingModel' );
   var CurveFittingView = require( 'CURVE_FITTING/curve-fitting/view/CurveFittingView' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -36,6 +37,8 @@ define( function( require ) {
       { backgroundColor: 'rgb( 187, 230, 246 )' }
     );
   }
+
+  curveFitting.register( 'CurveFittingScreen', CurveFittingScreen );
 
   return inherit( Screen, CurveFittingScreen );
 } );

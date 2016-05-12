@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var FitMaker = require( 'CURVE_FITTING/curve-fitting/model/FitMaker' );
   var FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -112,6 +113,8 @@ define( function( require ) {
       }
     } );
   }
+
+  curveFitting.register( 'Curve', Curve );
 
   return inherit( PropertySet, Curve, {
 

@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
   var HBox = require( 'SCENERY/nodes/HBox' );
@@ -152,6 +153,8 @@ define( function( require ) {
     curve.isVisibleProperty.lazyLink( updateDParameter );
     isEquationPanelExpandedProperty.link( updateDParameter );
   }
+
+  curveFitting.register( 'EquationGraphPanelNode', EquationGraphPanelNode );
 
   return inherit( Panel, EquationGraphPanelNode );
 } );

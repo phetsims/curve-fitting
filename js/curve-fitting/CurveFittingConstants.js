@@ -6,10 +6,13 @@
  * @author Andrey Zelenkov (MLearner)
  */
 
-define( function() {
+define( function( require ) {
   'use strict';
 
-  return {
+  // modules
+  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
+
+  var CurveFittingConstants = {
     MAX_ORDER_OF_FIT: 3,
 
     // barometer
@@ -33,4 +36,8 @@ define( function() {
     PANEL_MARGIN: 10,
     PANEL_WIDTH: 130
   };
+
+  curveFitting.register( 'CurveFittingConstants', CurveFittingConstants );
+
+  return CurveFittingConstants;
 } );

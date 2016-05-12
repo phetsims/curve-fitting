@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var Bounds2 = require( 'DOT/Bounds2' );
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var Circle = require( 'SCENERY/nodes/Circle' );
@@ -285,6 +286,8 @@ define( function( require ) {
       over: function() { haloPointNode.visible = true; }
     } ) );
   }
+
+  curveFitting.register( 'PointNode', PointNode );
 
   return inherit( Node, PointNode );
 } );

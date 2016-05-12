@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -77,6 +78,8 @@ define( function( require ) {
       self.children = [ equationTextArray[ orderFit - 1 ] ];
     } );
   }
+
+  curveFitting.register( 'EquationFitNode', EquationFitNode );
 
   return inherit( Node, EquationFitNode );
 } );

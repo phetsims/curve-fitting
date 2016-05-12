@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
@@ -53,6 +54,8 @@ define( function( require ) {
       valueRectNode.setRectHeight( ( RANGE.min + rSquare / RANGE.max ) * CurveFittingConstants.BAROMETER_HEIGHT );
     } );
   }
+
+  curveFitting.register( 'BarometerR2Node', BarometerR2Node );
 
   return inherit( Node, BarometerR2Node, {
     /**

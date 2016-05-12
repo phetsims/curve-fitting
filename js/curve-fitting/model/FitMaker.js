@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
 
   /**
@@ -28,6 +29,8 @@ define( function( require ) {
       this.matrix[ i ] = [];
     }
   }
+
+  curveFitting.register( 'FitMaker', FitMaker );
 
   FitMaker.prototype = {
     getFit: function( arrPoints, orderOfFit ) {

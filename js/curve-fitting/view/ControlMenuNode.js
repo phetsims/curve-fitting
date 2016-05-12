@@ -11,6 +11,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CheckBox = require( 'SUN/CheckBox' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -101,6 +102,8 @@ define( function( require ) {
       }
     } );
   }
+
+  curveFitting.register( 'ControlMenuNode', ControlMenuNode );
 
   return inherit( VBox, ControlMenuNode );
 } );

@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var Bounds2 = require( 'DOT/Bounds2' );
   var BucketAndGraphAreaNode = require( 'CURVE_FITTING/curve-fitting/view/BucketAndGraphAreaNode' );
   var ControlMenuNode = require( 'CURVE_FITTING/curve-fitting/view/ControlMenuNode' );
@@ -58,6 +59,8 @@ define( function( require ) {
     resetAllButton.centerY = SIM_BOUNDS.height - resetAllButton.height / 2 - PADDING_TOP_BOTTOM;
     this.addChild( resetAllButton );
   }
+
+  curveFitting.register( 'CurveFittingView', CurveFittingView );
 
   return inherit( ScreenView, CurveFittingView );
 } );

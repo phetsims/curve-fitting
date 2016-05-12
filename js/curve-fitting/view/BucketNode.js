@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -82,6 +83,8 @@ define( function( require ) {
       radius: clickableRadius
     } ) );
   }
+
+  curveFitting.register( 'BucketNode', BucketNode );
 
   return inherit( Node, BucketNode );
 } );

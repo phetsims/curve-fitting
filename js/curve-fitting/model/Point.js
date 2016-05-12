@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
 
@@ -23,6 +24,8 @@ define( function( require ) {
       delta: 0.8 // delta variation of point
     } );
   }
+
+  curveFitting.register( 'Point', Point );
 
   return inherit( PropertySet, Point, {
     setXY: function( obj ) {

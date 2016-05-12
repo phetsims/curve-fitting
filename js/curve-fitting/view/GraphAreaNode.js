@@ -11,6 +11,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
@@ -155,6 +156,8 @@ define( function( require ) {
     areResidualsVisibleProperty.link( updateShape );
     curve.on( 'update', updateShape );
   }
+
+  curveFitting.register( 'GraphAreaNode', GraphAreaNode );
 
   return inherit( Node, GraphAreaNode, {
     /**

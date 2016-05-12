@@ -6,11 +6,18 @@
  * @author Andrey Zelenkov (Mlearner)
  */
 
-define( function() {
+define( function( require ) {
   'use strict';
 
-  return Object.freeze( {
+  // modules
+  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
+
+  var FitType = Object.freeze( {
     BEST: 'best',
     ADJUSTABLE: 'adjustable'
   } );
+
+  curveFitting.register( 'FitType', FitType );
+
+  return FitType;
 } );

@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var BucketNode = require( 'CURVE_FITTING/curve-fitting/view/BucketNode' );
   var EquationGraphPanelNode = require( 'CURVE_FITTING/curve-fitting/view/EquationGraphPanelNode' );
   var GraphAreaNode = require( 'CURVE_FITTING/curve-fitting/view/GraphAreaNode' );
@@ -86,6 +87,8 @@ define( function( require ) {
       }
     } ) );
   }
+
+  curveFitting.register( 'BucketAndGraphAreaNode', BucketAndGraphAreaNode );
 
   return inherit( Node, BucketAndGraphAreaNode );
 } );

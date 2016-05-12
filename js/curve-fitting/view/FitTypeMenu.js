@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var EquationFitNode = require( 'CURVE_FITTING/curve-fitting/view/EquationFitNode' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -97,6 +98,8 @@ define( function( require ) {
       yMargin: CurveFittingConstants.PANEL_MARGIN
     }, options ) );
   }
+
+  curveFitting.register( 'FitTypeMenu', FitTypeMenu );
 
   return inherit( Panel, FitTypeMenu );
 } );

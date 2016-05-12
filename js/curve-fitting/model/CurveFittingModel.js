@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var Bounds2 = require( 'DOT/Bounds2' );
   var Curve = require( 'CURVE_FITTING/curve-fitting/model/Curve' );
   var Dimension2 = require( 'DOT/Dimension2' );
@@ -53,6 +54,8 @@ define( function( require ) {
       bounds: new Bounds2( 0, 0, 0, 0 )
     };
   }
+
+  curveFitting.register( 'CurveFittingModel', CurveFittingModel );
 
   return inherit( PropertySet, CurveFittingModel, {
 

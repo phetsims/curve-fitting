@@ -11,6 +11,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var BarometerR2Node = require( 'CURVE_FITTING/curve-fitting/view/BarometerR2Node' );
   var BarometerX2Node = require( 'CURVE_FITTING/curve-fitting/view/BarometerX2Node' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
@@ -181,6 +182,8 @@ define( function( require ) {
 
     Panel.call( this, content, PANEL_OPTIONS );
   }
+
+  curveFitting.register( 'DeviationsPanel', DeviationsPanel );
 
   return inherit( Panel, DeviationsPanel );
 } );

@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var Dimension2 = require( 'DOT/Dimension2' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -61,6 +62,8 @@ define( function( require ) {
       ]
     }, options ) );
   }
+
+  curveFitting.register( 'SliderParameterNode', SliderParameterNode );
 
   return inherit( VBox, SliderParameterNode );
 } );
