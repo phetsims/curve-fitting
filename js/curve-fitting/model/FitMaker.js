@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  var inherit = require( 'PHET_CORE/inherit' );
 
   /**
    * @constructor
@@ -32,13 +33,24 @@ define( function( require ) {
 
   curveFitting.register( 'FitMaker', FitMaker );
 
-  FitMaker.prototype = {
+  return inherit( Object, FitMaker, {
+    /**
+     * 
+     * @param {Array.<Point>} arrPoints
+     * @param {number} orderOfFit
+     * @returns {Array}
+     */
     getFit: function( arrPoints, orderOfFit ) {
       this.makeAugmentedMatrix( arrPoints, orderOfFit );
       this.reduceMatrix();
       this.solveReducedMatrix();
       return this.solutionArr;
     },
+    /**
+     * @private
+     * @param {Array.<Point>} arrPoints
+     * @param {number} orderOfFit
+     */
     makeAugmentedMatrix: function( arrPoints, orderOfFit ) {
       var numberOfPoints = arrPoints.length;
       this.m = Math.min( orderOfFit + 1, numberOfPoints );
@@ -58,6 +70,9 @@ define( function( require ) {
         }
       }
     },
+    /**
+     *  @private
+     */
     reduceMatrix: function() {
       for ( var i = 0; i < this.m - 1; ++i ) {
         for ( var j = i + 1; j < this.m; ++j ) {
@@ -69,6 +84,9 @@ define( function( require ) {
       }
       this.solveReducedMatrix();
     },
+    /**
+     * @private
+     */
     solveReducedMatrix: function() {
       var m = this.m;
       for ( var i = m - 1; i >= 0; --i ) {
@@ -84,6 +102,9 @@ define( function( require ) {
         this.solutionArr[ k ] = 0;
       }
     },
+    /**
+     * @private
+     */
     zeroMatrix: function() {
       for ( var i = 0; i < this.maxM; ++i ) {
         for ( var j = 0; j < this.maxM + 1; ++j ) {
@@ -91,7 +112,5 @@ define( function( require ) {
         }
       }
     }
-  };
-
-  return FitMaker;
+  });
 } );

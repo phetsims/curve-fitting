@@ -28,9 +28,13 @@ define( function( require ) {
   curveFitting.register( 'Point', Point );
 
   return inherit( PropertySet, Point, {
-    setXY: function( obj ) {
-      this.x = obj.x;
-      this.y = obj.y;
+    /**
+     * sets the point coordinates
+     * @param {Vector2} position
+     */
+    setXY: function( position ) {
+      this.x = position.x;
+      this.y = position.y;
       this.trigger( 'updateXY' );
     }
   } );
