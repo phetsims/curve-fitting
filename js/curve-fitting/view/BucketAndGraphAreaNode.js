@@ -58,7 +58,21 @@ define( function( require ) {
 
         // create point view
         pointView = new PointNode( pointModel, curveFittingModel.curve.points, curveFittingModel.areValuesVisibleProperty, curveFittingModel.areResidualsVisibleProperty, pointsNode, graphAreaNode );
+
+        // add point node to view
         pointsNode.addChild( pointView );
+
+        // add listeners for the points created
+        curveFittingModel.curve.points.addItemAddedListener( function( point ) {
+
+          // removes points from view and point listeners are removed
+          curveFittingModel.curve.points.addItemRemovedListener( function removalListener( removedPoint ) {
+            if ( removedPoint === point ) {
+              pointsNode.removeChild( pointView );
+              curveFittingModel.curve.points.removeItemRemovedListener( removalListener );
+            }
+          } );
+        } );
 
         // update point position
         pointView.setTranslation( pointsNode.globalToLocalPoint( e.pointer.point ) );
@@ -83,7 +97,6 @@ define( function( require ) {
         }
 
         pointModel = null;
-        pointView = null;
       }
     } ) );
   }

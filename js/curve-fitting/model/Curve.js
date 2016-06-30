@@ -167,7 +167,7 @@ define( function( require ) {
 
       this.yDeviationSquaredSum = 0;
       setDefaultAdjustableValues( this._storage );
-      this.points.reset();
+      this.points.clear();
     },
 
     // set r^2-deviation for current point

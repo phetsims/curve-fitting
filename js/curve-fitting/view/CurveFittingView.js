@@ -52,7 +52,9 @@ define( function( require ) {
 
     // add reset all button
     var resetAllButton = new ResetAllButton( {
-      listener: curveFittingModel.reset.bind( curveFittingModel )
+      listener: function() {
+        curveFittingModel.reset();
+      }
     } );
     resetAllButton.scale( 0.75 );
     resetAllButton.centerX = SIM_BOUNDS.width - resetAllButton.width / 2 - PADDING_LEFT_RIGHT;
