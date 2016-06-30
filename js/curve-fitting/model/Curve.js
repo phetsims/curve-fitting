@@ -60,15 +60,24 @@ define( function( require ) {
     this.points.addListeners( this.addPoint.bind( this ), this.removePoint.bind( this ) );
 
     orderOfFitProperty.lazyLink( function( orderOfFit ) {
+      // store the value of a for later use
       if ( orderOfFit < 3 ) {
+        self._storage.a = self.a;
         self.a = 0;
-        self._storage.a = 0;
-
-        if ( orderOfFit < 2 ) {
-          self.b = 0;
-          self._storage.b = 0;
-        }
       }
+      else { // set the value of a to what it was previously
+        self.a = self._storage.a;
+      }
+
+      // store the value of b for later use
+      if ( orderOfFit < 2 ) {
+        self._storage.b = self.b;
+        self.b = 0;
+      }
+      else { // set the value to what it was previously
+        self.b = self._storage.b;
+      }
+
 
       self.updateFit();
     } );
