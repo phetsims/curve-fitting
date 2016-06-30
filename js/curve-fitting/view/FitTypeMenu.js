@@ -18,6 +18,7 @@ define( function( require ) {
   var HBox = require( 'SCENERY/nodes/HBox' );
   var Panel = require( 'SUN/Panel' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var Property = require( 'AXON/Property' );
   var SliderParameterNode = require( 'CURVE_FITTING/curve-fitting/view/SliderParameterNode' );
   var Text = require( 'SCENERY/nodes/Text' );
   var VBox = require( 'SCENERY/nodes/VBox' );
@@ -56,11 +57,17 @@ define( function( require ) {
     // create equation node
     content.addChild( new EquationFitNode( orderOfFitProperty ) );
 
+    // it's necessary to be able to enable and disable sliders
+    var aSliderEnabledProperty = new Property( true );
+    var bSliderEnabledProperty = new Property( true );
+    var cSliderEnabledProperty = new Property( true );
+    var dSliderEnabledProperty = new Property( true );
+
     // create slider for parameters
-    var aSliderBox = new SliderParameterNode( curve.aProperty, { min: -1, max: 1 }, 'a' );
-    var bSliderBox = new SliderParameterNode( curve.bProperty, { min: -2, max: 2 }, 'b' );
-    var cSliderBox = new SliderParameterNode( curve.cProperty, { min: -10, max: 10 }, 'c' );
-    var dSliderBox = new SliderParameterNode( curve.dProperty, { min: -10, max: 10 }, 'd' );
+    var aSliderBox = new SliderParameterNode( curve.aProperty, { min: -1, max: 1 }, 'a', { enabledProperty: aSliderEnabledProperty } );
+    var bSliderBox = new SliderParameterNode( curve.bProperty, { min: -2, max: 2 }, 'b', { enabledProperty: bSliderEnabledProperty } );
+    var cSliderBox = new SliderParameterNode( curve.cProperty, { min: -10, max: 10 }, 'c', { enabledProperty: cSliderEnabledProperty } );
+    var dSliderBox = new SliderParameterNode( curve.dProperty, { min: -10, max: 10 }, 'd', { enabledProperty: dSliderEnabledProperty } );
 
     // create slider box
     var slidersBox = new HBox( {
@@ -70,13 +77,25 @@ define( function( require ) {
 
     // add slider number observer
     orderOfFitProperty.link( function( orderOfFit ) {
+      // if the sliders are not disabled they will be able to change
+      // and behave as described in #15 and #37
       if ( orderOfFit === 1 ) {
+        // disable a and b slider
+        aSliderEnabledProperty.set( false );
+        bSliderEnabledProperty.set( false );
         slidersBox.children = [ cSliderBox, dSliderBox ];
       }
       else if ( orderOfFit === 2 ) {
+        // enable b slider
+        bSliderEnabledProperty.set( true );
+        //disable a slide
+        aSliderEnabledProperty.set( false );
         slidersBox.children = [ bSliderBox, cSliderBox, dSliderBox ];
       }
       else if ( orderOfFit === 3 ) {
+        // enable a and b sliders
+        aSliderEnabledProperty.set( true );
+        bSliderEnabledProperty.set( true );
         slidersBox.children = [ aSliderBox, bSliderBox, cSliderBox, dSliderBox ];
       }
     } );

@@ -25,12 +25,6 @@ define( function( require ) {
     weight: 'bold',
     size: 13
   } );
-  var SLIDER_OPTIONS = {
-    trackFill: 'black',
-    trackSize: new Dimension2( 120, 1 ),
-    thumbSize: new Dimension2( 15, 24 ),
-    minorTickLineWidth: 2
-  };
 
   /**
    * @param {Property.<number>} property parameter to track.
@@ -40,7 +34,15 @@ define( function( require ) {
    * @constructor
    */
   function SliderParameterNode( property, range, label, options ) {
-    var sliderNode = new HSlider( property, range, SLIDER_OPTIONS );
+    // enabled property changes with each slider
+    var sliderOptions = {
+      trackFill: 'black',
+      trackSize: new Dimension2( 120, 1 ),
+      thumbSize: new Dimension2( 15, 24 ),
+      minorTickLineWidth: 2,
+      enabledProperty: options.enabledProperty
+    };
+    var sliderNode = new HSlider( property, range, sliderOptions );
 
     // make vertical slider
     sliderNode.rotate( -Math.PI / 2 );
@@ -52,12 +54,12 @@ define( function( require ) {
       resize: false,
       children: [
         // necessary to prevent expanding box by thumb
-        new VStrut( SLIDER_OPTIONS.thumbSize.width / 2 ),
+        new VStrut( sliderOptions.thumbSize.width / 2 ),
 
         sliderNode,
 
         // necessary to prevent expanding box by thumb
-        new VStrut( SLIDER_OPTIONS.thumbSize.width / 2 ),
+        new VStrut( sliderOptions.thumbSize.width / 2 ),
         new Text( label, { font: FONT, fill: CurveFittingConstants.BLUE_COLOR } )
       ]
     }, options ) );
