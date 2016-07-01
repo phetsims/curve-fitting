@@ -40,7 +40,9 @@ define( function( require ) {
       trackSize: new Dimension2( 120, 1 ),
       thumbSize: new Dimension2( 15, 24 ),
       minorTickLineWidth: 2,
-      enabledProperty: options.enabledProperty
+      enabledProperty: options.enabledProperty,
+      thumbNodeTouchAreaXDilation: 5,
+      thumbNodeTouchAreaYDilation: 1.5
     };
     var sliderNode = new HSlider( property, range, sliderOptions );
 
