@@ -132,7 +132,8 @@ define( function( require ) {
     // create chiSquare text and panel
     var chiSquareTextNode = new Text( '000.00', {
       font: TEXT_PANEL_FONT,
-      textAlign: 'left'
+      textAlign: 'left',
+      maxWidth: 22
     } );
     var chiSquarePanelNode = new Panel( chiSquareTextNode, VALUE_PANEL_OPTIONS );
 
@@ -171,13 +172,17 @@ define( function( require ) {
         deviationArrowsNode.updateLayout();
       }
     } );
-
+    var thisModel = this;
     curve.chiSquareProperty.link( function( chiSquare ) {
-      chiSquareTextNode.setText( Util.toFixedNumber( chiSquare, 2 ).toString() );
+      // if chiSquare is greater than 10 we have a bad fit so less precision is needed
+      // if chiSquare if greater than 100 we have a really bad fit and decimals are inconsequential
+      var numberOfDecimals = thisModel.getNumberOfDecimalsNeeded( chiSquare );
+      chiSquareTextNode.setText( Util.toFixed( chiSquare, numberOfDecimals ) );
     } );
 
     curve.rSquareProperty.link( function( rSquare ) {
-      rSquareTextNode.setText( Util.toFixedNumber( rSquare, 2 ).toString() );
+      // rSquare can only be between 0 and 1 so it will always need 2 decimal points
+      rSquareTextNode.setText( Util.toFixed( rSquare, 2 ) );
     } );
 
     Panel.call( this, content, PANEL_OPTIONS );
@@ -185,5 +190,25 @@ define( function( require ) {
 
   curveFitting.register( 'DeviationsPanel', DeviationsPanel );
 
-  return inherit( Panel, DeviationsPanel );
+  return inherit( Panel, DeviationsPanel, {
+    /**
+     * Returns the number of decimals that will be displayed based on the magnitude of value
+     * @param value - value that needs to be displayed
+     * @returns {number}
+     */
+    getNumberOfDecimalsNeeded: function( value ) {
+      var numberOfDecimals;
+      if ( value < 10 ) {
+        numberOfDecimals = 2;
+      }
+      else if ( value < 100 ) {
+        numberOfDecimals = 1;
+      }
+      else {
+        numberOfDecimals = 0;
+      }
+
+      return numberOfDecimals;
+    }
+  } );
 } );
