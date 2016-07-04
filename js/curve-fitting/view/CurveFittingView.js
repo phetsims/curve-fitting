@@ -31,35 +31,38 @@ define( function( require ) {
   function CurveFittingView( curveFittingModel, modelViewTransform ) {
     ScreenView.call( this, { layoutBounds: SIM_BOUNDS } );
 
-    // add deviations node
+    // create deviations node
     var deviationsPanel = new DeviationsPanel( curveFittingModel.isDeviationPanelExpandedProperty, curveFittingModel.curve );
-    deviationsPanel.centerX = deviationsPanel.width / 2 + PADDING_LEFT_RIGHT;
-    deviationsPanel.centerY = deviationsPanel.height / 2 + PADDING_TOP_BOTTOM;
-    this.addChild( deviationsPanel );
 
-    // add control menu node
+    // create control menu node
     var controlMenuNode = new ControlMenuNode( curveFittingModel );
-    controlMenuNode.centerX = SIM_BOUNDS.width - PADDING_LEFT_RIGHT - controlMenuNode.width / 2;
-    controlMenuNode.centerY = PADDING_TOP_BOTTOM + controlMenuNode.height / 2;
-    this.addChild( controlMenuNode );
 
-    // add bucket and graph area node
-    var graphAreaWidth = SIM_BOUNDS.width - deviationsPanel.bounds.width - controlMenuNode.bounds.width - 50;
-    curveFittingModel.graphArea.bounds.setMinMax( deviationsPanel.bounds.maxX + 15, PADDING_TOP_BOTTOM, deviationsPanel.bounds.maxX + 15 + graphAreaWidth, graphAreaWidth + PADDING_TOP_BOTTOM );
+    // create bucket and graph area node
+    var graphAreaWidth = SIM_BOUNDS.width - deviationsPanel.width - controlMenuNode.width - 50;
+    curveFittingModel.graphArea.bounds.setMinMax( deviationsPanel.right + 15, PADDING_TOP_BOTTOM, deviationsPanel.right + 15 + graphAreaWidth, graphAreaWidth + PADDING_TOP_BOTTOM );
     curveFittingModel.bucket.position.setXY( deviationsPanel.centerX, SIM_BOUNDS.height - PADDING_TOP_BOTTOM - curveFittingModel.bucket.size.height );
     var bucketAndGraphAreaNode = new BucketAndGraphAreaNode( curveFittingModel, modelViewTransform );
-    this.addChild( bucketAndGraphAreaNode );
 
-    // add reset all button
+    // create reset all button
     var resetAllButton = new ResetAllButton( {
       listener: function() {
         curveFittingModel.reset();
       }
     } );
-    resetAllButton.scale( 0.75 );
-    resetAllButton.centerX = SIM_BOUNDS.width - resetAllButton.width / 2 - PADDING_LEFT_RIGHT;
-    resetAllButton.centerY = SIM_BOUNDS.height - resetAllButton.height / 2 - PADDING_TOP_BOTTOM;
+
+    this.addChild( deviationsPanel );
+    this.addChild( controlMenuNode );
+    this.addChild( bucketAndGraphAreaNode );
     this.addChild( resetAllButton );
+
+    deviationsPanel.left =  PADDING_LEFT_RIGHT;
+    deviationsPanel.top =  PADDING_TOP_BOTTOM;
+    controlMenuNode.right= SIM_BOUNDS.width - PADDING_LEFT_RIGHT ;
+    controlMenuNode.top = PADDING_TOP_BOTTOM;
+    resetAllButton.scale( 0.75 );
+    resetAllButton.right = controlMenuNode.right;
+    resetAllButton.bottom = SIM_BOUNDS.height  - PADDING_TOP_BOTTOM;
+
   }
 
   curveFitting.register( 'CurveFittingView', CurveFittingView );
