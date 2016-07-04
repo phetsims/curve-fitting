@@ -130,7 +130,7 @@ define( function( require ) {
     var deviationArrowsNode = new HBox( { align: 'top' } );
 
     // create chiSquare text and panel
-    var chiSquareTextNode = new Text( '000.00', {
+    var chiSquareTextNode = new Text( '0.00', {
       font: TEXT_PANEL_FONT,
       textAlign: 'left',
       maxWidth: 22
@@ -193,7 +193,8 @@ define( function( require ) {
   return inherit( Panel, DeviationsPanel, {
     /**
      * Returns the number of decimals that will be displayed based on the magnitude of value
-     * @param value - value that needs to be displayed
+     * @private
+     * @param {number} value - value that needs to be displayed
      * @returns {number}
      */
     getNumberOfDecimalsNeeded: function( value ) {
