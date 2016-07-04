@@ -50,8 +50,8 @@ define( function( require ) {
   function BucketNode( bucketModel, modelViewTransform, options ) {
     Node.call( this, _.extend( { cursor: 'pointer' }, options ) );
 
-    var bucketNode = new BucketFront( bucketModel, modelViewTransform );
-    bucketNode.rotate( Math.PI );
+    var bucketFrontNode = new BucketFront( bucketModel, modelViewTransform );
+    bucketFrontNode.rotate( Math.PI );
 
     var bucketHoleNode = new BucketHole( bucketModel, modelViewTransform );
     bucketHoleNode.rotate( Math.PI );
@@ -73,7 +73,7 @@ define( function( require ) {
 
     this.addChild( bucketHoleNode );
     this.addChild( pointsNode );
-    this.addChild( bucketNode );
+    this.addChild( bucketFrontNode );
 
     // expand touch area
     var clickableRadius = Math.max( this.bounds.width, this.bounds.height ) / 2;
