@@ -140,11 +140,11 @@ define( function( require ) {
 
   /**
    * @param {Property.<number>} chiSquareProperty - Property that represents x-deviation.
-   * @param {ObservableArray.<Point>} pointsProperty - Array of points for plotting curve.
+   * @param {ObservableArray.<Point>} points - Array of points for plotting curve.
    * @param {Object} [options] for graph node.
    * @constructor
    */
-  function BarometerX2Node( chiSquareProperty, pointsProperty, options ) {
+  function BarometerX2Node( chiSquareProperty, points, options ) {
     var valueRectNode = new Rectangle( -2 * CurveFittingConstants.BAROMETER_TICK_WIDTH / 3 - 0.5, 0, 2 * CurveFittingConstants.BAROMETER_TICK_WIDTH / 3, 0, { fill: CurveFittingConstants.BLUE_COLOR } );
     valueRectNode.rotation = Math.PI;
 
@@ -169,7 +169,7 @@ define( function( require ) {
     this.addTicks( [ 0, 0.5, 1, 2, 3, 10, 30, 100 ] );
 
     var updateChiFill = function() {
-      valueRectNode.setFill( getChiFillFromChiValue( chiSquareProperty.value, pointsProperty.length ) );
+      valueRectNode.setFill( getChiFillFromChiValue( chiSquareProperty.value, points.length ) );
     };
 
     chiSquareProperty.link( function( chiSquare ) {
@@ -177,7 +177,7 @@ define( function( require ) {
       updateChiFill();
     } );
 
-    pointsProperty.addListeners( updateChiFill, updateChiFill );
+    points.addListeners( updateChiFill, updateChiFill );
   }
 
   curveFitting.register( 'BarometerX2Node', BarometerX2Node );
