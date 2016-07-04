@@ -42,7 +42,7 @@ define( function( require ) {
   ];
 
   /**
-   * @param {SphereBucket} bucketModel - Model of bucket.
+   * @param {SphereBucket} bucketModel - Model of bucketN
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Object} [options] for graph node
    * @constructor
@@ -50,13 +50,15 @@ define( function( require ) {
   function BucketNode( bucketModel, modelViewTransform, options ) {
     Node.call( this, _.extend( { cursor: 'pointer' }, options ) );
 
+    // create the front of the bucket
     var bucketFrontNode = new BucketFront( bucketModel, modelViewTransform );
     bucketFrontNode.rotate( Math.PI );
 
+    // create the back of the bucket
     var bucketHoleNode = new BucketHole( bucketModel, modelViewTransform );
     bucketHoleNode.rotate( Math.PI );
 
-    // create points
+    // create all the points inside the bucket
     var pointsNode = new Node();
     POINTS_COORDS.forEach( function( pointsCoord ) {
       pointsNode.addChild( new Circle( {
@@ -68,9 +70,9 @@ define( function( require ) {
         y: pointsCoord.y
       } ) );
     } );
-    pointsNode.center = bucketHoleNode.center.copy();
-    pointsNode.translate( 0, -6 ); // tuned by hand to place point slightly above bucket
+    pointsNode.center = bucketHoleNode.center.copy().addXY( 0, -6 ); //tuned by hand to place point slightly above bucket
 
+    // render the nodes with proper ordering
     this.addChild( bucketHoleNode );
     this.addChild( pointsNode );
     this.addChild( bucketFrontNode );
