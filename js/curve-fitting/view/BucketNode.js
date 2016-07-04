@@ -75,13 +75,6 @@ define( function( require ) {
     this.addChild( pointsNode );
     this.addChild( bucketFrontNode );
 
-    // expand touch area
-    var clickableRadius = Math.max( this.bounds.width, this.bounds.height ) / 2;
-    this.addChild( new Circle( {
-      opacity: 0,
-      fill: 'red',
-      radius: clickableRadius
-    } ) );
   }
 
   curveFitting.register( 'BucketNode', BucketNode );
