@@ -160,44 +160,42 @@ define( function( require ) {
 
     var spaceBetweenBarometers = new HStrut( 10 );
     var spaceBetweenButtonAndTitle = new HStrut( 5 );
+
     isDeviationPanelExpandedProperty.link( function( isDeviationPanelExpanded ) {
       if ( isDeviationPanelExpanded ) {
         deviationArrowsNode.children = [ expandCollapseButton, barometerX2, spaceBetweenBarometers, barometerR2 ];
         content.children = [ deviationArrowsNode, deviationTextNode, helpButtonNode ];
-        deviationArrowsNode.updateLayout();
       }
       else {
         deviationArrowsNode.children = [ expandCollapseButton, spaceBetweenButtonAndTitle, titleNode ];
         content.children = [ deviationArrowsNode ];
-        deviationArrowsNode.updateLayout();
       }
+      deviationArrowsNode.updateLayout();
     } );
-    var thisModel = this;
+
+    // present for the lifetime of the sim
     curve.chiSquareProperty.link( function( chiSquare ) {
       // if chiSquare is greater than 10 we have a bad fit so less precision is needed
       // if chiSquare if greater than 100 we have a really bad fit and decimals are inconsequential
-      var numberOfDecimals = thisModel.getNumberOfDecimalsNeeded( chiSquare );
+      var numberOfDecimals = getNumberOfDecimalsNeeded( chiSquare );
       chiSquareTextNode.setText( Util.toFixed( chiSquare, numberOfDecimals ) );
     } );
 
+    // present for the lifetime of the sim
     curve.rSquareProperty.link( function( rSquare ) {
       // rSquare can only be between 0 and 1 so it will always need 2 decimal points
       rSquareTextNode.setText( Util.toFixed( rSquare, 2 ) );
     } );
 
     Panel.call( this, content, PANEL_OPTIONS );
-  }
 
-  curveFitting.register( 'DeviationsPanel', DeviationsPanel );
-
-  return inherit( Panel, DeviationsPanel, {
     /**
      * Returns the number of decimals that will be displayed based on the magnitude of value
-     * @private
+     * The number of decimals is lowered for larger values
      * @param {number} value - value that needs to be displayed
      * @returns {number}
      */
-    getNumberOfDecimalsNeeded: function( value ) {
+    function getNumberOfDecimalsNeeded( value ) {
       var numberOfDecimals;
       if ( value < 10 ) {
         numberOfDecimals = 2;
@@ -210,6 +208,10 @@ define( function( require ) {
       }
 
       return numberOfDecimals;
-    }
-  } );
+    };
+  }
+
+  curveFitting.register( 'DeviationsPanel', DeviationsPanel );
+
+  return inherit( Panel, DeviationsPanel );
 } );
