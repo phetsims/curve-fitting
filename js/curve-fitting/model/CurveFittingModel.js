@@ -10,13 +10,13 @@ define( function( require ) {
 
   // modules
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  var Bucket = require( 'PHETCOMMON/model/Bucket' );
   var Curve = require( 'CURVE_FITTING/curve-fitting/model/Curve' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var Dimension2 = require( 'DOT/Dimension2' );
   var FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
-  var Bucket = require( 'PHETCOMMON/model/Bucket' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // constants
@@ -36,27 +36,28 @@ define( function( require ) {
       isEquationPanelExpanded: true // property to control equation panel expansion
     } );
 
+    // model bounds for the graph;
+    this.graphModelBounds = GRAPH_MODEL_BOUNDS;
+
     // bucket model
     var BUCKET_WIDTH = 5; // in model coordinates
     var BUCKET_HEIGHT = BUCKET_WIDTH * 0.50;
     this.bucket = new Bucket( {
-      position: new Vector2( GRAPH_MODEL_BOUNDS.minX - 3, GRAPH_MODEL_BOUNDS.minY + 1 ), // bucket is to the left and up from the bottom left corner of graph
+      position: new Vector2( this.graphModelBounds.minX - 3, this.graphModelBounds.minY + 1 ), // bucket is to the left and up from the bottom left corner of graph
       size: new Dimension2( BUCKET_WIDTH, BUCKET_HEIGHT ),
       baseColor: 'rgb( 65, 63, 117 )'
     } );
 
     // curve model
     this.curve = new Curve( this.orderOfFitProperty, this.fitTypeProperty );
-    
-    // model bounds for the graph;
-    this.graphModelBounds = GRAPH_MODEL_BOUNDS;
-    
   }
 
   curveFitting.register( 'CurveFittingModel', CurveFittingModel );
 
   return inherit( PropertySet, CurveFittingModel, {
-
+    /**
+     *  Resets this model properties and the curve
+     */
     reset: function() {
       PropertySet.prototype.reset.call( this );
 
