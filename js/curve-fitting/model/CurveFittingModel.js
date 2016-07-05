@@ -12,12 +12,16 @@ define( function( require ) {
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var Bounds2 = require( 'DOT/Bounds2' );
   var Curve = require( 'CURVE_FITTING/curve-fitting/model/Curve' );
+  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var Dimension2 = require( 'DOT/Dimension2' );
   var FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
   var Bucket = require( 'PHETCOMMON/model/Bucket' );
   var Vector2 = require( 'DOT/Vector2' );
+
+  // constants
+  var GRAPH_MODEL_BOUNDS = CurveFittingConstants.GRAPH_MODEL_BOUNDS;
 
   /**
    * Main constructor for CurveFittingModel, which contains all of the model logic for the entire sim screen.
@@ -48,7 +52,7 @@ define( function( require ) {
     // graph area size
     this.graphArea = {
       // x-y size for point position, expecting equal x and y deltas
-      size: new Bounds2( -10, -10, 10, 10 ),
+      size: GRAPH_MODEL_BOUNDS,
 
       // real bounds of graph area, will be set according to available space
       bounds: new Bounds2( 0, 0, 0, 0 )
