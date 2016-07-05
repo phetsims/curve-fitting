@@ -208,7 +208,7 @@ define( function( require ) {
       }
 
       return numberOfDecimals;
-    };
+    }
   }
 
   curveFitting.register( 'DeviationsPanel', DeviationsPanel );
