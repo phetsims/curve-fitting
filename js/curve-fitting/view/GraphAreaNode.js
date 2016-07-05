@@ -34,14 +34,15 @@ define( function( require ) {
    * @param {Curve} curve model.
    * @param {Property.<number>} orderOfFitProperty - Property with current order of fit.
    * @param {Property.<boolean>} areResidualsVisibleProperty - Property to track residuals visibility.
-   * @param {Object} graphAreaModel - Model of graph area.
+   * @param {Bounds2} graphAreaModelBounds -  bounds of the graph
+   * @param {ModelViewTransform2} modelViewTransform
    * @param {Object} [options] for graph node.
    * @constructor
    */
-  function GraphAreaNode( curve, orderOfFitProperty, areResidualsVisibleProperty, graphAreaModel, options ) {
+  function GraphAreaNode( curve, orderOfFitProperty, areResidualsVisibleProperty, graphAreaModelBounds, modelViewTransform, options ) {
     var self = this;
-    var graphAreaSize = graphAreaModel.size;
-    var graphAreaBounds = graphAreaModel.bounds;
+    var graphAreaSize = graphAreaModelBounds;
+    var graphAreaBounds = modelViewTransform.modelToViewBounds( graphAreaModelBounds );
 
     Node.call( this, options );
     this.translate( graphAreaBounds.minX, graphAreaBounds.minY );

@@ -31,7 +31,7 @@ define( function( require ) {
     var bucketNode = new BucketNode( curveFittingModel.bucket, modelViewTransform );
 
     // create graph area node
-    var graphAreaNode = new GraphAreaNode( curveFittingModel.curve, curveFittingModel.orderOfFitProperty, curveFittingModel.areResidualsVisibleProperty, curveFittingModel.graphArea );
+    var graphAreaNode = new GraphAreaNode( curveFittingModel.curve, curveFittingModel.orderOfFitProperty, curveFittingModel.areResidualsVisibleProperty, curveFittingModel.graphModelBounds, modelViewTransform );
 
     // add equation node
     var equationGraphPanelNode = new EquationGraphPanelNode( curveFittingModel.isEquationPanelExpandedProperty, curveFittingModel.curve, curveFittingModel.orderOfFitProperty );
