@@ -42,7 +42,7 @@ define( function( require ) {
   ];
 
   /**
-   * @param {SphereBucket} bucketModel - Model of bucketN
+   * @param {Bucket} bucketModel - Model of bucket
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Object} [options] for graph node
    * @constructor

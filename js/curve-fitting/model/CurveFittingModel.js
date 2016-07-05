@@ -16,7 +16,7 @@ define( function( require ) {
   var FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
-  var SphereBucket = require( 'PHETCOMMON/model/SphereBucket' );
+  var Bucket = require( 'PHETCOMMON/model/Bucket' );
   var Vector2 = require( 'DOT/Vector2' );
 
   /**
@@ -36,7 +36,7 @@ define( function( require ) {
     // bucket model
     var BUCKET_WIDTH = 90;
     var BUCKET_HEIGHT = BUCKET_WIDTH * 0.50;
-    this.bucket = new SphereBucket( {
+    this.bucket = new Bucket( {
       position: new Vector2( 0, 0 ),
       size: new Dimension2( BUCKET_WIDTH, BUCKET_HEIGHT ),
       baseColor: 'rgb( 65, 63, 117 )'
