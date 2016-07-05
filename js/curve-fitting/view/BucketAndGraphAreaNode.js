@@ -41,8 +41,8 @@ define( function( require ) {
         graphAreaNode, bucketNode, equationGraphPanelNode
       ]
     }, options ) );
-    equationGraphPanelNode.centerX = graphAreaNode.bounds.minX + equationGraphPanelNode.width / 2 + 10;
-    equationGraphPanelNode.centerY = graphAreaNode.bounds.minY + equationGraphPanelNode.height / 2 + 10;
+    equationGraphPanelNode.left = graphAreaNode.left+ 10;
+    equationGraphPanelNode.top = graphAreaNode.top + 10;
 
     // add drag handler
     var pointsNode = new Node();
