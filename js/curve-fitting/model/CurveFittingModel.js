@@ -10,7 +10,6 @@ define( function( require ) {
 
   // modules
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  var Bounds2 = require( 'DOT/Bounds2' );
   var Curve = require( 'CURVE_FITTING/curve-fitting/model/Curve' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var Dimension2 = require( 'DOT/Dimension2' );
