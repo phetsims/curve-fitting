@@ -10,25 +10,27 @@ define( function( require ) {
 
   // modules
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  var Bounds2 = require( 'DOT/Bounds2' );
   var BucketAndGraphAreaNode = require( 'CURVE_FITTING/curve-fitting/view/BucketAndGraphAreaNode' );
   var ControlMenuNode = require( 'CURVE_FITTING/curve-fitting/view/ControlMenuNode' );
+  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var DeviationsPanel = require( 'CURVE_FITTING/curve-fitting/view/DeviationsPanel' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   // constants
   var PADDING_LEFT_RIGHT = 10;
   var PADDING_TOP_BOTTOM = 25;
-  var SIM_BOUNDS = new Bounds2( 0, 0, 768, 504 );
+  var SIM_BOUNDS = CurveFittingConstants.SIM_BOUNDS;
+  var GRAPH_MODEL_BOUNDS = CurveFittingConstants.GRAPH_MODEL_BOUNDS;
 
   /**
    * @param {CurveFittingModel} curveFittingModel
-   * @param {ModelViewTransform2} modelViewTransform
    * @constructor
    */
-  function CurveFittingView( curveFittingModel, modelViewTransform ) {
+  function CurveFittingView( curveFittingModel ) {
     ScreenView.call( this, { layoutBounds: SIM_BOUNDS } );
 
     // create deviations node
@@ -39,8 +41,14 @@ define( function( require ) {
 
     // create bucket and graph area node
     var graphAreaWidth = SIM_BOUNDS.width - deviationsPanel.width - controlMenuNode.width - 50;
+
+    var scale = graphAreaWidth / GRAPH_MODEL_BOUNDS.width;
+
+    // create a model view transform
+    var modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping( new Vector2( 0, 0 ), SIM_BOUNDS.center, scale );
+
     curveFittingModel.graphArea.bounds.setMinMax( deviationsPanel.right + 15, PADDING_TOP_BOTTOM, deviationsPanel.right + 15 + graphAreaWidth, graphAreaWidth + PADDING_TOP_BOTTOM );
-    curveFittingModel.bucket.position.setXY( deviationsPanel.centerX, SIM_BOUNDS.height - PADDING_TOP_BOTTOM - curveFittingModel.bucket.size.height );
+
     var bucketAndGraphAreaNode = new BucketAndGraphAreaNode( curveFittingModel, modelViewTransform );
 
     // create reset all button
@@ -55,13 +63,13 @@ define( function( require ) {
     this.addChild( bucketAndGraphAreaNode );
     this.addChild( resetAllButton );
 
-    deviationsPanel.left =  PADDING_LEFT_RIGHT;
-    deviationsPanel.top =  PADDING_TOP_BOTTOM;
-    controlMenuNode.right= SIM_BOUNDS.width - PADDING_LEFT_RIGHT ;
+    deviationsPanel.left = PADDING_LEFT_RIGHT;
+    deviationsPanel.top = PADDING_TOP_BOTTOM;
+    controlMenuNode.right = SIM_BOUNDS.width - PADDING_LEFT_RIGHT;
     controlMenuNode.top = PADDING_TOP_BOTTOM;
     resetAllButton.scale( 0.75 );
     resetAllButton.right = controlMenuNode.right;
-    resetAllButton.bottom = SIM_BOUNDS.height  - PADDING_TOP_BOTTOM;
+    resetAllButton.bottom = SIM_BOUNDS.height - PADDING_TOP_BOTTOM;
 
   }
 

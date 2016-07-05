@@ -52,12 +52,10 @@ define( function( require ) {
 
     // create the front of the bucket
     var bucketFrontNode = new BucketFront( bucketModel, modelViewTransform );
-    bucketFrontNode.rotate( Math.PI );
 
     // create the back of the bucket
     var bucketHoleNode = new BucketHole( bucketModel, modelViewTransform );
-    bucketHoleNode.rotate( Math.PI );
-
+    
     // create all the points inside the bucket
     var pointsNode = new Node();
     POINTS_COORDS.forEach( function( pointsCoord ) {

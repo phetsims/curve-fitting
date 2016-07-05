@@ -11,7 +11,8 @@ define( function( require ) {
 
   // modules
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
-
+  var Bounds2 = require( 'DOT/Bounds2' );
+  
   var CurveFittingConstants = {
     MAX_ORDER_OF_FIT: 3,
 
@@ -34,7 +35,11 @@ define( function( require ) {
     PANEL_BACKGROUND_COLOR: 'rgb( 254, 235, 214 )',
     PANEL_CORNER_RADIUS: 5,
     PANEL_MARGIN: 10,
-    PANEL_WIDTH: 130
+    PANEL_WIDTH: 130,
+    
+    // size
+    SIM_BOUNDS: new Bounds2( 0, 0, 768, 504 ),
+    GRAPH_MODEL_BOUNDS: new Bounds2( -10, -10, 10, 10 )
   };
 
   curveFitting.register( 'CurveFittingConstants', CurveFittingConstants );

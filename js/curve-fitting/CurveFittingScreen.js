@@ -13,7 +13,6 @@ define( function( require ) {
   var CurveFittingModel = require( 'CURVE_FITTING/curve-fitting/model/CurveFittingModel' );
   var CurveFittingView = require( 'CURVE_FITTING/curve-fitting/view/CurveFittingView' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var Screen = require( 'JOIST/Screen' );
 
   // strings
@@ -28,12 +27,10 @@ define( function( require ) {
     //If there are multiple screens, then the icon must be provided here.
     var icon = null;
 
-    // model coordinates are the same as view coordinates
-    var modelViewTransform = ModelViewTransform2.createIdentity();
 
     Screen.call( this, curveFittingTitleString, icon,
       function() { return new CurveFittingModel(); },
-      function( model ) { return new CurveFittingView( model, modelViewTransform ); },
+      function( model ) { return new CurveFittingView( model); },
       { backgroundColor: 'rgb( 187, 230, 246 )' }
     );
   }

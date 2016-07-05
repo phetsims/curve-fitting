@@ -34,10 +34,10 @@ define( function( require ) {
     } );
 
     // bucket model
-    var BUCKET_WIDTH = 90;
+    var BUCKET_WIDTH = 5;
     var BUCKET_HEIGHT = BUCKET_WIDTH * 0.50;
     this.bucket = new Bucket( {
-      position: new Vector2( 0, 0 ),
+      position: new Vector2( -16, -10 ),
       size: new Dimension2( BUCKET_WIDTH, BUCKET_HEIGHT ),
       baseColor: 'rgb( 65, 63, 117 )'
     } );
