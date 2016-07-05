@@ -39,16 +39,17 @@ define( function( require ) {
     // create control menu node
     var controlMenuNode = new ControlMenuNode( curveFittingModel );
 
-    // create bucket and graph area node
-    var graphAreaWidth = SIM_BOUNDS.width - deviationsPanel.width - controlMenuNode.width - 50;
-
-    var scale = graphAreaWidth / GRAPH_MODEL_BOUNDS.width;
-
     // create a model view transform
-    var modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping( new Vector2( 0, 0 ), SIM_BOUNDS.center, scale );
+    var graphAreaWidth = SIM_BOUNDS.width - deviationsPanel.width - controlMenuNode.width - 50;
+    var graphCenterX = graphAreaWidth / 2 + deviationsPanel.width + 25;
+    var graphCenterY = SIM_BOUNDS.centerY;
+    var scale = graphAreaWidth / GRAPH_MODEL_BOUNDS.width;
+    var modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping( new Vector2( 0, 0 ), new Vector2( graphCenterX, graphCenterY ), scale );
 
-    curveFittingModel.graphArea.bounds.setMinMax( deviationsPanel.right + 15, PADDING_TOP_BOTTOM, deviationsPanel.right + 15 + graphAreaWidth, graphAreaWidth + PADDING_TOP_BOTTOM );
+    var graphAreaBounds = modelViewTransform.modelToViewBounds( GRAPH_MODEL_BOUNDS );
+    curveFittingModel.graphArea.bounds = graphAreaBounds;
 
+    // create bucket and graph area node
     var bucketAndGraphAreaNode = new BucketAndGraphAreaNode( curveFittingModel, modelViewTransform );
 
     // create reset all button

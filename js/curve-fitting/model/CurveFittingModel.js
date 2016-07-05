@@ -38,10 +38,10 @@ define( function( require ) {
     } );
 
     // bucket model
-    var BUCKET_WIDTH = 5;
+    var BUCKET_WIDTH = 5; // in model coordinates
     var BUCKET_HEIGHT = BUCKET_WIDTH * 0.50;
     this.bucket = new Bucket( {
-      position: new Vector2( -16, -10 ),
+      position: new Vector2( GRAPH_MODEL_BOUNDS.minX - 3, GRAPH_MODEL_BOUNDS.minY + 1 ), // bucket is to the left and up from the bottom left corner of graph
       size: new Dimension2( BUCKET_WIDTH, BUCKET_HEIGHT ),
       baseColor: 'rgb( 65, 63, 117 )'
     } );
