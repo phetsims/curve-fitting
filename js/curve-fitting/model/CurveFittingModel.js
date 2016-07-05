@@ -48,19 +48,10 @@ define( function( require ) {
 
     // curve model
     this.curve = new Curve( this.orderOfFitProperty, this.fitTypeProperty );
-
-
+    
     // model bounds for the graph;
     this.graphModelBounds = GRAPH_MODEL_BOUNDS;
-
-    // graph area size
-    this.graphArea = {
-      // x-y size for point position, expecting equal x and y deltas
-      size: GRAPH_MODEL_BOUNDS,
-
-      // real bounds of graph area, will be set according to available space
-      bounds: new Bounds2( 0, 0, 0, 0 )
-    };
+    
   }
 
   curveFitting.register( 'CurveFittingModel', CurveFittingModel );

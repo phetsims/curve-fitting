@@ -46,9 +46,6 @@ define( function( require ) {
     var scale = graphAreaWidth / GRAPH_MODEL_BOUNDS.width;
     var modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping( new Vector2( 0, 0 ), new Vector2( graphCenterX, graphCenterY ), scale );
 
-    var graphAreaBounds = modelViewTransform.modelToViewBounds( GRAPH_MODEL_BOUNDS );
-    curveFittingModel.graphArea.bounds = graphAreaBounds;
-
     // create bucket and graph area node
     var bucketAndGraphAreaNode = new BucketAndGraphAreaNode( curveFittingModel, modelViewTransform );
 
