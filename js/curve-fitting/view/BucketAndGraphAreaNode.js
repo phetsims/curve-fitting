@@ -27,27 +27,32 @@ define( function( require ) {
    * @constructor
    */
   function BucketAndGraphAreaNode( curveFittingModel, modelViewTransform, options ) {
-    // create bucket node
+
+    Node.call( this, options );
+
+    // create the bucket node
     var bucketNode = new BucketNode( curveFittingModel.bucket, modelViewTransform );
 
-    // create graph area node
+    // create the graph area node - responsible for the rendering of the curves, as well as the axes and background.
     var graphAreaNode = new GraphAreaNode( curveFittingModel.curve, curveFittingModel.orderOfFitProperty, curveFittingModel.areResidualsVisibleProperty, curveFittingModel.graphModelBounds, modelViewTransform );
 
-    // add equation node
+    // create the equation node (accordion box) in the upper left corner of the graph
     var equationGraphPanelNode = new EquationGraphPanelNode( curveFittingModel.isEquationPanelExpandedProperty, curveFittingModel.curve, curveFittingModel.orderOfFitProperty );
 
-    Node.call( this, _.extend( {
-      children: [
-        graphAreaNode, bucketNode, equationGraphPanelNode
-      ]
-    }, options ) );
-    equationGraphPanelNode.left = graphAreaNode.left+ 10;
-    equationGraphPanelNode.top = graphAreaNode.top + 10;
-
-    // add drag handler
+    // create a separate layers for all the points
     var pointsNode = new Node();
+
+    // add the children to the screen graph
+    this.addChild( graphAreaNode );
+    this.addChild( bucketNode );
+    this.addChild( equationGraphPanelNode );
     this.addChild( pointsNode );
 
+    // layout
+    equationGraphPanelNode.left = graphAreaNode.left + 10;
+    equationGraphPanelNode.top = graphAreaNode.top + 10;
+
+    // add drag handler to the bucketNode
     var pointModel = null;
     var pointView = null;
     bucketNode.addInputListener( new SimpleDragHandler( {
