@@ -39,17 +39,17 @@ define( function( require ) {
       isEquationPanelExpanded: true // property to control equation panel expansion
     } );
 
-    // model bounds for the graph
-    this.graphModelBounds = GRAPH_MODEL_BOUNDS;
+    // @public (read-only) model bounds for the graph
+    this.graphModelBounds = GRAPH_MODEL_BOUNDS; 
 
-    // bucket model
+    // @public (read-only) bucket model
     this.bucket = new Bucket( {
       position: BUCKET_POSITION,
       size: new Dimension2( BUCKET_WIDTH, BUCKET_HEIGHT ),
       baseColor: 'rgb( 65, 63, 117 )'
     } );
 
-    // curve model
+    // @public curve model
     this.curve = new Curve( this.orderOfFitProperty, this.fitTypeProperty );
   }
 
@@ -62,7 +62,7 @@ define( function( require ) {
     reset: function() {
       PropertySet.prototype.reset.call( this );
 
-      // reset curve
+      // reset curve model
       this.curve.reset();
     }
   } );
