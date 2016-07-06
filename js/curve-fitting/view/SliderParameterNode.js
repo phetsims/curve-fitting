@@ -34,15 +34,16 @@ define( function( require ) {
    * @constructor
    */
   function SliderParameterNode( property, range, label, options ) {
-    // enabled property changes with each slider
-    var sliderOptions = {
-      trackFill: 'black',
-      trackSize: new Dimension2( 120, 1 ),
-      thumbSize: new Dimension2( 15, 24 ),
-      minorTickLineWidth: 2,
-      enabledProperty: options.enabledProperty
-    };
-    var sliderNode = new HSlider( property, range, sliderOptions );
+
+    options = _.extend( {
+        trackFill: 'black',
+        trackSize: new Dimension2( 120, 1 ),
+        thumbSize: new Dimension2( 15, 24 ),
+        minorTickLineWidth: 2
+      },
+      options );
+
+    var sliderNode = new HSlider( property, range, options );
 
     // make vertical slider
     sliderNode.rotate( -Math.PI / 2 );
@@ -54,12 +55,12 @@ define( function( require ) {
       resize: false,
       children: [
         // necessary to prevent expanding box by thumb
-        new VStrut( sliderOptions.thumbSize.width / 2 ),
+        new VStrut( options.thumbSize.width / 2 ),
 
         sliderNode,
 
         // necessary to prevent expanding box by thumb
-        new VStrut( sliderOptions.thumbSize.width / 2 ),
+        new VStrut( options.thumbSize.width / 2 ),
         new Text( label, { font: FONT, fill: CurveFittingConstants.BLUE_COLOR } )
       ]
     }, options ) );
