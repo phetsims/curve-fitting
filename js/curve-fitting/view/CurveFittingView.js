@@ -40,21 +40,12 @@ define( function( require ) {
     // create control menu node
     var controlMenuNode = new ControlMenuNode( curveFittingModel );
 
-    // create reset all button
-    var resetAllButton = new ResetAllButton( {
-      listener: function() {
-        curveFittingModel.reset();
-      }
-    } );
-
     // layout the nodes
     deviationsPanel.left = PADDING_LEFT_RIGHT;
     deviationsPanel.top = PADDING_TOP_BOTTOM;
     controlMenuNode.right = SIM_BOUNDS.width - PADDING_LEFT_RIGHT;
     controlMenuNode.top = deviationsPanel.top;
-    resetAllButton.scale( 0.75 );
-    resetAllButton.right = controlMenuNode.right;
-    resetAllButton.bottom = SIM_BOUNDS.height - PADDING_TOP_BOTTOM;
+
 
     // create a model view transform
     var graphAreaWidth = controlMenuNode.left - deviationsPanel.right - GRAPH_PADDING_LEFT_RIGHT * 2;
@@ -65,6 +56,17 @@ define( function( require ) {
 
     // create bucket and graph area node
     var bucketAndGraphAreaNode = new BucketAndGraphAreaNode( curveFittingModel, modelViewTransform );
+
+    // create reset all button
+    var resetAllButton = new ResetAllButton( {
+      listener: function() {
+        curveFittingModel.reset();
+        bucketAndGraphAreaNode.reset();
+      }
+    } );
+    resetAllButton.scale( 0.75 );
+    resetAllButton.right = controlMenuNode.right;
+    resetAllButton.bottom = SIM_BOUNDS.height - PADDING_TOP_BOTTOM;
 
     // add the children to the scene graph
     this.addChild( deviationsPanel );
