@@ -31,6 +31,7 @@ define( function( require ) {
     /**
      * sets the point coordinates
      * @param {Vector2} position
+     * @public
      */
     setXY: function( position ) {
       this.x = position.x;
