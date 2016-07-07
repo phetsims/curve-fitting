@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  // var AccordionBox = require ('SUN/AccordionBox');
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
@@ -60,8 +61,8 @@ define( function( require ) {
     var expandCollapseButton = new ExpandCollapseButton( isEquationPanelExpandedProperty, {
       sideLength: BUTTON_LENGTH
     } );
-    expandCollapseButton.touchArea = expandCollapseButton.localBounds.dilatedXY( BUTTON_LENGTH / 3, BUTTON_LENGTH / 3 );
-    expandCollapseButton.mouseArea = expandCollapseButton.localBounds.dilatedXY( BUTTON_LENGTH / 3, BUTTON_LENGTH / 3 );
+    expandCollapseButton.touchArea = expandCollapseButton.localBounds.dilatedXY( BUTTON_LENGTH, BUTTON_LENGTH );
+    expandCollapseButton.mouseArea = expandCollapseButton.localBounds.dilatedXY( BUTTON_LENGTH, BUTTON_LENGTH );
 
     // create parameters node
     var yNode = new Text( symbolYString + '=', TEXT_OPTIONS );
@@ -70,7 +71,7 @@ define( function( require ) {
       align: 'bottom',
       children: [
         aParameterNode,
-        new SubSupText( symbolXString + '<sup>3</sup>', TEXT_OPTIONS ),
+        new SubSupText(symbolXString+'<sup>3</sup>', TEXT_OPTIONS ),
         new Text( ' + ', TEXT_OPTIONS )
       ]
     } );

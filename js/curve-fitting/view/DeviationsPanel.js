@@ -79,8 +79,8 @@ define( function( require ) {
       var expandCollapseButton = new ExpandCollapseButton( isDeviationPanelExpandedProperty, {
         sideLength: BUTTON_LENGTH
       } );
-      expandCollapseButton.touchArea = expandCollapseButton.localBounds.dilatedXY( BUTTON_LENGTH/3, BUTTON_LENGTH/3 );
-      expandCollapseButton.mouseArea = expandCollapseButton.localBounds.dilatedXY( BUTTON_LENGTH/3, BUTTON_LENGTH/3 );
+      expandCollapseButton.touchArea = expandCollapseButton.localBounds.dilatedXY( BUTTON_LENGTH, BUTTON_LENGTH );
+      expandCollapseButton.mouseArea = expandCollapseButton.localBounds.dilatedXY( BUTTON_LENGTH, BUTTON_LENGTH );
 
       // X^2 barometer
       var barometerX2 = new BarometerX2Node( curve.chiSquareProperty, curve.points );
