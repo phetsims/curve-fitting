@@ -89,7 +89,8 @@ define( function( require ) {
       align: 'bottom',
       children: [
         cParameterNode,
-        new Text( 'x + ', TEXT_OPTIONS ),
+        new Text( symbolXString, TEXT_OPTIONS ),
+        new Text( ' + ', TEXT_OPTIONS ),
         dParameterNode
       ]
     } );
