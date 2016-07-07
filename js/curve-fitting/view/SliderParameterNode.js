@@ -39,7 +39,8 @@ define( function( require ) {
         trackFill: 'black',
         trackSize: new Dimension2( 120, 1 ),
         thumbSize: new Dimension2( 15, 24 ),
-        minorTickLineWidth: 2
+        minorTickLineWidth: 2,
+        thumbTouchAreaYDilation: 1.8   // value so touch areas don't overlap
       },
       options );
 
