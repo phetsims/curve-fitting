@@ -27,6 +27,10 @@ define( function( require ) {
   // strings
   var adjustableFitString = require( 'string!CURVE_FITTING/adjustableFit' );
   var bestFitString = require( 'string!CURVE_FITTING/bestFit' );
+  var symbolAString = require( 'string!CURVE_FITTING/symbol.a' );
+  var symbolBString = require( 'string!CURVE_FITTING/symbol.b' );
+  var symbolCString = require( 'string!CURVE_FITTING/symbol.c' );
+  var symbolDString = require( 'string!CURVE_FITTING/symbol.d' );
 
   // constants
   var FONT = new PhetFont( 12 );
@@ -54,7 +58,7 @@ define( function( require ) {
     fitTypeRadioButtonGroup.localBounds = fitTypeRadioButtonGroup.localBounds.withMaxX( Math.max( fitTypeRadioButtonGroup.localBounds.maxX, CurveFittingConstants.PANEL_WIDTH - RADIO_BUTTON_MENU_OPTIONS.radius ) );
     content.addChild( fitTypeRadioButtonGroup );
 
-    // create equation node
+    // create and add equation node
     content.addChild( new EquationFitNode( orderOfFitProperty ) );
 
     // it's necessary to be able to enable and disable sliders
@@ -64,10 +68,10 @@ define( function( require ) {
     var dSliderEnabledProperty = new Property( true );
 
     // create slider for parameters
-    var aSliderBox = new SliderParameterNode( curve.aProperty, { min: -1, max: 1 }, 'a', { enabledProperty: aSliderEnabledProperty } );
-    var bSliderBox = new SliderParameterNode( curve.bProperty, { min: -2, max: 2 }, 'b', { enabledProperty: bSliderEnabledProperty } );
-    var cSliderBox = new SliderParameterNode( curve.cProperty, { min: -10, max: 10 }, 'c', { enabledProperty: cSliderEnabledProperty } );
-    var dSliderBox = new SliderParameterNode( curve.dProperty, { min: -10, max: 10 }, 'd', { enabledProperty: dSliderEnabledProperty } );
+    var aSliderBox = new SliderParameterNode( curve.aProperty, { min: -1, max: 1 }, symbolAString, { enabledProperty: aSliderEnabledProperty } );
+    var bSliderBox = new SliderParameterNode( curve.bProperty, { min: -2, max: 2 }, symbolBString, { enabledProperty: bSliderEnabledProperty } );
+    var cSliderBox = new SliderParameterNode( curve.cProperty, { min: -10, max: 10 }, symbolCString, { enabledProperty: cSliderEnabledProperty } );
+    var dSliderBox = new SliderParameterNode( curve.dProperty, { min: -10, max: 10 }, symbolDString, { enabledProperty: dSliderEnabledProperty } );
 
     // create slider box
     var slidersBox = new HBox( {
@@ -88,7 +92,7 @@ define( function( require ) {
       else if ( orderOfFit === 2 ) {
         // enable b slider
         bSliderEnabledProperty.set( true );
-        //disable a slide
+        //disable a slider
         aSliderEnabledProperty.set( false );
         slidersBox.children = [ bSliderBox, cSliderBox, dSliderBox ];
       }

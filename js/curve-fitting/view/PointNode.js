@@ -158,13 +158,15 @@ define( function( require ) {
     // add central line
     var centralLine = new Line( 0, 0, 0, 0, CENTRAL_LINE_OPTIONS );
     this.addChild( centralLine );
+    var pointRadius = CurveFittingConstants.POINT_RADIUS;
 
     // add point view
     var circleView = new Circle( {
       fill: POINT_COLOR,
       radius: CurveFittingConstants.POINT_RADIUS,
       stroke: CurveFittingConstants.POINT_STROKE,
-      lineWidth: CurveFittingConstants.POINT_LINE_WIDTH
+      lineWidth: CurveFittingConstants.POINT_LINE_WIDTH,
+      touchArea: new Bounds2( -pointRadius * 2, -pointRadius * 2, pointRadius * 2, pointRadius * 2 )
     } );
     this.addChild( circleView );
 

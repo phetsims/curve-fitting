@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  // var AccordionBox = require ('SUN/AccordionBox');
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
@@ -23,6 +24,12 @@ define( function( require ) {
 
   // strings
   var equationString = require( 'string!CURVE_FITTING/equation' );
+  var symbolYString = require( 'string!CURVE_FITTING/symbol.y' );
+  var symbolXString = require( 'string!CURVE_FITTING/symbol.x' );
+  var symbolAString = require( 'string!CURVE_FITTING/symbol.a' );
+  var symbolBString = require( 'string!CURVE_FITTING/symbol.b' );
+  var symbolCString = require( 'string!CURVE_FITTING/symbol.c' );
+  var symbolDString = require( 'string!CURVE_FITTING/symbol.d' );
 
   // constants
   var BUTTON_LENGTH = 16;
@@ -58,27 +65,27 @@ define( function( require ) {
     expandCollapseButton.mouseArea = expandCollapseButton.localBounds.dilatedXY( BUTTON_LENGTH, BUTTON_LENGTH );
 
     // create parameters node
-    var yNode = new Text( 'y = ', TEXT_OPTIONS );
-    var aParameterNode = new Text( 'a', PARAMETER_TEXT_OPTIONS );
+    var yNode = new Text( symbolYString + '=', TEXT_OPTIONS );
+    var aParameterNode = new Text( symbolAString, PARAMETER_TEXT_OPTIONS );
     var aBlockNode = new HBox( {
       align: 'bottom',
       children: [
         aParameterNode,
-        new SubSupText( 'x<sup>3</sup>', TEXT_OPTIONS ),
+        new SubSupText(symbolXString+'<sup>3</sup>', TEXT_OPTIONS ),
         new Text( ' + ', TEXT_OPTIONS )
       ]
     } );
-    var bParameterNode = new Text( 'b', PARAMETER_TEXT_OPTIONS );
+    var bParameterNode = new Text( symbolBString, PARAMETER_TEXT_OPTIONS );
     var bBlockNode = new HBox( {
       align: 'bottom',
       children: [
         bParameterNode,
-        new SubSupText( 'x<sup>2</sup>', TEXT_OPTIONS ),
+        new SubSupText( symbolXString + '<sup>2</sup>', TEXT_OPTIONS ),
         new Text( ' + ', TEXT_OPTIONS )
       ]
     } );
-    var cParameterNode = new Text( 'c', PARAMETER_TEXT_OPTIONS );
-    var dParameterNode = new Text( 'd', PARAMETER_TEXT_OPTIONS );
+    var cParameterNode = new Text( symbolCString, PARAMETER_TEXT_OPTIONS );
+    var dParameterNode = new Text( symbolDString, PARAMETER_TEXT_OPTIONS );
     var cdBlockNode = new HBox( {
       align: 'bottom',
       children: [
@@ -121,7 +128,7 @@ define( function( require ) {
 
     var updateAParameter = function() {
       if ( isEquationPanelExpandedProperty.value && curve.isVisible ) {
-        aParameterNode.setText( Util.toFixedNumber( curve.aProperty.value, 5 ).toString() );
+        aParameterNode.setText( roundNumber( curve.aProperty.value, 3 ).numberToString );
       }
     };
     curve.aProperty.lazyLink( updateAParameter );
@@ -130,7 +137,7 @@ define( function( require ) {
 
     var updateBParameter = function() {
       if ( isEquationPanelExpandedProperty.value && curve.isVisible ) {
-        bParameterNode.setText( Util.toFixedNumber( curve.bProperty.value, 4 ).toString() );
+        bParameterNode.setText( roundNumber( curve.bProperty.value, 3 ).numberToString );
       }
     };
     curve.bProperty.lazyLink( updateBParameter );
@@ -139,7 +146,7 @@ define( function( require ) {
 
     var updateCParameter = function() {
       if ( isEquationPanelExpandedProperty.value && curve.isVisible ) {
-        cParameterNode.setText( Util.toFixedNumber( curve.cProperty.value, 4 ).toString() );
+        cParameterNode.setText( roundNumber( curve.cProperty.value, 2 ).numberToString );
       }
     };
     curve.cProperty.lazyLink( updateCParameter );
@@ -147,11 +154,67 @@ define( function( require ) {
     isEquationPanelExpandedProperty.link( updateCParameter );
 
     var updateDParameter = function() {
-      dParameterNode.setText( Util.toFixedNumber( curve.dProperty.value, 1 ).toString() );
+      dParameterNode.setText( roundNumber( curve.dProperty.value, 1 ).numberToString );
     };
     curve.dProperty.lazyLink( updateDParameter );
     curve.isVisibleProperty.lazyLink( updateDParameter );
     isEquationPanelExpandedProperty.link( updateDParameter );
+
+
+    /**
+     * Function that returns (for numbers smaller than ten) a number (as a string)  with a fixed number of decimal places
+     * whereas for numbers larger than ten, the number/string is returned a fixed number of significant figures
+     *
+     * @param {number} number
+     * @param {number} maxDecimalPlaces
+     * @returns {Object}
+     */
+    function roundNumber( number, maxDecimalPlaces ) {
+
+      // eg. if maxDecimalPlaces = 3
+      // 9999.11 -> 9999  (number larger than 10^3) are rounded to unity
+      // 999.111 -> 999.1
+      // 99.1111 -> 99.11
+      // 9.11111 -> 9.111
+      // 1.11111 -> 1.111
+      // 0.11111 -> 0.111
+      // 0.01111 -> 0.011
+      // 0.00111 -> 0.001
+      // 0.00011 -> 0.000
+
+
+      var plusString = '\u002B'; // we want a large + sign
+      var minusString = '\u2212';
+
+
+      // number = mantissa times 10^(exponent) where the mantissa is between 1 and 10 (or -1 to -10)
+      var exponent = Math.floor( Util.log10( Math.abs( number ) ) );
+
+      var decimalPlaces;
+      if ( exponent >= maxDecimalPlaces ) {
+        decimalPlaces = 0;
+      }
+      else if ( exponent > 0 ) {
+        decimalPlaces = maxDecimalPlaces - exponent;
+      }
+      else {
+        decimalPlaces = maxDecimalPlaces;
+      }
+      var roundedNumber = Util.toFixedNumber( number, decimalPlaces );
+      var numberToString = Util.toFixed( number, decimalPlaces );
+      var signToString = (roundedNumber >= 0) ? plusString : minusString; // N.B.
+      var absoluteNumberToString = Util.toFixedNumber( Math.abs( number ), decimalPlaces ); // N.B.
+      var isStringZero = (numberToString === Util.toFixed( 0, decimalPlaces ));
+
+      var returnValue = {
+        numberToString: numberToString, // {string}
+        signToString: signToString, // {string}
+        absoluteNumberToString: absoluteNumberToString, // {string}
+        isStringZero: isStringZero  // {boolean}
+      };
+
+      return returnValue;
+    }
   }
 
   curveFitting.register( 'EquationGraphPanelNode', EquationGraphPanelNode );

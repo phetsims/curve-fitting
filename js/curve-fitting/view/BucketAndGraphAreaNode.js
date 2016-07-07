@@ -41,6 +41,8 @@ define( function( require ) {
 
     // create a separate layers for all the points
     var pointsNode = new Node();
+    // @private
+    this.pointsNode = pointsNode;
 
     // add the children to the screen graph
     this.addChild( graphAreaNode );
@@ -73,7 +75,6 @@ define( function( require ) {
           // removes points from view and point listeners are removed
           curveFittingModel.curve.points.addItemRemovedListener( function removalListener( removedPoint ) {
             if ( removedPoint === point ) {
-              pointsNode.removeChild( pointView );
               curveFittingModel.curve.points.removeItemRemovedListener( removalListener );
             }
           } );
@@ -108,5 +109,9 @@ define( function( require ) {
 
   curveFitting.register( 'BucketAndGraphAreaNode', BucketAndGraphAreaNode );
 
-  return inherit( Node, BucketAndGraphAreaNode );
+  return inherit( Node, BucketAndGraphAreaNode, {
+    reset: function(){
+      this.pointsNode.removeAllChildren();
+    }
+  } );
 } );

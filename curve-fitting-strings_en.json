@@ -46,5 +46,38 @@
   },
   "values": {
     "value": "Values"
+  },
+  "symbol.a": {
+    "value": "a"
+  },
+  "symbol.b": {
+    "value": "b"
+  },
+  "symbol.c": {
+    "value": "c"
+  },
+  "symbol.d": {
+    "value": "d"
+  },
+  "symbol.x": {
+    "value": "x"
+  },
+  "symbol.y": {
+    "value": "y"
+  },
+  "symbol.r": {
+    "value": "r"
+  },
+  "symbol.chi": {
+    "value": "X"
+  },
+  "symbol.questionMark": {
+    "value": "?"
+  },
+  "symbol.plus": {
+   "value": "\u002B"
+  },
+  "symbol.minus": {
+    "value":"\u2212"
   }
 }
