@@ -38,11 +38,15 @@ define( function( require ) {
    * @constructor
    */
   function GraphAreaNode( curve, orderOfFitProperty, areResidualsVisibleProperty, graphModelBounds, modelViewTransform, options ) {
-    var graphViewBounds = modelViewTransform.modelToViewBounds( graphModelBounds );
+
+
     Node.call( this, options );
 
-    // add white background
-    this.addChild( new Rectangle( graphViewBounds.minX, graphViewBounds.minY, graphViewBounds.width, graphViewBounds.height, {
+    // determine the graph are bounds in the view
+    var graphViewBounds = modelViewTransform.modelToViewBounds( graphModelBounds );
+
+    // create and add white background
+    this.addChild( new Rectangle.bounds( graphViewBounds, {
       fill: 'white',
       lineWidth: 2,
       stroke: 'rgb( 214, 223, 226 )'
@@ -79,7 +83,7 @@ define( function( require ) {
     axisShape.lineTo( graphViewBounds.centerX + TICK_LENGTH, graphViewBounds.maxY - AXIS_OPTIONS.lineWidth / 2 );
 
     // add clip area
-    this.clipArea = Shape.rect( graphViewBounds.minX, graphViewBounds.minY, graphViewBounds.width, graphViewBounds.height );
+    this.clipArea = Shape.bounds( graphViewBounds );
 
     var curvePath = new Path( null, { stroke: 'black', lineWidth: 2 } );
     this.addChild( curvePath );
@@ -105,7 +109,7 @@ define( function( require ) {
         //update curve view
         if ( orderOfFit === 1 ) {
           curveShape.moveTo( xMin, c * xMin + d );
-          curveShape.lineTo( xMax, +c * xMax + d );
+          curveShape.lineTo( xMax, c * xMax + d );
           curvePath.setShape( modelViewTransform.modelToViewShape( curveShape ) );
         }
         else {
@@ -122,7 +126,7 @@ define( function( require ) {
           points.forEach( function( point ) {
             if ( orderOfFit ) {
               residualsShape.moveToPoint( point.position );
-              residualsShape.lineTo( point.position.x, a * Math.pow( point.position.x, 3 ) + b * Math.pow( point.position.x, 2 ) + c * point.position.x + d );
+              residualsShape.verticalLineTo( a * Math.pow( point.position.x, 3 ) + b * Math.pow( point.position.x, 2 ) + c * point.position.x + d );
             }
           } );
           residualsPath.setShape( modelViewTransform.modelToViewShape( residualsShape ) );
