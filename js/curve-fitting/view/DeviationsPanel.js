@@ -55,11 +55,13 @@ define( function( require ) {
       cornerRadius: 4,
       xMargin: 4,
       yMargin: 4,
-      resize: false
+      resize: false,
+      maxWidth: 30
     };
     var PANEL_OPTIONS = {
       cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
-      fill: CurveFittingConstants.PANEL_BACKGROUND_COLOR
+      fill: CurveFittingConstants.PANEL_BACKGROUND_COLOR,
+      maxWidth: CurveFittingConstants.PANEL_MAX_WIDTH
     };
 
     // strings
@@ -126,7 +128,8 @@ define( function( require ) {
           } ).show();
         },
         font: TEXT_FONT,
-        baseColor: 'rgb( 204, 204, 204 )'
+        baseColor: 'rgb( 204, 204, 204 )',
+        maxWidth:40
       } );
 
       // title

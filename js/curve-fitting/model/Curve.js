@@ -232,11 +232,12 @@ define( function( require ) {
 
     /**
      * Returns the y-value of the curve  given the horizontal coordinate x
+     * @public
      * @param {number{ x
      * @returns {number}
      */
     getYValueAt: function( x ) {
-      return this.a * Math.pow( x, 3 ) + this.b * Math.pow( x, 2 ) + this.c * ( x  ) + this.d
+      return this.a * Math.pow( x, 3 ) + this.b * Math.pow( x, 2 ) + this.c * ( x  ) + this.d;
     },
 
     // save values to storage. Necessary when switch to adjustable mode
