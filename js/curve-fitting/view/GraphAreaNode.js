@@ -29,7 +29,7 @@ define( function( require ) {
   var TICK_LENGTH = 7;
 
   /**
-   * @param {Curve} curve model.
+   * @param {Curve} curve - curve model.
    * @param {Property.<number>} orderOfFitProperty - Property with current order of fit.
    * @param {Property.<boolean>} areResidualsVisibleProperty - Property to track residuals visibility.
    * @param {Bounds2} graphModelBounds -  bounds of the graph
@@ -38,7 +38,6 @@ define( function( require ) {
    * @constructor
    */
   function GraphAreaNode( curve, orderOfFitProperty, areResidualsVisibleProperty, graphModelBounds, modelViewTransform, options ) {
-
 
     Node.call( this, options );
 
@@ -105,28 +104,29 @@ define( function( require ) {
       var x;
 
       if ( ( points.length > 1 || curve._fitTypeProperty.value === FitType.ADJUSTABLE ) && !isNaN( a ) && !isNaN( b ) && !isNaN( c ) && !isNaN( d ) ) {
+
+
+        // update curve path
         curveShape = new Shape();
-        //update curve view
+        curveShape.moveTo( xMin, curve.getYValueAt( xMin ) );
         if ( orderOfFit === 1 ) {
-          curveShape.moveTo( xMin, c * xMin + d );
-          curveShape.lineTo( xMax, c * xMax + d );
-          curvePath.setShape( modelViewTransform.modelToViewShape( curveShape ) );
+          curveShape.lineTo( xMax, curve.getYValueAt( xMax ) );
         }
         else {
           for ( x = xMin; x < xMax; x += PLOT_STEP ) {
-            curveShape.moveTo( x, a * Math.pow( x, 3 ) + b * Math.pow( x, 2 ) + c * x + d );
-            curveShape.lineTo( x + PLOT_STEP, a * Math.pow( x + PLOT_STEP, 3 ) + b * Math.pow( x + PLOT_STEP, 2 ) + c * ( x + PLOT_STEP ) + d );
+            curveShape.lineTo( x + PLOT_STEP, curve.getYValueAt( x + PLOT_STEP ) );
           }
-          curvePath.setShape( modelViewTransform.modelToViewShape( curveShape ) );
         }
-        // update residuals
+        curvePath.setShape( modelViewTransform.modelToViewShape( curveShape ) );
+
+        // update path residuals
         if ( areResidualsVisibleProperty.value ) {
           residualsShape = new Shape();
 
           points.forEach( function( point ) {
             if ( orderOfFit ) {
               residualsShape.moveToPoint( point.position );
-              residualsShape.verticalLineTo( a * Math.pow( point.position.x, 3 ) + b * Math.pow( point.position.x, 2 ) + c * point.position.x + d );
+              residualsShape.verticalLineTo( curve.getYValueAt( point.position.x ) );
             }
           } );
           residualsPath.setShape( modelViewTransform.modelToViewShape( residualsShape ) );
