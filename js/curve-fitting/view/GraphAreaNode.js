@@ -103,11 +103,17 @@ define( function( require ) {
       if ( ( points.length > 1 || curve._fitTypeProperty.value === FitType.ADJUSTABLE ) && !isNaN( a ) && !isNaN( b ) && !isNaN( c ) && !isNaN( d ) ) {
         curveShape = new Shape();
         //update curve view
-        if ( orderOfFit ) {
+        if ( orderOfFit === 1 ) {
+          curveShape.moveTo( xMin, c * xMin + d );
+          curveShape.lineTo( xMax, +c * xMax + d );
+          curvePath.setShape( modelViewTransform.modelToViewShape( curveShape ) );
+        }
+        else {
           for ( x = xMin; x < xMax; x += PLOT_STEP ) {
-            curveShape.moveToPoint( modelViewTransform.modelToViewXY( x, a * Math.pow( x, 3 ) + b * Math.pow( x, 2 ) + c * x + d ) );
-            curveShape.lineToPoint( modelViewTransform.modelToViewXY( x + PLOT_STEP, a * Math.pow( x + PLOT_STEP, 3 ) + b * Math.pow( x + PLOT_STEP, 2 ) + c * ( x + PLOT_STEP ) + d ) );
+            curveShape.moveTo( x, a * Math.pow( x, 3 ) + b * Math.pow( x, 2 ) + c * x + d );
+            curveShape.lineTo( x + PLOT_STEP, a * Math.pow( x + PLOT_STEP, 3 ) + b * Math.pow( x + PLOT_STEP, 2 ) + c * ( x + PLOT_STEP ) + d );
           }
+          curvePath.setShape( modelViewTransform.modelToViewShape( curveShape ) );
         }
         // update residuals
         if ( areResidualsVisibleProperty.value ) {
@@ -115,15 +121,13 @@ define( function( require ) {
 
           points.forEach( function( point ) {
             if ( orderOfFit ) {
-              residualsShape.moveToPoint( modelViewTransform.modelToViewXY( point.position.x, point.position.y ) );
-              residualsShape.lineToPoint( modelViewTransform.modelToViewXY( point.position.x, a * Math.pow( point.position.x, 3 ) + b * Math.pow( point.position.x, 2 ) + c * point.position.x + d ) );
+              residualsShape.moveToPoint( point.position );
+              residualsShape.lineTo( point.position.x, a * Math.pow( point.position.x, 3 ) + b * Math.pow( point.position.x, 2 ) + c * point.position.x + d );
             }
           } );
+          residualsPath.setShape( modelViewTransform.modelToViewShape( residualsShape ) );
         }
       }
-
-      curvePath.setShape( curveShape );
-      residualsPath.setShape( residualsShape );
     };
 
     curve.isVisibleProperty.linkAttribute( curvePath, 'visible' );
