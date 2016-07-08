@@ -99,6 +99,7 @@ define( function( require ) {
         curveTypePanel.visible = false;
         fitTypeMenu.visible = false;
         residualCheckBox.enabled = false;
+        curveFittingModel.areResidualsVisible = false;
       }
     } );
   }
