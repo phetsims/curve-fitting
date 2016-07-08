@@ -114,8 +114,10 @@ define( function( require ) {
         }
         else {
           for ( x = xMin; x < xMax; x += PLOT_STEP ) {
-            curveShape.lineTo( x + PLOT_STEP, curve.getYValueAt( x + PLOT_STEP ) );
+            curveShape.lineTo( x, curve.getYValueAt( x ) );
           }
+          // we want to make sure to hit xMax, iresspective of the value of PLOT_STEP
+          curveShape.lineTo( xMax, curve.getYValueAt( xMax ) ); 
         }
         curvePath.setShape( modelViewTransform.modelToViewShape( curveShape ) );
 
