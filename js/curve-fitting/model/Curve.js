@@ -129,9 +129,16 @@ define( function( require ) {
 
     // add point to curve
     addPoint: function( point ) {
+      var self = this;
+
       point.on( 'updateXY', this._updateFitBinded );
       point.isInsideGraphProperty.lazyLink( this._updateFitBinded );
       point.deltaProperty.link( this._updateFitBinded );
+
+      // remove points when they have returned to the bucket 
+      point.on( 'returnedToOrigin', function() {
+        self.points.remove( point );
+      } );
     },
 
     // return deviation sum for all points
@@ -145,8 +152,8 @@ define( function( require ) {
 
       this.yDeviationSquaredSum = 0;
       for ( var i = 0; i < points.length; ++i ) {
-        y = points[ i ].y;
-        x = points[ i ].x;
+        y = points[ i ].position.y;
+        x = points[ i ].position.x;
         yApproximated = this.d + this.c * x + this.b * x * x + this.a * x * x * x;
         yDeviationSquared = ( y - yApproximated ) * ( y - yApproximated );
         sum = sum + yDeviationSquared / ( points[ i ].delta * points[ i ].delta );
@@ -189,13 +196,13 @@ define( function( require ) {
       var pointsLength = points.length;
 
       for ( var i = 0; i < pointsLength; ++i ) {
-        ySum = ySum + points[ i ].y;
+        ySum = ySum + points[ i ].position.y;
       }
 
       ySum = ySum / pointsLength;
 
       for ( i = 0; i < pointsLength; ++i ) {
-        yDeviation = points[ i ].y - ySum;
+        yDeviation = points[ i ].position.y - ySum;
         yDelta = yDelta + yDeviation * yDeviation;
       }
 

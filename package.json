@@ -15,6 +15,9 @@
   },
   "phet": {
     "requirejsNamespace": "CURVE_FITTING",
-    "phetLibs": []
+    "phetLibs": [],
+    "preload":[
+      "../sherpa/lib/Tween-r12.js"
+    ]
   }
 }

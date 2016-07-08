@@ -61,7 +61,6 @@ define( function( require ) {
     var resetAllButton = new ResetAllButton( {
       listener: function() {
         curveFittingModel.reset();
-        bucketAndGraphAreaNode.reset();
       }
     } );
     resetAllButton.scale( 0.75 );

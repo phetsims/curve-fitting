@@ -35,7 +35,7 @@ define( function( require ) {
 
   return inherit( Object, FitMaker, {
     /**
-     * 
+     *
      * @param {Array.<Point>} arrPoints
      * @param {number} orderOfFit
      * @returns {Array}
@@ -60,8 +60,8 @@ define( function( require ) {
       for ( var i = 0; i < numberOfPoints; ++i ) {
         var delta = arrPoints[ i ].delta;
         var deltaSquared = delta * delta;
-        var xPos = arrPoints[ i ].x;
-        var yPos = arrPoints[ i ].y;
+        var xPos = arrPoints[ i ].position.x;
+        var yPos = arrPoints[ i ].position.y;
         for ( var j = 0; j < this.m; ++j ) {
           for ( var k = 0; k < this.m; ++k ) {
             this.matrix[ j ][ k ] = this.matrix[ j ][ k ] + Math.pow( xPos, j + k ) / deltaSquared;
@@ -112,5 +112,5 @@ define( function( require ) {
         }
       }
     }
-  });
+  } );
 } );

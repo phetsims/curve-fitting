@@ -19,8 +19,6 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
-  var Util = require( 'DOT/Util' );
-  var Vector2 = require( 'DOT/Vector2' );
 
   // constants
   var AXIS_OPTIONS = {
@@ -40,18 +38,11 @@ define( function( require ) {
    * @constructor
    */
   function GraphAreaNode( curve, orderOfFitProperty, areResidualsVisibleProperty, graphModelBounds, modelViewTransform, options ) {
-    var self = this;
-
     var graphViewBounds = modelViewTransform.modelToViewBounds( graphModelBounds );
-
     Node.call( this, options );
-    this.translate( graphViewBounds.minX, graphViewBounds.minY );
-    this._graphModelBounds = graphModelBounds;
-    this._graphViewBounds = graphViewBounds;
-    this._graphScale = modelViewTransform.modelToViewDeltaX( 1 );
 
     // add white background
-    this.addChild( new Rectangle( 0, 0, graphViewBounds.width, graphViewBounds.height, {
+    this.addChild( new Rectangle( graphViewBounds.minX, graphViewBounds.minY, graphViewBounds.width, graphViewBounds.height, {
       fill: 'white',
       lineWidth: 2,
       stroke: 'rgb( 214, 223, 226 )'
@@ -60,32 +51,35 @@ define( function( require ) {
     var axisShape = new Shape();
     this.addChild( new Path( axisShape, AXIS_OPTIONS ) );
 
-    // add X-axis and ticks
-    axisShape.moveTo( 0, graphViewBounds.height / 2 );
-    axisShape.lineTo( graphViewBounds.width, graphViewBounds.height / 2 );
-    axisShape.moveTo( AXIS_OPTIONS.lineWidth / 2, graphViewBounds.height / 2 - TICK_LENGTH );
-    axisShape.lineTo( AXIS_OPTIONS.lineWidth / 2, graphViewBounds.height / 2 + TICK_LENGTH );
-    axisShape.moveTo( graphViewBounds.width / 4, graphViewBounds.height / 2 - TICK_LENGTH );
-    axisShape.lineTo( graphViewBounds.width / 4, graphViewBounds.height / 2 + TICK_LENGTH );
-    axisShape.moveTo( 3 * graphViewBounds.width / 4, graphViewBounds.height / 2 - TICK_LENGTH );
-    axisShape.lineTo( 3 * graphViewBounds.width / 4, graphViewBounds.height / 2 + TICK_LENGTH );
-    axisShape.moveTo( graphViewBounds.width - AXIS_OPTIONS.lineWidth / 2, graphViewBounds.height / 2 - TICK_LENGTH );
-    axisShape.lineTo( graphViewBounds.width - AXIS_OPTIONS.lineWidth / 2, graphViewBounds.height / 2 + TICK_LENGTH );
+    // add X-axis
+    axisShape.moveTo( graphViewBounds.minX, graphViewBounds.centerY );
+    axisShape.lineTo( graphViewBounds.maxX, graphViewBounds.centerY );
+
+    // add ticks
+    axisShape.moveTo( graphViewBounds.minX + AXIS_OPTIONS.lineWidth / 2, graphViewBounds.centerY - TICK_LENGTH );
+    axisShape.lineTo( graphViewBounds.minX + AXIS_OPTIONS.lineWidth / 2, graphViewBounds.centerY + TICK_LENGTH );
+    axisShape.moveTo( graphViewBounds.minX + graphViewBounds.width / 4, graphViewBounds.centerY - TICK_LENGTH );
+    axisShape.lineTo( graphViewBounds.minX + graphViewBounds.width / 4, graphViewBounds.centerY + TICK_LENGTH );
+    axisShape.moveTo( graphViewBounds.minX + 3 * graphViewBounds.width / 4, graphViewBounds.centerY - TICK_LENGTH );
+    axisShape.lineTo( graphViewBounds.minX + 3 * graphViewBounds.width / 4, graphViewBounds.centerY + TICK_LENGTH );
+    axisShape.moveTo( graphViewBounds.maxX - AXIS_OPTIONS.lineWidth / 2, graphViewBounds.centerY - TICK_LENGTH );
+    axisShape.lineTo( graphViewBounds.maxX - AXIS_OPTIONS.lineWidth / 2, graphViewBounds.centerY + TICK_LENGTH );
 
     // add Y-axis and ticks
-    axisShape.moveTo( graphViewBounds.width / 2, 0 );
-    axisShape.lineTo( graphViewBounds.width / 2, graphViewBounds.height );
-    axisShape.moveTo( graphViewBounds.width / 2 - TICK_LENGTH, AXIS_OPTIONS.lineWidth / 2 );
-    axisShape.lineTo( graphViewBounds.width / 2 + TICK_LENGTH, AXIS_OPTIONS.lineWidth / 2 );
-    axisShape.moveTo( graphViewBounds.width / 2 - TICK_LENGTH, graphViewBounds.height / 4 );
-    axisShape.lineTo( graphViewBounds.width / 2 + TICK_LENGTH, graphViewBounds.height / 4 );
-    axisShape.moveTo( graphViewBounds.width / 2 - TICK_LENGTH, 3 * graphViewBounds.height / 4 );
-    axisShape.lineTo( graphViewBounds.width / 2 + TICK_LENGTH, 3 * graphViewBounds.height / 4 );
-    axisShape.moveTo( graphViewBounds.width / 2 - TICK_LENGTH, graphViewBounds.height - AXIS_OPTIONS.lineWidth );
-    axisShape.lineTo( graphViewBounds.width / 2 + TICK_LENGTH, graphViewBounds.height - AXIS_OPTIONS.lineWidth );
+    axisShape.moveTo( graphViewBounds.centerX, graphViewBounds.minY );
+    axisShape.lineTo( graphViewBounds.centerX, graphViewBounds.maxY );
+
+    axisShape.moveTo( graphViewBounds.centerX - TICK_LENGTH, graphViewBounds.minY + AXIS_OPTIONS.lineWidth / 2 );
+    axisShape.lineTo( graphViewBounds.centerX + TICK_LENGTH, graphViewBounds.minY + AXIS_OPTIONS.lineWidth / 2 );
+    axisShape.moveTo( graphViewBounds.centerX - TICK_LENGTH, graphViewBounds.height / 4 );
+    axisShape.lineTo( graphViewBounds.centerX + TICK_LENGTH, graphViewBounds.height / 4 );
+    axisShape.moveTo( graphViewBounds.centerX - TICK_LENGTH, 3 * graphViewBounds.height / 4 );
+    axisShape.lineTo( graphViewBounds.centerX + TICK_LENGTH, 3 * graphViewBounds.height / 4 );
+    axisShape.moveTo( graphViewBounds.centerX - TICK_LENGTH, graphViewBounds.maxY - AXIS_OPTIONS.lineWidth / 2 );
+    axisShape.lineTo( graphViewBounds.centerX + TICK_LENGTH, graphViewBounds.maxY - AXIS_OPTIONS.lineWidth / 2 );
 
     // add clip area
-    this.clipArea = Shape.rect( 0, 0, graphViewBounds.width, graphViewBounds.height );
+    this.clipArea = Shape.rect( graphViewBounds.minX, graphViewBounds.minY, graphViewBounds.width, graphViewBounds.height );
 
     var curvePath = new Path( null, { stroke: 'black', lineWidth: 2 } );
     this.addChild( curvePath );
@@ -108,41 +102,21 @@ define( function( require ) {
 
       if ( ( points.length > 1 || curve._fitTypeProperty.value === FitType.ADJUSTABLE ) && !isNaN( a ) && !isNaN( b ) && !isNaN( c ) && !isNaN( d ) ) {
         curveShape = new Shape();
-
-        // update curve view
-        if ( orderOfFit === 1 ) {
-          curveShape.moveToPoint( self.getPositionFromGraphValues( xMin, xMin * c + d ) );
-          curveShape.lineToPoint( self.getPositionFromGraphValues( xMax, xMax * c + d ) );
-        }
-        else if ( orderOfFit === 2 ) {
+        //update curve view
+        if ( orderOfFit ) {
           for ( x = xMin; x < xMax; x += PLOT_STEP ) {
-            curveShape.moveToPoint( self.getPositionFromGraphValues( x, a * Math.pow( x, 3 ) + b * Math.pow( x, 2 ) + c * x + d ) );
-            curveShape.lineToPoint( self.getPositionFromGraphValues( x + PLOT_STEP, a * Math.pow( x + PLOT_STEP, 3 ) + b * Math.pow( x + PLOT_STEP, 2 ) + c * ( x + PLOT_STEP ) + d ) );
+            curveShape.moveToPoint( modelViewTransform.modelToViewXY( x, a * Math.pow( x, 3 ) + b * Math.pow( x, 2 ) + c * x + d ) );
+            curveShape.lineToPoint( modelViewTransform.modelToViewXY( x + PLOT_STEP, a * Math.pow( x + PLOT_STEP, 3 ) + b * Math.pow( x + PLOT_STEP, 2 ) + c * ( x + PLOT_STEP ) + d ) );
           }
         }
-        else if ( orderOfFit === 3 ) {
-          for ( x = xMin; x < xMax; x += PLOT_STEP ) {
-            curveShape.moveToPoint( self.getPositionFromGraphValues( x, a * Math.pow( x, 3 ) + b * Math.pow( x, 2 ) + c * x + d ) );
-            curveShape.lineToPoint( self.getPositionFromGraphValues( x + PLOT_STEP, a * Math.pow( x + PLOT_STEP, 3 ) + b * Math.pow( x + PLOT_STEP, 2 ) + c * ( x + PLOT_STEP ) + d ) );
-          }
-        }
-
         // update residuals
         if ( areResidualsVisibleProperty.value ) {
           residualsShape = new Shape();
 
           points.forEach( function( point ) {
-            if ( orderOfFit === 1 ) {
-              residualsShape.moveToPoint( self.getPositionFromGraphValues( point.x, point.y ) );
-              residualsShape.lineToPoint( self.getPositionFromGraphValues( point.x, c * point.x + d ) );
-            }
-            else if ( orderOfFit === 2 ) {
-              residualsShape.moveToPoint( self.getPositionFromGraphValues( point.x, point.y ) );
-              residualsShape.lineToPoint( self.getPositionFromGraphValues( point.x, b * Math.pow( point.x, 2 ) + c * point.x + d ) );
-            }
-            else if ( orderOfFit === 3 ) {
-              residualsShape.moveToPoint( self.getPositionFromGraphValues( point.x, point.y ) );
-              residualsShape.lineToPoint( self.getPositionFromGraphValues( point.x, a * Math.pow( point.x, 3 ) + b * Math.pow( point.x, 2 ) + c * point.x + d ) );
+            if ( orderOfFit ) {
+              residualsShape.moveToPoint( modelViewTransform.modelToViewXY( point.position.x, point.position.y ) );
+              residualsShape.lineToPoint( modelViewTransform.modelToViewXY( point.position.x, a * Math.pow( point.position.x, 3 ) + b * Math.pow( point.position.x, 2 ) + c * point.position.x + d ) );
             }
           } );
         }
@@ -160,45 +134,5 @@ define( function( require ) {
 
   curveFitting.register( 'GraphAreaNode', GraphAreaNode );
 
-  return inherit( Node, GraphAreaNode, {
-    /**
-     * Convert global coordinates to graph values.
-     *
-     * @param {Vector2} globalPosition - Global point position.
-     * @returns {Object}
-     */
-    getGraphValuesFromPosition: function( globalPosition ) {
-      var locPosition = this.globalToParentPoint( globalPosition );
-
-      return {
-        x: Util.toFixedNumber( this._graphModelBounds.minX + this._graphModelBounds.width * ( locPosition.x - this.bounds.minX ) / this.width, 1 ),
-        y: -Util.toFixedNumber( this._graphModelBounds.minY + this._graphModelBounds.height * ( locPosition.y - this.bounds.minY ) / this.height, 1 )
-      };
-    },
-
-    /**
-     * Convert graph values to global coordinates.
-     *
-     * @param {number} x graph value.
-     * @param {number} y graph value.
-     * @returns {Vector2}
-     */
-    // convert global coordinates to graph values
-    getPositionFromGraphValues: function( x, y ) {
-      return new Vector2(
-        (( x - this._graphModelBounds.minX ) / ( this._graphModelBounds.width )) * this._graphViewBounds.width,
-        (( -y - this._graphModelBounds.minY ) / ( this._graphModelBounds.height )) * this._graphViewBounds.height
-      );
-    },
-
-    /**
-     * Check is point inside the GraphAreaNode (or on the boundary).
-     *
-     * @param {Vector2} pointPosition - Position of point that need to check.
-     * @returns {boolean}
-     */
-    isPointInsideGraph: function( pointPosition ) {
-      return this.localBounds.containsPoint( this.globalToLocalPoint( pointPosition ) );
-    }
-  } );
+  return inherit( Node, GraphAreaNode );
 } );

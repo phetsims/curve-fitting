@@ -29,7 +29,9 @@ define( function( require ) {
   function BucketAndGraphAreaNode( curveFittingModel, modelViewTransform, options ) {
 
     Node.call( this, options );
-
+    
+    var self = this;
+    
     // create the bucket node
     var bucketNode = new BucketNode( curveFittingModel.bucket, modelViewTransform );
 
@@ -49,6 +51,20 @@ define( function( require ) {
     this.addChild( bucketNode );
     this.addChild( equationGraphPanelNode );
     this.addChild( pointsNode );
+    
+    // handle the coming and going of points
+    curveFittingModel.curve.points.addItemAddedListener( function( addedPoint ) {
+      var pointNode = new PointNode( addedPoint, curveFittingModel.areValuesVisibleProperty, curveFittingModel.areResidualsVisibleProperty, modelViewTransform );
+      self.addChild( pointNode );
+
+      curveFittingModel.curve.points.addItemRemovedListener( function removalListener( removedPoint ) {
+        if ( removedPoint === addedPoint ) {
+          self.removeChild( pointNode );
+          curveFittingModel.curve.points.removeItemRemovedListener( removalListener );
+        }
+      } );
+
+    } );
 
     // layout
     equationGraphPanelNode.left = graphAreaNode.left + 10;
@@ -56,52 +72,32 @@ define( function( require ) {
 
     // add drag handler to the bucketNode
     var pointModel = null;
-    var pointView = null;
     bucketNode.addInputListener( new SimpleDragHandler( {
+
+      allowTouchSnag: true,
+
       start: function( e ) {
+        
         // create point model
-        pointModel = new Point();
+        var initialPosition = pointsNode.globalToLocalPoint( e.pointer.point );
+        pointModel = new Point( modelViewTransform.viewToModelPosition( initialPosition ) );
+        pointModel.userControlled = true;
+
+        //add the point to the curve model
         curveFittingModel.curve.points.add( pointModel );
 
-        // create point view
-        pointView = new PointNode( pointModel, curveFittingModel.curve.points, curveFittingModel.areValuesVisibleProperty, curveFittingModel.areResidualsVisibleProperty, pointsNode, graphAreaNode );
-
-        // add point node to view
-        pointsNode.addChild( pointView );
-
-        // add listeners for the points created
-        curveFittingModel.curve.points.addItemAddedListener( function( point ) {
-
-          // removes points from view and point listeners are removed
-          curveFittingModel.curve.points.addItemRemovedListener( function removalListener( removedPoint ) {
-            if ( removedPoint === point ) {
-              curveFittingModel.curve.points.removeItemRemovedListener( removalListener );
-            }
-          } );
-        } );
-
-        // update point position
-        pointView.setTranslation( pointsNode.globalToLocalPoint( e.pointer.point ) );
-        pointModel.trigger( 'updatePosition' );
       },
-      drag: function( e ) {
-        if ( pointModel ) {
-          // update point position
-          pointView.setTranslation( pointsNode.globalToLocalPoint( e.pointer.point ) );
-          pointModel.trigger( 'updatePosition' );
-        }
+      translate: function( translationParams ) {
+        // move the point
+        pointModel.position = pointModel.position.plus( modelViewTransform.viewToModelDelta( translationParams.delta ) );
+        
+        // let others know you moved
+        // TODO: change to something less hacky
+        pointModel.trigger( 'updateXY' );
+        
       },
       end: function() {
-        if ( !pointModel.isInsideGraph ) {
-          // remove point model and view
-          pointsNode.removeChild( pointView );
-          curveFittingModel.curve.points.remove( pointModel );
-        }
-        else {
-          // round point position
-          pointModel.trigger( 'roundPosition' );
-        }
-
+        pointModel.userControlled = false;
         pointModel = null;
       }
     } ) );
@@ -109,9 +105,5 @@ define( function( require ) {
 
   curveFitting.register( 'BucketAndGraphAreaNode', BucketAndGraphAreaNode );
 
-  return inherit( Node, BucketAndGraphAreaNode, {
-    reset: function(){
-      this.pointsNode.removeAllChildren();
-    }
-  } );
+  return inherit( Node, BucketAndGraphAreaNode);
 } );

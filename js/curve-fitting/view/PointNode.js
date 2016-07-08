@@ -58,43 +58,41 @@ define( function( require ) {
 
   /**
    * @param {Point} pointModel - Model for single point.
-   * @param {ObservableArray.<Point>} pointsProperty - Array of points for plotting curve.
    * @param {Property.<boolean>} areValuesVisibleProperty - Property to control visibility of values.
    * @param {Property.<boolean>} areResidualsVisibleProperty - Property to track residuals visibility.
-   * @param {Node} parentNode - Parent node of point
-   * @param {Node} graphAreaNode - Node of graph area.
+   * @param {ModelViewTransform2} modelViewTransform
    * @param {Object} [options] for graph node.
    * @constructor
    */
-  function PointNode( pointModel, pointsProperty, areValuesVisibleProperty, areResidualsVisibleProperty, parentNode, graphAreaNode, options ) {
-    var self = this;
-
+  function PointNode( pointModel, areValuesVisibleProperty, areResidualsVisibleProperty, modelViewTransform, options ) {
     Node.call( this, _.extend( { cursor: 'pointer' }, options ) );
 
     // create common drag and drop vars and functions for top and bottom error bars
-    var clickYOffset;
-    var deltaInitial;
     var isUserControlledDeltaTop = false;
     var isUserControlledDeltaBottom = false;
 
     // top error bar line node
     var errorBarTopNode = new Rectangle( ERROR_BAR_BOUNDS, ERROR_BAR_OPTIONS );
+    var newDeltaValue;
     errorBarTopNode.addInputListener( new SimpleDragHandler( {
       start: function( e ) {
         if ( !isUserControlledDeltaBottom ) {
           isUserControlledDeltaTop = true;
-          clickYOffset = self.globalToParentPoint( e.pointer.point ).y - e.currentTarget.y;
-          deltaInitial = pointModel.delta;
         }
       },
-      drag: function( e ) {
+      translate: function( e ) {
         if ( isUserControlledDeltaTop ) {
-          var y = self.globalToParentPoint( e.pointer.point ).y - clickYOffset;
-          pointModel.delta = Math.max( 0.1, deltaInitial - y / graphAreaNode._graphScale );
+          newDeltaValue = pointModel.delta + modelViewTransform.viewToModelDeltaY( e.delta.y );
+
+          // don't let the top error bar become the bottom error bar
+          if ( newDeltaValue > 0 ) {
+            pointModel.delta = newDeltaValue;
+          }
         }
       },
       end: function() {
         isUserControlledDeltaTop = false;
+        newDeltaValue = null;
       }
     } ) );
 
@@ -113,14 +111,16 @@ define( function( require ) {
       start: function( e ) {
         if ( !isUserControlledDeltaTop ) {
           isUserControlledDeltaBottom = true;
-          clickYOffset = self.globalToParentPoint( e.pointer.point ).y - e.currentTarget.y;
-          deltaInitial = pointModel.delta;
         }
       },
-      drag: function( e ) {
+      translate: function( e ) {
         if ( isUserControlledDeltaBottom ) {
-          var y = self.globalToParentPoint( e.pointer.point ).y - clickYOffset;
-          pointModel.delta = Math.max( 0.1, deltaInitial + y / graphAreaNode._graphScale );
+          newDeltaValue = pointModel.delta - modelViewTransform.viewToModelDeltaY( e.delta.y );
+
+          // don't let the bottom error bar become the top error bar
+          if ( newDeltaValue > 0 ) {
+            pointModel.delta = newDeltaValue;
+          }
         }
       },
       end: function() {
@@ -171,82 +171,67 @@ define( function( require ) {
     this.addChild( circleView );
 
     // add drag handler for point
-    var isUserControlledPoint = false;
     circleView.addInputListener( new SimpleDragHandler( {
       start: function() {
-        isUserControlledPoint = true;
+        pointModel.userControlled = true;
       },
-      drag: function( e ) {
-        if ( isUserControlledPoint ) {
-          self.setTranslation( parentNode.globalToLocalPoint( e.pointer.point ) );
-          pointModel.trigger( 'updatePosition' );
+      translate: function( e ) {
+        if ( pointModel.userControlled ) {
+          // self.setTranslation( parentNode.globalToLocalPoint( e.pointer.point ) );
+          pointModel.position = pointModel.position.plus( modelViewTransform.viewToModelDelta( e.delta ) );
+          pointModel.trigger( 'updateXY' );
         }
       },
       end: function() {
-        if ( !pointModel.isInsideGraph ) {
-          parentNode.removeChild( self );
-          pointsProperty.remove( pointModel );
-        }
-        else {
-          pointModel.trigger( 'roundPosition' );
-        }
-
-        isUserControlledPoint = false;
+        pointModel.userControlled = false;
       }
     } ) );
 
     // add value text label
-    var valueTextLabel = new Text( StringUtils.format( pattern0ValueX1ValueYString, Util.toFixed( pointModel.x, 1 ), Util.toFixed( pointModel.y, 1 ) ), {
-      font: FONT,
-      x: circleView.localBounds.maxX + 2,
-      centerY: circleView.centerY
+    var valueTextLabel = new Text( StringUtils.format( pattern0ValueX1ValueYString, Util.toFixed( pointModel.position.x, 1 ), Util.toFixed( pointModel.position.y, 1 ) ), {
+      font: FONT
     } );
     this.addChild( valueTextLabel );
 
     var deltaTextLabel = new SubSupText( StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( pointModel.delta, 1 ) ), {
-      font: FONT,
-      x: errorBarTopNode.localBounds.maxX + 2,
-      centerY: errorBarTopNode.centerY
+      font: FONT
     } );
     this.addChild( deltaTextLabel );
 
-    // set isInsideGraph and if necessary recalculate X and Y
-    pointModel.on( 'updatePosition', function() {
-      var globalPointPosition = parentNode.localToGlobalPoint( self.translation );
-      pointModel.isInsideGraph = graphAreaNode.isPointInsideGraph( globalPointPosition );
-
-      if ( pointModel.isInsideGraph ) {
-        pointModel.setXY( graphAreaNode.getGraphValuesFromPosition( globalPointPosition ) );
-      }
-    } );
-
-    // round position according to X and Y
-    pointModel.on( 'roundPosition', function() {
-      self.setTranslation( parentNode.globalToLocalPoint( graphAreaNode.localToGlobalPoint( graphAreaNode.getPositionFromGraphValues( pointModel.x, pointModel.y ) ) ) );
-    } );
-
-    pointModel.deltaProperty.link( function( delta ) {
-      var lineHeight = graphAreaNode._graphScale * delta;
+    /**
+     * updates the error bars
+     *
+     */
+    var updateErrorBars = function() {
+      var lineHeight = modelViewTransform.modelToViewDeltaY( pointModel.delta );
 
       // update top error bar
-      errorBarTop.setTranslation( 0, -lineHeight - ERROR_BAR_BOUNDS.height / 2 );
+      errorBarTop.setTranslation( circleView.centerX, circleView.centerY + lineHeight - ERROR_BAR_BOUNDS.height / 2 );
       errorBarTopNode.touchArea = errorBarTop.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
       errorBarTopNode.mouseArea = errorBarTop.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
-      deltaTextLabel.centerY = -lineHeight;
+
+      //update label
+      deltaTextLabel.centerY = errorBarTop.centerY;
 
       // update central line
-      centralLine.setY1( -lineHeight );
-      centralLine.setY2( lineHeight );
+      centralLine.setX1( circleView.centerX );
+      centralLine.setX2( circleView.centerX );
+      centralLine.setY1( circleView.centerY + lineHeight );
+      centralLine.setY2( circleView.centerY - lineHeight );
 
       // update bottom error bar
-      errorBarBottom.setTranslation( 0, lineHeight - ERROR_BAR_BOUNDS.height / 2 );
+      errorBarBottom.setTranslation( circleView.centerX, circleView.centerY - lineHeight - ERROR_BAR_BOUNDS.height / 2 );
       errorBarBottomNode.touchArea = errorBarBottom.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
       errorBarBottomNode.mouseArea = errorBarBottom.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
-    } );
+    };
+    pointModel.deltaProperty.link( updateErrorBars );
 
+    /**
+     * updates the value text for the points
+     */
     var updateValueText = function() {
       if ( valueTextLabel.visible && pointModel.isInsideGraph ) {
-        valueTextLabel.setText( StringUtils.format( pattern0ValueX1ValueYString, Util.toFixed( pointModel.x, 1 ), Util.toFixed( pointModel.y, 1 ) ) );
+        valueTextLabel.setText( StringUtils.format( pattern0ValueX1ValueYString, Util.toFixed( pointModel.position.x, 1 ), Util.toFixed( pointModel.position.y, 1 ) ) );
       }
       else {
         valueTextLabel.setText( '' );
@@ -287,6 +272,23 @@ define( function( require ) {
       down: function() { haloPointNode.visible = true; },
       over: function() { haloPointNode.visible = true; }
     } ) );
+
+    /**
+     * moves everything according to the position so that the circle view appears in where the point should
+     * and everything else moves accordingly
+     * @param position
+     */
+    var centerPositionListener = function( position ) {
+      circleView.center = modelViewTransform.modelToViewPosition( position );
+      haloPointNode.center = circleView.center;
+
+      updateErrorBars();
+
+      valueTextLabel.setTranslation( circleView.centerX + circleView.localBounds.maxX + 2, circleView.centerY );
+      deltaTextLabel.setTranslation( errorBarTop.centerX + errorBarTop.localBounds.maxX + 2, errorBarTop.centerY );
+    };
+    // move this node as the model moves
+    pointModel.positionProperty.link( centerPositionListener );
   }
 
   curveFitting.register( 'PointNode', PointNode );

@@ -14,6 +14,9 @@ define( function( require ) {
   var Bounds2 = require( 'DOT/Bounds2' );
   
   var CurveFittingConstants = {
+    // speed for dataPoints to reach the bucket when animated
+    ANIMATION_SPEED: 0.1, //  in model units per millisecond;
+
     MAX_ORDER_OF_FIT: 3,
 
     // barometer
