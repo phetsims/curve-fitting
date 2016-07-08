@@ -39,6 +39,7 @@ define( function( require ) {
     PANEL_CORNER_RADIUS: 5,
     PANEL_MARGIN: 10,
     PANEL_WIDTH: 130,
+    PANEL_MAX_WIDTH:151,
     
     // size
     SIM_BOUNDS: new Bounds2( 0, 0, 768, 504 ),

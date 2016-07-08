@@ -118,7 +118,8 @@ define( function( require ) {
       cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
       fill: CurveFittingConstants.PANEL_BACKGROUND_COLOR,
       xMargin: CurveFittingConstants.PANEL_MARGIN,
-      yMargin: CurveFittingConstants.PANEL_MARGIN
+      yMargin: CurveFittingConstants.PANEL_MARGIN,
+      maxWidth: CurveFittingConstants.PANEL_MAX_WIDTH
     }, options ) );
   }
 
