@@ -29,7 +29,7 @@ define( function( require ) {
   var TICK_LENGTH = 7;
 
   /**
-   * @param {Curve} curve model.
+   * @param {Curve} curve - curve model.
    * @param {Property.<number>} orderOfFitProperty - Property with current order of fit.
    * @param {Property.<boolean>} areResidualsVisibleProperty - Property to track residuals visibility.
    * @param {Bounds2} graphModelBounds -  bounds of the graph
@@ -38,11 +38,14 @@ define( function( require ) {
    * @constructor
    */
   function GraphAreaNode( curve, orderOfFitProperty, areResidualsVisibleProperty, graphModelBounds, modelViewTransform, options ) {
-    var graphViewBounds = modelViewTransform.modelToViewBounds( graphModelBounds );
+
     Node.call( this, options );
 
-    // add white background
-    this.addChild( new Rectangle( graphViewBounds.minX, graphViewBounds.minY, graphViewBounds.width, graphViewBounds.height, {
+    // determine the graph are bounds in the view
+    var graphViewBounds = modelViewTransform.modelToViewBounds( graphModelBounds );
+
+    // create and add white background
+    this.addChild( new Rectangle.bounds( graphViewBounds, {
       fill: 'white',
       lineWidth: 2,
       stroke: 'rgb( 214, 223, 226 )'
@@ -79,7 +82,7 @@ define( function( require ) {
     axisShape.lineTo( graphViewBounds.centerX + TICK_LENGTH, graphViewBounds.maxY - AXIS_OPTIONS.lineWidth / 2 );
 
     // add clip area
-    this.clipArea = Shape.rect( graphViewBounds.minX, graphViewBounds.minY, graphViewBounds.width, graphViewBounds.height );
+    this.clipArea = Shape.bounds( graphViewBounds );
 
     var curvePath = new Path( null, { stroke: 'black', lineWidth: 2 } );
     this.addChild( curvePath );
@@ -101,28 +104,31 @@ define( function( require ) {
       var x;
 
       if ( ( points.length > 1 || curve._fitTypeProperty.value === FitType.ADJUSTABLE ) && !isNaN( a ) && !isNaN( b ) && !isNaN( c ) && !isNaN( d ) ) {
+
+
+        // update curve path
         curveShape = new Shape();
-        //update curve view
+        curveShape.moveTo( xMin, curve.getYValueAt( xMin ) );
         if ( orderOfFit === 1 ) {
-          curveShape.moveTo( xMin, c * xMin + d );
-          curveShape.lineTo( xMax, +c * xMax + d );
-          curvePath.setShape( modelViewTransform.modelToViewShape( curveShape ) );
+          curveShape.lineTo( xMax, curve.getYValueAt( xMax ) );
         }
         else {
           for ( x = xMin; x < xMax; x += PLOT_STEP ) {
-            curveShape.moveTo( x, a * Math.pow( x, 3 ) + b * Math.pow( x, 2 ) + c * x + d );
-            curveShape.lineTo( x + PLOT_STEP, a * Math.pow( x + PLOT_STEP, 3 ) + b * Math.pow( x + PLOT_STEP, 2 ) + c * ( x + PLOT_STEP ) + d );
+            curveShape.lineTo( x, curve.getYValueAt( x ) );
           }
-          curvePath.setShape( modelViewTransform.modelToViewShape( curveShape ) );
+          // we want to make sure to hit xMax, iresspective of the value of PLOT_STEP
+          curveShape.lineTo( xMax, curve.getYValueAt( xMax ) ); 
         }
-        // update residuals
+        curvePath.setShape( modelViewTransform.modelToViewShape( curveShape ) );
+
+        // update path residuals
         if ( areResidualsVisibleProperty.value ) {
           residualsShape = new Shape();
 
           points.forEach( function( point ) {
             if ( orderOfFit ) {
               residualsShape.moveToPoint( point.position );
-              residualsShape.lineTo( point.position.x, a * Math.pow( point.position.x, 3 ) + b * Math.pow( point.position.x, 2 ) + c * point.position.x + d );
+              residualsShape.verticalLineTo( curve.getYValueAt( point.position.x ) );
             }
           } );
           residualsPath.setShape( modelViewTransform.modelToViewShape( residualsShape ) );
