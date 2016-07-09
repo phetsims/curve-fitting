@@ -55,19 +55,19 @@ define( function( require ) {
 
       // first order of fit
       if ( i > 0 ) {
-        boxNode.insertChild( 1, new Text( symbolPlusString, TEXT_OPTIONS ) );
+        boxNode.insertChild( 1, new Text( symbolPlusString + ' ', TEXT_OPTIONS ) );
         boxNode.insertChild( 1, new Text( symbolXString, TEXT_OPTIONS ) );
         boxNode.insertChild( 1, new Text( symbolCString, PARAMETER_TEXT_OPTIONS ) );
 
         // second order of fit
         if ( i > 1 ) {
-          boxNode.insertChild( 1, new Text( symbolPlusString, TEXT_OPTIONS ) );
+          boxNode.insertChild( 1, new Text( symbolPlusString + ' ', TEXT_OPTIONS ) );
           boxNode.insertChild( 1, new SubSupText( symbolXString + '<sup>2</sup>', TEXT_OPTIONS ) );
           boxNode.insertChild( 1, new Text( symbolBString, PARAMETER_TEXT_OPTIONS ) );
 
           // third order of fit
           if ( i > 2 ) {
-            boxNode.insertChild( 1, new Text( symbolPlusString, TEXT_OPTIONS ) );
+            boxNode.insertChild( 1, new Text( symbolPlusString + ' ', TEXT_OPTIONS ) );
             boxNode.insertChild( 1, new SubSupText( symbolXString + '<sup>3</sup>', TEXT_OPTIONS ) );
             boxNode.insertChild( 1, new Text( symbolAString, PARAMETER_TEXT_OPTIONS ) );
           }
