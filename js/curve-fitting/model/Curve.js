@@ -143,6 +143,7 @@ define( function( require ) {
       // remove points when they have returned to the bucket 
       point.returnToOriginEmitter.addListener( function removePointListener() {
         self.points.remove( point );
+        point.returnToOriginEmitter.removeListener( removePointListener );
       } );
     },
 
@@ -198,7 +199,6 @@ define( function( require ) {
      */
     reset: function() {
       PropertySet.prototype.reset.call( this );
-
       this.yDeviationSquaredSum = 0;
       setDefaultAdjustableValues( this._storage );
       this.points.clear();
