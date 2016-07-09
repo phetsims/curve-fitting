@@ -236,8 +236,8 @@ define( function( require ) {
         valueTextLabel.setText( '' );
       }
     };
-    areValuesVisibleProperty.linkAttribute( valueTextLabel, 'visible' );
-    areValuesVisibleProperty.onValue( true, updateValueText );
+    var valueTextLabelHandle = areValuesVisibleProperty.linkAttribute( valueTextLabel, 'visible' );
+    var updateValueTextHandle = areValuesVisibleProperty.onValue( true, updateValueText );
     point.positionProperty.link( updateValueText );
 
     /**
@@ -248,12 +248,15 @@ define( function( require ) {
         deltaTextLabel.setText( StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( point.delta, 1 ) ) );
       }
     };
-    areValuesVisibleProperty.onValue( true, updateDeltaText );
-    areValuesVisibleProperty.linkAttribute( deltaTextLabel, 'visible' );
+    var updateDeltaTextHandle = areValuesVisibleProperty.onValue( true, updateDeltaText );
+    var deltaTextLabelHandle = areValuesVisibleProperty.linkAttribute( deltaTextLabel, 'visible' );
     point.deltaProperty.lazyLink( updateDeltaText );
 
-    // change appearance when residuals active
-    areResidualsVisibleProperty.link( function( areResidualsVisible ) {
+
+    /**
+     * updates Residuals
+     */
+    var updateResiduals = function( areResidualsVisible ) {
       if ( areResidualsVisible ) {
         centralLine.visible = false;
         errorBarTopNode.setFill( CurveFittingConstants.LIGHT_GRAY_COLOR );
@@ -264,7 +267,9 @@ define( function( require ) {
         errorBarTopNode.setFill( CurveFittingConstants.BLUE_COLOR );
         errorBarBottomNode.setFill( CurveFittingConstants.BLUE_COLOR );
       }
-    } );
+    };
+    // change appearance when residuals active
+    areResidualsVisibleProperty.link( updateResiduals );
 
     // add halo to point
     var haloPointNode = new Circle( 1.75 * CurveFittingConstants.POINT_RADIUS, HALO_POINT_OPTIONS );
@@ -289,9 +294,29 @@ define( function( require ) {
     };
     // move this node as the model moves
     point.positionProperty.link( centerPositionListener );
+
+    this.disposePointNode = function() {
+      point.deltaProperty.unlink( updateErrorBars );
+      point.positionProperty.unlink( updateValueText );
+      point.deltaProperty.unlink( updateDeltaText );
+      point.positionProperty.unlink( centerPositionListener );
+      areResidualsVisibleProperty.unlink( updateResiduals );
+      areValuesVisibleProperty.unlinkAttribute( deltaTextLabelHandle );
+      areValuesVisibleProperty.unlinkAttribute( valueTextLabelHandle );
+      areValuesVisibleProperty.unlink( updateValueTextHandle );
+      areValuesVisibleProperty.unlink( updateDeltaTextHandle );
+    };
+
   }
 
   curveFitting.register( 'PointNode', PointNode );
 
-  return inherit( Node, PointNode );
+  return inherit( Node, PointNode, {
+    /**
+     * @public
+     */
+    dispose: function() {
+      this.disposePointNode();
+    }
+  } );
 } );

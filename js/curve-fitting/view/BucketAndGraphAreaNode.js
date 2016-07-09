@@ -60,6 +60,7 @@ define( function( require ) {
       curveFittingModel.curve.points.addItemRemovedListener( function removalListener( removedPoint ) {
         if ( removedPoint === addedPoint ) {
           self.removeChild( pointNode );
+          pointNode.dispose();
           curveFittingModel.curve.points.removeItemRemovedListener( removalListener );
         }
       } );
