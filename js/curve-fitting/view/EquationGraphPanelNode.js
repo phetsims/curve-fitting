@@ -160,7 +160,6 @@ define( function( require ) {
     curve.isVisibleProperty.lazyLink( updateDParameter );
     isEquationPanelExpandedProperty.link( updateDParameter );
 
-
     /**
      * Function that returns (for numbers smaller than ten) a number (as a string)  with a fixed number of decimal places
      * whereas for numbers larger than ten, the number/string is returned a fixed number of significant figures
@@ -182,10 +181,8 @@ define( function( require ) {
       // 0.00111 -> 0.001
       // 0.00011 -> 0.000
 
-
       var plusString = '\u002B'; // we want a large + sign
       var minusString = '\u2212';
-
 
       // number = mantissa times 10^(exponent) where the mantissa is between 1 and 10 (or -1 to -10)
       var exponent = Math.floor( Util.log10( Math.abs( number ) ) );

@@ -105,7 +105,6 @@ define( function( require ) {
 
       if ( ( points.length > 1 || curve._fitTypeProperty.value === FitType.ADJUSTABLE ) && !isNaN( a ) && !isNaN( b ) && !isNaN( c ) && !isNaN( d ) ) {
 
-
         // update curve path
         curveShape = new Shape();
         curveShape.moveTo( xMin, curve.getYValueAt( xMin ) );
@@ -116,8 +115,8 @@ define( function( require ) {
           for ( x = xMin; x < xMax; x += PLOT_STEP ) {
             curveShape.lineTo( x, curve.getYValueAt( x ) );
           }
-          // we want to make sure to hit xMax, iresspective of the value of PLOT_STEP
-          curveShape.lineTo( xMax, curve.getYValueAt( xMax ) ); 
+          // we want to make sure to end on xMax, irrespective of the value of PLOT_STEP
+          curveShape.lineTo( xMax, curve.getYValueAt( xMax ) );
         }
         curvePath.setShape( modelViewTransform.modelToViewShape( curveShape ) );
 
@@ -139,7 +138,8 @@ define( function( require ) {
     curve.isVisibleProperty.linkAttribute( curvePath, 'visible' );
     orderOfFitProperty.lazyLink( updateShape );
     areResidualsVisibleProperty.link( updateShape );
-    curve.on( 'update', updateShape );
+    curve.updateCurveEmitter.addListener( updateShape );
+
   }
 
   curveFitting.register( 'GraphAreaNode', GraphAreaNode );

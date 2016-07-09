@@ -29,9 +29,9 @@ define( function( require ) {
   function BucketAndGraphAreaNode( curveFittingModel, modelViewTransform, options ) {
 
     Node.call( this, options );
-    
+
     var self = this;
-    
+
     // create the bucket node
     var bucketNode = new BucketNode( curveFittingModel.bucket, modelViewTransform );
 
@@ -51,7 +51,7 @@ define( function( require ) {
     this.addChild( bucketNode );
     this.addChild( equationGraphPanelNode );
     this.addChild( pointsNode );
-    
+
     // handle the coming and going of points
     curveFittingModel.curve.points.addItemAddedListener( function( addedPoint ) {
       var pointNode = new PointNode( addedPoint, curveFittingModel.areValuesVisibleProperty, curveFittingModel.areResidualsVisibleProperty, modelViewTransform );
@@ -63,7 +63,6 @@ define( function( require ) {
           curveFittingModel.curve.points.removeItemRemovedListener( removalListener );
         }
       } );
-
     } );
 
     // layout
@@ -71,39 +70,35 @@ define( function( require ) {
     equationGraphPanelNode.top = graphAreaNode.top + 10;
 
     // add drag handler to the bucketNode
-    var pointModel = null;
+    var point = null;
     bucketNode.addInputListener( new SimpleDragHandler( {
 
       allowTouchSnag: true,
 
-      start: function( e ) {
-        
+      start: function( event ) {
+
         // create point model
-        var initialPosition = pointsNode.globalToLocalPoint( e.pointer.point );
-        pointModel = new Point( modelViewTransform.viewToModelPosition( initialPosition ) );
-        pointModel.userControlled = true;
+        var initialPosition = pointsNode.globalToLocalPoint( event.pointer.point );
+        point = new Point( modelViewTransform.viewToModelPosition( initialPosition ) );
+        point.userControlled = true;
 
         //add the point to the curve model
-        curveFittingModel.curve.points.add( pointModel );
+        curveFittingModel.curve.points.add( point );
 
       },
       translate: function( translationParams ) {
         // move the point
-        pointModel.position = pointModel.position.plus( modelViewTransform.viewToModelDelta( translationParams.delta ) );
-        
-        // let others know you moved
-        // TODO: change to something less hacky
-        pointModel.trigger( 'updateXY' );
-        
+        point.position = point.position.plus( modelViewTransform.viewToModelDelta( translationParams.delta ) );
+
       },
       end: function() {
-        pointModel.userControlled = false;
-        pointModel = null;
+        point.userControlled = false;
+        point = null;
       }
     } ) );
   }
 
   curveFitting.register( 'BucketAndGraphAreaNode', BucketAndGraphAreaNode );
 
-  return inherit( Node, BucketAndGraphAreaNode);
+  return inherit( Node, BucketAndGraphAreaNode );
 } );

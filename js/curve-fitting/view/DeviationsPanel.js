@@ -129,7 +129,7 @@ define( function( require ) {
         },
         font: TEXT_FONT,
         baseColor: 'rgb( 204, 204, 204 )',
-        maxWidth:40
+        maxWidth: 40
       } );
 
       // title
@@ -217,10 +217,8 @@ define( function( require ) {
         // 0.00111 -> 0.001
         // 0.00011 -> 0.000
 
-
         var plusString = '\u002B'; // we want a large + sign
         var minusString = '\u2212';
-
 
         // number = mantissa times 10^(exponent) where the mantissa is between 1 and 10 (or -1 to -10)
         var exponent = Math.floor( Util.log10( Math.abs( number ) ) );

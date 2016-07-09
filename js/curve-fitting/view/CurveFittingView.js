@@ -46,7 +46,6 @@ define( function( require ) {
     controlMenuNode.right = SIM_BOUNDS.width - PADDING_LEFT_RIGHT;
     controlMenuNode.top = deviationsPanel.top;
 
-
     // create a model view transform
     var graphAreaWidth = controlMenuNode.left - deviationsPanel.right - GRAPH_PADDING_LEFT_RIGHT * 2;
     var graphCenterX = 0.5 * (controlMenuNode.left + deviationsPanel.right);

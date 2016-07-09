@@ -23,14 +23,12 @@ define( function( require ) {
    */
   function CurveFittingScreen() {
 
-    //If this is a single-screen sim, then no icon is necessary.
-    //If there are multiple screens, then the icon must be provided here.
+    // Since this is a single-screen sim, then no icon is necessary.
     var icon = null;
-
 
     Screen.call( this, curveFittingTitleString, icon,
       function() { return new CurveFittingModel(); },
-      function( model ) { return new CurveFittingView( model); },
+      function( model ) { return new CurveFittingView( model ); },
       { backgroundColor: 'rgb( 187, 230, 246 )' }
     );
   }

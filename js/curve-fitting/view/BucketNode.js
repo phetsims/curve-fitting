@@ -55,7 +55,7 @@ define( function( require ) {
 
     // create the back of the bucket
     var bucketHoleNode = new BucketHole( bucketModel, modelViewTransform );
-    
+
     // create all the points inside the bucket
     var pointsNode = new Node();
     POINTS_COORDS.forEach( function( pointsCoord ) {

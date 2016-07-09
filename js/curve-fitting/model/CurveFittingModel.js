@@ -40,7 +40,7 @@ define( function( require ) {
     } );
 
     // @public (read-only) model bounds for the graph
-    this.graphModelBounds = GRAPH_MODEL_BOUNDS; 
+    this.graphModelBounds = GRAPH_MODEL_BOUNDS;
 
     // @public (read-only) bucket model
     this.bucket = new Bucket( {

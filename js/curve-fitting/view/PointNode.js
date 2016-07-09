@@ -57,14 +57,14 @@ define( function( require ) {
   };
 
   /**
-   * @param {Point} pointModel - Model for single point.
+   * @param {Point} point - Model for single point.
    * @param {Property.<boolean>} areValuesVisibleProperty - Property to control visibility of values.
    * @param {Property.<boolean>} areResidualsVisibleProperty - Property to track residuals visibility.
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Object} [options] for graph node.
    * @constructor
    */
-  function PointNode( pointModel, areValuesVisibleProperty, areResidualsVisibleProperty, modelViewTransform, options ) {
+  function PointNode( point, areValuesVisibleProperty, areResidualsVisibleProperty, modelViewTransform, options ) {
     Node.call( this, _.extend( { cursor: 'pointer' }, options ) );
 
     // create common drag and drop vars and functions for top and bottom error bars
@@ -75,18 +75,18 @@ define( function( require ) {
     var errorBarTopNode = new Rectangle( ERROR_BAR_BOUNDS, ERROR_BAR_OPTIONS );
     var newDeltaValue;
     errorBarTopNode.addInputListener( new SimpleDragHandler( {
-      start: function( e ) {
+      start: function() {
         if ( !isUserControlledDeltaBottom ) {
           isUserControlledDeltaTop = true;
         }
       },
-      translate: function( e ) {
+      translate: function( translationParams ) {
         if ( isUserControlledDeltaTop ) {
-          newDeltaValue = pointModel.delta + modelViewTransform.viewToModelDeltaY( e.delta.y );
+          newDeltaValue = point.delta + modelViewTransform.viewToModelDeltaY( translationParams.delta.y );
 
           // don't let the top error bar become the bottom error bar
           if ( newDeltaValue > 0 ) {
-            pointModel.delta = newDeltaValue;
+            point.delta = newDeltaValue;
           }
         }
       },
@@ -108,18 +108,18 @@ define( function( require ) {
     // add bottom error bar line node
     var errorBarBottomNode = new Rectangle( ERROR_BAR_BOUNDS, ERROR_BAR_OPTIONS );
     errorBarBottomNode.addInputListener( new SimpleDragHandler( {
-      start: function( e ) {
+      start: function() {
         if ( !isUserControlledDeltaTop ) {
           isUserControlledDeltaBottom = true;
         }
       },
-      translate: function( e ) {
+      translate: function( translationParams ) {
         if ( isUserControlledDeltaBottom ) {
-          newDeltaValue = pointModel.delta - modelViewTransform.viewToModelDeltaY( e.delta.y );
+          newDeltaValue = point.delta - modelViewTransform.viewToModelDeltaY( translationParams.delta.y );
 
           // don't let the bottom error bar become the top error bar
           if ( newDeltaValue > 0 ) {
-            pointModel.delta = newDeltaValue;
+            point.delta = newDeltaValue;
           }
         }
       },
@@ -165,35 +165,35 @@ define( function( require ) {
       fill: POINT_COLOR,
       radius: CurveFittingConstants.POINT_RADIUS,
       stroke: CurveFittingConstants.POINT_STROKE,
-      lineWidth: CurveFittingConstants.POINT_LINE_WIDTH,
-      touchArea: new Bounds2( -pointRadius * 2, -pointRadius * 2, pointRadius * 2, pointRadius * 2 )
+      lineWidth: CurveFittingConstants.POINT_LINE_WIDTH
     } );
+    circleView.touchArea = circleView.bounds.dilated( 3 );
+    circleView.mouseArea = circleView.bounds.dilated( 1 );
     this.addChild( circleView );
 
     // add drag handler for point
     circleView.addInputListener( new SimpleDragHandler( {
       start: function() {
-        pointModel.userControlled = true;
+        point.userControlled = true;
       },
-      translate: function( e ) {
-        if ( pointModel.userControlled ) {
+      translate: function( translationParams ) {
+        if ( point.userControlled ) {
           // self.setTranslation( parentNode.globalToLocalPoint( e.pointer.point ) );
-          pointModel.position = pointModel.position.plus( modelViewTransform.viewToModelDelta( e.delta ) );
-          pointModel.trigger( 'updateXY' );
+          point.position = point.position.plus( modelViewTransform.viewToModelDelta( translationParams.delta ) );
         }
       },
       end: function() {
-        pointModel.userControlled = false;
+        point.userControlled = false;
       }
     } ) );
 
     // add value text label
-    var valueTextLabel = new Text( StringUtils.format( pattern0ValueX1ValueYString, Util.toFixed( pointModel.position.x, 1 ), Util.toFixed( pointModel.position.y, 1 ) ), {
+    var valueTextLabel = new Text( StringUtils.format( pattern0ValueX1ValueYString, Util.toFixed( point.position.x, 1 ), Util.toFixed( point.position.y, 1 ) ), {
       font: FONT
     } );
     this.addChild( valueTextLabel );
 
-    var deltaTextLabel = new SubSupText( StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( pointModel.delta, 1 ) ), {
+    var deltaTextLabel = new SubSupText( StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( point.delta, 1 ) ), {
       font: FONT
     } );
     this.addChild( deltaTextLabel );
@@ -203,12 +203,12 @@ define( function( require ) {
      *
      */
     var updateErrorBars = function() {
-      var lineHeight = modelViewTransform.modelToViewDeltaY( pointModel.delta );
+      var lineHeight = modelViewTransform.modelToViewDeltaY( point.delta );
 
       // update top error bar
       errorBarTop.setTranslation( circleView.centerX, circleView.centerY + lineHeight - ERROR_BAR_BOUNDS.height / 2 );
-      errorBarTopNode.touchArea = errorBarTop.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
-      errorBarTopNode.mouseArea = errorBarTop.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
+      errorBarTopNode.touchArea = errorBarTop.localBounds.dilated( DILATION_SIZE );
+      errorBarTopNode.mouseArea = errorBarTop.localBounds.dilated( DILATION_SIZE );
 
       //update label
       deltaTextLabel.centerY = errorBarTop.centerY;
@@ -221,17 +221,17 @@ define( function( require ) {
 
       // update bottom error bar
       errorBarBottom.setTranslation( circleView.centerX, circleView.centerY - lineHeight - ERROR_BAR_BOUNDS.height / 2 );
-      errorBarBottomNode.touchArea = errorBarBottom.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
-      errorBarBottomNode.mouseArea = errorBarBottom.localBounds.dilatedXY( DILATION_SIZE, DILATION_SIZE );
+      errorBarBottomNode.touchArea = errorBarBottom.localBounds.dilated( DILATION_SIZE );
+      errorBarBottomNode.mouseArea = errorBarBottom.localBounds.dilated( DILATION_SIZE );
     };
-    pointModel.deltaProperty.link( updateErrorBars );
+    point.deltaProperty.link( updateErrorBars );
 
     /**
      * updates the value text for the points
      */
     var updateValueText = function() {
-      if ( valueTextLabel.visible && pointModel.isInsideGraph ) {
-        valueTextLabel.setText( StringUtils.format( pattern0ValueX1ValueYString, Util.toFixed( pointModel.position.x, 1 ), Util.toFixed( pointModel.position.y, 1 ) ) );
+      if ( valueTextLabel.visible && point.isInsideGraph ) {
+        valueTextLabel.setText( StringUtils.format( pattern0ValueX1ValueYString, Util.toFixed( point.position.x, 1 ), Util.toFixed( point.position.y, 1 ) ) );
       }
       else {
         valueTextLabel.setText( '' );
@@ -239,16 +239,16 @@ define( function( require ) {
     };
     areValuesVisibleProperty.linkAttribute( valueTextLabel, 'visible' );
     areValuesVisibleProperty.onValue( true, updateValueText );
-    pointModel.on( 'updateXY', updateValueText );
+    point.positionProperty.link( updateValueText );
 
     var updateDeltaText = function() {
       if ( deltaTextLabel.visible ) {
-        deltaTextLabel.setText( StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( pointModel.delta, 1 ) ) );
+        deltaTextLabel.setText( StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( point.delta, 1 ) ) );
       }
     };
     areValuesVisibleProperty.onValue( true, updateDeltaText );
     areValuesVisibleProperty.linkAttribute( deltaTextLabel, 'visible' );
-    pointModel.deltaProperty.lazyLink( updateDeltaText );
+    point.deltaProperty.lazyLink( updateDeltaText );
 
     // change appearance when residuals active
     areResidualsVisibleProperty.link( function( areResidualsVisible ) {
@@ -288,7 +288,7 @@ define( function( require ) {
       deltaTextLabel.setTranslation( errorBarTop.centerX + errorBarTop.localBounds.maxX + 2, errorBarTop.centerY );
     };
     // move this node as the model moves
-    pointModel.positionProperty.link( centerPositionListener );
+    point.positionProperty.link( centerPositionListener );
   }
 
   curveFitting.register( 'PointNode', PointNode );

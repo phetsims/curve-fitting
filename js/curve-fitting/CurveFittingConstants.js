@@ -12,7 +12,7 @@ define( function( require ) {
   // modules
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var Bounds2 = require( 'DOT/Bounds2' );
-  
+
   var CurveFittingConstants = {
     // speed for dataPoints to reach the bucket when animated
     ANIMATION_SPEED: 0.1, //  in model units per millisecond;
@@ -39,8 +39,8 @@ define( function( require ) {
     PANEL_CORNER_RADIUS: 5,
     PANEL_MARGIN: 10,
     PANEL_WIDTH: 130,
-    PANEL_MAX_WIDTH:151,
-    
+    PANEL_MAX_WIDTH: 151,
+
     // size
     SIM_BOUNDS: new Bounds2( 0, 0, 768, 504 ),
     GRAPH_MODEL_BOUNDS: new Bounds2( -10, -10, 10, 10 )

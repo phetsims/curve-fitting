@@ -40,7 +40,7 @@ define( function( require ) {
         trackSize: new Dimension2( 120, 1 ),
         thumbSize: new Dimension2( 15, 24 ),
         minorTickLineWidth: 2,
-        thumbTouchAreaYDilation: 1.8   // value so touch areas don't overlap
+        thumbTouchAreaYDilation: 1   // value so touch areas don't overlap
       },
       options );
 
