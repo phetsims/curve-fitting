@@ -132,7 +132,6 @@ define( function( require ) {
               residualsShape.verticalLineTo( curve.getYValueAt( point.position.x ) );
             }
           } );
-
         }
       }
       if ( curveShape ) {

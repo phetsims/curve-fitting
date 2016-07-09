@@ -64,33 +64,33 @@ define( function( require ) {
     expandCollapseButton.mouseArea = expandCollapseButton.localBounds.dilated( BUTTON_LENGTH / 3 );
 
     // create parameters node
-    var yNode = new Text( symbolYString + '=', TEXT_OPTIONS );
+    var yNode = new Text( symbolYString + ' =', TEXT_OPTIONS );
     var aParameterNode = new Text( symbolAString, PARAMETER_TEXT_OPTIONS );
     var aBlockNode = new HBox( {
       align: 'bottom',
+      spacing:2,
       children: [
         aParameterNode,
-        new SubSupText( symbolXString + '<sup>3</sup>', TEXT_OPTIONS ),
-        new Text( ' + ', TEXT_OPTIONS )
+        new SubSupText( symbolXString + '<sup>3</sup>', TEXT_OPTIONS )
       ]
     } );
     var bParameterNode = new Text( symbolBString, PARAMETER_TEXT_OPTIONS );
     var bBlockNode = new HBox( {
       align: 'bottom',
+      spacing:2,
       children: [
         bParameterNode,
-        new SubSupText( symbolXString + '<sup>2</sup>', TEXT_OPTIONS ),
-        new Text( ' + ', TEXT_OPTIONS )
+        new SubSupText( symbolXString + '<sup>2</sup>', TEXT_OPTIONS )
       ]
     } );
     var cParameterNode = new Text( symbolCString, PARAMETER_TEXT_OPTIONS );
     var dParameterNode = new Text( symbolDString, PARAMETER_TEXT_OPTIONS );
     var cdBlockNode = new HBox( {
       align: 'bottom',
+      spacing:2,
       children: [
         cParameterNode,
         new Text( symbolXString, TEXT_OPTIONS ),
-        new Text( ' + ', TEXT_OPTIONS ),
         dParameterNode
       ]
     } );
@@ -128,7 +128,8 @@ define( function( require ) {
 
     var updateAParameter = function() {
       if ( isEquationPanelExpandedProperty.value && curve.isVisible ) {
-        aParameterNode.setText( roundNumber( curve.aProperty.value, 3 ).numberToString );
+         var numberInfo= roundNumber( curve.aProperty.value, 3 );
+        aParameterNode.setText( numberInfo.signToString+ numberInfo.absoluteNumberToString );
       }
     };
     curve.aProperty.lazyLink( updateAParameter );
@@ -137,7 +138,8 @@ define( function( require ) {
 
     var updateBParameter = function() {
       if ( isEquationPanelExpandedProperty.value && curve.isVisible ) {
-        bParameterNode.setText( roundNumber( curve.bProperty.value, 3 ).numberToString );
+        var numberInfo= roundNumber( curve.bProperty.value, 3 );
+        bParameterNode.setText( numberInfo.signToString+ numberInfo.absoluteNumberToString );
       }
     };
     curve.bProperty.lazyLink( updateBParameter );
@@ -146,7 +148,8 @@ define( function( require ) {
 
     var updateCParameter = function() {
       if ( isEquationPanelExpandedProperty.value && curve.isVisible ) {
-        cParameterNode.setText( roundNumber( curve.cProperty.value, 2 ).numberToString );
+        var numberInfo= roundNumber( curve.cProperty.value, 2 );
+        cParameterNode.setText( numberInfo.signToString+ numberInfo.absoluteNumberToString );
       }
     };
     curve.cProperty.lazyLink( updateCParameter );
@@ -154,7 +157,8 @@ define( function( require ) {
     isEquationPanelExpandedProperty.link( updateCParameter );
 
     var updateDParameter = function() {
-      dParameterNode.setText( roundNumber( curve.dProperty.value, 1 ).numberToString );
+      var numberInfo= roundNumber( curve.cProperty.value, 1 );
+      dParameterNode.setText( numberInfo.signToString+ numberInfo.absoluteNumberToString );
     };
     curve.dProperty.lazyLink( updateDParameter );
     curve.isVisibleProperty.lazyLink( updateDParameter );
