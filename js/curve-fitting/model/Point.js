@@ -45,7 +45,6 @@ define( function( require ) {
 
     // create emitter that will signal that the point has returned to the bucket
     this.returnToOriginEmitter = new Emitter();
-
   }
 
   curveFitting.register( 'Point', Point );

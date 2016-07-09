@@ -59,6 +59,7 @@ define( function( require ) {
     // create reset all button
     var resetAllButton = new ResetAllButton( {
       listener: function() {
+        // all properties are in the model (even visibilities)
         curveFittingModel.reset();
       }
     } );

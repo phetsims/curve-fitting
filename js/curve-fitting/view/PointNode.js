@@ -155,7 +155,7 @@ define( function( require ) {
     errorBarBottomNode.addInputListener( barHaloHandler );
     errorBarTopNode.addInputListener( barHaloHandler );
 
-    // add central line
+    // add central line, of length zero initially
     var centralLine = new Line( 0, 0, 0, 0, CENTRAL_LINE_OPTIONS );
     this.addChild( centralLine );
 
@@ -240,6 +240,9 @@ define( function( require ) {
     areValuesVisibleProperty.onValue( true, updateValueText );
     point.positionProperty.link( updateValueText );
 
+    /**
+     * Update the text attached tp the error bar
+     */
     var updateDeltaText = function() {
       if ( deltaTextLabel.visible ) {
         deltaTextLabel.setText( StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( point.delta, 1 ) ) );
@@ -275,14 +278,12 @@ define( function( require ) {
     /**
      * moves everything according to the position so that the circle view appears in where the point should
      * and everything else moves accordingly
-     * @param position
+     * @param {Vector2} position
      */
     var centerPositionListener = function( position ) {
       circleView.center = modelViewTransform.modelToViewPosition( position );
       haloPointNode.center = circleView.center;
-
       updateErrorBars();
-
       valueTextLabel.setTranslation( circleView.centerX + circleView.localBounds.maxX + 2, circleView.centerY );
       deltaTextLabel.setTranslation( errorBarTop.centerX + errorBarTop.localBounds.maxX + 2, errorBarTop.centerY );
     };
