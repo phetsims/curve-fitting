@@ -17,13 +17,16 @@ define( function( require ) {
    * @constructor
    */
   function FitMaker() {
+    // @private
     // set max size of matrix
     this.maxM = CurveFittingConstants.MAX_ORDER_OF_FIT + 1;
     this.m = null;
 
+    // @private
     // create solution array
-    this.solutionArr = [];
+    this.solutionArray = [];
 
+    // @private
     // create matrix for further computing
     this.matrix = [];
     for ( var i = 0; i < this.maxM; i++ ) {
@@ -35,33 +38,33 @@ define( function( require ) {
 
   return inherit( Object, FitMaker, {
     /**
-     *
-     * @param {Array.<Point>} arrPoints
+     * @public
+     * @param {Array.<Point>} points
      * @param {number} orderOfFit
      * @returns {Array}
      */
-    getFit: function( arrPoints, orderOfFit ) {
-      this.makeAugmentedMatrix( arrPoints, orderOfFit );
+    getFit: function( points, orderOfFit ) {
+      this.makeAugmentedMatrix( points, orderOfFit );
       this.reduceMatrix();
       this.solveReducedMatrix();
-      return this.solutionArr;
+      return this.solutionArray;
     },
     /**
      * @private
-     * @param {Array.<Point>} arrPoints
+     * @param {Array.<Point>} points
      * @param {number} orderOfFit
      */
-    makeAugmentedMatrix: function( arrPoints, orderOfFit ) {
-      var numberOfPoints = arrPoints.length;
+    makeAugmentedMatrix: function( points, orderOfFit ) {
+      var numberOfPoints = points.length;
       this.m = Math.min( orderOfFit + 1, numberOfPoints );
 
       this.zeroMatrix();
 
       for ( var i = 0; i < numberOfPoints; ++i ) {
-        var delta = arrPoints[ i ].delta;
+        var delta = points[ i ].delta;
         var deltaSquared = delta * delta;
-        var xPos = arrPoints[ i ].position.x;
-        var yPos = arrPoints[ i ].position.y;
+        var xPos = points[ i ].position.x;
+        var yPos = points[ i ].position.y;
         for ( var j = 0; j < this.m; ++j ) {
           for ( var k = 0; k < this.m; ++k ) {
             this.matrix[ j ][ k ] = this.matrix[ j ][ k ] + Math.pow( xPos, j + k ) / deltaSquared;
@@ -92,14 +95,14 @@ define( function( require ) {
       for ( var i = m - 1; i >= 0; --i ) {
         this.matrix[ i ][ m ] = this.matrix[ i ][ m ] / this.matrix[ i ][ i ];
         this.matrix[ i ][ i ] = 1;
-        this.solutionArr[ i ] = this.matrix[ i ][ m ];
+        this.solutionArray[ i ] = this.matrix[ i ][ m ];
         for ( var j = 0; j < i; ++j ) {
-          this.matrix[ j ][ m ] = this.matrix[ j ][ m ] - this.matrix[ j ][ i ] * this.solutionArr[ i ];
+          this.matrix[ j ][ m ] = this.matrix[ j ][ m ] - this.matrix[ j ][ i ] * this.solutionArray[ i ];
           this.matrix[ j ][ i ] = 0;
         }
       }
       for ( var k = m; k < this.maxM; ++k ) {
-        this.solutionArr[ k ] = 0;
+        this.solutionArray[ k ] = 0;
       }
     },
     /**
