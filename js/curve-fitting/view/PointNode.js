@@ -158,7 +158,6 @@ define( function( require ) {
     // add central line
     var centralLine = new Line( 0, 0, 0, 0, CENTRAL_LINE_OPTIONS );
     this.addChild( centralLine );
-    var pointRadius = CurveFittingConstants.POINT_RADIUS;
 
     // add point view
     var circleView = new Circle( {

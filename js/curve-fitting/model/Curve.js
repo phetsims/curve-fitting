@@ -162,7 +162,7 @@ define( function( require ) {
       for ( var i = 0; i < points.length; ++i ) {
         y = points[ i ].position.y;
         x = points[ i ].position.x;
-        yApproximated = this.getYValueAt( x )
+        yApproximated = this.getYValueAt( x );
         yDeviationSquared = ( y - yApproximated ) * ( y - yApproximated );
         sum = sum + yDeviationSquared / ( points[ i ].delta * points[ i ].delta );
         this.yDeviationSquaredSum += yDeviationSquared;
@@ -273,7 +273,7 @@ define( function( require ) {
     },
 
     /**
-     * restore svalues from storage. Necessary when switching back from adjustable mode
+     * restores values from storage. Necessary when switching back from adjustable mode
      */
     restoreValuesFromStorage: function() {
       this.a = this._storage.a;
