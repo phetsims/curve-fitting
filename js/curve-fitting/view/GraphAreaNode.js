@@ -147,7 +147,7 @@ define( function( require ) {
       else {
         residualsPath.setShape( null );
       }
-    }
+    };
 
 
     curve.isVisibleProperty.linkAttribute( curvePath, 'visible' );
