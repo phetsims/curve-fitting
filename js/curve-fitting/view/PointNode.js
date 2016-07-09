@@ -182,7 +182,7 @@ define( function( require ) {
         }
       },
       end: function() {
-        point.isUserControlled = false;
+        point.userControlled = false;
       }
     } ) );
 
