@@ -179,7 +179,7 @@ define( function( require ) {
      */
     getPoints: function() {
       return this.points.getArray().filter( function( point ) {
-        return point.isInsideGraph;
+        return point.isInsideGraph
       } );
     },
 

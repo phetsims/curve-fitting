@@ -25,20 +25,20 @@ define( function( require ) {
     PropertySet.call( this, {
       isInsideGraph: false, // flag to control graph area affiliation
       position: initialPosition, // initial position of the point at creation
-      userControlled: false, // flag that controls if the user grabbed this
-      animating: false, // flag to control if it is animating
+      isUserControlled: false, // flag that controls if the user grabbed this
+      isAnimating: false, // flag to control if it is animating
       delta: 0.8 // delta variation of point
     } );
 
     // check and set the flag that indicates if the point is within the bounds of the graph
     this.positionProperty.link( function( position ) {
-      // Determines if the position of a point is within the visual bounds of the graph
-      self.isInsideGraph = CurveFittingConstants.GRAPH_MODEL_BOUNDS.containsPoint( position );
+      // Determines if the position of a point is within the visual bounds of the graph and is not animated on its way back
+      self.isInsideGraph = CurveFittingConstants.GRAPH_MODEL_BOUNDS.containsPoint( position ) && !self.isAnimating;
     } );
 
     //if the user dropped the ball outside of the graph send it back to the bucket
-    this.userControlledProperty.lazyLink( function( userControlled ) {
-      if ( !userControlled && !self.isInsideGraph && !self.animating ) {
+    this.isUserControlledProperty.lazyLink( function( isUserControlled ) {
+      if ( !isUserControlled && !self.isInsideGraph && !self.isAnimating ) {
         self.animate();
       }
     } );
@@ -57,7 +57,7 @@ define( function( require ) {
      */
     animate: function() {
       var self = this;
-      this.animating = true;
+      this.isAnimating = true;
 
       var location = {
         x: this.position.x,

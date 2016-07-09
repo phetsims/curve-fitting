@@ -173,16 +173,16 @@ define( function( require ) {
     // add drag handler for point
     circleView.addInputListener( new SimpleDragHandler( {
       start: function() {
-        point.userControlled = true;
+        point.isUserControlled = true;
       },
       translate: function( translationParams ) {
-        if ( point.userControlled ) {
+        if ( point.isUserControlled ) {
           // self.setTranslation( parentNode.globalToLocalPoint( e.pointer.point ) );
           point.position = point.position.plus( modelViewTransform.viewToModelDelta( translationParams.delta ) );
         }
       },
       end: function() {
-        point.userControlled = false;
+        point.isUserControlled = false;
       }
     } ) );
 

@@ -81,7 +81,7 @@ define( function( require ) {
         // create point model
         var initialPosition = pointsNode.globalToLocalPoint( event.pointer.point );
         point = new Point( modelViewTransform.viewToModelPosition( initialPosition ) );
-        point.userControlled = true;
+        point.isUserControlled = true;
 
         //add the point to the curve model
         curveFittingModel.curve.points.add( point );
@@ -93,7 +93,7 @@ define( function( require ) {
 
       },
       end: function() {
-        point.userControlled = false;
+        point.isUserControlled = false;
         point = null;
       }
     } ) );
