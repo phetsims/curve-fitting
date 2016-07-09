@@ -90,6 +90,9 @@ define( function( require ) {
     var residualsPath = new Path( null, { stroke: CurveFittingConstants.GRAY_COLOR, lineWidth: 2 } );
     this.addChild( residualsPath );
 
+    /**
+     * updates the shape of the curve and the residuals
+     */
     var updateShape = function() {
       var curveShape = null;
       var residualsShape = null;
@@ -118,7 +121,6 @@ define( function( require ) {
           // we want to make sure to end on xMax, irrespective of the value of PLOT_STEP
           curveShape.lineTo( xMax, curve.getYValueAt( xMax ) );
         }
-        curvePath.setShape( modelViewTransform.modelToViewShape( curveShape ) );
 
         // update path residuals
         if ( areResidualsVisibleProperty.value ) {
@@ -130,15 +132,29 @@ define( function( require ) {
               residualsShape.verticalLineTo( curve.getYValueAt( point.position.x ) );
             }
           } );
-          residualsPath.setShape( modelViewTransform.modelToViewShape( residualsShape ) );
+
         }
       }
-    };
+      if ( curveShape ) {
+        curvePath.setShape( modelViewTransform.modelToViewShape( curveShape ) );
+      }
+      else {
+        curvePath.setShape( null );
+      }
+      if ( residualsShape ) {
+        residualsPath.setShape( modelViewTransform.modelToViewShape( residualsShape ) );
+      }
+      else {
+        residualsPath.setShape( null );
+      }
+    }
+
 
     curve.isVisibleProperty.linkAttribute( curvePath, 'visible' );
     orderOfFitProperty.lazyLink( updateShape );
     areResidualsVisibleProperty.link( updateShape );
     curve.updateCurveEmitter.addListener( updateShape );
+
 
   }
 
