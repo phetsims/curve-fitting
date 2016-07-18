@@ -19,7 +19,7 @@ define( function( require ) {
   var Line = require( 'SCENERY/nodes/Line' );
   var Node = require( 'SCENERY/nodes/Node' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var Range = require( 'DOT/Range' );
+  var RangeWithValue = require( 'DOT/RangeWithValue' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
   var VBox = require( 'SCENERY/nodes/VBox' );
@@ -29,7 +29,7 @@ define( function( require ) {
   var FONT_SIZE = 12;
   var TICK_FONT = new PhetFont( FONT_SIZE );
   var OFFSET = FONT_SIZE / 2;
-  var RANGE = new Range( 0, 100 );
+  var RANGE = new RangeWithValue( 0, 100 );
   var MIN_VALUE = RANGE.min;
   var MAX_VALUE = 1 + Math.log( RANGE.max );
   var HEAD_HEIGHT = 12;
