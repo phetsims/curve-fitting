@@ -23,10 +23,9 @@ define( function( require ) {
    */
   function CurveFittingScreen() {
 
-    // Since this is a single-screen sim, then no icon is necessary.
-    var icon = null;
-
-    Screen.call( this, curveFittingTitleString, icon,
+    Screen.call( this,
+      curveFittingTitleString,
+      null, // single-screen sim, no icon necessary
       function() { return new CurveFittingModel(); },
       function( model ) { return new CurveFittingView( model ); },
       { backgroundColor: 'rgb( 187, 230, 246 )' }

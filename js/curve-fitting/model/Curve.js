@@ -17,14 +17,6 @@ define( function( require ) {
   var ObservableArray = require( 'AXON/ObservableArray' );
   var PropertySet = require( 'AXON/PropertySet' );
 
-  // set default adjustable values
-  function setDefaultAdjustableValues( obj ) {
-    obj.a = 0;
-    obj.b = 0;
-    obj.c = 0;
-    obj.d = 2.7;
-  }
-
   /**
    * @param {Property.<number>} orderOfFitProperty - Property to control curve type.
    * @param {Property.<string>} fitTypeProperty - Property to control fit type.
@@ -127,11 +119,53 @@ define( function( require ) {
 
   curveFitting.register( 'Curve', Curve );
 
+  // set default adjustable values
+  function setDefaultAdjustableValues( obj ) {
+    obj.a = 0;
+    obj.b = 0;
+    obj.c = 0;
+    obj.d = 2.7;
+  }
+  
   return inherit( PropertySet, Curve, {
 
+    // @public
+    reset: function() {
+      PropertySet.prototype.reset.call( this );
+      this.yDeviationSquaredSum = 0;
+      setDefaultAdjustableValues( this._storage );
+      this.points.clear();
+    },
+
     /**
-     * adds point to curve
+     * Gets the y coordinate of a point on the curve, given the x coordinate.
+     *
+     * @param {number} x
+     * @returns {number}
+     * @public
+     */
+    getYValueAt: function( x ) {
+      return this.a * Math.pow( x, 3 ) + this.b * Math.pow( x, 2 ) + this.c * ( x  ) + this.d;
+    },
+
+    //TODO give this a better name
+    /**
+     * Gets all points that are within the graph bounds.
+     *
+     * @returns {Array.<point>}
+     * @public
+     */
+    getPoints: function() {
+      return this.points.getArray().filter( function( point ) {
+        return point.isInsideGraph;
+      } );
+    },
+    
+    /**
+     * Adds a point to the curve.
+     * 
      * @param {Point} point
+     * @private
      */
     addPoint: function( point ) {
       var self = this;
@@ -146,10 +180,26 @@ define( function( require ) {
         point.returnToOriginEmitter.removeListener( removePointListener );
       } );
     },
-
+    
     /**
-     * returns deviation sum for all points on graph
+     * Removes a point from the curve.
+     * 
+     * @param {Point} point
+     * @private
+     */
+    removePoint: function( point ) {
+      point.positionProperty.unlink( this._updateFitBinded );
+      point.isInsideGraphProperty.unlink( this._updateFitBinded );
+      point.deltaProperty.unlink( this._updateFitBinded );
+      this.updateFit();
+    },
+
+    //TODO give this a better name
+    /**
+     * Computes the deviation sum for all points on graph.
+     * 
      * @returns {number}
+     * @private
      */
     computeSum: function() {
       var points = this.getPoints(); // filter out points that are not on graph
@@ -172,42 +222,13 @@ define( function( require ) {
       return sum;
     },
 
-    // 
     /**
-     * returns an array of points that are within the graph bounds
-     * @returns {Array.<point>}
+     * Updates the r^2 deviation.
+     * 
+     * @private
      */
-    getPoints: function() {
-      return this.points.getArray().filter( function( point ) {
-        return point.isInsideGraph;
-      } );
-    },
-
-    /**
-     * removes point from curve
-     * @param {Point} point
-     */
-    removePoint: function( point ) {
-      point.positionProperty.unlink( this._updateFitBinded );
-      point.isInsideGraphProperty.unlink( this._updateFitBinded );
-      point.deltaProperty.unlink( this._updateFitBinded );
-      this.updateFit();
-    },
-
-    /**
-     *
-     */
-    reset: function() {
-      PropertySet.prototype.reset.call( this );
-      this.yDeviationSquaredSum = 0;
-      setDefaultAdjustableValues( this._storage );
-      this.points.clear();
-    },
-
-    /**
-     * set r^2-deviation for current point
-     */
-    setRSquared: function() {
+    updateRSquared: function() {
+      
       var points = this.getPoints();
       var rSquare;
       var ySum = 0;
@@ -237,9 +258,11 @@ define( function( require ) {
     },
 
     /**
-     * set chi^2-deviation for current point
+     * Updates the chi^2 deviation.
+     *
+     * @private
      */
-    setReducedChiSquare: function() {
+    updateChiSquare: function() {
       var points = this.getPoints();
       var orderOfFit = this._orderOfFitProperty.value;
       var degOfFreedom = points.length - orderOfFit - 1;
@@ -253,17 +276,9 @@ define( function( require ) {
     },
 
     /**
-     * Returns the y-value of the curve  given the horizontal coordinate x
-     * @public
-     * @param {number} x
-     * @returns {number}
-     */
-    getYValueAt: function( x ) {
-      return this.a * Math.pow( x, 3 ) + this.b * Math.pow( x, 2 ) + this.c * ( x  ) + this.d;
-    },
-
-    /**
-     * save values to storage. Necessary when switch to adjustable mode
+     * Save values to storage. Necessary when switching to adjustable mode.
+     *
+     * @private
      */
     saveValuesToStorage: function() {
       this._storage.a = this.a;
@@ -273,7 +288,9 @@ define( function( require ) {
     },
 
     /**
-     * restores values from storage. Necessary when switching back from adjustable mode
+     * Restores values from storage. Necessary when switching back from adjustable mode.
+     *
+     * @private
      */
     restoreValuesFromStorage: function() {
       this.a = this._storage.a;
@@ -283,7 +300,9 @@ define( function( require ) {
     },
 
     /**
-     * updates fit for current points
+     * Updates fit for current points.
+     *
+     * @private
      */
     updateFit: function() {
       // update only when curve visible
@@ -297,8 +316,8 @@ define( function( require ) {
           this.a = isFinite( fit[ 3 ] ) ? fit[ 3 ] : 0;
         }
 
-        this.setReducedChiSquare();
-        this.setRSquared();
+        this.updateChiSquare();
+        this.updateRSquared();
         this.updateCurveEmitter.emit();
       }
     }

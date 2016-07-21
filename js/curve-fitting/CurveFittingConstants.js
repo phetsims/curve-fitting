@@ -1,11 +1,10 @@
-// Copyright 2015, University of Colorado Boulder
+// Copyright 2015-2016, University of Colorado Boulder
 
 /**
  * Constants used in multiple locations within the 'Curve Fitting' simulation.
  *
  * @author Andrey Zelenkov (MLearner)
  */
-
 define( function( require ) {
   'use strict';
 
@@ -14,6 +13,7 @@ define( function( require ) {
   var Bounds2 = require( 'DOT/Bounds2' );
 
   var CurveFittingConstants = {
+
     // speed for dataPoints to reach the bucket when animated
     ANIMATION_SPEED: 0.1, //  in model units per millisecond;
 

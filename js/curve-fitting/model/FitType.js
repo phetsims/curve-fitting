@@ -1,11 +1,11 @@
-// Copyright 2015, University of Colorado Boulder
+// Copyright 2015-2016, University of Colorado Boulder
 
+//TODO replace this with strings
 /**
  * Fit types in the 'Curve Fitting' simulation.
  *
  * @author Andrey Zelenkov (Mlearner)
  */
-
 define( function( require ) {
   'use strict';
 

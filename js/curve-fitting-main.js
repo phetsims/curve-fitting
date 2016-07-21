@@ -1,4 +1,4 @@
-// Copyright 2015, University of Colorado Boulder
+// Copyright 2015-2016, University of Colorado Boulder
 
 /**
  * Main entry point for the sim.
@@ -27,13 +27,6 @@ define( function( require ) {
       thanks: ''
     }
   };
-
-  // Appending '?dev' to the URL will enable developer-only features.
-  if ( phet.chipper.getQueryParameter( 'dev' ) ) {
-    simOptions = _.extend( {
-      // add dev-specific options here
-    }, simOptions );
-  }
 
   SimLauncher.launch( function() {
     var sim = new Sim( curveFittingTitleString, [ new CurveFittingScreen() ], simOptions );

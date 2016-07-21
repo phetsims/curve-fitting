@@ -1,4 +1,4 @@
-// Copyright 2015, University of Colorado Boulder
+// Copyright 2015-2016, University of Colorado Boulder
 
 /**
  * Fit maker for 'Curve Fitting' simulation.
@@ -17,17 +17,15 @@ define( function( require ) {
    * @constructor
    */
   function FitMaker() {
-    // @private
-    // set max size of matrix
+
+    // @private max size of matrix
     this.maxM = CurveFittingConstants.MAX_ORDER_OF_FIT + 1;
     this.m = null;
 
     // @private
-    // create solution array
     this.solutionArray = [];
 
-    // @private
-    // create matrix for further computing
+    // @private matrix for further computing
     this.matrix = [];
     for ( var i = 0; i < this.maxM; i++ ) {
       this.matrix[ i ] = [];
@@ -37,11 +35,12 @@ define( function( require ) {
   curveFitting.register( 'FitMaker', FitMaker );
 
   return inherit( Object, FitMaker, {
+
     /**
-     * @public
      * @param {Array.<Point>} points
      * @param {number} orderOfFit
      * @returns {Array}
+     * @public
      */
     getFit: function( points, orderOfFit ) {
       this.makeAugmentedMatrix( points, orderOfFit );
@@ -49,12 +48,14 @@ define( function( require ) {
       this.solveReducedMatrix();
       return this.solutionArray;
     },
+
     /**
-     * @private
      * @param {Array.<Point>} points
      * @param {number} orderOfFit
+     * @private
      */
     makeAugmentedMatrix: function( points, orderOfFit ) {
+
       var numberOfPoints = points.length;
       this.m = Math.min( orderOfFit + 1, numberOfPoints );
 
@@ -73,8 +74,9 @@ define( function( require ) {
         }
       }
     },
+
     /**
-     *  @private
+     * @private
      */
     reduceMatrix: function() {
       for ( var i = 0; i < this.m - 1; ++i ) {
@@ -87,6 +89,7 @@ define( function( require ) {
       }
       this.solveReducedMatrix();
     },
+
     /**
      * @private
      */
@@ -105,6 +108,7 @@ define( function( require ) {
         this.solutionArray[ k ] = 0;
       }
     },
+
     /**
      * @private
      */

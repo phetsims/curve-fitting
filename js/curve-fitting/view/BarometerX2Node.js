@@ -1,4 +1,4 @@
-// Copyright 2015, University of Colorado Boulder
+// Copyright 2015-2016, University of Colorado Boulder
 
 /**
  * Barometer node for x^2 deviation in 'Curve Fitting' simulation.
@@ -12,8 +12,8 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
+  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
@@ -39,18 +39,63 @@ define( function( require ) {
     stroke: 'black'
   };
 
-  // arrays that necessary for calculating chi value bounds while getting barometer color
-  var lowerLimitArray = [ 0.004, 0.052, 0.118, 0.178, 0.23, 0.273, 0.31, 0.342, 0.369, 0.394, 0.545, 0.695, 0.779, 0.927 ];
-  var upperLimitArr = [ 3.8, 3, 2.6, 2.37, 2.21, 2.1, 2.01, 1.94, 1.88, 1.83, 1.57, 1.35, 1.24, 1.07 ];
+  // arrays necessary for calculating chi value bounds while getting barometer color
+  var LOWER_LIMIT_ARRAY = [ 0.004, 0.052, 0.118, 0.178, 0.23, 0.273, 0.31, 0.342, 0.369, 0.394, 0.545, 0.695, 0.779, 0.927 ];
+  var UPPER_LIMIT_ARRAY = [ 3.8, 3, 2.6, 2.37, 2.21, 2.1, 2.01, 1.94, 1.88, 1.83, 1.57, 1.35, 1.24, 1.07 ];
 
   /**
-   * Convert chi values into barometer color depend on number of points.
-   * This algorithm was copied directly from flash simulation.
+   * @param {Property.<number>} chiSquareProperty - Property that represents x-deviation.
+   * @param {ObservableArray.<Point>} points - Array of points for plotting curve.
+   * @param {Object} [options] for graph node.
+   * @constructor
+   */
+  function BarometerX2Node( chiSquareProperty, points, options ) {
+    var valueRectNode = new Rectangle( -2 * CurveFittingConstants.BAROMETER_TICK_WIDTH / 3 - 0.5, 0, 2 * CurveFittingConstants.BAROMETER_TICK_WIDTH / 3, 0, { fill: CurveFittingConstants.BLUE_COLOR } );
+    valueRectNode.rotation = Math.PI;
+
+    this._content = new Node( {
+      children: [
+        valueRectNode,
+        new ArrowNode( 0, 0, 0, -HEIGHT - HEAD_HEIGHT * 1.5, {
+          headHeight: HEAD_HEIGHT,
+          headWidth: 8,
+          tailWidth: 0.5
+        } )
+      ]
+    } );
+
+    VBox.call( this, _.extend( {
+      children: [
+        new VStrut( OFFSET ),
+        this._content
+      ]
+    }, options ) );
+
+    this.addTicks( [ 0, 0.5, 1, 2, 3, 10, 30, 100 ] );
+
+    var updateChiFill = function() {
+      valueRectNode.setFill( getChiFillFromChiValue( chiSquareProperty.value, points.length ) );
+    };
+
+    chiSquareProperty.link( function( chiSquare ) {
+      valueRectNode.setRectHeight( valueToYPosition( chiSquare ) );
+      updateChiFill();
+    } );
+
+    points.addListeners( updateChiFill, updateChiFill );
+  }
+
+  curveFitting.register( 'BarometerX2Node', BarometerX2Node );
+
+  /**
+   * Convert chi values into barometer color depending on number of points.
+   * This algorithm was copied directly from Flash simulation.
    *
    * @param {number} chiValue - Chi value.
    * @param {number} numberOfPoints - Number of points that have been taken to plot curve.
    */
   function getChiFillFromChiValue( chiValue, numberOfPoints ) {
+
     var red;
     var green;
     var blue;
@@ -62,20 +107,20 @@ define( function( require ) {
     var step4;
 
     if ( numberOfPoints >= 1 && numberOfPoints < 11 ) {
-      lowerBound = lowerLimitArray[ numberOfPoints - 1 ];
-      upperBound = upperLimitArr[ numberOfPoints - 1 ];
+      lowerBound = LOWER_LIMIT_ARRAY[ numberOfPoints - 1 ];
+      upperBound = UPPER_LIMIT_ARRAY[ numberOfPoints - 1 ];
     }
     else if ( numberOfPoints >= 11 || numberOfPoints < 20 ) {
-      lowerBound = ( lowerLimitArray[ 9 ] + lowerLimitArray[ 10 ] ) / 2;
-      upperBound = ( upperLimitArr[ 9 ] + upperLimitArr[ 10 ] ) / 2;
+      lowerBound = ( LOWER_LIMIT_ARRAY[ 9 ] + LOWER_LIMIT_ARRAY[ 10 ] ) / 2;
+      upperBound = ( UPPER_LIMIT_ARRAY[ 9 ] + UPPER_LIMIT_ARRAY[ 10 ] ) / 2;
     }
     else if ( numberOfPoints >= 20 || numberOfPoints < 50 ) {
-      lowerBound = ( lowerLimitArray[ 10 ] + lowerLimitArray[ 11 ] ) / 2;
-      upperBound = ( upperLimitArr[ 10 ] + upperLimitArr[ 11 ] ) / 2;
+      lowerBound = ( LOWER_LIMIT_ARRAY[ 10 ] + LOWER_LIMIT_ARRAY[ 11 ] ) / 2;
+      upperBound = ( UPPER_LIMIT_ARRAY[ 10 ] + UPPER_LIMIT_ARRAY[ 11 ] ) / 2;
     }
     else if ( numberOfPoints >= 50 ) {
-      lowerBound = lowerLimitArray[ 12 ];
-      upperBound = upperLimitArr[ 12 ];
+      lowerBound = LOWER_LIMIT_ARRAY[ 12 ];
+      upperBound = UPPER_LIMIT_ARRAY[ 12 ];
     }
 
     step1 = ( 1 + upperBound ) / 2;
@@ -123,7 +168,7 @@ define( function( require ) {
   }
 
   /**
-   * Convert X^2 value to corresponded y position.
+   * Convert X^2 value to corresponding y coordinate.
    *
    * @param {number} value - Barometer's X^2 value.
    * @returns {number}
@@ -138,66 +183,24 @@ define( function( require ) {
     }
   }
 
-  /**
-   * @param {Property.<number>} chiSquareProperty - Property that represents x-deviation.
-   * @param {ObservableArray.<Point>} points - Array of points for plotting curve.
-   * @param {Object} [options] for graph node.
-   * @constructor
-   */
-  function BarometerX2Node( chiSquareProperty, points, options ) {
-    var valueRectNode = new Rectangle( -2 * CurveFittingConstants.BAROMETER_TICK_WIDTH / 3 - 0.5, 0, 2 * CurveFittingConstants.BAROMETER_TICK_WIDTH / 3, 0, { fill: CurveFittingConstants.BLUE_COLOR } );
-    valueRectNode.rotation = Math.PI;
-
-    this._content = new Node( {
-      children: [
-        valueRectNode,
-        new ArrowNode( 0, 0, 0, -HEIGHT - HEAD_HEIGHT * 1.5, {
-          headHeight: HEAD_HEIGHT,
-          headWidth: 8,
-          tailWidth: 0.5
-        } )
-      ]
-    } );
-
-    VBox.call( this, _.extend( {
-      children: [
-        new VStrut( OFFSET ),
-        this._content
-      ]
-    }, options ) );
-
-    this.addTicks( [ 0, 0.5, 1, 2, 3, 10, 30, 100 ] );
-
-    var updateChiFill = function() {
-      valueRectNode.setFill( getChiFillFromChiValue( chiSquareProperty.value, points.length ) );
-    };
-
-    chiSquareProperty.link( function( chiSquare ) {
-      valueRectNode.setRectHeight( valueToYPosition( chiSquare ) );
-      updateChiFill();
-    } );
-
-    points.addListeners( updateChiFill, updateChiFill );
-  }
-
-  curveFitting.register( 'BarometerX2Node', BarometerX2Node );
-
   return inherit( VBox, BarometerX2Node, {
+    
     /**
-     * Add single tick.
+     * Adds a tick.
      *
-     * @param {number} value for which necessary draw tick.
+     * @param {number} value
      */
     addTick: function( value ) {
-      var y = valueToYPosition( value );
-      var tickWidth;
 
-      // add label
+      var y = valueToYPosition( value );
+
+      // label
       var label = new Text( value.toString(), { font: TICK_FONT, centerY: -y } );
       label.centerX = -label.width / 2 - 3;
       this._content.addChild( label );
 
-      // add tick
+      // tick
+      var tickWidth;
       if ( value === 0 ) {
         tickWidth = CurveFittingConstants.BAROMETER_TICK_WIDTH;
       }
@@ -208,14 +211,14 @@ define( function( require ) {
     },
 
     /**
-     * Add array of ticks.
+     * Adds multiple ticks.
      *
-     * @param {Array.<number>} arrayOfTicks - Array of number for which necessary draw tick.
+     * @param {number[]} values
      */
-    addTicks: function( arrayOfTicks ) {
+    addTicks: function( values ) {
       var self = this;
-      arrayOfTicks.forEach( function( tickValue ) {
-        self.addTick( tickValue );
+      values.forEach( function( value ) {
+        self.addTick( value );
       } );
     }
   } );

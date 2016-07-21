@@ -1,4 +1,4 @@
-// Copyright 2015, University of Colorado Boulder
+// Copyright 2015-2016, University of Colorado Boulder
 
 /**
  * Point model in 'Curve Fitting' simulation.
@@ -21,7 +21,9 @@ define( function( require ) {
    * @constructor
    */
   function Point( initialPosition ) {
+
     var self = this;
+
     PropertySet.call( this, {
       isInsideGraph: false, // flag to control graph area affiliation
       position: initialPosition, // initial position of the point at creation
@@ -52,10 +54,12 @@ define( function( require ) {
   return inherit( PropertySet, Point, {
 
     /**
-     * Function that animates the point back to the bucket
+     * Animates the point back to the bucket.
+     *
      * @public
      */
     animate: function() {
+
       var self = this;
       this.isAnimating = true;
 
