@@ -126,13 +126,12 @@ define( function( require ) {
     obj.c = 0;
     obj.d = 2.7;
   }
-  
+
   return inherit( PropertySet, Curve, {
 
     // @public
     reset: function() {
       PropertySet.prototype.reset.call( this );
-      this.yDeviationSquaredSum = 0;
       setDefaultAdjustableValues( this._storage );
       this.points.clear();
     },
@@ -152,7 +151,7 @@ define( function( require ) {
     /**
      * Gets all points that are within the graph bounds.
      *
-     * @returns {Array.<point>}
+     * @returns {Array.<Point>}
      * @public
      */
     getPoints: function() {
@@ -160,10 +159,10 @@ define( function( require ) {
         return point.isInsideGraph;
       } );
     },
-    
+
     /**
      * Adds a point to the curve.
-     * 
+     *
      * @param {Point} point
      * @private
      */
@@ -180,10 +179,10 @@ define( function( require ) {
         point.returnToOriginEmitter.removeListener( removePointListener );
       } );
     },
-    
+
     /**
      * Removes a point from the curve.
-     * 
+     *
      * @param {Point} point
      * @private
      */
@@ -194,86 +193,72 @@ define( function( require ) {
       this.updateFit();
     },
 
-    //TODO give this a better name
     /**
-     * Computes the deviation sum for all points on graph.
-     * 
-     * @returns {number}
+     * Updates Chi Square and r^2 deviation.
+     *
      * @private
      */
-    computeSum: function() {
-      var points = this.getPoints(); // filter out points that are not on graph
-      var sum = 0;
-      var yApproximated;
-      var yDeviationSquared;
+    updateRAndChiSquared: function() {
+      var self = this;
+      var points = this.getPoints();
+      var weightSum = 0;
+      var ySum = 0;
+      var yySum = 0;
+      var yAtSum = 0;
+      var yAtySum = 0;
+      var yAtyAtSum = 0;
       var x;
       var y;
+      var yAt;
+      var weight;
+      var numberOfPoints = points.length; //  number of points in the array
 
-      this.yDeviationSquaredSum = 0;
-      for ( var i = 0; i < points.length; ++i ) {
-        y = points[ i ].position.y;
-        x = points[ i ].position.x;
-        yApproximated = this.getYValueAt( x );
-        yDeviationSquared = ( y - yApproximated ) * ( y - yApproximated );
-        sum = sum + yDeviationSquared / ( points[ i ].delta * points[ i ].delta );
-        this.yDeviationSquaredSum += yDeviationSquared;
-      }
+      points.forEach( function( point ) {
+        x = point.position.x; // x value of this point
+        y = point.position.y; // y value of this point
+        yAt = self.getYValueAt( x ); // y value of the curve
+        weight = 1 / (point.delta * point.delta); // weight of this point
 
-      return sum;
-    },
+        weightSum = weightSum + weight; // sum of weights
+        ySum = ySum + weight * y;   // weighted sum of y values
+        yAtSum = yAtSum + weight * yAt; // weighted sum of the approximated y values (from curve)
+        yySum = yySum + weight * y * y; // weighted sum of the square of the y values
+        yAtySum = yAtySum + weight * yAt * y; // weighted sum of the product of of the y values times the approximated y value
+        yAtyAtSum = yAtyAtSum + weight * yAt * yAt; // weighted sum of the squared of the approximated y value
+      } );
 
-    /**
-     * Updates the r^2 deviation.
-     * 
-     * @private
-     */
-    updateRSquared: function() {
-      
-      var points = this.getPoints();
-      var rSquare;
-      var ySum = 0;
-      var yDelta = 0;
-      var yDeviation;
-      var pointsLength = points.length;
+      var weightAverage = weightSum / numberOfPoints; // average of the weights
+      var denominator = (weightAverage * numberOfPoints); // convenience variable
+      var yAverage = ySum / denominator; // weighted average of the y values
+      var yyAverage = yySum / denominator; // weighted average of the <y_i y_i> correlation
+      var yAtyAtAverage = yAtyAtSum / denominator; // weighted average of the <y_i yat_i> correlation
+      var yAtyAverage = yAtySum / denominator; // weighted average of the <yat_i yat_i> correlation
 
-      for ( var i = 0; i < pointsLength; ++i ) {
-        ySum = ySum + points[ i ].position.y;
-      }
+      // weighted value of r square - note that rSquare is always smaller than 1 but can be negative
+      var rSquare = 1 - ((yyAverage - 2 * yAtyAverage + yAtyAtAverage) /
+                         (yyAverage - yAverage * yAverage));
 
-      ySum = ySum / pointsLength;
-
-      for ( i = 0; i < pointsLength; ++i ) {
-        yDeviation = points[ i ].position.y - ySum;
-        yDelta = yDelta + yDeviation * yDeviation;
-      }
-
-      rSquare = 1 - this.yDeviationSquaredSum / yDelta;
-
+      // rSquare can be negative if the curve fitting is done by the user.
       if ( rSquare < 0 || isNaN( rSquare ) ) {
         this.rSquare = 0;
       }
       else {
         this.rSquare = rSquare;
       }
-    },
 
-    /**
-     * Updates the chi^2 deviation.
-     *
-     * @private
-     */
-    updateChiSquare: function() {
-      var points = this.getPoints();
+      // calculation of chiSquare
       var orderOfFit = this._orderOfFitProperty.value;
-      var degOfFreedom = points.length - orderOfFit - 1;
+      var degreesOfFreedom = numberOfPoints - orderOfFit - 1;
 
-      if ( points.length > orderOfFit + 1 ) {
-        this.chiSquare = this.computeSum() / degOfFreedom;
+      if ( numberOfPoints > orderOfFit + 1 ) {
+        this.chiSquare = (yySum - 2 * yAtySum + yAtyAtSum) / degreesOfFreedom;
       }
       else {
         this.chiSquare = 0;
       }
+
     },
+
 
     /**
      * Save values to storage. Necessary when switching to adjustable mode.
@@ -316,8 +301,7 @@ define( function( require ) {
           this.a = isFinite( fit[ 3 ] ) ? fit[ 3 ] : 0;
         }
 
-        this.updateChiSquare();
-        this.updateRSquared();
+        this.updateRAndChiSquared();
         this.updateCurveEmitter.emit();
       }
     }
