@@ -14,9 +14,8 @@ define( function( require ) {
   var BarometerX2Node = require( 'CURVE_FITTING/curve-fitting/view/BarometerX2Node' );
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var Dialog = require( 'JOIST/Dialog' );
   var ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
-  var Image = require( 'SCENERY/nodes/Image' );
+  var HelpDialog = require( 'CURVE_FITTING/curve-fitting/view/HelpDialog' );
   var inherit = require( 'PHET_CORE/inherit' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var HStrut = require( 'SCENERY/nodes/HStrut' );
@@ -30,18 +29,9 @@ define( function( require ) {
 
   // strings
   var deviationsString = require( 'string!CURVE_FITTING/deviations' );
-  var numberOfDataPointsString = require( 'string!CURVE_FITTING/numberOfDataPoints' );
-  var numberOfParametersInFitString = require( 'string!CURVE_FITTING/numberOfParametersInFit' );
-  var theReducedChiSquaredStatisticIsString = require( 'string!CURVE_FITTING/theReducedChiSquaredStatisticIs' );
-
-  // images
-  var equationHelpImage = require( 'image!CURVE_FITTING/equation-help.png' );
 
   // constants
   var BUTTON_LENGTH = 16;
-  var EQUATION_OFFSET = 20;
-  var IMAGE_SCALE = 0.23;
-  var TEXT_DIALOG = new PhetFont( 14 );
   var TEXT_FONT = new PhetFont( 12 );
   var TEXT_PANEL_FONT = new PhetFont( 10 );
   var VALUE_PANEL_OPTIONS = {
@@ -84,28 +74,16 @@ define( function( require ) {
     // r^2 barometer
     var barometerR2 = new BarometerR2Node( curve.rSquareProperty );
 
-    // help dialog
-    var dialogContentNode = new VBox( {
-      align: 'left',
-      spacing: 10,
-      children: [
-        new Text( theReducedChiSquaredStatisticIsString, { font: TEXT_DIALOG } ),
-        new HBox( {
-          children: [
-            new HStrut( EQUATION_OFFSET ),
-            new Image( equationHelpImage, { scale: IMAGE_SCALE } )
-          ]
-        } ),
-        new Text( numberOfDataPointsString, { font: TEXT_DIALOG } ),
-        new Text( numberOfParametersInFitString, { font: TEXT_DIALOG } )
-      ]
-    } );
+    // help dialog, created on demand
+    var helpDialog = null;
+
+    // help button
     var helpButtonNode = new TextPushButton( symbolQuestionMarkString, {
       listener: function() {
-        new Dialog( dialogContentNode, {
-          modal: true,
-          hasCloseButton: true
-        } ).show();
+        if ( !helpDialog ) {
+          helpDialog = new HelpDialog();
+        }
+        helpDialog.show();
       },
       font: TEXT_FONT,
       baseColor: 'rgb( 204, 204, 204 )',
