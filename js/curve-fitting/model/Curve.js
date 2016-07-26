@@ -26,13 +26,15 @@ define( function( require ) {
     var self = this;
 
     PropertySet.call( this, {
-      isVisible: false, // curve flag visibility
       a: 0, // parameter with x^3
       b: 0, // parameter with x^2
       c: 0, // parameter with x^1
       d: 0, // parameter with constant
       chiSquare: 0, // x^2 deviation value
-      rSquare: 0 // r^2 deviation value
+      rSquare: 0, // r^2 deviation value
+
+      //TODO move this view-specific Property to CurveFittingScreenView
+      isVisible: false // curve flag visibility
     } );
 
     // property for storing calculation result
