@@ -21,11 +21,9 @@ define( function( require ) {
     var inherit = require( 'PHET_CORE/inherit' );
     var HBox = require( 'SCENERY/nodes/HBox' );
     var HStrut = require( 'SCENERY/nodes/HStrut' );
-    var HTMLText = require( 'SCENERY/nodes/HTMLText' );
     var Panel = require( 'SUN/Panel' );
     var PhetFont = require( 'SCENERY_PHET/PhetFont' );
     var SubSupText = require( 'SCENERY_PHET/SubSupText' );
-    var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
     var Text = require( 'SCENERY/nodes/Text' );
     var TextPushButton = require( 'SUN/buttons/TextPushButton' );
     var VBox = require( 'SCENERY/nodes/VBox' );
@@ -34,14 +32,11 @@ define( function( require ) {
     // strings
     var deviationsString = require( 'string!CURVE_FITTING/deviations' );
     var numberOfDataPointsString = require( 'string!CURVE_FITTING/numberOfDataPoints' );
-    var patternNumberOfParametersInFitEG0ValueForACubicFitString = require( 'string!CURVE_FITTING/pattern.numberOfParametersInFitEG.0value.ForACubicFit' );
+    var numberOfParametersInFitString = require( 'string!CURVE_FITTING/numberOfParametersInFit' );
     var theReducedChiSquaredStatisticIsString = require( 'string!CURVE_FITTING/theReducedChiSquaredStatisticIs' );
 
     // images
     var equationHelpImage = require( 'image!CURVE_FITTING/equation-help.png' );
-    var fSymbolImage = require( 'image!CURVE_FITTING/f-symbol.png' );
-    var fEqualFourImage = require( 'image!CURVE_FITTING/f-equal-four.png' );
-    var nSymbolImage = require( 'image!CURVE_FITTING/n-symbol.png' );
 
     // constants
     var BUTTON_LENGTH = 16;
@@ -90,10 +85,10 @@ define( function( require ) {
       // r^2 barometer
       var barometerR2 = new BarometerR2Node( curve.rSquareProperty );
 
-      // help menu button
+      // help dialog
       var dialogContentNode = new VBox( {
         align: 'left',
-        spacing: 5,
+        spacing: 10,
         children: [
           new Text( theReducedChiSquaredStatisticIsString, { font: TEXT_DIALOG } ),
           new HBox( {
@@ -102,22 +97,8 @@ define( function( require ) {
               new Image( equationHelpImage, { scale: IMAGE_SCALE } )
             ]
           } ),
-          new HBox( {
-            children: [
-              new Image( nSymbolImage, { scale: IMAGE_SCALE } ),
-              new Text( '= ' + numberOfDataPointsString, { font: TEXT_DIALOG } )
-            ]
-          } ),
-          new HBox( {
-            children: [
-              new Image( fSymbolImage, { scale: IMAGE_SCALE } ),
-              new HTMLText( '= ' + StringUtils.format(
-                  patternNumberOfParametersInFitEG0ValueForACubicFitString,
-                            '<img style="vertical-align: bottom; width:' + parseInt( fEqualFourImage.width * IMAGE_SCALE, 10 ) + 'px" src="' + fEqualFourImage.src + '">'
-                ),
-                { font: TEXT_DIALOG } )
-            ]
-          } )
+          new Text( numberOfDataPointsString, { font: TEXT_DIALOG } ),
+          new Text( numberOfParametersInFitString, { font: TEXT_DIALOG } )
         ]
       } );
       var helpButtonNode = new TextPushButton( symbolQuestionMarkString, {
