@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingModel = require( 'CURVE_FITTING/curve-fitting/model/CurveFittingModel' );
-  var CurveFittingView = require( 'CURVE_FITTING/curve-fitting/view/CurveFittingView' );
+  var CurveFittingScreenView = require( 'CURVE_FITTING/curve-fitting/view/CurveFittingScreenView' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Screen = require( 'JOIST/Screen' );
 
@@ -27,7 +27,7 @@ define( function( require ) {
       curveFittingTitleString,
       null, // single-screen sim, no icon necessary
       function() { return new CurveFittingModel(); },
-      function( model ) { return new CurveFittingView( model ); },
+      function( model ) { return new CurveFittingScreenView( model ); },
       { backgroundColor: 'rgb( 187, 230, 246 )' }
     );
   }

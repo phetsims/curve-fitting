@@ -31,7 +31,7 @@ define( function( require ) {
    * @param {CurveFittingModel} curveFittingModel
    * @constructor
    */
-  function CurveFittingView( curveFittingModel ) {
+  function CurveFittingScreenView( curveFittingModel ) {
     ScreenView.call( this, { layoutBounds: SIM_BOUNDS } );
 
     // create deviations node
@@ -75,7 +75,7 @@ define( function( require ) {
 
   }
 
-  curveFitting.register( 'CurveFittingView', CurveFittingView );
+  curveFitting.register( 'CurveFittingScreenView', CurveFittingScreenView );
 
-  return inherit( ScreenView, CurveFittingView );
+  return inherit( ScreenView, CurveFittingScreenView );
 } );
