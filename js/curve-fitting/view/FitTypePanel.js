@@ -1,7 +1,7 @@
 // Copyright 2015-2016, University of Colorado Boulder
 
 /**
- * Node with fit types and adjusting sliders in 'Curve Fitting' simulation.
+ * Control panel for selecting fit type, and adjusting parameters for 'adjustable fit'.
  *
  * @author Andrey Zelenkov (Mlearner)
  */
@@ -47,7 +47,7 @@ define( function( require ) {
    * @param {Object} [options] for graph node.
    * @constructor
    */
-  function FitTypeMenu( curve, fitTypeProperty, orderOfFitProperty, options ) {
+  function FitTypePanel( curve, fitTypeProperty, orderOfFitProperty, options ) {
 
     var content = new VBox();
 
@@ -136,7 +136,7 @@ define( function( require ) {
     }, options ) );
   }
 
-  curveFitting.register( 'FitTypeMenu', FitTypeMenu );
+  curveFitting.register( 'FitTypePanel', FitTypePanel );
 
-  return inherit( Panel, FitTypeMenu );
+  return inherit( Panel, FitTypePanel );
 } );

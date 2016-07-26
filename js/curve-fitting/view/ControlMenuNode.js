@@ -14,7 +14,7 @@ define( function( require ) {
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var FitTypeMenu = require( 'CURVE_FITTING/curve-fitting/view/FitTypeMenu' );
+  var FitTypePanel = require( 'CURVE_FITTING/curve-fitting/view/FitTypePanel' );
   var Panel = require( 'SUN/Panel' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Text = require( 'SCENERY/nodes/Text' );
@@ -85,19 +85,19 @@ define( function( require ) {
     this.addChild( curveTypePanel );
 
     // create fit type menu
-    var fitTypeMenu = new FitTypeMenu( curveFittingModel.curve, curveFittingModel.fitTypeProperty, curveFittingModel.orderOfFitProperty, curveFittingModel );
-    this.addChild( fitTypeMenu );
+    var fitTypePanel = new FitTypePanel( curveFittingModel.curve, curveFittingModel.fitTypeProperty, curveFittingModel.orderOfFitProperty, curveFittingModel );
+    this.addChild( fitTypePanel );
 
     // add observers
     curveFittingModel.curve.isVisibleProperty.link( function( isCurveVisible ) {
       if ( isCurveVisible ) {
         curveTypePanel.visible = true;
-        fitTypeMenu.visible = true;
+        fitTypePanel.visible = true;
         residualCheckBox.enabled = true;
       }
       else {
         curveTypePanel.visible = false;
-        fitTypeMenu.visible = false;
+        fitTypePanel.visible = false;
         residualCheckBox.enabled = false;
         curveFittingModel.areResidualsVisible = false;
       }
