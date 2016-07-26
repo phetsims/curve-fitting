@@ -33,10 +33,12 @@ define( function( require ) {
     PropertySet.call( this, {
 
       // @public
-      areResidualsVisible: false, // are residuals visible?
-      areValuesVisible: false, // are values visible?
       orderOfFit: 1, // curve type
       fitType: FitType.BEST, // fit type
+
+      //TODO move these view-specific Properties to CurveFittingScreenView
+      areResidualsVisible: false, // are residuals visible?
+      areValuesVisible: false, // are values visible?
       isDeviationPanelExpanded: true, // is the deviation panel expanded?
       isEquationPanelExpanded: true // is the equation panel expanded?
     } );
