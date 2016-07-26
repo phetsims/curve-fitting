@@ -1,11 +1,10 @@
-// Copyright 2015, University of Colorado Boulder
+// Copyright 2015-2016, University of Colorado Boulder
 
 /**
  * Bucket node view in 'Curve Fitting' simulation.
  *
  * @author Andrey Zelenkov (Mlearner)
  */
-
 define( function( require ) {
   'use strict';
 
@@ -48,6 +47,7 @@ define( function( require ) {
    * @constructor
    */
   function BucketNode( bucketModel, modelViewTransform, options ) {
+
     Node.call( this, _.extend( { cursor: 'pointer' }, options ) );
 
     // create the front of the bucket
@@ -74,7 +74,6 @@ define( function( require ) {
     this.addChild( bucketHoleNode );
     this.addChild( pointsNode );
     this.addChild( bucketFrontNode );
-
   }
 
   curveFitting.register( 'BucketNode', BucketNode );

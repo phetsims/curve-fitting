@@ -1,11 +1,10 @@
-// Copyright 2015, University of Colorado Boulder
+// Copyright 2015-2016, University of Colorado Boulder
 
 /**
  * Node with equation parameters in 'Curve Fitting' simulation.
  *
  * @author Andrey Zelenkov (Mlearner)
  */
-
 define( function( require ) {
   'use strict';
 
@@ -68,7 +67,7 @@ define( function( require ) {
     var aParameterNode = new Text( symbolAString, PARAMETER_TEXT_OPTIONS );
     var aBlockNode = new HBox( {
       align: 'bottom',
-      spacing:2,
+      spacing: 2,
       children: [
         aParameterNode,
         new SubSupText( symbolXString + '<sup>3</sup>', TEXT_OPTIONS )
@@ -77,7 +76,7 @@ define( function( require ) {
     var bParameterNode = new Text( symbolBString, PARAMETER_TEXT_OPTIONS );
     var bBlockNode = new HBox( {
       align: 'bottom',
-      spacing:2,
+      spacing: 2,
       children: [
         bParameterNode,
         new SubSupText( symbolXString + '<sup>2</sup>', TEXT_OPTIONS )
@@ -87,7 +86,7 @@ define( function( require ) {
     var dParameterNode = new Text( symbolDString, PARAMETER_TEXT_OPTIONS );
     var cdBlockNode = new HBox( {
       align: 'bottom',
-      spacing:2,
+      spacing: 2,
       children: [
         cParameterNode,
         new Text( symbolXString, TEXT_OPTIONS ),
@@ -128,8 +127,8 @@ define( function( require ) {
 
     var updateAParameter = function() {
       if ( isEquationPanelExpandedProperty.value && curve.isVisible ) {
-         var numberInfo= roundNumber( curve.aProperty.value, 3 );
-        aParameterNode.setText( numberInfo.signToString+ numberInfo.absoluteNumberToString );
+        var numberInfo = roundNumber( curve.aProperty.value, 3 );
+        aParameterNode.setText( numberInfo.signToString + numberInfo.absoluteNumberToString );
       }
     };
     curve.aProperty.lazyLink( updateAParameter );
@@ -138,8 +137,8 @@ define( function( require ) {
 
     var updateBParameter = function() {
       if ( isEquationPanelExpandedProperty.value && curve.isVisible ) {
-        var numberInfo= roundNumber( curve.bProperty.value, 3 );
-        bParameterNode.setText( numberInfo.signToString+ numberInfo.absoluteNumberToString );
+        var numberInfo = roundNumber( curve.bProperty.value, 3 );
+        bParameterNode.setText( numberInfo.signToString + numberInfo.absoluteNumberToString );
       }
     };
     curve.bProperty.lazyLink( updateBParameter );
@@ -148,8 +147,8 @@ define( function( require ) {
 
     var updateCParameter = function() {
       if ( isEquationPanelExpandedProperty.value && curve.isVisible ) {
-        var numberInfo= roundNumber( curve.cProperty.value, 2 );
-        cParameterNode.setText( numberInfo.signToString+ numberInfo.absoluteNumberToString );
+        var numberInfo = roundNumber( curve.cProperty.value, 2 );
+        cParameterNode.setText( numberInfo.signToString + numberInfo.absoluteNumberToString );
       }
     };
     curve.cProperty.lazyLink( updateCParameter );
@@ -157,8 +156,8 @@ define( function( require ) {
     isEquationPanelExpandedProperty.link( updateCParameter );
 
     var updateDParameter = function() {
-      var numberInfo= roundNumber( curve.cProperty.value, 1 );
-      dParameterNode.setText( numberInfo.signToString+ numberInfo.absoluteNumberToString );
+      var numberInfo = roundNumber( curve.cProperty.value, 1 );
+      dParameterNode.setText( numberInfo.signToString + numberInfo.absoluteNumberToString );
     };
     curve.dProperty.lazyLink( updateDParameter );
     curve.isVisibleProperty.lazyLink( updateDParameter );
@@ -207,14 +206,12 @@ define( function( require ) {
       var absoluteNumberToString = Util.toFixedNumber( Math.abs( number ), decimalPlaces ); // N.B.
       var isStringZero = (numberToString === Util.toFixed( 0, decimalPlaces ));
 
-      var returnValue = {
+      return {
         numberToString: numberToString, // {string}
         signToString: signToString, // {string}
         absoluteNumberToString: absoluteNumberToString, // {string}
         isStringZero: isStringZero  // {boolean}
       };
-
-      return returnValue;
     }
   }
 

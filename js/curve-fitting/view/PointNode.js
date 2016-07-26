@@ -1,20 +1,19 @@
-// Copyright 2015, University of Colorado Boulder
+// Copyright 2015-2016, University of Colorado Boulder
 
 /**
  * Single point node in 'Curve Fitting' simulation.
  *
  * @author Andrey Zelenkov (Mlearner)
  */
-
 define( function( require ) {
   'use strict';
 
   // modules
-  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var Bounds2 = require( 'DOT/Bounds2' );
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var Color = require( 'SCENERY/util/Color' );
+  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
@@ -65,6 +64,7 @@ define( function( require ) {
    * @constructor
    */
   function PointNode( point, areValuesVisibleProperty, areResidualsVisibleProperty, modelViewTransform, options ) {
+
     Node.call( this, _.extend( { cursor: 'pointer' }, options ) );
 
     // create common drag and drop vars and functions for top and bottom error bars
@@ -252,7 +252,6 @@ define( function( require ) {
     var deltaTextLabelHandle = areValuesVisibleProperty.linkAttribute( deltaTextLabel, 'visible' );
     point.deltaProperty.lazyLink( updateDeltaText );
 
-
     /**
      * updates Residuals
      */
@@ -306,17 +305,13 @@ define( function( require ) {
       areValuesVisibleProperty.unlink( updateValueTextHandle );
       areValuesVisibleProperty.unlink( updateDeltaTextHandle );
     };
-
   }
 
   curveFitting.register( 'PointNode', PointNode );
 
   return inherit( Node, PointNode, {
-    /**
-     * @public
-     */
-    dispose: function() {
-      this.disposePointNode();
-    }
+
+    // @public
+    dispose: function() { this.disposePointNode(); }
   } );
 } );

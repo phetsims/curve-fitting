@@ -1,4 +1,4 @@
-// Copyright 2015, University of Colorado Boulder
+// Copyright 2015-2016, University of Colorado Boulder
 
 /**
  * Node with fit types and adjusting sliders in 'Curve Fitting' simulation.
@@ -13,9 +13,9 @@ define( function( require ) {
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var EquationFitNode = require( 'CURVE_FITTING/curve-fitting/view/EquationFitNode' );
-  var inherit = require( 'PHET_CORE/inherit' );
   var FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
   var HBox = require( 'SCENERY/nodes/HBox' );
+  var inherit = require( 'PHET_CORE/inherit' );
   var Panel = require( 'SUN/Panel' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Property = require( 'AXON/Property' );
@@ -48,6 +48,7 @@ define( function( require ) {
    * @constructor
    */
   function FitTypeMenu( curve, fitTypeProperty, orderOfFitProperty, options ) {
+
     var content = new VBox();
 
     // create radio buttons
@@ -68,10 +69,22 @@ define( function( require ) {
     var dSliderEnabledProperty = new Property( true );
 
     // create slider for parameters
-    var aSliderBox = new SliderParameterNode( curve.aProperty, { min: -1, max: 1 }, symbolAString, { enabledProperty: aSliderEnabledProperty } );
-    var bSliderBox = new SliderParameterNode( curve.bProperty, { min: -2, max: 2 }, symbolBString, { enabledProperty: bSliderEnabledProperty } );
-    var cSliderBox = new SliderParameterNode( curve.cProperty, { min: -10, max: 10 }, symbolCString, { enabledProperty: cSliderEnabledProperty } );
-    var dSliderBox = new SliderParameterNode( curve.dProperty, { min: -10, max: 10 }, symbolDString, { enabledProperty: dSliderEnabledProperty } );
+    var aSliderBox = new SliderParameterNode( curve.aProperty, {
+      min: -1,
+      max: 1
+    }, symbolAString, { enabledProperty: aSliderEnabledProperty } );
+    var bSliderBox = new SliderParameterNode( curve.bProperty, {
+      min: -2,
+      max: 2
+    }, symbolBString, { enabledProperty: bSliderEnabledProperty } );
+    var cSliderBox = new SliderParameterNode( curve.cProperty, {
+      min: -10,
+      max: 10
+    }, symbolCString, { enabledProperty: cSliderEnabledProperty } );
+    var dSliderBox = new SliderParameterNode( curve.dProperty, {
+      min: -10,
+      max: 10
+    }, symbolDString, { enabledProperty: dSliderEnabledProperty } );
 
     // create slider box
     var slidersBox = new HBox( {

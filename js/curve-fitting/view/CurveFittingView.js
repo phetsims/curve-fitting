@@ -1,4 +1,4 @@
-// Copyright 2015, University of Colorado Boulder
+// Copyright 2015-2016, University of Colorado Boulder
 
 /**
  * Main ScreenView node that contains all other nodes.
@@ -9,9 +9,9 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var BucketAndGraphAreaNode = require( 'CURVE_FITTING/curve-fitting/view/BucketAndGraphAreaNode' );
   var ControlMenuNode = require( 'CURVE_FITTING/curve-fitting/view/ControlMenuNode' );
+  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var DeviationsPanel = require( 'CURVE_FITTING/curve-fitting/view/DeviationsPanel' );
   var inherit = require( 'PHET_CORE/inherit' );

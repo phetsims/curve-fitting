@@ -1,4 +1,4 @@
-// Copyright 2015, University of Colorado Boulder
+// Copyright 2015-2016, University of Colorado Boulder
 
 /**
  * Graph area node in 'Curve Fitting' simulation.
@@ -6,15 +6,14 @@
  *
  * @author Andrey Zelenkov (Mlearner)
  */
-
 define( function( require ) {
   'use strict';
 
   // modules
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var inherit = require( 'PHET_CORE/inherit' );
   var FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
+  var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -148,13 +147,10 @@ define( function( require ) {
       }
     };
 
-
     curve.isVisibleProperty.linkAttribute( curvePath, 'visible' );
     orderOfFitProperty.lazyLink( updateShape );
     areResidualsVisibleProperty.link( updateShape );
     curve.updateCurveEmitter.addListener( updateShape );
-
-
   }
 
   curveFitting.register( 'GraphAreaNode', GraphAreaNode );

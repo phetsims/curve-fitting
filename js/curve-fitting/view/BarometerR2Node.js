@@ -38,8 +38,8 @@ define( function( require ) {
     var valueRectNode = new Rectangle(
       -2 * CurveFittingConstants.BAROMETER_TICK_WIDTH / 3 - 0.5, 0,
       2 * CurveFittingConstants.BAROMETER_TICK_WIDTH / 3, 0, {
-      fill: CurveFittingConstants.BLUE_COLOR
-    } );
+        fill: CurveFittingConstants.BLUE_COLOR
+      } );
     valueRectNode.rotation = Math.PI;
 
     var axis = new Line( 0, 0, 0, -CurveFittingConstants.BAROMETER_HEIGHT, LINE_OPTIONS );

@@ -184,7 +184,7 @@ define( function( require ) {
   }
 
   return inherit( VBox, BarometerX2Node, {
-    
+
     /**
      * Adds a tick.
      *
