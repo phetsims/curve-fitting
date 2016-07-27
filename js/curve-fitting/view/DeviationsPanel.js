@@ -1,8 +1,9 @@
 // Copyright 2015-2016, University of Colorado Boulder
 
+//TODO use AccordionBox
 /**
  * Deviations panel in 'Curve Fitting' simulation.
- * Contains X^2 barometer, r^2 barometer and menu dialog.
+ * Contains X^2 barometer, r^2 barometer and help button.
  *
  * @author Andrey Zelenkov (Mlearner)
  */
@@ -54,15 +55,15 @@ define( function( require ) {
   var symbolQuestionMarkString = require( 'string!CURVE_FITTING/symbol.questionMark' );
 
   /**
-   * @param {Property.<boolean>} isDeviationPanelExpandedProperty
+   * @param {Property.<boolean>} expandedProperty - is this panel expanded?
    * @param {Curve} curve
-   * @param {Object} [options] for graph node
+   * @param {Object} [options] for VBox TODO this should be the options for this type!
    * @constructor
    */
-  function DeviationsPanel( isDeviationPanelExpandedProperty, curve, options ) {
+  function DeviationsPanel( expandedProperty, curve, options ) {
 
     // create expand button
-    var expandCollapseButton = new ExpandCollapseButton( isDeviationPanelExpandedProperty, {
+    var expandCollapseButton = new ExpandCollapseButton( expandedProperty, {
       sideLength: BUTTON_LENGTH
     } );
     expandCollapseButton.touchArea = expandCollapseButton.localBounds.dilated( BUTTON_LENGTH / 3 );
@@ -127,7 +128,7 @@ define( function( require ) {
     var spaceBetweenBarometers = new HStrut( 10 );
     var spaceBetweenButtonAndTitle = new HStrut( 5 );
 
-    isDeviationPanelExpandedProperty.link( function( isDeviationPanelExpanded ) {
+    expandedProperty.link( function( isDeviationPanelExpanded ) {
       if ( isDeviationPanelExpanded ) {
         deviationArrowsNode.children = [ expandCollapseButton, barometerX2, spaceBetweenBarometers, barometerR2 ];
         content.children = [ deviationArrowsNode, deviationTextNode, helpButtonNode ];

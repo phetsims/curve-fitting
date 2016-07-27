@@ -39,7 +39,6 @@ define( function( require ) {
       //TODO move these view-specific Properties to CurveFittingScreenView
       areResidualsVisible: false, // are residuals visible?
       areValuesVisible: false, // are values visible?
-      isDeviationPanelExpanded: true, // is the deviation panel expanded?
       isEquationPanelExpanded: true // is the equation panel expanded?
     } );
 

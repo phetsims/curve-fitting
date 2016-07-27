@@ -16,6 +16,7 @@ define( function( require ) {
   var DeviationsPanel = require( 'CURVE_FITTING/curve-fitting/view/DeviationsPanel' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
+  var PropertySet = require( 'AXON/PropertySet' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var Vector2 = require( 'DOT/Vector2' );
@@ -32,9 +33,15 @@ define( function( require ) {
    * @constructor
    */
   function CurveFittingScreenView( model ) {
+
     ScreenView.call( this, { layoutBounds: SIM_BOUNDS } );
 
-    var deviationsPanel = new DeviationsPanel( model.isDeviationPanelExpandedProperty, model.curve );
+    // view-specific Properties
+    var viewProperties = new PropertySet( {
+      deviationsPanelExpanded: true  //TODO layout is hosed if this is initially false
+    } );
+
+    var deviationsPanel = new DeviationsPanel( viewProperties.deviationsPanelExpandedProperty, model.curve );
 
     var controlPanels = new ControlPanels( model.curve, model.orderProperty, model.fitProperty,
     model.curve.isVisibleProperty, model.areResidualsVisibleProperty, model.areValuesVisibleProperty );
