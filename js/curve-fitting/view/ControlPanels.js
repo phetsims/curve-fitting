@@ -28,13 +28,17 @@ define( function( require ) {
     maxWidth: CurveFittingConstants.PANEL_MAX_WIDTH
   };
 
-  //TODO don't pass in the entire model!
   /**
-   * @param {CurveFittingModel} model
-   * @param {Object} [options] for graph node
+   * @param {Curve} curve
+   * @param {Property.<number>} orderProperty
+   * @param {Property.<Fit>} fitProperty
+   * @param {Property.<boolean>} curveVisibleProperty
+   * @param {Property.<boolean>} residualsVisibleProperty
+   * @param {Property.<boolean>} valuesProperty
+   * @param {Object} [options]
    * @constructor
    */
-  function ControlPanels( model, options ) {
+  function ControlPanels( curve, orderProperty, fitProperty, curveVisibleProperty, residualsVisibleProperty, valuesProperty, options ) {
 
     options = _.extend( {
       align: 'left',
@@ -42,17 +46,13 @@ define( function( require ) {
     }, options );
 
     // view options
-    var viewOptionsPanel = new ViewOptionsPanel(
-      model.curve.isVisibleProperty,
-      model.areResidualsVisibleProperty,
-      model.areValuesVisibleProperty,
-      PANEL_OPTIONS );
+    var viewOptionsPanel = new ViewOptionsPanel( curveVisibleProperty, residualsVisibleProperty, valuesProperty, PANEL_OPTIONS );
 
     // order of curve
-    var orderPanel = new CurveOrderPanel( model.orderProperty, PANEL_OPTIONS );
+    var orderPanel = new CurveOrderPanel( orderProperty, PANEL_OPTIONS );
 
     // fit type
-    var fitPanel = new FitPanel( model.curve, model.fitProperty, model.orderProperty, model );
+    var fitPanel = new FitPanel( curve, fitProperty, orderProperty, PANEL_OPTIONS );
 
     assert && assert( !options.children, 'decoration not supported' );
     options.children = [ viewOptionsPanel, orderPanel, fitPanel ];
@@ -60,7 +60,7 @@ define( function( require ) {
     VBox.call( this, options );
 
     // hide panels when curve is not visible
-    model.curve.isVisibleProperty.link( function( curveVisible ) {
+    curve.isVisibleProperty.link( function( curveVisible ) {
       orderPanel.visible = fitPanel.visible = curveVisible;
     } );
   }

@@ -36,7 +36,8 @@ define( function( require ) {
 
     var deviationsPanel = new DeviationsPanel( model.isDeviationPanelExpandedProperty, model.curve );
 
-    var controlPanels = new ControlPanels( model );
+    var controlPanels = new ControlPanels( model.curve, model.orderProperty, model.fitProperty,
+    model.curve.isVisibleProperty, model.areResidualsVisibleProperty, model.areValuesVisibleProperty );
 
     //TODO handle layout in constructor options
     // layout the nodes
