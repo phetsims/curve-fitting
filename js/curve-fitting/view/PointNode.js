@@ -57,13 +57,13 @@ define( function( require ) {
 
   /**
    * @param {Point} point - Model for single point.
-   * @param {Property.<boolean>} areValuesVisibleProperty - Property to control visibility of values.
-   * @param {Property.<boolean>} areResidualsVisibleProperty - Property to track residuals visibility.
+   * @param {Property.<boolean>} areValuesVisibleProperty
+   * @param {Property.<boolean>} residualsVisibleProperty
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Object} [options] for graph node.
    * @constructor
    */
-  function PointNode( point, areValuesVisibleProperty, areResidualsVisibleProperty, modelViewTransform, options ) {
+  function PointNode( point, areValuesVisibleProperty, residualsVisibleProperty, modelViewTransform, options ) {
 
     Node.call( this, _.extend( { cursor: 'pointer' }, options ) );
 
@@ -255,8 +255,8 @@ define( function( require ) {
     /**
      * updates Residuals
      */
-    var updateResiduals = function( areResidualsVisible ) {
-      if ( areResidualsVisible ) {
+    var updateResiduals = function( residualsVisible ) {
+      if ( residualsVisible ) {
         centralLine.visible = false;
         errorBarTopNode.setFill( CurveFittingConstants.LIGHT_GRAY_COLOR );
         errorBarBottomNode.setFill( CurveFittingConstants.LIGHT_GRAY_COLOR );
@@ -268,7 +268,7 @@ define( function( require ) {
       }
     };
     // change appearance when residuals active
-    areResidualsVisibleProperty.link( updateResiduals );
+    residualsVisibleProperty.link( updateResiduals );
 
     // add halo to point
     var haloPointNode = new Circle( 1.75 * CurveFittingConstants.POINT_RADIUS, HALO_POINT_OPTIONS );
@@ -300,7 +300,7 @@ define( function( require ) {
       point.positionProperty.unlink( updateValueText );
       point.deltaProperty.unlink( updateDeltaText );
       point.positionProperty.unlink( centerPositionListener );
-      areResidualsVisibleProperty.unlink( updateResiduals );
+      residualsVisibleProperty.unlink( updateResiduals );
       areValuesVisibleProperty.unlinkAttribute( deltaTextLabelHandle );
       areValuesVisibleProperty.unlinkAttribute( valueTextLabelHandle );
       areValuesVisibleProperty.unlink( updateValueTextHandle );

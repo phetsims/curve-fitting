@@ -37,7 +37,6 @@ define( function( require ) {
       fit: Fit.BEST, // the method of fitting the curve to data points
 
       //TODO move these view-specific Properties to CurveFittingScreenView
-      areResidualsVisible: false, // are residuals visible?
       areValuesVisible: false, // are values visible?
     } );
 

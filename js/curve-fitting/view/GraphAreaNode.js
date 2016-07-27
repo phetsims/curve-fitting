@@ -31,18 +31,18 @@ define( function( require ) {
   /**
    * @param {Curve} curve - curve model.
    * @param {Property.<number>} orderProperty
-   * @param {Property.<boolean>} areResidualsVisibleProperty - Property to track residuals visibility.
-   * @param {Bounds2} graphModelBounds -  bounds of the graph
+   * @param {Property.<boolean>} residualsVisibleProperty
+   * @param {Bounds2} graphBounds -  bounds of the graph, in model coordinate frame
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Object} [options] for graph node.
    * @constructor
    */
-  function GraphAreaNode( curve, orderProperty, areResidualsVisibleProperty, graphModelBounds, modelViewTransform, options ) {
+  function GraphAreaNode( curve, orderProperty, residualsVisibleProperty, graphBounds, modelViewTransform, options ) {
 
     Node.call( this, options );
 
     // determine the graph are bounds in the view
-    var graphViewBounds = modelViewTransform.modelToViewBounds( graphModelBounds );
+    var graphViewBounds = modelViewTransform.modelToViewBounds( graphBounds );
 
     // create and add white background
     this.addChild( new Rectangle.bounds( graphViewBounds, {
@@ -97,8 +97,8 @@ define( function( require ) {
       var curveShape = null;
       var residualsShape = null;
       var order = orderProperty.value;
-      var xMin = graphModelBounds.minX;
-      var xMax = graphModelBounds.maxX;
+      var xMin = graphBounds.minX;
+      var xMax = graphBounds.maxX;
       var points = curve.getPoints();
       var a = curve.a;
       var b = curve.b;
@@ -125,7 +125,7 @@ define( function( require ) {
         }
 
         // update path residuals
-        if ( areResidualsVisibleProperty.value ) {
+        if ( residualsVisibleProperty.value ) {
           residualsShape = new Shape();
 
           points.forEach( function( point ) {
@@ -153,7 +153,7 @@ define( function( require ) {
 
     curve.isVisibleProperty.linkAttribute( curvePath, 'visible' );
     orderProperty.lazyLink( updateShape );
-    areResidualsVisibleProperty.link( updateShape );
+    residualsVisibleProperty.link( updateShape );
     curve.updateCurveEmitter.addListener( updateShape );
   }
 
