@@ -31,7 +31,7 @@ define( function( require ) {
   /**
    * @param {Curve} curve
    * @param {Property.<number>} orderProperty
-   * @param {Property.<Fit>} fitProperty
+   * @param {Property.<string>} fitProperty
    * @param {Property.<boolean>} curveVisibleProperty
    * @param {Property.<boolean>} residualsVisibleProperty
    * @param {Property.<boolean>} valuesProperty
