@@ -1,6 +1,7 @@
 // Copyright 2015-2016, University of Colorado Boulder
 
 //TODO rename, this is the controls for adjustable fit
+//TODO spacing of equation looks awful
 /**
  * Equation node in adjustable fit node and sliders in 'Curve Fitting' simulation.
  *
