@@ -28,15 +28,15 @@ define( function( require ) {
   var GRAPH_MODEL_BOUNDS = CurveFittingConstants.GRAPH_MODEL_BOUNDS;
 
   /**
-   * @param {CurveFittingModel} curveFittingModel
+   * @param {CurveFittingModel} model
    * @constructor
    */
-  function CurveFittingScreenView( curveFittingModel ) {
+  function CurveFittingScreenView( model ) {
     ScreenView.call( this, { layoutBounds: SIM_BOUNDS } );
 
-    var deviationsPanel = new DeviationsPanel( curveFittingModel.isDeviationPanelExpandedProperty, curveFittingModel.curve );
+    var deviationsPanel = new DeviationsPanel( model.isDeviationPanelExpandedProperty, model.curve );
 
-    var controlPanels = new ControlPanels( curveFittingModel );
+    var controlPanels = new ControlPanels( model );
 
     //TODO handle layout in constructor options
     // layout the nodes
@@ -53,13 +53,13 @@ define( function( require ) {
     var modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping( new Vector2( 0, 0 ), new Vector2( graphCenterX, graphCenterY ), scale );
 
     // create bucket and graph area node
-    var bucketAndGraphAreaNode = new BucketAndGraphAreaNode( curveFittingModel, modelViewTransform );
+    var bucketAndGraphAreaNode = new BucketAndGraphAreaNode( model, modelViewTransform );
 
     // create reset all button
     var resetAllButton = new ResetAllButton( {
       listener: function() {
         // all properties are in the model (even visibilities)
-        curveFittingModel.reset();
+        model.reset();
       }
     } );
     resetAllButton.scale( 0.75 );

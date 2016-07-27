@@ -20,26 +20,27 @@ define( function( require ) {
   var PointNode = require( 'CURVE_FITTING/curve-fitting/view/PointNode' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
+  //TODO don't pass in the entire model!
   /**
-   * @param {CurveFittingModel} curveFittingModel
+   * @param {CurveFittingModel} model
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Object} [options] for graph node
    * @constructor
    */
-  function BucketAndGraphAreaNode( curveFittingModel, modelViewTransform, options ) {
+  function BucketAndGraphAreaNode( model, modelViewTransform, options ) {
 
     Node.call( this, options );
 
     var self = this;
 
     // create the bucket node
-    var bucketNode = new BucketNode( curveFittingModel.bucket, modelViewTransform );
+    var bucketNode = new BucketNode( model.bucket, modelViewTransform );
 
     // create the graph area node - responsible for the rendering of the curves, as well as the axes and background.
-    var graphAreaNode = new GraphAreaNode( curveFittingModel.curve, curveFittingModel.orderProperty, curveFittingModel.areResidualsVisibleProperty, curveFittingModel.graphModelBounds, modelViewTransform );
+    var graphAreaNode = new GraphAreaNode( model.curve, model.orderProperty, model.areResidualsVisibleProperty, model.graphModelBounds, modelViewTransform );
 
     // create the equation node (accordion box) in the upper left corner of the graph
-    var equationGraphPanelNode = new EquationGraphPanelNode( curveFittingModel.isEquationPanelExpandedProperty, curveFittingModel.curve, curveFittingModel.orderProperty );
+    var equationGraphPanelNode = new EquationGraphPanelNode( model.isEquationPanelExpandedProperty, model.curve, model.orderProperty );
 
     // create a separate layers for all the points
     var pointsNode = new Node();
@@ -53,15 +54,15 @@ define( function( require ) {
     this.addChild( pointsNode );
 
     // handle the coming and going of points
-    curveFittingModel.curve.points.addItemAddedListener( function( addedPoint ) {
-      var pointNode = new PointNode( addedPoint, curveFittingModel.areValuesVisibleProperty, curveFittingModel.areResidualsVisibleProperty, modelViewTransform );
+    model.curve.points.addItemAddedListener( function( addedPoint ) {
+      var pointNode = new PointNode( addedPoint, model.areValuesVisibleProperty, model.areResidualsVisibleProperty, modelViewTransform );
       self.addChild( pointNode );
 
-      curveFittingModel.curve.points.addItemRemovedListener( function removalListener( removedPoint ) {
+      model.curve.points.addItemRemovedListener( function removalListener( removedPoint ) {
         if ( removedPoint === addedPoint ) {
           self.removeChild( pointNode );
           pointNode.dispose();
-          curveFittingModel.curve.points.removeItemRemovedListener( removalListener );
+          model.curve.points.removeItemRemovedListener( removalListener );
         }
       } );
     } );
@@ -87,7 +88,7 @@ define( function( require ) {
         } );
 
         // add the point to the curve
-        curveFittingModel.curve.points.add( point );
+        model.curve.points.add( point );
 
       },
 

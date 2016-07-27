@@ -28,12 +28,13 @@ define( function( require ) {
     maxWidth: CurveFittingConstants.PANEL_MAX_WIDTH
   };
 
+  //TODO don't pass in the entire model!
   /**
-   * @param {CurveFittingModel} curveFittingModel
+   * @param {CurveFittingModel} model
    * @param {Object} [options] for graph node
    * @constructor
    */
-  function ControlPanels( curveFittingModel, options ) {
+  function ControlPanels( model, options ) {
 
     options = _.extend( {
       align: 'left',
@@ -42,16 +43,16 @@ define( function( require ) {
 
     // view options
     var viewOptionsPanel = new ViewOptionsPanel(
-      curveFittingModel.curve.isVisibleProperty,
-      curveFittingModel.areResidualsVisibleProperty,
-      curveFittingModel.areValuesVisibleProperty,
+      model.curve.isVisibleProperty,
+      model.areResidualsVisibleProperty,
+      model.areValuesVisibleProperty,
       PANEL_OPTIONS );
 
     // order of curve
-    var orderPanel = new CurveOrderPanel( curveFittingModel.orderProperty, PANEL_OPTIONS );
+    var orderPanel = new CurveOrderPanel( model.orderProperty, PANEL_OPTIONS );
 
     // fit type
-    var fitPanel = new FitPanel( curveFittingModel.curve, curveFittingModel.fitProperty, curveFittingModel.orderProperty, curveFittingModel );
+    var fitPanel = new FitPanel( model.curve, model.fitProperty, model.orderProperty, model );
 
     assert && assert( !options.children, 'decoration not supported' );
     options.children = [ viewOptionsPanel, orderPanel, fitPanel ];
@@ -59,7 +60,7 @@ define( function( require ) {
     VBox.call( this, options );
 
     // hide panels when curve is not visible
-    curveFittingModel.curve.isVisibleProperty.link( function( curveVisible ) {
+    model.curve.isVisibleProperty.link( function( curveVisible ) {
       orderPanel.visible = fitPanel.visible = curveVisible;
     } );
   }
