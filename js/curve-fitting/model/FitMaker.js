@@ -1,5 +1,6 @@
 // Copyright 2015-2016, University of Colorado Boulder
 
+//TODO this needs documentation and cleanup
 /**
  * Fit maker for 'Curve Fitting' simulation.
  *
