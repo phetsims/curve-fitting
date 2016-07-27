@@ -33,7 +33,7 @@ define( function( require ) {
     PropertySet.call( this, {
 
       // @public
-      orderOfFit: 1, // curve type
+      order: 1, // order of the polynomial that describes the curve
       fitType: FitType.BEST, // fit type
 
       //TODO move these view-specific Properties to CurveFittingScreenView
@@ -54,7 +54,7 @@ define( function( require ) {
     } );
 
     // @public
-    this.curve = new Curve( this.orderOfFitProperty, this.fitTypeProperty );
+    this.curve = new Curve( this.orderProperty, this.fitTypeProperty );
   }
 
   curveFitting.register( 'CurveFittingModel', CurveFittingModel );

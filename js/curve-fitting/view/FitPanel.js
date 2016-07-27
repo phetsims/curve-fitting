@@ -43,11 +43,11 @@ define( function( require ) {
   /**
    * @param {Curve} curve
    * @param {Property.<string>} fitTypeProperty
-   * @param {Property.<number>} orderOfFitProperty
+   * @param {Property.<number>} orderProperty
    * @param {Object} [options] for graph node TODO rename, and this type needs its own options
    * @constructor
    */
-  function FitPanel( curve, fitTypeProperty, orderOfFitProperty, options ) {
+  function FitPanel( curve, fitTypeProperty, orderProperty, options ) {
 
     var content = new VBox();
 
@@ -60,7 +60,7 @@ define( function( require ) {
     content.addChild( fitTypeRadioButtonGroup );
 
     // create and add equation node
-    content.addChild( new EquationFitNode( orderOfFitProperty ) );
+    content.addChild( new EquationFitNode( orderProperty ) );
 
     // it's necessary to be able to enable and disable sliders
     var aSliderEnabledProperty = new Property( true );
@@ -93,27 +93,30 @@ define( function( require ) {
     } );
 
     // add slider number observer
-    orderOfFitProperty.link( function( orderOfFit ) {
+    orderProperty.link( function( order ) {
       // if the sliders are not disabled they will be able to change
       // and behave as described in #15 and #37
-      if ( orderOfFit === 1 ) {
+      if ( order === 1 ) {
         // disable a and b slider
         aSliderEnabledProperty.set( false );
         bSliderEnabledProperty.set( false );
         slidersBox.children = [ cSliderBox, dSliderBox ];
       }
-      else if ( orderOfFit === 2 ) {
+      else if ( order === 2 ) {
         // enable b slider
         bSliderEnabledProperty.set( true );
         //disable a slider
         aSliderEnabledProperty.set( false );
         slidersBox.children = [ bSliderBox, cSliderBox, dSliderBox ];
       }
-      else if ( orderOfFit === 3 ) {
+      else if ( order === 3 ) {
         // enable a and b sliders
         aSliderEnabledProperty.set( true );
         bSliderEnabledProperty.set( true );
         slidersBox.children = [ aSliderBox, bSliderBox, cSliderBox, dSliderBox ];
+      }
+      else {
+        throw new Error( 'unsupported curve order: ' + order );
       }
     } );
 

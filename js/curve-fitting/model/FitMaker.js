@@ -38,12 +38,12 @@ define( function( require ) {
 
     /**
      * @param {Array.<Point>} points
-     * @param {number} orderOfFit
+     * @param {number} order
      * @returns {Array}
      * @public
      */
-    getFit: function( points, orderOfFit ) {
-      this.makeAugmentedMatrix( points, orderOfFit );
+    getFit: function( points, order ) {
+      this.makeAugmentedMatrix( points, order );
       this.reduceMatrix();
       this.solveReducedMatrix();
       return this.solutionArray;
@@ -51,13 +51,13 @@ define( function( require ) {
 
     /**
      * @param {Array.<Point>} points
-     * @param {number} orderOfFit
+     * @param {number} order
      * @private
      */
-    makeAugmentedMatrix: function( points, orderOfFit ) {
+    makeAugmentedMatrix: function( points, order ) {
 
       var numberOfPoints = points.length;
-      this.m = Math.min( orderOfFit + 1, numberOfPoints );
+      this.m = Math.min( order + 1, numberOfPoints );
 
       this.zeroMatrix();
 

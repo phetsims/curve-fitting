@@ -29,14 +29,14 @@ define( function( require ) {
 
   /**
    * @param {Curve} curve - curve model.
-   * @param {Property.<number>} orderOfFitProperty - Property with current order of fit.
+   * @param {Property.<number>} orderProperty
    * @param {Property.<boolean>} areResidualsVisibleProperty - Property to track residuals visibility.
    * @param {Bounds2} graphModelBounds -  bounds of the graph
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Object} [options] for graph node.
    * @constructor
    */
-  function GraphAreaNode( curve, orderOfFitProperty, areResidualsVisibleProperty, graphModelBounds, modelViewTransform, options ) {
+  function GraphAreaNode( curve, orderProperty, areResidualsVisibleProperty, graphModelBounds, modelViewTransform, options ) {
 
     Node.call( this, options );
 
@@ -95,7 +95,7 @@ define( function( require ) {
     var updateShape = function() {
       var curveShape = null;
       var residualsShape = null;
-      var orderOfFit = orderOfFitProperty.value;
+      var order = orderProperty.value;
       var xMin = graphModelBounds.minX;
       var xMax = graphModelBounds.maxX;
       var points = curve.getPoints();
@@ -110,7 +110,7 @@ define( function( require ) {
         // update curve path
         curveShape = new Shape();
         curveShape.moveTo( xMin, curve.getYValueAt( xMin ) );
-        if ( orderOfFit === 1 ) {
+        if ( order === 1 ) {
           curveShape.lineTo( xMax, curve.getYValueAt( xMax ) );
         }
         else {
@@ -126,7 +126,8 @@ define( function( require ) {
           residualsShape = new Shape();
 
           points.forEach( function( point ) {
-            if ( orderOfFit ) {
+            //TODO why is this not testing for a specific order value?
+            if ( order ) {
               residualsShape.moveToPoint( point.position );
               residualsShape.verticalLineTo( curve.getYValueAt( point.position.x ) );
             }
@@ -148,7 +149,7 @@ define( function( require ) {
     };
 
     curve.isVisibleProperty.linkAttribute( curvePath, 'visible' );
-    orderOfFitProperty.lazyLink( updateShape );
+    orderProperty.lazyLink( updateShape );
     areResidualsVisibleProperty.link( updateShape );
     curve.updateCurveEmitter.addListener( updateShape );
   }

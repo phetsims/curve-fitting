@@ -18,11 +18,11 @@ define( function( require ) {
   var PropertySet = require( 'AXON/PropertySet' );
 
   /**
-   * @param {Property.<number>} orderOfFitProperty - Property to control curve type.
+   * @param {Property.<number>} orderProperty
    * @param {Property.<string>} fitTypeProperty - Property to control fit type.
    * @constructor
    */
-  function Curve( orderOfFitProperty, fitTypeProperty ) {
+  function Curve( orderProperty, fitTypeProperty ) {
     var self = this;
 
     PropertySet.call( this, {
@@ -40,8 +40,9 @@ define( function( require ) {
     // property for storing calculation result
     this.yDeviationSquaredSum = 0;
 
+    //TODO remove underscores, annotate @private
     // save link to property
-    this._orderOfFitProperty = orderOfFitProperty;
+    this._orderProperty = orderProperty;
     this._fitTypeProperty = fitTypeProperty;
 
     // Contains points for plotting curve. Only point above graph will be taken for calculations. Order doesn't matter.
@@ -56,9 +57,9 @@ define( function( require ) {
 
     this.points.addListeners( this.addPoint.bind( this ), this.removePoint.bind( this ) );
 
-    orderOfFitProperty.lazyLink( function( orderOfFit ) {
+    orderProperty.lazyLink( function( order ) {
       // store the value of a for later use
-      if ( orderOfFit < 3 ) {
+      if ( order < 3 ) {
         self._storage.a = self.a;
         self.a = 0;
       }
@@ -67,7 +68,7 @@ define( function( require ) {
       }
 
       // store the value of b for later use
-      if ( orderOfFit < 2 ) {
+      if ( order < 2 ) {
         self._storage.b = self.b;
         self.b = 0;
       }
@@ -256,10 +257,10 @@ define( function( require ) {
       }
 
       // calculation of chiSquare
-      var orderOfFit = this._orderOfFitProperty.value;
-      var degreesOfFreedom = numberOfPoints - orderOfFit - 1;
+      var order = this._orderProperty.value;
+      var degreesOfFreedom = numberOfPoints - order - 1;
 
-      if ( numberOfPoints > orderOfFit + 1 ) {
+      if ( numberOfPoints > order + 1 ) {
         this.chiSquare = (yySum - 2 * yAtySum + yAtyAtSum) / degreesOfFreedom;
       }
       else {
@@ -302,7 +303,7 @@ define( function( require ) {
       // update only when curve visible
       if ( this.isVisible ) {
         if ( this._fitTypeProperty.value === FitType.BEST ) {
-          var fit = this.fitMaker.getFit( this.getPoints(), this._orderOfFitProperty.value );
+          var fit = this.fitMaker.getFit( this.getPoints(), this._orderProperty.value );
 
           this.d = isFinite( fit[ 0 ] ) ? fit[ 0 ] : 0;
           this.c = isFinite( fit[ 1 ] ) ? fit[ 1 ] : 0;

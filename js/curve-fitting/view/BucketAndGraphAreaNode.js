@@ -35,10 +35,10 @@ define( function( require ) {
     var bucketNode = new BucketNode( curveFittingModel.bucket, modelViewTransform );
 
     // create the graph area node - responsible for the rendering of the curves, as well as the axes and background.
-    var graphAreaNode = new GraphAreaNode( curveFittingModel.curve, curveFittingModel.orderOfFitProperty, curveFittingModel.areResidualsVisibleProperty, curveFittingModel.graphModelBounds, modelViewTransform );
+    var graphAreaNode = new GraphAreaNode( curveFittingModel.curve, curveFittingModel.orderProperty, curveFittingModel.areResidualsVisibleProperty, curveFittingModel.graphModelBounds, modelViewTransform );
 
     // create the equation node (accordion box) in the upper left corner of the graph
-    var equationGraphPanelNode = new EquationGraphPanelNode( curveFittingModel.isEquationPanelExpandedProperty, curveFittingModel.curve, curveFittingModel.orderOfFitProperty );
+    var equationGraphPanelNode = new EquationGraphPanelNode( curveFittingModel.isEquationPanelExpandedProperty, curveFittingModel.curve, curveFittingModel.orderProperty );
 
     // create a separate layers for all the points
     var pointsNode = new Node();

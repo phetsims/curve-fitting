@@ -32,16 +32,16 @@ define( function( require ) {
   };
 
   /**
-   * @param {Property.<number>} orderOfFitProperty
+   * @param {Property.<number>} orderProperty
    * @param {Object} [options]
    * @constructor
    */
-  function CurveOrderPanel( orderOfFitProperty, options ) {
+  function CurveOrderPanel( orderProperty, options ) {
 
     // 3 radio buttons
-    var linearButton = new AquaRadioButton( orderOfFitProperty, 1, new Text( linearString, TEXT_OPTIONS ), RADIO_BUTTON_OPTIONS );
-    var cubicButton = new AquaRadioButton( orderOfFitProperty, 2, new Text( cubicString, TEXT_OPTIONS ), RADIO_BUTTON_OPTIONS );
-    var quadraticButton = new AquaRadioButton( orderOfFitProperty, 3, new Text( quadraticString, TEXT_OPTIONS ), RADIO_BUTTON_OPTIONS );
+    var linearButton = new AquaRadioButton( orderProperty, 1, new Text( linearString, TEXT_OPTIONS ), RADIO_BUTTON_OPTIONS );
+    var cubicButton = new AquaRadioButton( orderProperty, 2, new Text( cubicString, TEXT_OPTIONS ), RADIO_BUTTON_OPTIONS );
+    var quadraticButton = new AquaRadioButton( orderProperty, 3, new Text( quadraticString, TEXT_OPTIONS ), RADIO_BUTTON_OPTIONS );
 
     // vertical layout
     var contentNode = new VBox( {

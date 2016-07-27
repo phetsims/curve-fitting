@@ -48,10 +48,10 @@ define( function( require ) {
       PANEL_OPTIONS );
 
     // order of curve
-    var orderPanel = new CurveOrderPanel( curveFittingModel.orderOfFitProperty, PANEL_OPTIONS );
+    var orderPanel = new CurveOrderPanel( curveFittingModel.orderProperty, PANEL_OPTIONS );
 
     // fit type
-    var fitPanel = new FitPanel( curveFittingModel.curve, curveFittingModel.fitTypeProperty, curveFittingModel.orderOfFitProperty, curveFittingModel );
+    var fitPanel = new FitPanel( curveFittingModel.curve, curveFittingModel.fitTypeProperty, curveFittingModel.orderProperty, curveFittingModel );
 
     assert && assert( !options.children, 'decoration not supported' );
     options.children = [ viewOptionsPanel, orderPanel, fitPanel ];
