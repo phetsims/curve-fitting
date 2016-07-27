@@ -2,10 +2,10 @@
 
 //TODO make all 3 panels the same width
 /**
- * Control menu node in 'Curve Fitting' simulation.
- * Contains radio buttons, checkboxes and sliders.
+ * Container for control panels
  *
  * @author Andrey Zelenkov (Mlearner)
+ * @author Chris Malley (PixelZoom, Inc.)
  */
 define( function( require ) {
   'use strict';
@@ -34,7 +34,7 @@ define( function( require ) {
    * @param {Object} [options] for graph node
    * @constructor
    */
-  function ControlMenuNode( curveFittingModel, options ) {
+  function ControlPanels( curveFittingModel, options ) {
 
     options = _.extend( {
       align: 'left',
@@ -65,7 +65,7 @@ define( function( require ) {
     } );
   }
 
-  curveFitting.register( 'ControlMenuNode', ControlMenuNode );
+  curveFitting.register( 'ControlPanels', ControlPanels );
 
-  return inherit( VBox, ControlMenuNode );
+  return inherit( VBox, ControlPanels );
 } );

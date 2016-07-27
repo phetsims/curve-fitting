@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var BucketAndGraphAreaNode = require( 'CURVE_FITTING/curve-fitting/view/BucketAndGraphAreaNode' );
-  var ControlMenuNode = require( 'CURVE_FITTING/curve-fitting/view/ControlMenuNode' );
+  var ControlPanels = require( 'CURVE_FITTING/curve-fitting/view/ControlPanels' );
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var DeviationsPanel = require( 'CURVE_FITTING/curve-fitting/view/DeviationsPanel' );
@@ -34,21 +34,20 @@ define( function( require ) {
   function CurveFittingScreenView( curveFittingModel ) {
     ScreenView.call( this, { layoutBounds: SIM_BOUNDS } );
 
-    // create deviations node
     var deviationsPanel = new DeviationsPanel( curveFittingModel.isDeviationPanelExpandedProperty, curveFittingModel.curve );
 
-    // create control menu node
-    var controlMenuNode = new ControlMenuNode( curveFittingModel );
+    var controlPanels = new ControlPanels( curveFittingModel );
 
+    //TODO handle layout in constructor options
     // layout the nodes
     deviationsPanel.left = PADDING_LEFT_RIGHT;
     deviationsPanel.top = PADDING_TOP_BOTTOM;
-    controlMenuNode.right = SIM_BOUNDS.width - PADDING_LEFT_RIGHT;
-    controlMenuNode.top = deviationsPanel.top;
+    controlPanels.right = SIM_BOUNDS.width - PADDING_LEFT_RIGHT;
+    controlPanels.top = deviationsPanel.top;
 
     // create a model view transform
-    var graphAreaWidth = controlMenuNode.left - deviationsPanel.right - GRAPH_PADDING_LEFT_RIGHT * 2;
-    var graphCenterX = 0.5 * (controlMenuNode.left + deviationsPanel.right);
+    var graphAreaWidth = controlPanels.left - deviationsPanel.right - GRAPH_PADDING_LEFT_RIGHT * 2;
+    var graphCenterX = 0.5 * (controlPanels.left + deviationsPanel.right);
     var graphCenterY = SIM_BOUNDS.centerY;
     var scale = graphAreaWidth / GRAPH_MODEL_BOUNDS.width;
     var modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping( new Vector2( 0, 0 ), new Vector2( graphCenterX, graphCenterY ), scale );
@@ -64,15 +63,14 @@ define( function( require ) {
       }
     } );
     resetAllButton.scale( 0.75 );
-    resetAllButton.right = controlMenuNode.right;
+    resetAllButton.right = controlPanels.right;
     resetAllButton.bottom = SIM_BOUNDS.height - PADDING_TOP_BOTTOM;
 
     // add the children to the scene graph
     this.addChild( deviationsPanel );
-    this.addChild( controlMenuNode );
+    this.addChild( controlPanels );
     this.addChild( bucketAndGraphAreaNode );
     this.addChild( resetAllButton );
-
   }
 
   curveFitting.register( 'CurveFittingScreenView', CurveFittingScreenView );
