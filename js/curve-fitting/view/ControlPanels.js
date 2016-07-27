@@ -13,8 +13,8 @@ define( function( require ) {
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var CurveOrderPanel = require( 'CURVE_FITTING/curve-fitting/view/CurveOrderPanel' );
+  var FitPanel = require( 'CURVE_FITTING/curve-fitting/view/FitPanel' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var FitTypePanel = require( 'CURVE_FITTING/curve-fitting/view/FitTypePanel' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var ViewOptionsPanel = require( 'CURVE_FITTING/curve-fitting/view/ViewOptionsPanel' );
 
@@ -51,16 +51,16 @@ define( function( require ) {
     var orderPanel = new CurveOrderPanel( curveFittingModel.orderOfFitProperty, PANEL_OPTIONS );
 
     // fit type
-    var fitTypePanel = new FitTypePanel( curveFittingModel.curve, curveFittingModel.fitTypeProperty, curveFittingModel.orderOfFitProperty, curveFittingModel );
+    var fitPanel = new FitPanel( curveFittingModel.curve, curveFittingModel.fitTypeProperty, curveFittingModel.orderOfFitProperty, curveFittingModel );
 
     assert && assert( !options.children, 'decoration not supported' );
-    options.children = [ viewOptionsPanel, orderPanel, fitTypePanel ];
+    options.children = [ viewOptionsPanel, orderPanel, fitPanel ];
 
     VBox.call( this, options );
 
     // hide panels when curve is not visible
     curveFittingModel.curve.isVisibleProperty.link( function( curveVisible ) {
-      orderPanel.visible = fitTypePanel.visible = curveVisible;
+      orderPanel.visible = fitPanel.visible = curveVisible;
     } );
   }
 

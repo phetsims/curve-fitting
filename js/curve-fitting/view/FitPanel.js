@@ -41,13 +41,13 @@ define( function( require ) {
   };
 
   /**
-   * @param {Curve} curve model.
-   * @param {Property.<string>} fitTypeProperty - Property to control fit type of curve.
-   * @param {Property.<number>} orderOfFitProperty - Property to control type of curve.
-   * @param {Object} [options] for graph node.
+   * @param {Curve} curve
+   * @param {Property.<string>} fitTypeProperty
+   * @param {Property.<number>} orderOfFitProperty
+   * @param {Object} [options] for graph node TODO rename, and this type needs its own options
    * @constructor
    */
-  function FitTypePanel( curve, fitTypeProperty, orderOfFitProperty, options ) {
+  function FitPanel( curve, fitTypeProperty, orderOfFitProperty, options ) {
 
     var content = new VBox();
 
@@ -136,7 +136,7 @@ define( function( require ) {
     }, options ) );
   }
 
-  curveFitting.register( 'FitTypePanel', FitTypePanel );
+  curveFitting.register( 'FitPanel', FitPanel );
 
-  return inherit( Panel, FitTypePanel );
+  return inherit( Panel, FitPanel );
 } );
