@@ -1,7 +1,7 @@
 // Copyright 2016, University of Colorado Boulder
 
 /**
- * Help dialog, accessed from the '?' button in the deviations panel.
+ * Help dialog, accessed from the '?' button in the Deviations panel.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
