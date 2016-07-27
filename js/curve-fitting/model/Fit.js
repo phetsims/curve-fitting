@@ -1,7 +1,7 @@
 // Copyright 2015-2016, University of Colorado Boulder
 
 /**
- * Fit types in the 'Curve Fitting' simulation.
+ * The methods of fitting a curve to data points.
  *
  * @author Andrey Zelenkov (Mlearner)
  */
@@ -11,12 +11,12 @@ define( function( require ) {
   // modules
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
 
-  var FitType = Object.freeze( {
+  var Fit = Object.freeze( {
     BEST: 'best',
     ADJUSTABLE: 'adjustable'
   } );
 
-  curveFitting.register( 'FitType', FitType );
+  curveFitting.register( 'Fit', Fit );
 
-  return FitType;
+  return Fit;
 } );

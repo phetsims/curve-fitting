@@ -13,7 +13,7 @@ define( function( require ) {
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var EquationFitNode = require( 'CURVE_FITTING/curve-fitting/view/EquationFitNode' );
-  var FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
+  var Fit = require( 'CURVE_FITTING/curve-fitting/model/Fit' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Panel = require( 'SUN/Panel' );
@@ -42,22 +42,22 @@ define( function( require ) {
 
   /**
    * @param {Curve} curve
-   * @param {Property.<string>} fitTypeProperty
+   * @param {Property.<string>} fitProperty
    * @param {Property.<number>} orderProperty
    * @param {Object} [options] for graph node TODO rename, and this type needs its own options
    * @constructor
    */
-  function FitPanel( curve, fitTypeProperty, orderProperty, options ) {
+  function FitPanel( curve, fitProperty, orderProperty, options ) {
 
     var content = new VBox();
 
+    //TODO get rid of VerticalAquaRadioButtonGroup
     // create radio buttons
-    var fitTypeRadioButtonGroup = new VerticalAquaRadioButtonGroup( [
-      { property: fitTypeProperty, node: new Text( bestFitString, { font: FONT } ), value: FitType.BEST },
-      { property: fitTypeProperty, node: new Text( adjustableFitString, { font: FONT } ), value: FitType.ADJUSTABLE }
+    var radioButtonGroup = new VerticalAquaRadioButtonGroup( [
+      { property: fitProperty, node: new Text( bestFitString, { font: FONT } ), value: Fit.BEST },
+      { property: fitProperty, node: new Text( adjustableFitString, { font: FONT } ), value: Fit.ADJUSTABLE }
     ], RADIO_BUTTON_MENU_OPTIONS );
-    fitTypeRadioButtonGroup.localBounds = fitTypeRadioButtonGroup.localBounds.withMaxX( Math.max( fitTypeRadioButtonGroup.localBounds.maxX, CurveFittingConstants.PANEL_WIDTH - RADIO_BUTTON_MENU_OPTIONS.radius ) );
-    content.addChild( fitTypeRadioButtonGroup );
+    content.addChild( radioButtonGroup );
 
     // create and add equation node
     content.addChild( new EquationFitNode( orderProperty ) );
@@ -121,11 +121,11 @@ define( function( require ) {
     } );
 
     // add slider visibility observer
-    fitTypeProperty.link( function( fitType ) {
-      if ( fitType === FitType.BEST && content.hasChild( slidersBox ) ) {
+    fitProperty.link( function( fit ) {
+      if ( fit === Fit.BEST && content.hasChild( slidersBox ) ) {
         content.removeChild( slidersBox );
       }
-      else if ( fitType === FitType.ADJUSTABLE ) {
+      else if ( fit === Fit.ADJUSTABLE ) {
         content.addChild( slidersBox );
       }
     } );

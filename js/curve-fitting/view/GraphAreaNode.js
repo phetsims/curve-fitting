@@ -12,7 +12,7 @@ define( function( require ) {
   // modules
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
+  var Fit = require( 'CURVE_FITTING/curve-fitting/model/Fit' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
@@ -105,7 +105,9 @@ define( function( require ) {
       var d = curve.d;
       var x;
 
-      if ( ( points.length > 1 || curve._fitTypeProperty.value === FitType.ADJUSTABLE ) && !isNaN( a ) && !isNaN( b ) && !isNaN( c ) && !isNaN( d ) ) {
+      //TODO curve._fitProperty is private!!
+      //TODO this expression looks suspect, or at least overly complicated
+      if ( ( points.length > 1 || curve._fitProperty.value === Fit.ADJUSTABLE ) && !isNaN( a ) && !isNaN( b ) && !isNaN( c ) && !isNaN( d ) ) {
 
         // update curve path
         curveShape = new Shape();

@@ -51,7 +51,7 @@ define( function( require ) {
     var orderPanel = new CurveOrderPanel( curveFittingModel.orderProperty, PANEL_OPTIONS );
 
     // fit type
-    var fitPanel = new FitPanel( curveFittingModel.curve, curveFittingModel.fitTypeProperty, curveFittingModel.orderProperty, curveFittingModel );
+    var fitPanel = new FitPanel( curveFittingModel.curve, curveFittingModel.fitProperty, curveFittingModel.orderProperty, curveFittingModel );
 
     assert && assert( !options.children, 'decoration not supported' );
     options.children = [ viewOptionsPanel, orderPanel, fitPanel ];

@@ -12,17 +12,17 @@ define( function( require ) {
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var Emitter = require( 'AXON/Emitter' );
   var FitMaker = require( 'CURVE_FITTING/curve-fitting/model/FitMaker' );
-  var FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
+  var Fit = require( 'CURVE_FITTING/curve-fitting/model/Fit' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ObservableArray = require( 'AXON/ObservableArray' );
   var PropertySet = require( 'AXON/PropertySet' );
 
   /**
-   * @param {Property.<number>} orderProperty
-   * @param {Property.<string>} fitTypeProperty - Property to control fit type.
+   * @param {Property.<number>} orderProperty - order of the polynomial that describes the curve
+   * @param {Property.<string>} fitProperty - the method of fitting the curve to data points
    * @constructor
    */
-  function Curve( orderProperty, fitTypeProperty ) {
+  function Curve( orderProperty, fitProperty ) {
     var self = this;
 
     PropertySet.call( this, {
@@ -43,7 +43,7 @@ define( function( require ) {
     //TODO remove underscores, annotate @private
     // save link to property
     this._orderProperty = orderProperty;
-    this._fitTypeProperty = fitTypeProperty;
+    this._fitProperty = fitProperty;
 
     // Contains points for plotting curve. Only point above graph will be taken for calculations. Order doesn't matter.
     this.points = new ObservableArray();
@@ -88,11 +88,11 @@ define( function( require ) {
       if ( isVisible ) {
         self.updateFit();
       }
-      else if ( fitTypeProperty.value === FitType.BEST ) {
+      else if ( fitProperty.value === Fit.BEST ) {
         // flush storage values
         setDefaultAdjustableValues( self._storage );
       }
-      else if ( fitTypeProperty.value === FitType.ADJUSTABLE ) {
+      else if ( fitProperty.value === Fit.ADJUSTABLE ) {
         // set default values
         setDefaultAdjustableValues( self );
       }
@@ -102,9 +102,9 @@ define( function( require ) {
     this.bProperty.lazyLink( this._updateFitBinded );
     this.cProperty.lazyLink( this._updateFitBinded );
     this.dProperty.lazyLink( this._updateFitBinded );
-    fitTypeProperty.lazyLink( function( fitTypeNew, fitTypePrev ) {
-      if ( fitTypeNew === FitType.BEST ) {
-        if ( fitTypePrev === FitType.ADJUSTABLE ) {
+    fitProperty.lazyLink( function( fit, oldFit ) {
+      if ( fit === Fit.BEST ) {
+        if ( oldFit === Fit.ADJUSTABLE ) {
           // save adjustable values in storage
           self.saveValuesToStorage();
         }
@@ -112,7 +112,7 @@ define( function( require ) {
         self.updateFit();
         self.updateCurveEmitter.emit();
       }
-      else if ( fitTypeNew === FitType.ADJUSTABLE ) {
+      else if ( fit === Fit.ADJUSTABLE ) {
         // restore adjustable values from storage
         self.restoreValuesFromStorage();
         self.updateCurveEmitter.emit();
@@ -302,7 +302,7 @@ define( function( require ) {
     updateFit: function() {
       // update only when curve visible
       if ( this.isVisible ) {
-        if ( this._fitTypeProperty.value === FitType.BEST ) {
+        if ( this._fitProperty.value === Fit.BEST ) {
           var fit = this.fitMaker.getFit( this.getPoints(), this._orderProperty.value );
 
           this.d = isFinite( fit[ 0 ] ) ? fit[ 0 ] : 0;

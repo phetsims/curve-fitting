@@ -14,7 +14,7 @@ define( function( require ) {
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var Dimension2 = require( 'DOT/Dimension2' );
-  var FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
+  var Fit = require( 'CURVE_FITTING/curve-fitting/model/Fit' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
   var Vector2 = require( 'DOT/Vector2' );
@@ -34,7 +34,7 @@ define( function( require ) {
 
       // @public
       order: 1, // order of the polynomial that describes the curve
-      fitType: FitType.BEST, // fit type
+      fit: Fit.BEST, // the method of fitting the curve to data points
 
       //TODO move these view-specific Properties to CurveFittingScreenView
       areResidualsVisible: false, // are residuals visible?
@@ -54,7 +54,7 @@ define( function( require ) {
     } );
 
     // @public
-    this.curve = new Curve( this.orderProperty, this.fitTypeProperty );
+    this.curve = new Curve( this.orderProperty, this.fitProperty );
   }
 
   curveFitting.register( 'CurveFittingModel', CurveFittingModel );
