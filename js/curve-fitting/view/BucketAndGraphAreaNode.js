@@ -78,21 +78,26 @@ define( function( require ) {
 
       start: function( event ) {
 
-        // create point model
-        var initialPosition = pointsNode.globalToLocalPoint( event.pointer.point );
-        point = new Point( modelViewTransform.viewToModelPosition( initialPosition ) );
-        point.isUserControlled = true;
+        // create a point
+        var viewPosition = pointsNode.globalToLocalPoint( event.pointer.point );
+        var modelPosition = modelViewTransform.viewToModelPosition( viewPosition );
+        point = new Point( {
+          position: modelPosition,
+          isUserControlled: true
+        } );
 
-        //add the point to the curve model
+        // add the point to the curve
         curveFittingModel.curve.points.add( point );
 
       },
-      translate: function( translationParams ) {
-        // move the point
-        point.position = point.position.plus( modelViewTransform.viewToModelDelta( translationParams.delta ) );
 
+      translate: function( translationParams ) {
+        //TODO replace this type of assignment with point.positionProperty.set
+        point.position = point.position.plus( modelViewTransform.viewToModelDelta( translationParams.delta ) );
       },
+
       end: function() {
+        //TODO replace this type of assignment with point.isUserControlledProperty.set
         point.isUserControlled = false;
         point = null;
       }

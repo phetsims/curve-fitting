@@ -17,18 +17,31 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   /**
-   * @param {Vector2} initialPosition - The initial position the point has
+   * @param {Object} [options]
    * @constructor
    */
-  function Point( initialPosition ) {
+  function Point( options ) {
+
+    options = _.extend( {
+      position: new Vector2( 0, 0 ), // {Vector2} initial position
+      isUserControlled: false
+    }, options );
 
     var self = this;
 
     PropertySet.call( this, {
+      position: options.position,
+
+      //TODO why is this needed?
       isInsideGraph: false, // flag to control graph area affiliation
-      position: initialPosition, // initial position of the point at creation
-      isUserControlled: false, // flag that controls if the user grabbed this
+
+      //TODO rename to dragging
+      isUserControlled: options.isUserControlled, // flag that controls if the user grabbed this
+
+      //TODO rename to animating
       isAnimating: false, // flag to control if it is animating
+
+      //TODO rename, too vague
       delta: 0.8 // delta variation of point
     } );
 
