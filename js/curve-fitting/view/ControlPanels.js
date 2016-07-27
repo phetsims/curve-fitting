@@ -4,7 +4,6 @@
 /**
  * Container for control panels
  *
- * @author Andrey Zelenkov (Mlearner)
  * @author Chris Malley (PixelZoom, Inc.)
  */
 define( function( require ) {
