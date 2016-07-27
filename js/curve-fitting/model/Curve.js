@@ -95,6 +95,7 @@ define( function( require ) {
     setDefaultAdjustableValues( this._storage );
 
     //TODO unlink?
+    //TODO should toggling 'Curve' check box reset the adjustable values?
     this.isVisibleProperty.link( function( isVisible ) {
       if ( isVisible ) {
         self.updateFit();
