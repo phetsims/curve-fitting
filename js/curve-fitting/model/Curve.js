@@ -26,7 +26,7 @@ define( function( require ) {
 
     PropertySet.call( this, {
 
-      //TODO rather than a, b, c, this coefficients, an array of coefficients, indexed by order
+      //TODO rather than a, b, c, this should be coefficients, an array of coefficients, indexed by order
       //TODO rather than d, this should be constantTerm
       // @public
       a: 0, // coefficient for x^3 term
