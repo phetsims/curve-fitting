@@ -37,6 +37,14 @@ define( function( require ) {
       fit: Fit.BEST // the method of fitting the curve to data points
     } );
 
+    // validate Property values
+    this.orderProperty.link( function( order ) {
+      assert && assert( order >= 1 && order <= 3, 'invalid order: ' + order );
+    } );
+    this.fitProperty.link( function( fit ) {
+      assert && assert( fit === Fit.BEST || fit === Fit.ADJUSTABLE, 'invalid fit: ' + fit );
+    } );
+
     //TODO why is this in the model? And why is this value not consistently obtained from this field?
     // @public (read-only)
     this.graphModelBounds = CurveFittingConstants.GRAPH_MODEL_BOUNDS;
