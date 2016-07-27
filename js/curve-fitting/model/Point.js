@@ -24,7 +24,7 @@ define( function( require ) {
 
     options = _.extend( {
       position: new Vector2( 0, 0 ), // {Vector2} initial position
-      isUserControlled: false
+      isUserControlled: false // {boolean} is the user dragging the point?
     }, options );
 
     var self = this;
@@ -33,27 +33,28 @@ define( function( require ) {
       position: options.position,
 
       //TODO why is this needed?
-      isInsideGraph: false, // flag to control graph area affiliation
+      isInsideGraph: false, // {boolean} is the point inside the graph?
 
       //TODO rename to dragging
-      isUserControlled: options.isUserControlled, // flag that controls if the user grabbed this
-
-      //TODO rename to animating, doesn't need to be a property
-      isAnimating: false, // flag to control if it is animating
+      isUserControlled: options.isUserControlled, // {boolean} is the user dragging the point?
 
       //TODO rename, too vague
       delta: 0.8 // delta variation of point
     } );
 
+    //TODO why is this needed?
+    // @private is the point animating?
+    this.animating = false;
+
     // check and set the flag that indicates if the point is within the bounds of the graph
     this.positionProperty.link( function( position ) {
       // Determines if the position of a point is within the visual bounds of the graph and is not animated on its way back
-      self.isInsideGraph = CurveFittingConstants.GRAPH_MODEL_BOUNDS.containsPoint( position ) && !self.isAnimating;
+      self.isInsideGraph = CurveFittingConstants.GRAPH_MODEL_BOUNDS.containsPoint( position ) && !self.animating;
     } );
 
     //if the user dropped the ball outside of the graph send it back to the bucket
     this.isUserControlledProperty.lazyLink( function( isUserControlled ) {
-      if ( !isUserControlled && !self.isInsideGraph && !self.isAnimating ) {
+      if ( !isUserControlled && !self.isInsideGraph && !self.animating ) {
         self.animate();
       }
     } );
@@ -74,7 +75,7 @@ define( function( require ) {
     animate: function() {
 
       var self = this;
-      this.isAnimating = true;
+      this.animating = true;
 
       var location = {
         x: this.position.x,
@@ -84,6 +85,7 @@ define( function( require ) {
       // distance to the bucket
       var distance = this.positionProperty.initialValue.distance( this.position );
 
+      //TODO reformat this mess
       var animationTween = new TWEEN.Tween( location ).to( {
         x: this.positionProperty.initialValue.x,
         y: this.positionProperty.initialValue.y
