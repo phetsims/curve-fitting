@@ -38,9 +38,6 @@ define( function( require ) {
       isVisible: false // curve flag visibility
     } );
 
-    // property for storing calculation result
-    this.yDeviationSquaredSum = 0;
-
     // @private
     this.orderProperty = orderProperty;
     this.fitProperty = fitProperty;
