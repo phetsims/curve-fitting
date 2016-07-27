@@ -29,10 +29,6 @@ define( function( require ) {
   // strings
   var deviationsString = require( 'string!CURVE_FITTING/deviations' );
   
-  // strings - i18n not required
-  var plusString = '\u002B';
-  var minusString = '\u2212';
-
   // constants
   var TEXT_FONT = new PhetFont( 12 ); //TODO use CurveFittingConstants
   var TEXT_PANEL_FONT = new PhetFont( 10 ); //TODO use CurveFittingConstants
@@ -141,17 +137,22 @@ define( function( require ) {
       ]
     } );
 
-    // present for the lifetime of the sim
+    // unlink unnecessary, present for the lifetime of the sim
     curve.chiSquareProperty.link( function( chiSquare ) {
-      // if chiSquare is greater than 10 we have a bad fit so less precision is needed
-      // if chiSquare if greater than 100 we have a really bad fit and decimals are inconsequential
-      chiSquareValueNode.setText( roundNumber( chiSquare, 2 ).numberToString );
+
+      // If chiSquare is greater than 10 we have a bad fit so less precision is needed.
+      // If chiSquare if greater than 100 we have a really bad fit and decimals are inconsequential.
+      chiSquareValueNode.setText( formatNumber( chiSquare, 2 ) );
     } );
 
-    // present for the lifetime of the sim
+    // unlink unnecessary, present for the lifetime of the sim
     curve.rSquareProperty.link( function( rSquare ) {
-      // rSquare can only be between 0 and 1 so it will always need 2 decimal points
-      rSquareValueNode.setText( roundNumber( rSquare, 2 ).numberToString );
+
+      //TODO this assertion fails with alarming regularity
+      // assert && assert( rSquare >= 0 && rSquare <= 1, 'rSquare out of range: ' + rSquare );
+
+      // rSquare can only be between 0 and 1 so it will always need 2 decimal points.
+      rSquareValueNode.setText( formatNumber( rSquare, 2 ) );
     } );
 
     AccordionBox.call( this, content, options );
@@ -165,9 +166,9 @@ define( function( require ) {
    *
    * @param {number} number
    * @param {number} digits
-   * @returns {Object} - see return statement
+   * @returns {string}
    */
-  function roundNumber( number, digits ) {
+  function formatNumber( number, digits ) {
 
     // e.g. for digits = 3
     // 9999.11 -> 9999  (numbers greater than 10^3) are rounded to integers
@@ -194,18 +195,7 @@ define( function( require ) {
       decimalPlaces = digits;
     }
     
-    var roundedNumber = Util.toFixedNumber( number, decimalPlaces );
-    var numberToString = Util.toFixed( number, decimalPlaces );
-    var signToString = ( roundedNumber >= 0) ? plusString : minusString; // N.B.
-    var absoluteNumberToString = Util.toFixedNumber( Math.abs( number ), decimalPlaces ); // N.B.
-    var isStringZero = ( numberToString === Util.toFixed( 0, decimalPlaces ) );
-
-    return {
-      numberToString: numberToString, // {string}
-      signToString: signToString, // {string}
-      absoluteNumberToString: absoluteNumberToString, // {string}
-      isStringZero: isStringZero  // {boolean}
-    };
+    return Util.toFixed( number, decimalPlaces );
   }
 
   return inherit( AccordionBox, DeviationsAccordionBox );
