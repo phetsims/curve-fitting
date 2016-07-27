@@ -1,5 +1,6 @@
 // Copyright 2015-2016, University of Colorado Boulder
 
+//TODO make this go away, replace with string literals
 /**
  * The methods of fitting a curve to data points.
  *
