@@ -84,16 +84,17 @@ define( function( require ) {
       // distance to the bucket
       var distance = this.positionProperty.initialValue.distance( this.position );
 
-      //TODO reformat this mess
-      var animationTween = new TWEEN.Tween( location ).to( {
-        x: this.positionProperty.initialValue.x,
-        y: this.positionProperty.initialValue.y
-      }, distance / CurveFittingConstants.ANIMATION_SPEED ).easing( TWEEN.Easing.Cubic.In ).onUpdate( function() {
-        self.position = new Vector2( location.x, location.y );
-      } ).onComplete( function() {
-        self.animating = false;
-        self.returnToOriginEmitter.emit();
-      } );
+      var animationTween = new TWEEN.Tween( location )
+        .to( { x: this.positionProperty.initialValue.x, y: this.positionProperty.initialValue.y },
+          distance / CurveFittingConstants.ANIMATION_SPEED )
+        .easing( TWEEN.Easing.Cubic.In )
+        .onUpdate( function() {
+          self.position = new Vector2( location.x, location.y );
+        } )
+        .onComplete( function() {
+          self.animating = false;
+          self.returnToOriginEmitter.emit();
+        } );
 
       animationTween.start();
     }
