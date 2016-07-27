@@ -1,7 +1,7 @@
 // Copyright 2015-2016, University of Colorado Boulder
 
 /**
- * Curve model in 'Curve Fitting' simulation.
+ * Model of a polynomial curve.
  *
  * @author Andrey Zelenkov (Mlearner)
  */
