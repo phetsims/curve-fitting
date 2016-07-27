@@ -18,7 +18,7 @@ define( function( require ) {
   var BucketHole = require( 'SCENERY_PHET/bucket/BucketHole' );
 
   // constants
-  var POINTS_COORDS = [
+  var POINT_POSITIONS = [
     { x: -33, y: 4 },
     { x: -25, y: -1 },
     { x: -19, y: -4 },
@@ -43,37 +43,41 @@ define( function( require ) {
   /**
    * @param {Bucket} bucket
    * @param {ModelViewTransform2} modelViewTransform
-   * @param {Object} [options] for graph node TODO these should be the options for this node!
+   * @param {Object} [options]
    * @constructor
    */
   function BucketNode( bucket, modelViewTransform, options ) {
 
+    options = _.extend( {
+      cursor: 'pointer'
+    }, options );
+
     Node.call( this, _.extend( { cursor: 'pointer' }, options ) );
 
-    // create the front of the bucket
+    // front of the bucket
     var bucketFrontNode = new BucketFront( bucket, modelViewTransform );
 
-    // create the back of the bucket
+    // back of the bucket
     var bucketHoleNode = new BucketHole( bucket, modelViewTransform );
 
-    // create all the points inside the bucket
+    // points in the bucket
     var pointsNode = new Node();
-    POINTS_COORDS.forEach( function( pointsCoord ) {
+    POINT_POSITIONS.forEach( function( position ) {
       pointsNode.addChild( new Circle( {
         fill: CurveFittingConstants.POINT_FILL,
         radius: CurveFittingConstants.POINT_RADIUS,
         stroke: CurveFittingConstants.POINT_STROKE,
         lineWidth: CurveFittingConstants.POINT_LINE_WIDTH,
-        x: pointsCoord.x,
-        y: pointsCoord.y
+        x: position.x,
+        y: position.y
       } ) );
     } );
-    pointsNode.center = bucketHoleNode.center.copy().addXY( 0, -6 ); //tuned by hand to place point slightly above bucket
+    pointsNode.center = bucketHoleNode.center.copy().addXY( 0, -6 ); // tuned by hand, slightly above bucket
 
-    // render the nodes with proper ordering
-    this.addChild( bucketHoleNode );
-    this.addChild( pointsNode );
-    this.addChild( bucketFrontNode );
+    assert && assert( !options.children, 'decoration not supported' );
+    options.children = [ bucketHoleNode, pointsNode, bucketFrontNode ];
+
+    Node.call( this, options );
   }
 
   curveFitting.register( 'BucketNode', BucketNode );
