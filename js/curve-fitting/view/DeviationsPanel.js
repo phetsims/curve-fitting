@@ -54,8 +54,8 @@ define( function( require ) {
   var symbolQuestionMarkString = require( 'string!CURVE_FITTING/symbol.questionMark' );
 
   /**
-   * @param {Property.<boolean>} isDeviationPanelExpandedProperty - Property to control deviation panel expansion.
-   * @param {Curve} curve - Curve model.
+   * @param {Property.<boolean>} isDeviationPanelExpandedProperty
+   * @param {Curve} curve
    * @param {Object} [options] for graph node
    * @constructor
    */
