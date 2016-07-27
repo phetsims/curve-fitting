@@ -20,27 +20,32 @@ define( function( require ) {
   var PointNode = require( 'CURVE_FITTING/curve-fitting/view/PointNode' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
-  //TODO don't pass in the entire model!
   /**
-   * @param {CurveFittingModel} model
+   * @param {Curve} curve
+   * @param {Bucket} bucket
+   * @param {Property.<number>} orderProperty
+   * @param {Bounds2} graphBounds - bounds of the graph, in model coordinate frame
+   * @param {Property.<boolean>} residualsVisibleProperty
+   * @param {Property.<boolean>} valuesVisibleProperty
+   * @param {Property.<boolean>} equationPanelExpandedProperty
    * @param {ModelViewTransform2} modelViewTransform
-   * @param {Object} [options] for graph node
+   * @param {Object} [options] for graph node TODO should be options for this type!
    * @constructor
    */
-  function BucketAndGraphAreaNode( model, modelViewTransform, options ) {
+  function BucketAndGraphAreaNode( curve, bucket, orderProperty, graphBounds, residualsVisibleProperty, valuesVisibleProperty, equationPanelExpandedProperty, modelViewTransform, options ) {
 
     Node.call( this, options );
 
     var self = this;
 
     // create the bucket node
-    var bucketNode = new BucketNode( model.bucket, modelViewTransform );
+    var bucketNode = new BucketNode( bucket, modelViewTransform );
 
     // create the graph area node - responsible for the rendering of the curves, as well as the axes and background.
-    var graphAreaNode = new GraphAreaNode( model.curve, model.orderProperty, model.areResidualsVisibleProperty, model.graphModelBounds, modelViewTransform );
+    var graphAreaNode = new GraphAreaNode( curve, orderProperty, residualsVisibleProperty, graphBounds, modelViewTransform );
 
     // create the equation node (accordion box) in the upper left corner of the graph
-    var equationGraphPanelNode = new EquationGraphPanelNode( model.isEquationPanelExpandedProperty, model.curve, model.orderProperty );
+    var equationGraphPanelNode = new EquationGraphPanelNode( equationPanelExpandedProperty, curve, orderProperty );
 
     // create a separate layers for all the points
     var pointsNode = new Node();
@@ -54,15 +59,15 @@ define( function( require ) {
     this.addChild( pointsNode );
 
     // handle the coming and going of points
-    model.curve.points.addItemAddedListener( function( addedPoint ) {
-      var pointNode = new PointNode( addedPoint, model.areValuesVisibleProperty, model.areResidualsVisibleProperty, modelViewTransform );
+    curve.points.addItemAddedListener( function( addedPoint ) {
+      var pointNode = new PointNode( addedPoint, valuesVisibleProperty, residualsVisibleProperty, modelViewTransform );
       self.addChild( pointNode );
 
-      model.curve.points.addItemRemovedListener( function removalListener( removedPoint ) {
+      curve.points.addItemRemovedListener( function removalListener( removedPoint ) {
         if ( removedPoint === addedPoint ) {
           self.removeChild( pointNode );
           pointNode.dispose();
-          model.curve.points.removeItemRemovedListener( removalListener );
+          curve.points.removeItemRemovedListener( removalListener );
         }
       } );
     } );
@@ -88,8 +93,7 @@ define( function( require ) {
         } );
 
         // add the point to the curve
-        model.curve.points.add( point );
-
+        curve.points.add( point );
       },
 
       translate: function( translationParams ) {

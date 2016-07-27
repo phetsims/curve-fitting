@@ -53,7 +53,10 @@ define( function( require ) {
     var modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping( new Vector2( 0, 0 ), new Vector2( graphCenterX, graphCenterY ), scale );
 
     // create bucket and graph area node
-    var bucketAndGraphAreaNode = new BucketAndGraphAreaNode( model, modelViewTransform );
+    var bucketAndGraphAreaNode = new BucketAndGraphAreaNode(
+      model.curve, model.bucket, model.orderProperty, model.graphModelBounds,
+      model.areResidualsVisibleProperty, model.areValuesVisibleProperty, model.isEquationPanelExpandedProperty,
+      modelViewTransform );
 
     // create reset all button
     var resetAllButton = new ResetAllButton( {

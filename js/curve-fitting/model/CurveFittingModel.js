@@ -43,6 +43,7 @@ define( function( require ) {
       isEquationPanelExpanded: true // is the equation panel expanded?
     } );
 
+    //TODO why is this in the model? And why is this value not consistently obtained from this field?
     // @public (read-only)
     this.graphModelBounds = CurveFittingConstants.GRAPH_MODEL_BOUNDS;
 
