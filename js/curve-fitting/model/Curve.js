@@ -272,7 +272,6 @@ define( function( require ) {
       }
     },
 
-
     /**
      * Save values to storage. Necessary when switching to adjustable mode.
      *
