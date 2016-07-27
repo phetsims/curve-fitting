@@ -1,5 +1,6 @@
 // Copyright 2015-2016, University of Colorado Boulder
 
+//TODO these 2 UI components should not be combined here
 /**
  * Bucket node and graph area node in 'Curve Fitting' simulation.
  *

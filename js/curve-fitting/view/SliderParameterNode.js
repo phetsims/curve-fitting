@@ -1,5 +1,6 @@
 // Copyright 2015-2016, University of Colorado Boulder
 
+//TODO rename
 /**
  * Node with single parameter slider in 'Curve Fitting' simulation.
  *

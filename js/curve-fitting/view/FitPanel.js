@@ -1,11 +1,11 @@
 // Copyright 2015-2016, University of Colorado Boulder
 
 /**
- * Control panel for selecting fit type, and adjusting parameters for 'adjustable fit'.
+ * Control panel for selecting how the curve is fit to data points.
+ * For 'adjustable fit', provides additional controls for coefficients.
  *
  * @author Andrey Zelenkov (Mlearner)
  */
-
 define( function( require ) {
   'use strict';
 

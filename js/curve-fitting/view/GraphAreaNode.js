@@ -1,5 +1,6 @@
 // Copyright 2015-2016, University of Colorado Boulder
 
+//TODO rename, untangle
 /**
  * Graph area node in 'Curve Fitting' simulation.
  * Contains graph area, curve and panel with equation parameters.
