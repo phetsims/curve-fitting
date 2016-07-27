@@ -1,7 +1,7 @@
 // Copyright 2015-2016, University of Colorado Boulder
 
 /**
- * Barometer node for r^2 deviation in 'Curve Fitting' simulation.
+ * Barometer for r^2 deviation.
  *
  * @author Andrey Zelenkov (Mlearner)
  */

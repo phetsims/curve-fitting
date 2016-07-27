@@ -1,7 +1,7 @@
 // Copyright 2015-2016, University of Colorado Boulder
 
 /**
- * Barometer node for x^2 deviation in 'Curve Fitting' simulation.
+ * Barometer for x^2 (chi square) deviation.
  * Linear dependence in [ 0; 1 ] interval,
  * Logarithmic dependence in ( 1; 100 ] interval.
  *
