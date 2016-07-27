@@ -1,7 +1,7 @@
 // Copyright 2015-2016, University of Colorado Boulder
 
 /**
- * Bucket node view in 'Curve Fitting' simulation.
+ * Bucket view in 'Curve Fitting' simulation.
  *
  * @author Andrey Zelenkov (Mlearner)
  */
