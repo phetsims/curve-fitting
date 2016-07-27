@@ -175,7 +175,7 @@ define( function( require ) {
       point.isInsideGraphProperty.lazyLink( this._updateFitBinded );
       point.deltaProperty.link( this._updateFitBinded );
 
-      // remove points when they have returned to the bucket 
+      // remove points when they have returned to the bucket
       point.returnToOriginEmitter.addListener( function removePointListener() {
         self.points.remove( point );
         point.returnToOriginEmitter.removeListener( removePointListener );
@@ -214,31 +214,38 @@ define( function( require ) {
       var yAt;
       var weight;
       var numberOfPoints = points.length; //  number of points in the array
+      var rSquare;
 
-      points.forEach( function( point ) {
-        x = point.position.x; // x value of this point
-        y = point.position.y; // y value of this point
-        yAt = self.getYValueAt( x ); // y value of the curve
-        weight = 1 / (point.delta * point.delta); // weight of this point
+      if ( numberOfPoints < 2 ) {
+        // rSquare does not have any meaning, set to zero
+        rSquare = 0;
+      }
+      else {
+        points.forEach( function( point ) {
+          x = point.position.x; // x value of this point
+          y = point.position.y; // y value of this point
+          yAt = self.getYValueAt( x ); // y value of the curve
+          weight = 1 / (point.delta * point.delta); // weight of this point
 
-        weightSum = weightSum + weight; // sum of weights
-        ySum = ySum + weight * y;   // weighted sum of y values
-        yAtSum = yAtSum + weight * yAt; // weighted sum of the approximated y values (from curve)
-        yySum = yySum + weight * y * y; // weighted sum of the square of the y values
-        yAtySum = yAtySum + weight * yAt * y; // weighted sum of the product of of the y values times the approximated y value
-        yAtyAtSum = yAtyAtSum + weight * yAt * yAt; // weighted sum of the squared of the approximated y value
-      } );
+          weightSum = weightSum + weight; // sum of weights
+          ySum = ySum + weight * y;   // weighted sum of y values
+          yAtSum = yAtSum + weight * yAt; // weighted sum of the approximated y values (from curve)
+          yySum = yySum + weight * y * y; // weighted sum of the square of the y values
+          yAtySum = yAtySum + weight * yAt * y; // weighted sum of the product of of the y values times the approximated y value
+          yAtyAtSum = yAtyAtSum + weight * yAt * yAt; // weighted sum of the squared of the approximated y value
+        } );
 
-      var weightAverage = weightSum / numberOfPoints; // average of the weights
-      var denominator = (weightAverage * numberOfPoints); // convenience variable
-      var yAverage = ySum / denominator; // weighted average of the y values
-      var yyAverage = yySum / denominator; // weighted average of the <y_i y_i> correlation
-      var yAtyAtAverage = yAtyAtSum / denominator; // weighted average of the <y_i yat_i> correlation
-      var yAtyAverage = yAtySum / denominator; // weighted average of the <yat_i yat_i> correlation
+        var weightAverage = weightSum / numberOfPoints; // average of the weights
+        var denominator = (weightAverage * numberOfPoints); // convenience variable
+        var yAverage = ySum / denominator; // weighted average of the y values
+        var yyAverage = yySum / denominator; // weighted average of the <y_i y_i> correlation
+        var yAtyAtAverage = yAtyAtSum / denominator; // weighted average of the <y_i yat_i> correlation
+        var yAtyAverage = yAtySum / denominator; // weighted average of the <yat_i yat_i> correlation
 
-      // weighted value of r square - note that rSquare is always smaller than 1 but can be negative
-      var rSquare = 1 - ((yyAverage - 2 * yAtyAverage + yAtyAtAverage) /
-                         (yyAverage - yAverage * yAverage));
+        // weighted value of r square
+        rSquare = 1 - ((yyAverage - 2 * yAtyAverage + yAtyAtAverage) /
+                       (yyAverage - yAverage * yAverage));
+      }
 
       // rSquare can be negative if the curve fitting is done by the user.
       if ( rSquare < 0 || isNaN( rSquare ) ) {
