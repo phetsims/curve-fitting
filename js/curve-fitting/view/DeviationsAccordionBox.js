@@ -151,61 +151,60 @@ define( function( require ) {
     } );
 
     AccordionBox.call( this, content, options );
-
-    //TODO move out of constructor
-    /**
-     * Function that returns (for numbers smaller than ten) a number (as a string)  with a fixed number of decimal places
-     * whereas for numbers larger than ten, the number/string is returned a fixed number of significant figures
-     *
-     * @param {number} number
-     * @param {number} maxDecimalPlaces
-     * @returns {Object}
-     */
-    function roundNumber( number, maxDecimalPlaces ) {
-
-      // eg. if maxDecimalPlaces = 3
-      // 9999.11 -> 9999  (number larger than 10^3) are rounded to unity
-      // 999.111 -> 999.1
-      // 99.1111 -> 99.11
-      // 9.11111 -> 9.111
-      // 1.11111 -> 1.111
-      // 0.11111 -> 0.111
-      // 0.01111 -> 0.011
-      // 0.00111 -> 0.001
-      // 0.00011 -> 0.000
-
-      var plusString = '\u002B'; // we want a large + sign
-      var minusString = '\u2212';
-
-      // number = mantissa times 10^(exponent) where the mantissa is between 1 and 10 (or -1 to -10)
-      var exponent = Math.floor( Util.log10( Math.abs( number ) ) );
-
-      var decimalPlaces;
-      if ( exponent >= maxDecimalPlaces ) {
-        decimalPlaces = 0;
-      }
-      else if ( exponent > 0 ) {
-        decimalPlaces = maxDecimalPlaces - exponent;
-      }
-      else {
-        decimalPlaces = maxDecimalPlaces;
-      }
-      var roundedNumber = Util.toFixedNumber( number, decimalPlaces );
-      var numberToString = Util.toFixed( number, decimalPlaces );
-      var signToString = (roundedNumber >= 0) ? plusString : minusString; // N.B.
-      var absoluteNumberToString = Util.toFixedNumber( Math.abs( number ), decimalPlaces ); // N.B.
-      var isStringZero = (numberToString === Util.toFixed( 0, decimalPlaces ));
-
-      return {
-        numberToString: numberToString, // {string}
-        signToString: signToString, // {string}
-        absoluteNumberToString: absoluteNumberToString, // {string}
-        isStringZero: isStringZero  // {boolean}
-      };
-    }
   }
 
   curveFitting.register( 'DeviationsAccordionBox', DeviationsAccordionBox );
+
+  /**
+   * Returns (for numbers smaller than ten) a number (as a string)  with a fixed number of decimal places
+   * whereas for numbers larger than ten, the number/string is returned a fixed number of significant figures
+   *
+   * @param {number} number
+   * @param {number} maxDecimalPlaces
+   * @returns {Object}
+   */
+  function roundNumber( number, maxDecimalPlaces ) {
+
+    // eg. if maxDecimalPlaces = 3
+    // 9999.11 -> 9999  (number larger than 10^3) are rounded to unity
+    // 999.111 -> 999.1
+    // 99.1111 -> 99.11
+    // 9.11111 -> 9.111
+    // 1.11111 -> 1.111
+    // 0.11111 -> 0.111
+    // 0.01111 -> 0.011
+    // 0.00111 -> 0.001
+    // 0.00011 -> 0.000
+
+    var plusString = '\u002B'; // we want a large + sign
+    var minusString = '\u2212';
+
+    // number = mantissa times 10^(exponent) where the mantissa is between 1 and 10 (or -1 to -10)
+    var exponent = Math.floor( Util.log10( Math.abs( number ) ) );
+
+    var decimalPlaces;
+    if ( exponent >= maxDecimalPlaces ) {
+      decimalPlaces = 0;
+    }
+    else if ( exponent > 0 ) {
+      decimalPlaces = maxDecimalPlaces - exponent;
+    }
+    else {
+      decimalPlaces = maxDecimalPlaces;
+    }
+    var roundedNumber = Util.toFixedNumber( number, decimalPlaces );
+    var numberToString = Util.toFixed( number, decimalPlaces );
+    var signToString = (roundedNumber >= 0) ? plusString : minusString; // N.B.
+    var absoluteNumberToString = Util.toFixedNumber( Math.abs( number ), decimalPlaces ); // N.B.
+    var isStringZero = (numberToString === Util.toFixed( 0, decimalPlaces ));
+
+    return {
+      numberToString: numberToString, // {string}
+      signToString: signToString, // {string}
+      absoluteNumberToString: absoluteNumberToString, // {string}
+      isStringZero: isStringZero  // {boolean}
+    };
+  }
 
   return inherit( AccordionBox, DeviationsAccordionBox );
 } );
