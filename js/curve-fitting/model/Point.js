@@ -24,7 +24,7 @@ define( function( require ) {
 
     options = _.extend( {
       position: new Vector2( 0, 0 ), // {Vector2} initial position
-      isUserControlled: false // {boolean} is the user dragging the point?
+      dragging: false // {boolean} is the user dragging the point?
     }, options );
 
     var self = this;
@@ -35,8 +35,7 @@ define( function( require ) {
       //TODO why is this needed?
       isInsideGraph: false, // {boolean} is the point inside the graph?
 
-      //TODO rename to dragging
-      isUserControlled: options.isUserControlled, // {boolean} is the user dragging the point?
+      dragging: options.dragging, // {boolean} is the user dragging the point?
 
       //TODO rename, too vague
       delta: 0.8 // delta variation of point
@@ -53,8 +52,8 @@ define( function( require ) {
     } );
 
     //if the user dropped the ball outside of the graph send it back to the bucket
-    this.isUserControlledProperty.lazyLink( function( isUserControlled ) {
-      if ( !isUserControlled && !self.isInsideGraph && !self.animating ) {
+    this.draggingProperty.lazyLink( function( dragging ) {
+      if ( !dragging && !self.isInsideGraph && !self.animating ) {
         self.animate();
       }
     } );

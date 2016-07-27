@@ -68,20 +68,20 @@ define( function( require ) {
     Node.call( this, _.extend( { cursor: 'pointer' }, options ) );
 
     // create common drag and drop vars and functions for top and bottom error bars
-    var isUserControlledDeltaTop = false;
-    var isUserControlledDeltaBottom = false;
+    var draggingDeltaTop = false;
+    var draggingDeltaBottom = false;
 
     // top error bar line node
     var errorBarTopNode = new Rectangle( ERROR_BAR_BOUNDS, ERROR_BAR_OPTIONS );
     var newDeltaValue;
     errorBarTopNode.addInputListener( new SimpleDragHandler( {
       start: function() {
-        if ( !isUserControlledDeltaBottom ) {
-          isUserControlledDeltaTop = true;
+        if ( !draggingDeltaBottom ) {
+          draggingDeltaTop = true;
         }
       },
       translate: function( translationParams ) {
-        if ( isUserControlledDeltaTop ) {
+        if ( draggingDeltaTop ) {
           newDeltaValue = point.delta + modelViewTransform.viewToModelDeltaY( translationParams.delta.y );
 
           // don't let the top error bar become the bottom error bar
@@ -91,7 +91,7 @@ define( function( require ) {
         }
       },
       end: function() {
-        isUserControlledDeltaTop = false;
+        draggingDeltaTop = false;
         newDeltaValue = null;
       }
     } ) );
@@ -109,12 +109,12 @@ define( function( require ) {
     var errorBarBottomNode = new Rectangle( ERROR_BAR_BOUNDS, ERROR_BAR_OPTIONS );
     errorBarBottomNode.addInputListener( new SimpleDragHandler( {
       start: function() {
-        if ( !isUserControlledDeltaTop ) {
-          isUserControlledDeltaBottom = true;
+        if ( !draggingDeltaTop ) {
+          draggingDeltaBottom = true;
         }
       },
       translate: function( translationParams ) {
-        if ( isUserControlledDeltaBottom ) {
+        if ( draggingDeltaBottom ) {
           newDeltaValue = point.delta - modelViewTransform.viewToModelDeltaY( translationParams.delta.y );
 
           // don't let the bottom error bar become the top error bar
@@ -124,7 +124,7 @@ define( function( require ) {
         }
       },
       end: function() {
-        isUserControlledDeltaBottom = false;
+        draggingDeltaBottom = false;
       }
     } ) );
 
@@ -173,16 +173,16 @@ define( function( require ) {
     // add drag handler for point
     circleView.addInputListener( new SimpleDragHandler( {
       start: function() {
-        point.isUserControlled = true;
+        point.dragging = true;
       },
       translate: function( translationParams ) {
-        if ( point.isUserControlled ) {
+        if ( point.dragging ) {
           // self.setTranslation( parentNode.globalToLocalPoint( e.pointer.point ) );
           point.position = point.position.plus( modelViewTransform.viewToModelDelta( translationParams.delta ) );
         }
       },
       end: function() {
-        point.isUserControlled = false;
+        point.dragging = false;
       }
     } ) );
 

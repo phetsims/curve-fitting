@@ -89,7 +89,7 @@ define( function( require ) {
         var modelPosition = modelViewTransform.viewToModelPosition( viewPosition );
         point = new Point( {
           position: modelPosition,
-          isUserControlled: true
+          dragging: true
         } );
 
         // add the point to the curve
@@ -102,8 +102,8 @@ define( function( require ) {
       },
 
       end: function() {
-        //TODO replace this type of assignment with point.isUserControlledProperty.set
-        point.isUserControlled = false;
+        //TODO replace this type of assignment with point.draggingProperty.set
+        point.dragging = false;
         point = null;
       }
     } ) );
