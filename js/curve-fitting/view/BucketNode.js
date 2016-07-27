@@ -70,7 +70,7 @@ define( function( require ) {
         y: position.y
       } ) );
     } );
-    pointsNode.center = bucketHoleNode.center.copy().addXY( 0, -6 ); // tuned by hand, slightly above bucket
+    pointsNode.center = bucketHoleNode.center.addXY( 0, -6 ); // tuned by hand, slightly above bucket
 
     assert && assert( !options.children, 'decoration not supported' );
     options.children = [ bucketHoleNode, pointsNode, bucketFrontNode ];
