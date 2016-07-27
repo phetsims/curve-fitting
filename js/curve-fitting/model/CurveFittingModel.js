@@ -39,7 +39,6 @@ define( function( require ) {
       //TODO move these view-specific Properties to CurveFittingScreenView
       areResidualsVisible: false, // are residuals visible?
       areValuesVisible: false, // are values visible?
-      isEquationPanelExpanded: true // is the equation panel expanded?
     } );
 
     //TODO why is this in the model? And why is this value not consistently obtained from this field?

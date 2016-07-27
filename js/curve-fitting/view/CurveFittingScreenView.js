@@ -38,7 +38,8 @@ define( function( require ) {
 
     // view-specific Properties
     var viewProperties = new PropertySet( {
-      deviationsPanelExpanded: true  //TODO layout is hosed if this is initially false
+      deviationsPanelExpanded: true,  //TODO layout is hosed if this is initially false
+      equationPanelExpanded: true
     } );
 
     var deviationsPanel = new DeviationsPanel( viewProperties.deviationsPanelExpandedProperty, model.curve );
@@ -63,7 +64,7 @@ define( function( require ) {
     // create bucket and graph area node
     var bucketAndGraphAreaNode = new BucketAndGraphAreaNode(
       model.curve, model.bucket, model.orderProperty, model.graphModelBounds,
-      model.areResidualsVisibleProperty, model.areValuesVisibleProperty, model.isEquationPanelExpandedProperty,
+      model.areResidualsVisibleProperty, model.areValuesVisibleProperty, viewProperties.equationPanelExpandedProperty,
       modelViewTransform );
 
     // create reset all button

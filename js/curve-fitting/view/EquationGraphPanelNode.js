@@ -1,6 +1,7 @@
 // Copyright 2015-2016, University of Colorado Boulder
 
 //TODO rename, this is an accordion box, not a panel
+//TODO combines things that should be separate
 /**
  * Node with equation parameters in 'Curve Fitting' simulation.
  *
@@ -46,18 +47,18 @@ define( function( require ) {
   var TEXT_OPTIONS = { font: new PhetFont( 12 ) };
 
   /**
-   * @param {Property.<boolean>} isEquationPanelExpandedProperty - Property to control equation panel expansion.
+   * @param {Property.<boolean>} equationPanelExpandedProperty
    * @param {Curve} curve model.
    * @param {Property.<number>} orderFitProperty parameter to track.
    * @param {Object} [options] for slider node.
    * @constructor
    */
-  function EquationGraphPanelNode( isEquationPanelExpandedProperty, curve, orderFitProperty, options ) {
+  function EquationGraphPanelNode( equationPanelExpandedProperty, curve, orderFitProperty, options ) {
     var boxNode = new HBox( { align: 'bottom' } );
     var titleNode = new Text( equationString, TEXT_OPTIONS );
 
     // create expand button
-    var expandCollapseButton = new ExpandCollapseButton( isEquationPanelExpandedProperty, {
+    var expandCollapseButton = new ExpandCollapseButton( equationPanelExpandedProperty, {
       sideLength: BUTTON_LENGTH
     } );
     expandCollapseButton.touchArea = expandCollapseButton.localBounds.dilated( BUTTON_LENGTH / 3 );
@@ -115,7 +116,7 @@ define( function( require ) {
       }
     } );
 
-    isEquationPanelExpandedProperty.link( function( isEquationPanelExpanded ) {
+    equationPanelExpandedProperty.link( function( isEquationPanelExpanded ) {
       if ( isEquationPanelExpanded ) {
         content.children = [ expandCollapseButton, boxNode ];
       }
@@ -128,34 +129,34 @@ define( function( require ) {
     curve.isVisibleProperty.linkAttribute( this, 'visible' );
 
     var updateAParameter = function() {
-      if ( isEquationPanelExpandedProperty.value && curve.isVisible ) {
+      if ( equationPanelExpandedProperty.value && curve.isVisible ) {
         var numberInfo = roundNumber( curve.aProperty.value, 3 );
         aParameterNode.setText( numberInfo.signToString + numberInfo.absoluteNumberToString );
       }
     };
     curve.aProperty.lazyLink( updateAParameter );
     curve.isVisibleProperty.lazyLink( updateAParameter );
-    isEquationPanelExpandedProperty.link( updateAParameter );
+    equationPanelExpandedProperty.link( updateAParameter );
 
     var updateBParameter = function() {
-      if ( isEquationPanelExpandedProperty.value && curve.isVisible ) {
+      if ( equationPanelExpandedProperty.value && curve.isVisible ) {
         var numberInfo = roundNumber( curve.bProperty.value, 3 );
         bParameterNode.setText( numberInfo.signToString + numberInfo.absoluteNumberToString );
       }
     };
     curve.bProperty.lazyLink( updateBParameter );
     curve.isVisibleProperty.lazyLink( updateBParameter );
-    isEquationPanelExpandedProperty.link( updateBParameter );
+    equationPanelExpandedProperty.link( updateBParameter );
 
     var updateCParameter = function() {
-      if ( isEquationPanelExpandedProperty.value && curve.isVisible ) {
+      if ( equationPanelExpandedProperty.value && curve.isVisible ) {
         var numberInfo = roundNumber( curve.cProperty.value, 2 );
         cParameterNode.setText( numberInfo.signToString + numberInfo.absoluteNumberToString );
       }
     };
     curve.cProperty.lazyLink( updateCParameter );
     curve.isVisibleProperty.lazyLink( updateCParameter );
-    isEquationPanelExpandedProperty.link( updateCParameter );
+    equationPanelExpandedProperty.link( updateCParameter );
 
     var updateDParameter = function() {
       var numberInfo = roundNumber( curve.cProperty.value, 1 );
@@ -163,7 +164,7 @@ define( function( require ) {
     };
     curve.dProperty.lazyLink( updateDParameter );
     curve.isVisibleProperty.lazyLink( updateDParameter );
-    isEquationPanelExpandedProperty.link( updateDParameter );
+    equationPanelExpandedProperty.link( updateDParameter );
 
     /**
      * Function that returns (for numbers smaller than ten) a number (as a string)  with a fixed number of decimal places
