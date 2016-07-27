@@ -41,20 +41,20 @@ define( function( require ) {
   ];
 
   /**
-   * @param {Bucket} bucketModel - Model of bucket
+   * @param {Bucket} bucket
    * @param {ModelViewTransform2} modelViewTransform
-   * @param {Object} [options] for graph node
+   * @param {Object} [options] for graph node TODO these should be the options for this node!
    * @constructor
    */
-  function BucketNode( bucketModel, modelViewTransform, options ) {
+  function BucketNode( bucket, modelViewTransform, options ) {
 
     Node.call( this, _.extend( { cursor: 'pointer' }, options ) );
 
     // create the front of the bucket
-    var bucketFrontNode = new BucketFront( bucketModel, modelViewTransform );
+    var bucketFrontNode = new BucketFront( bucket, modelViewTransform );
 
     // create the back of the bucket
-    var bucketHoleNode = new BucketHole( bucketModel, modelViewTransform );
+    var bucketHoleNode = new BucketHole( bucket, modelViewTransform );
 
     // create all the points inside the bucket
     var pointsNode = new Node();
