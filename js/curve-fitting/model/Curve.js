@@ -100,10 +100,12 @@ define( function( require ) {
       }
     } );
 
+    //TODO This many lazyLink calls looks suspicious, probably making assumption about initial state of sim
     this.aProperty.lazyLink( this._updateFitBinded );
     this.bProperty.lazyLink( this._updateFitBinded );
     this.cProperty.lazyLink( this._updateFitBinded );
     this.dProperty.lazyLink( this._updateFitBinded );
+
     fitProperty.lazyLink( function( fit, oldFit ) {
       if ( fit === Fit.BEST ) {
         if ( oldFit === Fit.ADJUSTABLE ) {
