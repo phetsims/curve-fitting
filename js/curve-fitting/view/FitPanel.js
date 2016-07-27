@@ -44,10 +44,18 @@ define( function( require ) {
    * @param {Curve} curve
    * @param {Property.<string>} fitProperty
    * @param {Property.<number>} orderProperty
-   * @param {Object} [options] for graph node TODO rename, and this type needs its own options
+   * @param {Object} [options]
    * @constructor
    */
   function FitPanel( curve, fitProperty, orderProperty, options ) {
+
+    options = _.extend( {
+      cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
+      fill: CurveFittingConstants.PANEL_BACKGROUND_COLOR,
+      xMargin: CurveFittingConstants.PANEL_MARGIN,
+      yMargin: CurveFittingConstants.PANEL_MARGIN,
+      maxWidth: CurveFittingConstants.PANEL_MAX_WIDTH
+    }, options );
 
     var content = new VBox();
 
@@ -97,23 +105,17 @@ define( function( require ) {
     orderProperty.link( function( order ) {
       // if the sliders are not disabled they will be able to change
       // and behave as described in #15 and #37
+
+      aSliderEnabledProperty.set( order >= 3 );
+      bSliderEnabledProperty.set( order >= 2 );
+
       if ( order === 1 ) {
-        // disable a and b slider
-        aSliderEnabledProperty.set( false );
-        bSliderEnabledProperty.set( false );
         slidersBox.children = [ cSliderBox, dSliderBox ];
       }
       else if ( order === 2 ) {
-        // enable b slider
-        bSliderEnabledProperty.set( true );
-        //disable a slider
-        aSliderEnabledProperty.set( false );
         slidersBox.children = [ bSliderBox, cSliderBox, dSliderBox ];
       }
       else if ( order === 3 ) {
-        // enable a and b sliders
-        aSliderEnabledProperty.set( true );
-        bSliderEnabledProperty.set( true );
         slidersBox.children = [ aSliderBox, bSliderBox, cSliderBox, dSliderBox ];
       }
       else {
@@ -121,7 +123,7 @@ define( function( require ) {
       }
     } );
 
-    // add slider visibility observer
+    // show sliders when 'adjustable' fit is selected
     fitProperty.link( function( fit ) {
       if ( fit === Fit.BEST && content.hasChild( slidersBox ) ) {
         content.removeChild( slidersBox );
@@ -131,13 +133,7 @@ define( function( require ) {
       }
     } );
 
-    Panel.call( this, content, _.extend( {
-      cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
-      fill: CurveFittingConstants.PANEL_BACKGROUND_COLOR,
-      xMargin: CurveFittingConstants.PANEL_MARGIN,
-      yMargin: CurveFittingConstants.PANEL_MARGIN,
-      maxWidth: CurveFittingConstants.PANEL_MAX_WIDTH
-    }, options ) );
+    Panel.call( this, content, options );
   }
 
   curveFitting.register( 'FitPanel', FitPanel );
