@@ -31,7 +31,7 @@ define( function( require ) {
       c: 0, // coefficient for x^1 term
       d: 0, // polynomial constant term
 
-      chiSquare: 0, // x^2 deviation value
+      chiSquare: 0, // X^2 deviation value
       rSquare: 0, // r^2 deviation value
 
       //TODO move this view-specific Property to CurveFittingScreenView
