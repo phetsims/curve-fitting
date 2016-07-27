@@ -13,7 +13,7 @@ define( function( require ) {
   var ControlPanels = require( 'CURVE_FITTING/curve-fitting/view/ControlPanels' );
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var DeviationsPanel = require( 'CURVE_FITTING/curve-fitting/view/DeviationsPanel' );
+  var DeviationsAccordionBox = require( 'CURVE_FITTING/curve-fitting/view/DeviationsAccordionBox' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var PropertySet = require( 'AXON/PropertySet' );
@@ -35,14 +35,14 @@ define( function( require ) {
 
     // view-specific Properties
     var viewProperties = new PropertySet( {
-      deviationsPanelExpanded: true,  //TODO layout is hosed if this is initially false
+      deviationsAccordionBoxExpanded: true,  //TODO layout is hosed if this is initially false
       equationPanelExpanded: true,
       residualsVisible: false,
       valuesVisible: false
     } );
 
-    // Deviations panel, at left of screen
-    var deviationsPanel = new DeviationsPanel( viewProperties.deviationsPanelExpandedProperty, model.curve, {
+    // Deviations accordion box, at left of screen
+    var deviationsAccordionBox = new DeviationsAccordionBox( viewProperties.deviationsAccordionBoxExpandedProperty, model.curve, {
       left: 10,
       top: 10
     } );
@@ -51,12 +51,12 @@ define( function( require ) {
     var controlPanels = new ControlPanels( model.curve, model.orderProperty, model.fitProperty,
       model.curve.isVisibleProperty, viewProperties.residualsVisibleProperty, viewProperties.valuesVisibleProperty, {
         right: this.layoutBounds.right - 10,
-        top: deviationsPanel.top
+        top: deviationsAccordionBox.top
       } );
 
     // create a model view transform
-    var graphAreaWidth = controlPanels.left - deviationsPanel.right - GRAPH_PADDING_LEFT_RIGHT * 2;
-    var graphCenterX = 0.5 * (controlPanels.left + deviationsPanel.right);
+    var graphAreaWidth = controlPanels.left - deviationsAccordionBox.right - GRAPH_PADDING_LEFT_RIGHT * 2;
+    var graphCenterX = 0.5 * (controlPanels.left + deviationsAccordionBox.right);
     var graphCenterY = this.layoutBounds.centerY;
     var scale = graphAreaWidth / GRAPH_MODEL_BOUNDS.width; //TODO computation mixes view and model coordinate frames!
     var modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping( new Vector2( 0, 0 ), new Vector2( graphCenterX, graphCenterY ), scale );
@@ -79,7 +79,7 @@ define( function( require ) {
     resetAllButton.bottom = this.layoutBounds.bottom - 15;
 
     // add the children to the scene graph
-    this.addChild( deviationsPanel );
+    this.addChild( deviationsAccordionBox );
     this.addChild( controlPanels );
     this.addChild( bucketAndGraphAreaNode );
     this.addChild( resetAllButton );

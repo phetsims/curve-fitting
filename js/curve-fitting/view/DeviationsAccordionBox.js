@@ -1,8 +1,7 @@
 // Copyright 2015-2016, University of Colorado Boulder
 
-//TODO use AccordionBox
 /**
- * Deviations panel in 'Curve Fitting' simulation.
+ * Deviations accordion box in 'Curve Fitting' simulation.
  * Contains X^2 barometer, r^2 barometer and help button.
  *
  * @author Andrey Zelenkov (Mlearner)
@@ -11,15 +10,14 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var AccordionBox = require( 'SUN/AccordionBox' );
   var BarometerR2Node = require( 'CURVE_FITTING/curve-fitting/view/BarometerR2Node' );
   var BarometerX2Node = require( 'CURVE_FITTING/curve-fitting/view/BarometerX2Node' );
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
   var HelpDialog = require( 'CURVE_FITTING/curve-fitting/view/HelpDialog' );
   var inherit = require( 'PHET_CORE/inherit' );
   var HBox = require( 'SCENERY/nodes/HBox' );
-  var HStrut = require( 'SCENERY/nodes/HStrut' );
   var Panel = require( 'SUN/Panel' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var SubSupText = require( 'SCENERY_PHET/SubSupText' );
@@ -32,7 +30,6 @@ define( function( require ) {
   var deviationsString = require( 'string!CURVE_FITTING/deviations' );
 
   // constants
-  var BUTTON_LENGTH = 16;
   var TEXT_FONT = new PhetFont( 12 ); //TODO use CurveFittingConstants
   var TEXT_PANEL_FONT = new PhetFont( 10 ); //TODO use CurveFittingConstants
   var VALUE_PANEL_OPTIONS = {
@@ -55,20 +52,23 @@ define( function( require ) {
    * @param {Object} [options] for VBox TODO this should be the options for this type!
    * @constructor
    */
-  function DeviationsPanel( expandedProperty, curve, options ) {
+  function DeviationsAccordionBox( expandedProperty, curve, options ) {
 
     options = _.extend( {
       cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
       fill: CurveFittingConstants.PANEL_BACKGROUND_COLOR,
-      maxWidth: CurveFittingConstants.PANEL_MAX_WIDTH
+      maxWidth: CurveFittingConstants.PANEL_MAX_WIDTH,
+      expandedProperty: expandedProperty,
+      titleNode: new Text( deviationsString, { font: TEXT_FONT } ),
+      titleAlignX: 'left',
+      showTitleWhenExpanded: true,
+      buttonXMargin: 5,
+      buttonYMargin: 5,
+      contentXMargin: 10,
+      contentYMargin: 5,
+      buttonTouchAreaXDilation: 8,
+      buttonTouchAreaYDilation: 8
     }, options );
-
-    // create expand button
-    var expandCollapseButton = new ExpandCollapseButton( expandedProperty, {
-      sideLength: BUTTON_LENGTH
-    } );
-    expandCollapseButton.touchArea = expandCollapseButton.localBounds.dilated( BUTTON_LENGTH / 3 );
-    expandCollapseButton.mouseArea = expandCollapseButton.localBounds.dilated( BUTTON_LENGTH / 3 );
 
     // X^2 barometer
     var barometerX2 = new BarometerX2Node( curve.chiSquareProperty, curve.points );
@@ -80,7 +80,7 @@ define( function( require ) {
     var helpDialog = null;
 
     // help button
-    var helpButtonNode = new TextPushButton( symbolQuestionMarkString, {
+    var helpButton = new TextPushButton( symbolQuestionMarkString, {
       listener: function() {
         if ( !helpDialog ) {
           helpDialog = new HelpDialog();
@@ -89,72 +89,64 @@ define( function( require ) {
       },
       font: TEXT_FONT,
       baseColor: 'rgb( 204, 204, 204 )',
-      maxWidth: 40
+      maxWidth: 40,
+      touchAreaXDilation: 8,
+      touchAreaYDilation: 8
     } );
 
-    // title
-    var titleNode = new Text( deviationsString, { font: TEXT_FONT } );
-
-    var deviationArrowsNode = new HBox( { align: 'top' } );
-
-    // create chiSquare text and panel
-    var chiSquareTextNode = new Text( '0.00', {
+    // chiSquare value
+    var chiSquareValueNode = new Text( '0.00', {
       font: TEXT_PANEL_FONT,
       textAlign: 'left',
       maxWidth: 22
     } );
-    var chiSquarePanelNode = new Panel( chiSquareTextNode, VALUE_PANEL_OPTIONS );
 
-    // create rSquare text and panel
-    var rSquareTextNode = new Text( '0.00', {
+    // rSquare value
+    var rSquareValueNode = new Text( '0.00', {
       font: TEXT_PANEL_FONT,
       textAlign: 'left'
     } );
-    var rSquarePanelNode = new Panel( rSquareTextNode, VALUE_PANEL_OPTIONS );
 
-    var deviationTextNode = new HBox( {
+    var valuesBox = new HBox( {
       spacing: 5,
       resize: false,
       children: [
-        new SubSupText( symbolChiString + '<sup>2</sup>=', { font: TEXT_FONT } ),
-        chiSquarePanelNode,
 
+        //TODO 'X' does not match equation font, not italic
+        new SubSupText( symbolChiString + '<sup>2</sup>=', { font: TEXT_FONT } ),
+        new Panel( chiSquareValueNode, VALUE_PANEL_OPTIONS ),
+
+        //TODO 'r' does not match equation font, not italic
         new SubSupText( symbolRString + '<sup>2</sup>=', { font: TEXT_FONT } ),
-        rSquarePanelNode
+        new Panel( rSquareValueNode, VALUE_PANEL_OPTIONS )
       ]
     } );
 
-    var content = new VBox( { align: 'left' } );
+    var barometersBox = new HBox( {
+      children: [ barometerX2, barometerR2 ],
+      spacing: 10
+    } );
 
-    var spaceBetweenBarometers = new HStrut( 10 );
-    var spaceBetweenButtonAndTitle = new HStrut( 5 );
-
-    expandedProperty.link( function( isDeviationPanelExpanded ) {
-      if ( isDeviationPanelExpanded ) {
-        deviationArrowsNode.children = [ expandCollapseButton, barometerX2, spaceBetweenBarometers, barometerR2 ];
-        content.children = [ deviationArrowsNode, deviationTextNode, helpButtonNode ];
-      }
-      else {
-        deviationArrowsNode.children = [ expandCollapseButton, spaceBetweenButtonAndTitle, titleNode ];
-        content.children = [ deviationArrowsNode ];
-      }
-      deviationArrowsNode.updateLayout();
+    var content = new VBox( {
+      align: 'left',
+      spacing: 10,
+      children: [ barometersBox, valuesBox, helpButton ]
     } );
 
     // present for the lifetime of the sim
     curve.chiSquareProperty.link( function( chiSquare ) {
       // if chiSquare is greater than 10 we have a bad fit so less precision is needed
       // if chiSquare if greater than 100 we have a really bad fit and decimals are inconsequential
-      chiSquareTextNode.setText( roundNumber( chiSquare, 2 ).numberToString );
+      chiSquareValueNode.setText( roundNumber( chiSquare, 2 ).numberToString );
     } );
 
     // present for the lifetime of the sim
     curve.rSquareProperty.link( function( rSquare ) {
       // rSquare can only be between 0 and 1 so it will always need 2 decimal points
-      rSquareTextNode.setText( roundNumber( rSquare, 2 ).numberToString );
+      rSquareValueNode.setText( roundNumber( rSquare, 2 ).numberToString );
     } );
 
-    Panel.call( this, content, options );
+    AccordionBox.call( this, content, options );
 
     //TODO move out of constructor
     /**
@@ -209,7 +201,7 @@ define( function( require ) {
     }
   }
 
-  curveFitting.register( 'DeviationsPanel', DeviationsPanel );
+  curveFitting.register( 'DeviationsAccordionBox', DeviationsAccordionBox );
 
-  return inherit( Panel, DeviationsPanel );
+  return inherit( AccordionBox, DeviationsAccordionBox );
 } );
