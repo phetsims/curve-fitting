@@ -1,7 +1,7 @@
 // Copyright 2015-2016, University of Colorado Boulder
 
 /**
- * Main model constructor for 'Curve Fitting' simulation.
+ * Model container for 'Curve Fitting' simulation.
  *
  * @author Andrey Zelenkov (Mlearner)
  */
