@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var AquaRadioButton = require( 'SUN/AquaRadioButton' );
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var EquationFitNode = require( 'CURVE_FITTING/curve-fitting/view/EquationFitNode' );
@@ -17,12 +18,10 @@ define( function( require ) {
   var HBox = require( 'SCENERY/nodes/HBox' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Panel = require( 'SUN/Panel' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Property = require( 'AXON/Property' );
   var SliderParameterNode = require( 'CURVE_FITTING/curve-fitting/view/SliderParameterNode' );
   var Text = require( 'SCENERY/nodes/Text' );
   var VBox = require( 'SCENERY/nodes/VBox' );
-  var VerticalAquaRadioButtonGroup = require( 'SUN/VerticalAquaRadioButtonGroup' );
 
   // strings
   var adjustableFitString = require( 'string!CURVE_FITTING/adjustableFit' );
@@ -31,14 +30,6 @@ define( function( require ) {
   var symbolBString = require( 'string!CURVE_FITTING/symbol.b' );
   var symbolCString = require( 'string!CURVE_FITTING/symbol.c' );
   var symbolDString = require( 'string!CURVE_FITTING/symbol.d' );
-
-  // constants
-  var FONT = new PhetFont( 12 );
-  var RADIO_BUTTON_MENU_OPTIONS = {
-    spacing: 5,
-    radius: 8,
-    touchAreaXDilation: 5
-  };
 
   /**
    * @param {Curve} curve
@@ -57,18 +48,22 @@ define( function( require ) {
       maxWidth: CurveFittingConstants.PANEL_MAX_WIDTH
     }, options );
 
-    var content = new VBox();
+    // radio buttons
+    var bestFitButton = createRadioButton( fitProperty, Fit.BEST, bestFitString );
+    var adjustableFitButton = createRadioButton( fitProperty, Fit.ADJUSTABLE, adjustableFitString );
 
-    //TODO get rid of VerticalAquaRadioButtonGroup
-    // create radio buttons
-    var radioButtonGroup = new VerticalAquaRadioButtonGroup( [
-      { property: fitProperty, node: new Text( bestFitString, { font: FONT } ), value: Fit.BEST },
-      { property: fitProperty, node: new Text( adjustableFitString, { font: FONT } ), value: Fit.ADJUSTABLE }
-    ], RADIO_BUTTON_MENU_OPTIONS );
-    content.addChild( radioButtonGroup );
+    // vertical layout
+    var radioButtonsBox = new VBox( {
+      align: 'left',
+      spacing: 5,
+      children: [
+        bestFitButton,
+        adjustableFitButton
+      ]
+    });
 
-    // create and add equation node
-    content.addChild( new EquationFitNode( orderProperty ) );
+    // equation that corresponds to the curve
+    var equationFitNode = new EquationFitNode( orderProperty );
 
     //TODO why is it necessary?
     // it's necessary to be able to enable and disable sliders
@@ -123,20 +118,43 @@ define( function( require ) {
       }
     } );
 
+    // vertical layout
+    var contentNode = new VBox( {
+      spacing: 5,
+      children: [
+        radioButtonsBox,
+        equationFitNode
+      ]
+    } );
+
     // show sliders when 'adjustable' fit is selected
     fitProperty.link( function( fit ) {
-      if ( fit === Fit.BEST && content.hasChild( slidersBox ) ) {
-        content.removeChild( slidersBox );
+      if ( fit === Fit.BEST && contentNode.hasChild( slidersBox ) ) {
+        contentNode.removeChild( slidersBox );
       }
       else if ( fit === Fit.ADJUSTABLE ) {
-        content.addChild( slidersBox );
+        contentNode.addChild( slidersBox );
       }
     } );
 
-    Panel.call( this, content, options );
+    Panel.call( this, contentNode, options );
   }
 
   curveFitting.register( 'FitPanel', FitPanel );
+
+  /**
+   * Creates a radio button for this panel.
+   *
+   * @param {Property} property
+   * @param {*} value
+   * @param {string} label
+   * @returns {AquaRadioButton}
+   */
+  var createRadioButton = function( property, value, label ) {
+    return new AquaRadioButton( property, value,
+      new Text( label, CurveFittingConstants.CONTROL_TEXT_OPTIONS ),
+      CurveFittingConstants.RADIO_BUTTON_OPTIONS );
+  };
 
   return inherit( Panel, FitPanel );
 } );
