@@ -33,8 +33,8 @@ define( function( require ) {
 
   // constants
   var BUTTON_LENGTH = 16;
-  var TEXT_FONT = new PhetFont( 12 );
-  var TEXT_PANEL_FONT = new PhetFont( 10 );
+  var TEXT_FONT = new PhetFont( 12 ); //TODO use CurveFittingConstants
+  var TEXT_PANEL_FONT = new PhetFont( 10 ); //TODO use CurveFittingConstants
   var VALUE_PANEL_OPTIONS = {
     fill: 'white',
     cornerRadius: 4,
@@ -42,11 +42,6 @@ define( function( require ) {
     yMargin: 4,
     resize: false,
     maxWidth: 30
-  };
-  var PANEL_OPTIONS = {
-    cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
-    fill: CurveFittingConstants.PANEL_BACKGROUND_COLOR,
-    maxWidth: CurveFittingConstants.PANEL_MAX_WIDTH
   };
 
   // strings
@@ -61,6 +56,12 @@ define( function( require ) {
    * @constructor
    */
   function DeviationsPanel( expandedProperty, curve, options ) {
+
+    options = _.extend( {
+      cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
+      fill: CurveFittingConstants.PANEL_BACKGROUND_COLOR,
+      maxWidth: CurveFittingConstants.PANEL_MAX_WIDTH
+    }, options );
 
     // create expand button
     var expandCollapseButton = new ExpandCollapseButton( expandedProperty, {
@@ -123,7 +124,7 @@ define( function( require ) {
       ]
     } );
 
-    var content = new VBox( _.extend( { align: 'left' }, options ) );
+    var content = new VBox( { align: 'left' } );
 
     var spaceBetweenBarometers = new HStrut( 10 );
     var spaceBetweenButtonAndTitle = new HStrut( 5 );
@@ -153,8 +154,9 @@ define( function( require ) {
       rSquareTextNode.setText( roundNumber( rSquare, 2 ).numberToString );
     } );
 
-    Panel.call( this, content, PANEL_OPTIONS );
+    Panel.call( this, content, options );
 
+    //TODO move out of constructor
     /**
      * Function that returns (for numbers smaller than ten) a number (as a string)  with a fixed number of decimal places
      * whereas for numbers larger than ten, the number/string is returned a fixed number of significant figures

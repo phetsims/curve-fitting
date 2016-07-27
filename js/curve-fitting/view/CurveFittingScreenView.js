@@ -22,10 +22,7 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   // constants
-  var PADDING_LEFT_RIGHT = 10;
-  var PADDING_TOP_BOTTOM = 25;
   var GRAPH_PADDING_LEFT_RIGHT = 15;
-  var SIM_BOUNDS = CurveFittingConstants.SIM_BOUNDS;
   var GRAPH_MODEL_BOUNDS = CurveFittingConstants.GRAPH_MODEL_BOUNDS;
 
   /**
@@ -34,7 +31,7 @@ define( function( require ) {
    */
   function CurveFittingScreenView( model ) {
 
-    ScreenView.call( this, { layoutBounds: SIM_BOUNDS } );
+    ScreenView.call( this, CurveFittingConstants.SCREEN_VIEW_OPTIONS );
 
     // view-specific Properties
     var viewProperties = new PropertySet( {
@@ -44,23 +41,24 @@ define( function( require ) {
       valuesVisible: false
     } );
 
-    var deviationsPanel = new DeviationsPanel( viewProperties.deviationsPanelExpandedProperty, model.curve );
+    // Deviations panel, at left of screen
+    var deviationsPanel = new DeviationsPanel( viewProperties.deviationsPanelExpandedProperty, model.curve, {
+      left: 10,
+      top: 10
+    } );
 
+    // All other controls, at right of screen
     var controlPanels = new ControlPanels( model.curve, model.orderProperty, model.fitProperty,
-    model.curve.isVisibleProperty, viewProperties.residualsVisibleProperty, viewProperties.valuesVisibleProperty );
-
-    //TODO handle layout in constructor options
-    // layout the nodes
-    deviationsPanel.left = PADDING_LEFT_RIGHT;
-    deviationsPanel.top = PADDING_TOP_BOTTOM;
-    controlPanels.right = SIM_BOUNDS.width - PADDING_LEFT_RIGHT;
-    controlPanels.top = deviationsPanel.top;
+      model.curve.isVisibleProperty, viewProperties.residualsVisibleProperty, viewProperties.valuesVisibleProperty, {
+        right: this.layoutBounds.right - 10,
+        top: deviationsPanel.top
+      } );
 
     // create a model view transform
     var graphAreaWidth = controlPanels.left - deviationsPanel.right - GRAPH_PADDING_LEFT_RIGHT * 2;
     var graphCenterX = 0.5 * (controlPanels.left + deviationsPanel.right);
-    var graphCenterY = SIM_BOUNDS.centerY;
-    var scale = graphAreaWidth / GRAPH_MODEL_BOUNDS.width;
+    var graphCenterY = this.layoutBounds.centerY;
+    var scale = graphAreaWidth / GRAPH_MODEL_BOUNDS.width; //TODO computation mixes view and model coordinate frames!
     var modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping( new Vector2( 0, 0 ), new Vector2( graphCenterX, graphCenterY ), scale );
 
     // create bucket and graph area node
@@ -78,7 +76,7 @@ define( function( require ) {
     } );
     resetAllButton.scale( 0.75 );
     resetAllButton.right = controlPanels.right;
-    resetAllButton.bottom = SIM_BOUNDS.height - PADDING_TOP_BOTTOM;
+    resetAllButton.bottom = this.layoutBounds.bottom - 15;
 
     // add the children to the scene graph
     this.addChild( deviationsPanel );

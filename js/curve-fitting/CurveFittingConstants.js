@@ -15,6 +15,8 @@ define( function( require ) {
 
   var CurveFittingConstants = {
 
+    SCREEN_VIEW_OPTIONS: { layoutBounds: new Bounds2( 0, 0, 768, 504 ) },
+
     // speed for dataPoints to reach the bucket when animated
     ANIMATION_SPEED: 0.1, //  in model units per millisecond;
 
@@ -56,7 +58,6 @@ define( function( require ) {
     },
 
     // size
-    SIM_BOUNDS: new Bounds2( 0, 0, 768, 504 ),
     GRAPH_MODEL_BOUNDS: new Bounds2( -10, -10, 10, 10 )
   };
 
