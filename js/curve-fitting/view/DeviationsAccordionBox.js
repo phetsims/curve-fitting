@@ -94,14 +94,14 @@ define( function( require ) {
       touchAreaYDilation: 8
     } );
 
-    // chiSquare value
+    // X^2 value
     var chiSquareValueNode = new Text( '0.00', {
       font: TEXT_PANEL_FONT,
       textAlign: 'left',
       maxWidth: 22
     } );
 
-    // rSquare value
+    // r^2 value
     var rSquareValueNode = new Text( '0.00', {
       font: TEXT_PANEL_FONT,
       textAlign: 'left'
@@ -130,7 +130,11 @@ define( function( require ) {
     var content = new VBox( {
       align: 'left',
       spacing: 10,
-      children: [ barometersBox, valuesBox, helpButton ]
+      children: [
+        barometersBox,
+        valuesBox,
+        helpButton
+      ]
     } );
 
     // present for the lifetime of the sim
