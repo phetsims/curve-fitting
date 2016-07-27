@@ -12,7 +12,6 @@ define( function( require ) {
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var Emitter = require( 'AXON/Emitter' );
   var FitMaker = require( 'CURVE_FITTING/curve-fitting/model/FitMaker' );
-  var Fit = require( 'CURVE_FITTING/curve-fitting/model/Fit' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ObservableArray = require( 'AXON/ObservableArray' );
   var PropertySet = require( 'AXON/PropertySet' );
@@ -90,11 +89,11 @@ define( function( require ) {
       if ( isVisible ) {
         self.updateFit();
       }
-      else if ( fitProperty.value === Fit.BEST ) {
+      else if ( fitProperty.value === 'best' ) {
         // flush storage values
         setDefaultAdjustableValues( self._storage );
       }
-      else if ( fitProperty.value === Fit.ADJUSTABLE ) {
+      else if ( fitProperty.value === 'adjustable' ) {
         // set default values
         setDefaultAdjustableValues( self );
       }
@@ -107,8 +106,8 @@ define( function( require ) {
     this.dProperty.lazyLink( this._updateFitBinded );
 
     fitProperty.lazyLink( function( fit, oldFit ) {
-      if ( fit === Fit.BEST ) {
-        if ( oldFit === Fit.ADJUSTABLE ) {
+      if ( fit === 'best' ) {
+        if ( oldFit === 'adjustable' ) {
           // save adjustable values in storage
           self.saveValuesToStorage();
         }
@@ -116,7 +115,7 @@ define( function( require ) {
         self.updateFit();
         self.updateCurveEmitter.emit();
       }
-      else if ( fit === Fit.ADJUSTABLE ) {
+      else if ( fit === 'adjustable' ) {
         // restore adjustable values from storage
         self.restoreValuesFromStorage();
         self.updateCurveEmitter.emit();
@@ -311,7 +310,7 @@ define( function( require ) {
       //TODO if this is updating only when visible, then I would expect to see setVisible override, probably some workaround instead
       // update only when curve visible
       if ( this.isVisible ) {
-        if ( this._fitProperty.value === Fit.BEST ) {
+        if ( this._fitProperty.value === 'best' ) {
           var fit = this.fitMaker.getFit( this.getPoints(), this._orderProperty.value );
 
           this.d = isFinite( fit[ 0 ] ) ? fit[ 0 ] : 0;

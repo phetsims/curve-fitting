@@ -14,7 +14,6 @@ define( function( require ) {
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var Dimension2 = require( 'DOT/Dimension2' );
-  var Fit = require( 'CURVE_FITTING/curve-fitting/model/Fit' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
   var Vector2 = require( 'DOT/Vector2' );
@@ -24,6 +23,7 @@ define( function( require ) {
   var BUCKET_HEIGHT = BUCKET_WIDTH * 0.50;
   // bucket is to the left and up from the bottom left corner of graph, in model coordinates
   var BUCKET_POSITION = new Vector2( CurveFittingConstants.GRAPH_MODEL_BOUNDS.minX - 3, CurveFittingConstants.GRAPH_MODEL_BOUNDS.minY + 1 );
+  var VALID_FIT_VALUES = [ 'best', 'adjustable' ];
 
   /**
    * @constructor
@@ -33,8 +33,8 @@ define( function( require ) {
     PropertySet.call( this, {
 
       // @public
-      order: 1, // order of the polynomial that describes the curve
-      fit: Fit.BEST // the method of fitting the curve to data points
+      order: 1, // {number} order of the polynomial that describes the curve
+      fit: 'best' // {string} the method of fitting the curve to data points, see VALID_FIT_VALUES
     } );
 
     // validate Property values
@@ -42,7 +42,7 @@ define( function( require ) {
       assert && assert( order >= 1 && order <= 3, 'invalid order: ' + order );
     } );
     this.fitProperty.link( function( fit ) {
-      assert && assert( fit === Fit.BEST || fit === Fit.ADJUSTABLE, 'invalid fit: ' + fit );
+      assert && assert( _.contains( VALID_FIT_VALUES, fit ), 'invalid fit: ' + fit );
     } );
 
     //TODO why is this in the model? And why is this value not consistently obtained from this field?

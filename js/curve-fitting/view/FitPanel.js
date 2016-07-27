@@ -14,7 +14,6 @@ define( function( require ) {
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var EquationFitNode = require( 'CURVE_FITTING/curve-fitting/view/EquationFitNode' );
-  var Fit = require( 'CURVE_FITTING/curve-fitting/model/Fit' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Panel = require( 'SUN/Panel' );
@@ -49,8 +48,8 @@ define( function( require ) {
     }, options );
 
     // radio buttons
-    var bestFitButton = createRadioButton( fitProperty, Fit.BEST, bestFitString );
-    var adjustableFitButton = createRadioButton( fitProperty, Fit.ADJUSTABLE, adjustableFitString );
+    var bestFitButton = createRadioButton( fitProperty, 'best', bestFitString );
+    var adjustableFitButton = createRadioButton( fitProperty, 'adjustable', adjustableFitString );
 
     // vertical layout
     var radioButtonsBox = new VBox( {
@@ -130,10 +129,10 @@ define( function( require ) {
 
     // show sliders when 'adjustable' fit is selected
     fitProperty.link( function( fit ) {
-      if ( fit === Fit.BEST && contentNode.hasChild( slidersBox ) ) {
+      if ( fit === 'best' && contentNode.hasChild( slidersBox ) ) {
         contentNode.removeChild( slidersBox );
       }
-      else if ( fit === Fit.ADJUSTABLE ) {
+      else if ( fit === 'adjustable' ) {
         contentNode.addChild( slidersBox );
       }
     } );
