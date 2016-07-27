@@ -300,6 +300,8 @@ define( function( require ) {
      * @private
      */
     updateFit: function() {
+
+      //TODO if this is updating only when visible, then I would expect to see setVisible override, probably some workaround instead
       // update only when curve visible
       if ( this.isVisible ) {
         if ( this._fitProperty.value === Fit.BEST ) {
