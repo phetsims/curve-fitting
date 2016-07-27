@@ -25,10 +25,12 @@ define( function( require ) {
     var self = this;
 
     PropertySet.call( this, {
-      a: 0, // parameter with x^3
-      b: 0, // parameter with x^2
-      c: 0, // parameter with x^1
-      d: 0, // parameter with constant
+
+      a: 0, // coefficient for x^3 term
+      b: 0, // coefficient for x^2 term
+      c: 0, // coefficient for x^1 term
+      d: 0, // polynomial constant term
+
       chiSquare: 0, // x^2 deviation value
       rSquare: 0, // r^2 deviation value
 
