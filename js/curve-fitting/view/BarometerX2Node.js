@@ -77,6 +77,7 @@ define( function( require ) {
       valueRectNode.setFill( getChiFillFromChiValue( chiSquareProperty.value, points.length ) );
     };
 
+    //TODO unlink?
     chiSquareProperty.link( function( chiSquare ) {
       valueRectNode.setRectHeight( valueToYPosition( chiSquare ) );
       updateChiFill();

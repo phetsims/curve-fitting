@@ -84,6 +84,8 @@ define( function( require ) {
     // "Curve" between operations) adjustable values will be restored from storage. If "Curve" is turn off then storage values is flush.
     this._storage = {}; // @private
     setDefaultAdjustableValues( this._storage );
+
+    //TODO unlink?
     this.isVisibleProperty.link( function( isVisible ) {
       if ( isVisible ) {
         self.updateFit();
@@ -172,6 +174,7 @@ define( function( require ) {
     addPoint: function( point ) {
       var self = this;
 
+      // These are unlinked in removePoint
       point.positionProperty.link( this._updateFitBinded );
       point.isInsideGraphProperty.lazyLink( this._updateFitBinded );
       point.deltaProperty.link( this._updateFitBinded );
@@ -190,9 +193,11 @@ define( function( require ) {
      * @private
      */
     removePoint: function( point ) {
+
       point.positionProperty.unlink( this._updateFitBinded );
       point.isInsideGraphProperty.unlink( this._updateFitBinded );
       point.deltaProperty.unlink( this._updateFitBinded );
+
       this.updateFit();
     },
 

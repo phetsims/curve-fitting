@@ -124,6 +124,7 @@ define( function( require ) {
       }
     } );
 
+    //TODO unlink?
     curve.isVisibleProperty.linkAttribute( this, 'visible' );
 
     var updateAParameter = function() {
