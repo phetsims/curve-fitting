@@ -52,8 +52,6 @@ define( function( require ) {
       cursor: 'pointer'
     }, options );
 
-    Node.call( this, _.extend( { cursor: 'pointer' }, options ) );
-
     // front of the bucket
     var bucketFrontNode = new BucketFront( bucket, modelViewTransform );
 
