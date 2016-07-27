@@ -105,9 +105,9 @@ define( function( require ) {
       var d = curve.d;
       var x;
 
-      //TODO curve._fitProperty is private!!
       //TODO this expression looks suspect, or at least overly complicated
-      if ( ( points.length > 1 || curve._fitProperty.value === 'adjustable' ) && !isNaN( a ) && !isNaN( b ) && !isNaN( c ) && !isNaN( d ) ) {
+      //TODO curve.fitProperty is private!!
+      if ( ( points.length > 1 || curve.fitProperty.value === 'adjustable' ) && !isNaN( a ) && !isNaN( b ) && !isNaN( c ) && !isNaN( d ) ) {
 
         // update curve path
         curveShape = new Shape();

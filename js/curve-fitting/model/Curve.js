@@ -41,10 +41,9 @@ define( function( require ) {
     // property for storing calculation result
     this.yDeviationSquaredSum = 0;
 
-    //TODO remove underscores, annotate @private
-    // save link to property
-    this._orderProperty = orderProperty;
-    this._fitProperty = fitProperty;
+    // @private
+    this.orderProperty = orderProperty;
+    this.fitProperty = fitProperty;
 
     // Contains points for plotting curve. Only point above graph will be taken for calculations. Order doesn't matter.
     this.points = new ObservableArray();
@@ -265,7 +264,7 @@ define( function( require ) {
       }
 
       // calculation of chiSquare
-      var order = this._orderProperty.value;
+      var order = this.orderProperty.value;
       var degreesOfFreedom = numberOfPoints - order - 1;
 
       if ( numberOfPoints > order + 1 ) {
@@ -312,8 +311,8 @@ define( function( require ) {
       //TODO if this is updating only when visible, then I would expect to see setVisible override, probably some workaround instead
       // update only when curve visible
       if ( this.isVisible ) {
-        if ( this._fitProperty.value === 'best' ) {
-          var fit = this.fitMaker.getFit( this.getPoints(), this._orderProperty.value );
+        if ( this.fitProperty.value === 'best' ) {
+          var fit = this.fitMaker.getFit( this.getPoints(), this.orderProperty.value );
 
           this.d = isFinite( fit[ 0 ] ) ? fit[ 0 ] : 0;
           this.c = isFinite( fit[ 1 ] ) ? fit[ 1 ] : 0;
