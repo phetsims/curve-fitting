@@ -57,6 +57,8 @@ define( function( require ) {
     } );
   }
 
+  curveFitting.register( 'ViewOptionsPanel', ViewOptionsPanel );
+
   /**
    * Creates a check box for this panel.
    *
@@ -68,8 +70,6 @@ define( function( require ) {
     return new CheckBox( new Text( label, CurveFittingConstants.CONTROL_TEXT_OPTIONS ), property,
       CurveFittingConstants.CHECK_BOX_OPTIONS );
   };
-
-  curveFitting.register( 'ViewOptionsPanel', ViewOptionsPanel );
 
   return inherit( Panel, ViewOptionsPanel );
 } );

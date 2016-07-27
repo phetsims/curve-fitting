@@ -48,6 +48,8 @@ define( function( require ) {
     Panel.call( this, contentNode, options );
   }
 
+  curveFitting.register( 'CurveOrderPanel', CurveOrderPanel );
+
   /**
    * Creates a radio button for this panel.
    *
@@ -61,8 +63,6 @@ define( function( require ) {
       new Text( label, CurveFittingConstants.CONTROL_TEXT_OPTIONS ),
       CurveFittingConstants.RADIO_BUTTON_OPTIONS );
   };
-
-  curveFitting.register( 'CurveOrderPanel', CurveOrderPanel );
 
   return inherit( Panel, CurveOrderPanel );
 } );
