@@ -123,12 +123,12 @@ define( function( require ) {
         }
 
         self.updateFit();
-        self.updateCurveEmitter.emit();
+        self.updateCurveEmitter.emit(); //TODO this is already called by updateFit
       }
       else if ( fit === 'adjustable' ) {
         // restore adjustable values from storage
-        self.restoreValuesFromStorage();
-        self.updateCurveEmitter.emit();
+        self.restoreValuesFromStorage(); //TODO shouldn't this call updateCurveEmitter.emit?
+        self.updateCurveEmitter.emit(); //TODO should this be called when curve is not visible?
       }
     } );
   }
@@ -309,6 +309,7 @@ define( function( require ) {
       this.b = this._storage.b;
       this.c = this._storage.c;
       this.d = this._storage.d;
+      //TODO why doesn't this call updateCurveEmitter.emit?
     },
 
     /**
