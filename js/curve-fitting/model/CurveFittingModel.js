@@ -34,10 +34,7 @@ define( function( require ) {
 
       // @public
       order: 1, // order of the polynomial that describes the curve
-      fit: Fit.BEST, // the method of fitting the curve to data points
-
-      //TODO move these view-specific Properties to CurveFittingScreenView
-      areValuesVisible: false, // are values visible?
+      fit: Fit.BEST // the method of fitting the curve to data points
     } );
 
     //TODO why is this in the model? And why is this value not consistently obtained from this field?

@@ -57,13 +57,13 @@ define( function( require ) {
 
   /**
    * @param {Point} point - Model for single point.
-   * @param {Property.<boolean>} areValuesVisibleProperty
+   * @param {Property.<boolean>} valuesVisibleProperty
    * @param {Property.<boolean>} residualsVisibleProperty
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Object} [options] for graph node.
    * @constructor
    */
-  function PointNode( point, areValuesVisibleProperty, residualsVisibleProperty, modelViewTransform, options ) {
+  function PointNode( point, valuesVisibleProperty, residualsVisibleProperty, modelViewTransform, options ) {
 
     Node.call( this, _.extend( { cursor: 'pointer' }, options ) );
 
@@ -236,8 +236,8 @@ define( function( require ) {
         valueTextLabel.setText( '' );
       }
     };
-    var valueTextLabelHandle = areValuesVisibleProperty.linkAttribute( valueTextLabel, 'visible' );
-    var updateValueTextHandle = areValuesVisibleProperty.onValue( true, updateValueText );
+    var valueTextLabelHandle = valuesVisibleProperty.linkAttribute( valueTextLabel, 'visible' );
+    var updateValueTextHandle = valuesVisibleProperty.onValue( true, updateValueText );
     point.positionProperty.link( updateValueText );
 
     /**
@@ -248,8 +248,8 @@ define( function( require ) {
         deltaTextLabel.setText( StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( point.delta, 1 ) ) );
       }
     };
-    var updateDeltaTextHandle = areValuesVisibleProperty.onValue( true, updateDeltaText );
-    var deltaTextLabelHandle = areValuesVisibleProperty.linkAttribute( deltaTextLabel, 'visible' );
+    var updateDeltaTextHandle = valuesVisibleProperty.onValue( true, updateDeltaText );
+    var deltaTextLabelHandle = valuesVisibleProperty.linkAttribute( deltaTextLabel, 'visible' );
     point.deltaProperty.lazyLink( updateDeltaText );
 
     /**
@@ -301,10 +301,10 @@ define( function( require ) {
       point.deltaProperty.unlink( updateDeltaText );
       point.positionProperty.unlink( centerPositionListener );
       residualsVisibleProperty.unlink( updateResiduals );
-      areValuesVisibleProperty.unlinkAttribute( deltaTextLabelHandle );
-      areValuesVisibleProperty.unlinkAttribute( valueTextLabelHandle );
-      areValuesVisibleProperty.unlink( updateValueTextHandle );
-      areValuesVisibleProperty.unlink( updateDeltaTextHandle );
+      valuesVisibleProperty.unlinkAttribute( deltaTextLabelHandle );
+      valuesVisibleProperty.unlinkAttribute( valueTextLabelHandle );
+      valuesVisibleProperty.unlink( updateValueTextHandle );
+      valuesVisibleProperty.unlink( updateDeltaTextHandle );
     };
   }
 
