@@ -28,6 +28,10 @@ define( function( require ) {
 
   // strings
   var deviationsString = require( 'string!CURVE_FITTING/deviations' );
+  
+  // strings - i18n not required
+  var plusString = '\u002B';
+  var minusString = '\u2212';
 
   // constants
   var TEXT_FONT = new PhetFont( 12 ); //TODO use CurveFittingConstants
@@ -156,47 +160,45 @@ define( function( require ) {
   curveFitting.register( 'DeviationsAccordionBox', DeviationsAccordionBox );
 
   /**
-   * Returns (for numbers smaller than ten) a number (as a string)  with a fixed number of decimal places
-   * whereas for numbers larger than ten, the number/string is returned a fixed number of significant figures
+   * For numbers smaller than ten, returns a number with digits decimal places.
+   * For numbers larger than ten, returns a fixed number with (digits + 1) significant figures.
    *
    * @param {number} number
-   * @param {number} maxDecimalPlaces
-   * @returns {Object}
+   * @param {number} digits
+   * @returns {Object} - see return statement
    */
-  function roundNumber( number, maxDecimalPlaces ) {
+  function roundNumber( number, digits ) {
 
-    // eg. if maxDecimalPlaces = 3
-    // 9999.11 -> 9999  (number larger than 10^3) are rounded to unity
+    // e.g. for digits = 3
+    // 9999.11 -> 9999  (numbers greater than 10^3) are rounded to integers
     // 999.111 -> 999.1
     // 99.1111 -> 99.11
-    // 9.11111 -> 9.111
+    // 9.11111 -> 9.111 (numbers less than 10) have 3 decimal places
     // 1.11111 -> 1.111
     // 0.11111 -> 0.111
     // 0.01111 -> 0.011
     // 0.00111 -> 0.001
     // 0.00011 -> 0.000
 
-    var plusString = '\u002B'; // we want a large + sign
-    var minusString = '\u2212';
-
-    // number = mantissa times 10^(exponent) where the mantissa is between 1 and 10 (or -1 to -10)
+    // number = mantissa times 10^(exponent) where the mantissa is between 1 and 10 (or -1 and -10)
     var exponent = Math.floor( Util.log10( Math.abs( number ) ) );
 
     var decimalPlaces;
-    if ( exponent >= maxDecimalPlaces ) {
+    if ( exponent >= digits ) {
       decimalPlaces = 0;
     }
     else if ( exponent > 0 ) {
-      decimalPlaces = maxDecimalPlaces - exponent;
+      decimalPlaces = digits - exponent;
     }
     else {
-      decimalPlaces = maxDecimalPlaces;
+      decimalPlaces = digits;
     }
+    
     var roundedNumber = Util.toFixedNumber( number, decimalPlaces );
     var numberToString = Util.toFixed( number, decimalPlaces );
-    var signToString = (roundedNumber >= 0) ? plusString : minusString; // N.B.
+    var signToString = ( roundedNumber >= 0) ? plusString : minusString; // N.B.
     var absoluteNumberToString = Util.toFixedNumber( Math.abs( number ), decimalPlaces ); // N.B.
-    var isStringZero = (numberToString === Util.toFixed( 0, decimalPlaces ));
+    var isStringZero = ( numberToString === Util.toFixed( 0, decimalPlaces ) );
 
     return {
       numberToString: numberToString, // {string}
