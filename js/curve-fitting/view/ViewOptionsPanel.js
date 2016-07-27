@@ -11,9 +11,9 @@ define( function( require ) {
   // modules
   var CheckBox = require( 'SUN/CheckBox' );
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Panel = require( 'SUN/Panel' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Text = require( 'SCENERY/nodes/Text' );
   var VBox = require( 'SCENERY/nodes/VBox' );
 
@@ -22,36 +22,52 @@ define( function( require ) {
   var residualsString = require( 'string!CURVE_FITTING/residuals' );
   var valuesString = require( 'string!CURVE_FITTING/values' );
 
-  // constants
-  var CHECK_BOX_OPTIONS = { boxWidth: 16 }; //TODO move to constants
-  var FONT = new PhetFont( 12 ); // TODO move to constants
-
   /**
+   * @param {Property.<boolean>} curveVisibleProperty
+   * @param {Property.<boolean>} residualsVisibleProperty
+   * @param {Property.<boolean>} valuesVisibleProperty
+   * @param {Object} [options]
    * @constructor
    */
   function ViewOptionsPanel( curveVisibleProperty, residualsVisibleProperty, valuesVisibleProperty, options ) {
 
-    var residualsCheckBox = new CheckBox( new Text( residualsString, { font: FONT } ), residualsVisibleProperty, CHECK_BOX_OPTIONS );
+    // check boxes
+    var curveCheckBox = createCheckBox( curveVisibleProperty, curveString );
+    var residualsCheckBox = createCheckBox( residualsVisibleProperty, residualsString );
+    var valuesCheckBox = createCheckBox( valuesVisibleProperty, valuesString );
 
-    var checkBoxGroup = new VBox( {
+    // vertical layout
+    var contentNode = new VBox( {
       spacing: 5,
       align: 'left',
       children: [
-        new CheckBox( new Text( curveString, { font: FONT } ), curveVisibleProperty, CHECK_BOX_OPTIONS ),
+        curveCheckBox,
         residualsCheckBox,
-        new CheckBox( new Text( valuesString, { font: FONT } ), valuesVisibleProperty, CHECK_BOX_OPTIONS )
-      ]
+        valuesCheckBox ]
     } );
 
-    Panel.call( this, checkBoxGroup, options );
+    Panel.call( this, contentNode, options );
 
+    // visibility of the curve affects other controls
     curveVisibleProperty.link( function( isCurveVisible ) {
       residualsCheckBox.enabled = isCurveVisible;
       if ( !isCurveVisible ) {
-        residualsVisibleProperty.set( false );
+        residualsVisibleProperty.set( false ); //TODO really?
       }
     } );
   }
+
+  /**
+   * Creates a check box for this panel.
+   *
+   * @param {Property} property
+   * @param {string} label
+   * @returns {CheckBox}
+   */
+  var createCheckBox = function( property, label ) {
+    return new CheckBox( new Text( label, CurveFittingConstants.CONTROL_TEXT_OPTIONS ), property,
+      CurveFittingConstants.CHECK_BOX_OPTIONS );
+  };
 
   curveFitting.register( 'ViewOptionsPanel', ViewOptionsPanel );
 

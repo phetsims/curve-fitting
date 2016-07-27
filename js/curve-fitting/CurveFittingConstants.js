@@ -9,8 +9,9 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var Bounds2 = require( 'DOT/Bounds2' );
+  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
 
   var CurveFittingConstants = {
 
@@ -40,6 +41,19 @@ define( function( require ) {
     PANEL_MARGIN: 10,
     PANEL_WIDTH: 130,
     PANEL_MAX_WIDTH: 151,
+
+    RADIO_BUTTON_OPTIONS: {
+      radius: 8,
+      touchAreaXDilation: 5
+    },
+
+    CONTROL_TEXT_OPTIONS: {
+      font: new PhetFont( 12 )
+    },
+
+    CHECK_BOX_OPTIONS: {
+      boxWidth: 16
+    },
 
     // size
     SIM_BOUNDS: new Bounds2( 0, 0, 768, 504 ),

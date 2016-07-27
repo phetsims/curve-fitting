@@ -11,9 +11,9 @@ define( function( require ) {
   // modules
   var AquaRadioButton = require( 'SUN/AquaRadioButton' );
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Panel = require( 'SUN/Panel' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Text = require( 'SCENERY/nodes/Text' );
   var VBox = require( 'SCENERY/nodes/VBox' );
 
@@ -22,36 +22,45 @@ define( function( require ) {
   var linearString = require( 'string!CURVE_FITTING/linear' );
   var quadraticString = require( 'string!CURVE_FITTING/quadratic' );
 
-  // constants
-  var TEXT_OPTIONS = {
-    font: new PhetFont( 12 )
-  };
-  var RADIO_BUTTON_OPTIONS = {
-    radius: 8,
-    touchAreaXDilation: 5
-  };
-
   /**
-   * @param {Property.<number>} orderProperty
+   * @param {Property.<number>} orderProperty - order of the polynomial that describes the curve
    * @param {Object} [options]
    * @constructor
    */
   function CurveOrderPanel( orderProperty, options ) {
 
-    // 3 radio buttons
-    var linearButton = new AquaRadioButton( orderProperty, 1, new Text( linearString, TEXT_OPTIONS ), RADIO_BUTTON_OPTIONS );
-    var cubicButton = new AquaRadioButton( orderProperty, 2, new Text( cubicString, TEXT_OPTIONS ), RADIO_BUTTON_OPTIONS );
-    var quadraticButton = new AquaRadioButton( orderProperty, 3, new Text( quadraticString, TEXT_OPTIONS ), RADIO_BUTTON_OPTIONS );
+    // radio buttons
+    var linearButton = createRadioButton( orderProperty, 1, linearString );
+    var cubicButton = createRadioButton( orderProperty, 2, cubicString );
+    var quadraticButton = createRadioButton( orderProperty, 3, quadraticString );
 
     // vertical layout
     var contentNode = new VBox( {
-      children: [ linearButton, cubicButton, quadraticButton ],
       align: 'left',
-      spacing: 5
+      spacing: 5,
+      children: [
+        linearButton,
+        cubicButton,
+        quadraticButton
+      ]
     } );
 
     Panel.call( this, contentNode, options );
   }
+
+  /**
+   * Creates a radio button for this panel.
+   *
+   * @param {Property} property
+   * @param {*} value
+   * @param {string} label
+   * @returns {AquaRadioButton}
+   */
+  var createRadioButton = function( property, value, label ) {
+    return new AquaRadioButton( property, value,
+      new Text( label, CurveFittingConstants.CONTROL_TEXT_OPTIONS ),
+      CurveFittingConstants.RADIO_BUTTON_OPTIONS );
+  };
 
   curveFitting.register( 'CurveOrderPanel', CurveOrderPanel );
 
