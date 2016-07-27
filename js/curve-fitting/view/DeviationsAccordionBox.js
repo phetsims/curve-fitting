@@ -104,7 +104,8 @@ define( function( require ) {
     // r^2 value
     var rSquareValueNode = new Text( '0.00', {
       font: TEXT_PANEL_FONT,
-      textAlign: 'left'
+      textAlign: 'left',
+      maxWidth: 22
     } );
 
     var valuesBox = new HBox( {
