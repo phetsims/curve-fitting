@@ -26,6 +26,8 @@ define( function( require ) {
 
     PropertySet.call( this, {
 
+      //TODO rather than a, b, c, this coefficients, an array of coefficients, indexed by order
+      //TODO rather than d, this should be constantTerm
       // @public
       a: 0, // coefficient for x^3 term
       b: 0, // coefficient for x^2 term
@@ -159,6 +161,7 @@ define( function( require ) {
      * @public
      */
     getYValueAt: function( x ) {
+      //TODO this should use orderProperty to determine which coefficients are relevant
       return this.a * Math.pow( x, 3 ) + this.b * Math.pow( x, 2 ) + this.c * ( x  ) + this.d;
     },
 
