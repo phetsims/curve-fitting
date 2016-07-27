@@ -38,7 +38,7 @@ define( function( require ) {
       //TODO rename to dragging
       isUserControlled: options.isUserControlled, // flag that controls if the user grabbed this
 
-      //TODO rename to animating
+      //TODO rename to animating, doesn't need to be a property
       isAnimating: false, // flag to control if it is animating
 
       //TODO rename, too vague
