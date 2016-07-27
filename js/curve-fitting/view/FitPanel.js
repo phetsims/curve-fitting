@@ -62,6 +62,7 @@ define( function( require ) {
     // create and add equation node
     content.addChild( new EquationFitNode( orderProperty ) );
 
+    //TODO why is it necessary?
     // it's necessary to be able to enable and disable sliders
     var aSliderEnabledProperty = new Property( true );
     var bSliderEnabledProperty = new Property( true );
