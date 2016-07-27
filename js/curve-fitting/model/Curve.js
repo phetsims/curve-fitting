@@ -26,59 +26,69 @@ define( function( require ) {
 
     PropertySet.call( this, {
 
+      // @public
       a: 0, // coefficient for x^3 term
       b: 0, // coefficient for x^2 term
       c: 0, // coefficient for x^1 term
       d: 0, // polynomial constant term
-
       chiSquare: 0, // X^2 deviation value TODO rename to chiSquared?
       rSquare: 0, // r^2 deviation value TODO rename to rSquared?
-
-      //TODO move this view-specific Property to CurveFittingScreenView
-      isVisible: false // curve flag visibility
+      isVisible: false // curve flag visibility TODO move this view-specific Property to CurveFittingScreenView
     } );
 
     // @private
     this.orderProperty = orderProperty;
     this.fitProperty = fitProperty;
 
-    // Contains points for plotting curve. Only point above graph will be taken for calculations. Order doesn't matter.
+    // @public Points for plotting curve. Only point above graph will be taken for calculations. Order doesn't matter.
     this.points = new ObservableArray();
 
-    // special object to getting fit for points
+    // @private creates a fit for points
     this.fitMaker = new FitMaker();
 
+    // @public (read-only)
     this.updateCurveEmitter = new Emitter();
 
-    this._updateFitBinded = this.updateFit.bind( this ); // @private
+    this.updateFitBinded = this.updateFit.bind( this ); // @private
 
+    // Add internal listeners for adding and removing points
     this.points.addListeners( this.addPoint.bind( this ), this.removePoint.bind( this ) );
 
-    orderProperty.lazyLink( function( order ) {
-      // store the value of a for later use
-      if ( order < 3 ) {
-        self._storage.a = self.a;
-        self.a = 0;
-      }
-      else { // set the value of a to what it was previously
+    orderProperty.lazyLink( function( order, oldOrder ) {
+
+      assert && assert( order >= 1 && order <= 3, 'invalid order: ' + order );
+
+      // save and restore coefficient values
+      if ( order === 3 ) {
         self.a = self._storage.a;
       }
-
-      // store the value of b for later use
-      if ( order < 2 ) {
-        self._storage.b = self.b;
-        self.b = 0;
+      else if ( order === 2 ) {
+        if ( oldOrder === 3 ) {
+          self._storage.a = self.a;
+          self.a = 0;
+        }
+        else {
+          self.b = self._storage.b;
+        }
       }
-      else { // set the value to what it was previously
-        self.b = self._storage.b;
+      else if ( order === 1 ) {
+        if ( oldOrder === 3 ) {
+          self._storage.a = self.a;
+          self.a = 0;
+        }
+        if ( oldOrder >= 2 ) {
+          self._storage.b = self.b;
+          self.b = 0;
+        }
       }
 
       self.updateFit();
     } );
 
     // Storage necessary to store and restore user's adjustable values on call.
-    // Values are putting into storage when user switch to "Best fit". If after that user switch back "Adjustable fit" (without turn on/off
-    // "Curve" between operations) adjustable values will be restored from storage. If "Curve" is turn off then storage values is flush.
+    // Values are putting into storage when user switches to "Best fit".
+    // If after that user switch back "Adjustable fit" (without turn on/off "Curve" between operations)
+    // adjustable values will be restored from storage. If "Curve" is turn off then storage values is flush.
     this._storage = {}; // @private
     setDefaultAdjustableValues( this._storage );
 
@@ -98,10 +108,10 @@ define( function( require ) {
     } );
 
     //TODO This many lazyLink calls looks suspicious, probably making assumption about initial state of sim
-    this.aProperty.lazyLink( this._updateFitBinded );
-    this.bProperty.lazyLink( this._updateFitBinded );
-    this.cProperty.lazyLink( this._updateFitBinded );
-    this.dProperty.lazyLink( this._updateFitBinded );
+    this.aProperty.lazyLink( this.updateFitBinded );
+    this.bProperty.lazyLink( this.updateFitBinded );
+    this.cProperty.lazyLink( this.updateFitBinded );
+    this.dProperty.lazyLink( this.updateFitBinded );
 
     fitProperty.lazyLink( function( fit, oldFit ) {
       if ( fit === 'best' ) {
@@ -123,12 +133,13 @@ define( function( require ) {
 
   curveFitting.register( 'Curve', Curve );
 
+  //Why don't these values come from aProperty.initialValue, bProperty.initialValue, etc?
   // set default adjustable values
   function setDefaultAdjustableValues( obj ) {
     obj.a = 0;
     obj.b = 0;
     obj.c = 0;
-    obj.d = 2.7;
+    obj.d = 2.7; //TODO why this magic value? Why isn't this the value used to initialize dProperty?
   }
 
   return inherit( PropertySet, Curve, {
@@ -174,9 +185,9 @@ define( function( require ) {
       var self = this;
 
       // These are unlinked in removePoint
-      point.positionProperty.link( this._updateFitBinded );
-      point.isInsideGraphProperty.lazyLink( this._updateFitBinded );
-      point.deltaProperty.link( this._updateFitBinded );
+      point.positionProperty.link( this.updateFitBinded );
+      point.isInsideGraphProperty.lazyLink( this.updateFitBinded );
+      point.deltaProperty.link( this.updateFitBinded );
 
       // remove points when they have returned to the bucket
       point.returnToOriginEmitter.addListener( function removePointListener() {
@@ -193,9 +204,9 @@ define( function( require ) {
      */
     removePoint: function( point ) {
 
-      point.positionProperty.unlink( this._updateFitBinded );
-      point.isInsideGraphProperty.unlink( this._updateFitBinded );
-      point.deltaProperty.unlink( this._updateFitBinded );
+      point.positionProperty.unlink( this.updateFitBinded );
+      point.isInsideGraphProperty.unlink( this.updateFitBinded );
+      point.deltaProperty.unlink( this.updateFitBinded );
 
       this.updateFit();
     },
@@ -206,6 +217,7 @@ define( function( require ) {
      * @private
      */
     updateRAndChiSquared: function() {
+
       var self = this;
       var points = this.getPoints();
       var weightSum = 0;
