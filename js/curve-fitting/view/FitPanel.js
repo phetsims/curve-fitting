@@ -120,6 +120,7 @@ define( function( require ) {
 
     // vertical layout
     var contentNode = new VBox( {
+      align: 'left',
       spacing: 5,
       children: [
         radioButtonsBox,

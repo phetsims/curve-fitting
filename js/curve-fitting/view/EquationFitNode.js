@@ -75,7 +75,6 @@ define( function( require ) {
       }
 
       boxNode.addChild( new Text( symbolDString, PARAMETER_TEXT_OPTIONS ) );
-      boxNode.localBounds = boxNode.localBounds.withMinX( boxNode.localBounds.minX + yNode.width - 2 );
       equationTextArray.push( boxNode );
     }
 
