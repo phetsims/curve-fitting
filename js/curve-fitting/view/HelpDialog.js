@@ -15,6 +15,7 @@ define( function( require ) {
   var HStrut = require( 'SCENERY/nodes/HStrut' );
   var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var MathSymbolFont = require( 'SCENERY_PHET/MathSymbolFont' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Text = require( 'SCENERY/nodes/Text' );
   var VBox = require( 'SCENERY/nodes/VBox' );
@@ -24,30 +25,54 @@ define( function( require ) {
 
   // strings
   var numberOfDataPointsString = require( 'string!CURVE_FITTING/numberOfDataPoints' );
-  var numberOfParametersInFitString = require( 'string!CURVE_FITTING/numberOfParametersInFit' );
+  var numberOfParameters1String = require( 'string!CURVE_FITTING/numberOfParameters1' );
+  var numberOfParameters2String = require( 'string!CURVE_FITTING/numberOfParameters2' );
   var theReducedChiSquaredStatisticIsString = require( 'string!CURVE_FITTING/theReducedChiSquaredStatisticIs' );
+  var symbolFString = require( 'string!CURVE_FITTING/symbol.f' );
+  var symbolNString = require( 'string!CURVE_FITTING/symbol.N' );
 
   // constants
-  var DIALOG_FONT = new PhetFont( 14 );
+  var DIALOG_FONT_SIZE = 14;
+  var DIALOG_PLAIN_FONT = new PhetFont( DIALOG_FONT_SIZE );
+  var DIALOG_MATH_FONT = new MathSymbolFont( DIALOG_FONT_SIZE );
+  var TEXT_SPACING = 6;
 
   /**
    * @constructor
    */
   function HelpDialog() {
 
+    var numberOfDataPointsNode = new HBox( {
+      spacing: TEXT_SPACING,
+      children: [
+        new Text( symbolNString, { font: DIALOG_MATH_FONT } ),
+        new Text( numberOfDataPointsString, { font: DIALOG_PLAIN_FONT } )
+      ]
+    } );
+
+    var numberOfParametersNode = new HBox( {
+      spacing: TEXT_SPACING,
+      children: [
+        new Text( symbolFString, { font: DIALOG_MATH_FONT } ),
+        new Text( numberOfParameters1String, { font: DIALOG_PLAIN_FONT } ),
+        new Text( symbolFString, { font: DIALOG_MATH_FONT } ),
+        new Text( numberOfParameters2String, { font: DIALOG_PLAIN_FONT } )
+      ]
+    } );
+
     var contentNode = new VBox( {
       align: 'left',
       spacing: 10,
       children: [
-        new Text( theReducedChiSquaredStatisticIsString, { font: DIALOG_FONT } ),
+        new Text( theReducedChiSquaredStatisticIsString, { font: DIALOG_PLAIN_FONT } ),
         new HBox( {
           children: [
             new HStrut( 20 ),
             new Image( equationHelpImage, { scale: 0.23 } )
           ]
         } ),
-        new Text( numberOfDataPointsString, { font: DIALOG_FONT } ),
-        new Text( numberOfParametersInFitString, { font: DIALOG_FONT } )
+        numberOfDataPointsNode,
+        numberOfParametersNode
       ]
     } );
 
