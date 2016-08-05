@@ -15,11 +15,11 @@ define( function( require ) {
   var BarometerX2Node = require( 'CURVE_FITTING/curve-fitting/view/BarometerX2Node' );
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var HelpDialog = require( 'CURVE_FITTING/curve-fitting/view/HelpDialog' );
   var inherit = require( 'PHET_CORE/inherit' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var Panel = require( 'SUN/Panel' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var ReducedChiSquaredStatisticDialog = require( 'CURVE_FITTING/curve-fitting/view/ReducedChiSquaredStatisticDialog' );
   var SubSupText = require( 'SCENERY_PHET/SubSupText' );
   var Text = require( 'SCENERY/nodes/Text' );
   var TextPushButton = require( 'SUN/buttons/TextPushButton' );
@@ -83,7 +83,7 @@ define( function( require ) {
     var helpButton = new TextPushButton( symbolQuestionMarkString, {
       listener: function() {
         if ( !helpDialog ) {
-          helpDialog = new HelpDialog();
+          helpDialog = new ReducedChiSquaredStatisticDialog();
         }
         helpDialog.show();
       },

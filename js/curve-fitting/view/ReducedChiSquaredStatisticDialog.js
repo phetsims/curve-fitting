@@ -1,7 +1,7 @@
 // Copyright 2016, University of Colorado Boulder
 
 /**
- * Help dialog, accessed from the '?' button in the Deviations panel.
+ * Dialog that provides information about the reduced chi-squared statistic.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
@@ -40,7 +40,7 @@ define( function( require ) {
   /**
    * @constructor
    */
-  function HelpDialog() {
+  function ReducedChiSquaredStatisticDialog() {
 
     var numberOfDataPointsNode = new HBox( {
       spacing: TEXT_SPACING,
@@ -82,7 +82,7 @@ define( function( require ) {
     } );
   }
 
-  curveFitting.register( 'HelpDialog', HelpDialog );
+  curveFitting.register( 'ReducedChiSquaredStatisticDialog', ReducedChiSquaredStatisticDialog );
 
-  return inherit( Dialog, HelpDialog );
+  return inherit( Dialog, ReducedChiSquaredStatisticDialog );
 } );
