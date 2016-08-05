@@ -33,8 +33,8 @@ define( function( require ) {
       b: 0, // coefficient for x^2 term
       c: 0, // coefficient for x^1 term
       d: 0, // polynomial constant term
-      chiSquare: 0, // X^2 deviation value TODO rename to chiSquared?
-      rSquare: 0, // r^2 deviation value TODO rename to rSquared?
+      chiSquare: 0, // X^2 deviation value TODO rename to chiSquared
+      rSquare: 0, // r^2 deviation value TODO rename to rSquared
       isVisible: false // curve flag visibility TODO move this view-specific Property to CurveFittingScreenView
     } );
 
