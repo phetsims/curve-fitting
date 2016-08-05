@@ -5,6 +5,6 @@
     ],
     "projectURL": "http://phet.colorado.edu",
     "license": "contact phethelp@colorado.edu",
-    "notes": "generated from latex, see https://github.com/phetsims/curve-fitting/issues/5"
+    "notes": "generated using Latex, see https://github.com/phetsims/curve-fitting/issues/5"
   }
 }
