@@ -42,7 +42,8 @@ define( function( require ) {
     this.orderProperty = orderProperty;
     this.fitProperty = fitProperty;
 
-    // @public Points for plotting curve. Only point above graph will be taken for calculations. Order doesn't matter.
+    // @public Points for plotting curve. This includes points that are outside the bounds of the graph, so
+    // be careful to call getPoints when using points in calculations. Order of the points doesn't matter.
     this.points = new ObservableArray();
 
     // @private creates a fit for points
