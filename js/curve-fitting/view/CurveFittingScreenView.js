@@ -58,7 +58,7 @@ define( function( require ) {
     var graphAreaWidth = controlPanels.left - deviationsAccordionBox.right - GRAPH_PADDING_LEFT_RIGHT * 2;
     var graphCenterX = 0.5 * (controlPanels.left + deviationsAccordionBox.right);
     var graphCenterY = this.layoutBounds.centerY;
-    var scale = graphAreaWidth / GRAPH_MODEL_BOUNDS.width; //TODO computation mixes view and model coordinate frames!
+    var scale = graphAreaWidth / GRAPH_MODEL_BOUNDS.width;
     var modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping( new Vector2( 0, 0 ), new Vector2( graphCenterX, graphCenterY ), scale );
 
     // create bucket and graph area node
