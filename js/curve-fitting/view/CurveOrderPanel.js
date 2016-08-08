@@ -31,8 +31,8 @@ define( function( require ) {
 
     // radio buttons
     var linearButton = createRadioButton( orderProperty, 1, linearString );
-    var cubicButton = createRadioButton( orderProperty, 2, cubicString );
-    var quadraticButton = createRadioButton( orderProperty, 3, quadraticString );
+    var quadraticButton = createRadioButton( orderProperty, 2, quadraticString );
+    var cubicButton = createRadioButton( orderProperty, 3, cubicString );
 
     // vertical layout
     var contentNode = new VBox( {
@@ -40,8 +40,8 @@ define( function( require ) {
       spacing: 5,
       children: [
         linearButton,
-        cubicButton,
-        quadraticButton
+        quadraticButton,
+        cubicButton
       ]
     } );
 
