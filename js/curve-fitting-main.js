@@ -19,7 +19,7 @@ define( function( require ) {
   var simOptions = {
     credits: {
       leadDesign: 'Michael Dubson, Amanda McGarry',
-      softwareDevelopment: 'Mike Dubson, Chris Malley, Jonathan Olson, Martin Veillette',
+      softwareDevelopment: 'Michael Dubson, Chris Malley, Jonathan Olson, Martin Veillette',
       team: 'Trish Loeblein, Ariel Paul, Kathy Perkins',
       qualityAssurance: '', //TODO see #34
       graphicArts: '', //TODO see #34
