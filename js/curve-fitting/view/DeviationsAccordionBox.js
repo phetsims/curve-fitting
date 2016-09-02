@@ -49,7 +49,7 @@ define( function( require ) {
   /**
    * @param {Property.<boolean>} expandedProperty - is this panel expanded?
    * @param {Curve} curve
-   * @param {Object} [options] for VBox TODO this should be the options for this type!
+   * @param {Object} [options]
    * @constructor
    */
   function DeviationsAccordionBox( expandedProperty, curve, options ) {
@@ -149,7 +149,7 @@ define( function( require ) {
     // unlink unnecessary, present for the lifetime of the sim
     curve.rSquareProperty.link( function( rSquare ) {
 
-      //TODO this assertion fails with alarming regularity
+      //TODO this assertion fails with alarming regularity, it should be investigated
       // assert && assert( rSquare >= 0 && rSquare <= 1, 'rSquare out of range: ' + rSquare );
 
       // rSquare can only be between 0 and 1 so it will always need 2 decimal points.
