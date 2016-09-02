@@ -45,7 +45,7 @@ define( function( require ) {
       assert && assert( _.contains( VALID_FIT_VALUES, fit ), 'invalid fit: ' + fit );
     } );
 
-    //TODO why is this in the model? And why is this value not consistently obtained from this field?
+    //TODO this field is not used consistently, see https://github.com/phetsims/curve-fitting/issues/100
     // @public (read-only)
     this.graphModelBounds = CurveFittingConstants.GRAPH_MODEL_BOUNDS;
 

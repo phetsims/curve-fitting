@@ -32,7 +32,7 @@ define( function( require ) {
     PropertySet.call( this, {
       position: options.position,
 
-      //TODO why is this needed?
+      //TODO describe why this is needed
       isInsideGraph: false, // {boolean} is the point inside the graph?
 
       dragging: options.dragging, // {boolean} is the user dragging the point?
@@ -41,7 +41,7 @@ define( function( require ) {
       delta: 0.8 // delta variation of point
     } );
 
-    //TODO why is this needed?
+    //TODO described why this flag is need (if it's in fact really needed)
     // @private is the point animating?
     this.animating = false;
 

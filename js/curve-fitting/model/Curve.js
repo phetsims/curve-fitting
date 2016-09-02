@@ -33,9 +33,15 @@ define( function( require ) {
       b: 0, // coefficient for x^2 term
       c: 0, // coefficient for x^1 term
       d: 0, // polynomial constant term
-      chiSquare: 0, // X^2 deviation value TODO rename to chiSquared
-      rSquare: 0, // r^2 deviation value TODO rename to rSquared
-      isVisible: false // curve flag visibility TODO move this view-specific Property to CurveFittingScreenView
+
+      //TODO rename to chiSquared
+      chiSquare: 0, // X^2 deviation value
+
+      //TODO rename to rSquared
+      rSquare: 0, // r^2 deviation value
+
+      //TODO this is a view-specific Property, move to CurveFittingScreenView
+      isVisible: false // curve flag visibility
     } );
 
     // @private
@@ -125,25 +131,26 @@ define( function( require ) {
         }
 
         self.updateFit();
-        self.updateCurveEmitter.emit(); //TODO this is already called by updateFit
+        self.updateCurveEmitter.emit(); //TODO this is already called by updateFit, may be causing an unnecessary update
       }
       else if ( fit === 'adjustable' ) {
         // restore adjustable values from storage
-        self.restoreValuesFromStorage(); //TODO shouldn't this call updateCurveEmitter.emit?
-        self.updateCurveEmitter.emit(); //TODO should this be called when curve is not visible?
+        self.restoreValuesFromStorage();
+        self.updateCurveEmitter.emit(); //TODO is this being called when the curve is not visible?
       }
     } );
   }
 
   curveFitting.register( 'Curve', Curve );
 
-  //Why don't these values come from aProperty.initialValue, bProperty.initialValue, etc?
   // set default adjustable values
   function setDefaultAdjustableValues( obj ) {
+
+    //TODO Why aren't we just resetting these Properties?
     obj.a = 0;
     obj.b = 0;
     obj.c = 0;
-    obj.d = 2.7; //TODO why this magic value? Why isn't this the value used to initialize dProperty?
+    obj.d = 2.7; //TODO why this magic value? dProperty should be initialized to this value
   }
 
   return inherit( PropertySet, Curve, {
