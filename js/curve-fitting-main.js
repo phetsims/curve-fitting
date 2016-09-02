@@ -16,13 +16,14 @@ define( function( require ) {
   // strings
   var curveFittingTitleString = require( 'string!CURVE_FITTING/curve-fitting.title' );
 
+  //TODO finalize credits with team leader, see https://github.com/phetsims/curve-fitting/issues/34
   var simOptions = {
     credits: {
       leadDesign: 'Michael Dubson, Amanda McGarry',
       softwareDevelopment: 'Michael Dubson, Chris Malley, Jonathan Olson, Martin Veillette',
       team: 'Trish Loeblein, Ariel Paul, Kathy Perkins',
-      qualityAssurance: '', //TODO see #34
-      graphicArts: '', //TODO see #34
+      qualityAssurance: '',
+      graphicArts: '',
       thanks: 'Thanks to Mobile Learner Labs for working with the PhET development team\nto convert this simulation to HTML5.'
     }
   };
