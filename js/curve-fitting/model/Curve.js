@@ -96,7 +96,7 @@ define( function( require ) {
     setDefaultAdjustableValues( this._storage );
 
     //TODO unlink?
-    //TODO should toggling 'Curve' check box reset the adjustable values?
+    //TODO this is not the desired behavior, see https://github.com/phetsims/curve-fitting/issues/89
     this.isVisibleProperty.link( function( isVisible ) {
       if ( isVisible ) {
         self.updateFit();
