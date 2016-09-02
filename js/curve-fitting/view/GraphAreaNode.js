@@ -105,7 +105,7 @@ define( function( require ) {
       var d = curve.d;
       var x;
 
-      //TODO this expression looks suspect, or at least overly complicated
+      //TODO This expression looks suspect, or at least overly complicated. Simplify or document.
       //TODO curve.fitProperty is private, should not be assigned here!!
       if ( ( points.length > 1 || curve.fitProperty.value === 'adjustable' ) && !isNaN( a ) && !isNaN( b ) && !isNaN( c ) && !isNaN( d ) ) {
 
