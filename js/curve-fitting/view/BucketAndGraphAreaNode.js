@@ -1,6 +1,6 @@
 // Copyright 2015-2016, University of Colorado Boulder
 
-//TODO this combines 3 UI components in a bizarre manner that makes model-view transforms brittle
+//TODO redesign this, see https://github.com/phetsims/curve-fitting/issues/99
 /**
  * Bucket node and graph area node in 'Curve Fitting' simulation.
  *
