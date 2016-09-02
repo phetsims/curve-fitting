@@ -167,7 +167,7 @@ define( function( require ) {
       return this.a * Math.pow( x, 3 ) + this.b * Math.pow( x, 2 ) + this.c * ( x  ) + this.d;
     },
 
-    //TODO give this a better name
+    //TODO give this a better name, like getPointsOnGraph
     /**
      * Gets all points that are within the graph bounds.
      *
