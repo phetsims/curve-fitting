@@ -52,7 +52,8 @@ define( function( require ) {
     curveVisibleProperty.link( function( isCurveVisible ) {
       residualsCheckBox.enabled = isCurveVisible;
       if ( !isCurveVisible ) {
-        residualsVisibleProperty.set( false ); //TODO really?
+        //TODO not desired behavior, see https://github.com/phetsims/curve-fitting/issues/89
+        residualsVisibleProperty.set( false );
       }
     } );
   }

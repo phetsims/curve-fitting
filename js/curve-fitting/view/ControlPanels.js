@@ -18,7 +18,6 @@ define( function( require ) {
   var VBox = require( 'SCENERY/nodes/VBox' );
   var ViewOptionsPanel = require( 'CURVE_FITTING/curve-fitting/view/ViewOptionsPanel' );
 
-  //TODO revisit this
   // constants
   var PANEL_OPTIONS = {
     cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,

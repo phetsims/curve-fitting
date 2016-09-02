@@ -1,7 +1,7 @@
 // Copyright 2015-2016, University of Colorado Boulder
 
 //TODO rename, this is an accordion box, not a panel
-//TODO combines things that should be separate
+//TODO this type combines things that should be separate
 /**
  * Node with equation parameters in 'Curve Fitting' simulation.
  *

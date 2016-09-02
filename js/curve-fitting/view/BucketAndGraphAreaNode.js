@@ -29,11 +29,12 @@ define( function( require ) {
    * @param {Property.<boolean>} valuesVisibleProperty
    * @param {Property.<boolean>} equationPanelExpandedProperty
    * @param {ModelViewTransform2} modelViewTransform
-   * @param {Object} [options] for graph node TODO should be options for this type!
+   * @param {Object} [options]
    * @constructor
    */
   function BucketAndGraphAreaNode( curve, bucket, orderProperty, graphBounds, residualsVisibleProperty, valuesVisibleProperty, equationPanelExpandedProperty, modelViewTransform, options ) {
 
+    //TODO options should not be passed to supertype this early, call this.mutate( options ) at end of constructor
     Node.call( this, options );
 
     var self = this;
