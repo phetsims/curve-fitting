@@ -41,7 +41,7 @@ define( function( require ) {
       delta: 0.8 // delta variation of point
     } );
 
-    //TODO described why this flag is need (if it's in fact really needed)
+    //TODO describe why this flag is need (if it's in fact really needed)
     // @private is the point animating?
     this.animating = false;
 
