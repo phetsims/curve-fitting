@@ -98,12 +98,10 @@ define( function( require ) {
       },
 
       translate: function( translationParams ) {
-        //TODO replace this type of assignment with point.positionProperty.set
         point.position = point.position.plus( modelViewTransform.viewToModelDelta( translationParams.delta ) );
       },
 
       end: function() {
-        //TODO replace this type of assignment with point.draggingProperty.set
         point.dragging = false;
         point = null;
       }
