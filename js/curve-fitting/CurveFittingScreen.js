@@ -15,17 +15,11 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Screen = require( 'JOIST/Screen' );
 
-  // strings
-  var curveFittingTitleString = require( 'string!CURVE_FITTING/curve-fitting.title' );
-
   /**
    * @constructor
    */
   function CurveFittingScreen() {
-
     Screen.call( this,
-      curveFittingTitleString,
-      null, // single-screen sim, no icon necessary
       function() { return new CurveFittingModel(); },
       function( model ) { return new CurveFittingScreenView( model ); },
       { backgroundColor: 'rgb( 187, 230, 246 )' }
