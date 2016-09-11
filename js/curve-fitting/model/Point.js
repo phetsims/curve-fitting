@@ -96,7 +96,7 @@ define( function( require ) {
           self.returnToOriginEmitter.emit();
         } );
 
-      animationTween.start();
+      animationTween.start( phet.joist.elapsedTime );
     }
   } );
 } );
