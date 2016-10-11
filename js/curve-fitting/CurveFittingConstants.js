@@ -43,6 +43,7 @@ define( function( require ) {
     PANEL_MARGIN: 10,
     PANEL_WIDTH: 130,
     PANEL_MAX_WIDTH: 151,
+    PANEL_MIN_WIDTH: 151,
 
     RADIO_BUTTON_OPTIONS: {
       radius: 8,

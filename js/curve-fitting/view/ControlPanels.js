@@ -24,7 +24,8 @@ define( function( require ) {
     fill: CurveFittingConstants.PANEL_BACKGROUND_COLOR,
     xMargin: CurveFittingConstants.PANEL_MARGIN,
     yMargin: CurveFittingConstants.PANEL_MARGIN,
-    maxWidth: CurveFittingConstants.PANEL_MAX_WIDTH
+    maxWidth: CurveFittingConstants.PANEL_MAX_WIDTH,
+    minWidth: CurveFittingConstants.PANEL_MIN_WIDTH,
   };
 
   /**
