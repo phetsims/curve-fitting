@@ -107,14 +107,6 @@ define( function( require ) {
       if ( isVisible ) {
         self.updateFit();
       }
-      else if ( fitProperty.value === 'best' ) {
-        // flush storage values
-        setDefaultAdjustableValues( self._storage );
-      }
-      else if ( fitProperty.value === 'adjustable' ) {
-        // set default values
-        setDefaultAdjustableValues( self );
-      }
     } );
 
     //TODO This many lazyLink calls looks suspicious, probably making assumption about initial state of sim
