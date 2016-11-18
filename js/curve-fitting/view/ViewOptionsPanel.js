@@ -48,6 +48,10 @@ define( function( require ) {
 
     Panel.call( this, contentNode, options );
 
+    // visibility of the curve affects other controls
+    curveVisibleProperty.link( function( isCurveVisible ) {
+      residualsCheckBox.enabled = isCurveVisible;
+    } );
   }
 
   curveFitting.register( 'ViewOptionsPanel', ViewOptionsPanel );
