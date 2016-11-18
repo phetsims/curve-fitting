@@ -151,6 +151,7 @@ define( function( require ) {
     };
 
     curve.isVisibleProperty.linkAttribute( curvePath, 'visible' );
+    curve.isVisibleProperty.linkAttribute( residualsPath, 'visible' ); // when the curve becomes invisible the residual path should too
     orderProperty.lazyLink( updateShape );
     residualsVisibleProperty.link( updateShape );
     curve.updateCurveEmitter.addListener( updateShape );

@@ -48,14 +48,6 @@ define( function( require ) {
 
     Panel.call( this, contentNode, options );
 
-    // visibility of the curve affects other controls
-    curveVisibleProperty.link( function( isCurveVisible ) {
-      residualsCheckBox.enabled = isCurveVisible;
-      if ( !isCurveVisible ) {
-        //TODO not desired behavior, see https://github.com/phetsims/curve-fitting/issues/89
-        residualsVisibleProperty.set( false );
-      }
-    } );
   }
 
   curveFitting.register( 'ViewOptionsPanel', ViewOptionsPanel );
