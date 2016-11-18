@@ -48,9 +48,26 @@ define( function( require ) {
 
     Panel.call( this, contentNode, options );
 
-    // visibility of the curve affects other controls
+    // Saves state of residualsVisibleProperty while the residuals check box is disabled.
+    var wereResidualsVisible = residualsVisibleProperty.get();
+
+    // Visibility of the curve affects other controls.
     curveVisibleProperty.link( function( isCurveVisible ) {
+
+      // Enable residuals check box when curve is checked.
       residualsCheckBox.enabled = isCurveVisible;
+
+      if ( isCurveVisible ) {
+
+        // When curve is checked, restore the state of residuals.
+        residualsVisibleProperty.set( wereResidualsVisible );
+      }
+      else {
+
+        // When the curve is unchecked, save state and turn off residuals.
+        wereResidualsVisible = residualsVisibleProperty.get();
+        residualsVisibleProperty.set( false );
+      }
     } );
   }
 
