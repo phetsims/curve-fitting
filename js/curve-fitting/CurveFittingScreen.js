@@ -14,6 +14,8 @@ define( function( require ) {
   var CurveFittingScreenView = require( 'CURVE_FITTING/curve-fitting/view/CurveFittingScreenView' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Screen = require( 'JOIST/Screen' );
+  var Property = require( 'AXON/Property' );
+  var Color = require( 'SCENERY/util/Color' );
 
   /**
    * @constructor
@@ -22,7 +24,7 @@ define( function( require ) {
     Screen.call( this,
       function() { return new CurveFittingModel(); },
       function( model ) { return new CurveFittingScreenView( model ); },
-      { backgroundColor: 'rgb( 187, 230, 246 )' }
+      { backgroundColorProperty: new Property( Color.toColor( 'rgb( 187, 230, 246 )' ) ) }
     );
   }
 
