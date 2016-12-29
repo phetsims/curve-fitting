@@ -83,7 +83,8 @@ define( function( require ) {
       updateChiFill();
     } );
 
-    points.addListeners( updateChiFill, updateChiFill );
+    points.addItemAddedListener( updateChiFill );
+    points.addItemRemovedListener( updateChiFill );
   }
 
   curveFitting.register( 'BarometerX2Node', BarometerX2Node );

@@ -61,7 +61,8 @@ define( function( require ) {
     this.updateFitBinded = this.updateFit.bind( this ); // @private
 
     // Add internal listeners for adding and removing points
-    this.points.addListeners( this.addPoint.bind( this ), this.removePoint.bind( this ) );
+    this.points.addItemAddedListener( this.addPoint.bind( this ) );
+    this.points.addItemRemovedListener( this.removePoint.bind( this ) );
 
     orderProperty.lazyLink( function( order, oldOrder ) {
 
