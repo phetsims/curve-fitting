@@ -42,7 +42,7 @@ define( function( require ) {
       assert && assert( order >= 1 && order <= 3, 'invalid order: ' + order );
     } );
     this.fitProperty.link( function( fit ) {
-      assert && assert( _.contains( VALID_FIT_VALUES, fit ), 'invalid fit: ' + fit );
+      assert && assert( _.includes( VALID_FIT_VALUES, fit ), 'invalid fit: ' + fit );
     } );
 
     //TODO this field is not used consistently, see https://github.com/phetsims/curve-fitting/issues/88
