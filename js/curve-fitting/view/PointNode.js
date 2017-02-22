@@ -313,6 +313,9 @@ define( function( require ) {
   return inherit( Node, PointNode, {
 
     // @public
-    dispose: function() { this.disposePointNode(); }
+    dispose: function() {
+      this.disposePointNode();
+      Node.prototype.dispose.call( this );
+    }
   } );
 } );
