@@ -73,10 +73,10 @@ define( function( require ) {
 
     axisShape.moveTo( graphViewBounds.centerX - TICK_LENGTH, graphViewBounds.minY + AXIS_OPTIONS.lineWidth / 2 );
     axisShape.lineTo( graphViewBounds.centerX + TICK_LENGTH, graphViewBounds.minY + AXIS_OPTIONS.lineWidth / 2 );
-    axisShape.moveTo( graphViewBounds.centerX - TICK_LENGTH, graphViewBounds.height / 4 );
-    axisShape.lineTo( graphViewBounds.centerX + TICK_LENGTH, graphViewBounds.height / 4 );
-    axisShape.moveTo( graphViewBounds.centerX - TICK_LENGTH, 3 * graphViewBounds.height / 4 );
-    axisShape.lineTo( graphViewBounds.centerX + TICK_LENGTH, 3 * graphViewBounds.height / 4 );
+    axisShape.moveTo( graphViewBounds.centerX - TICK_LENGTH, graphViewBounds.centerY + graphViewBounds.height / 4 );
+    axisShape.lineTo( graphViewBounds.centerX + TICK_LENGTH, graphViewBounds.centerY + graphViewBounds.height / 4 );
+    axisShape.moveTo( graphViewBounds.centerX - TICK_LENGTH, graphViewBounds.centerY - graphViewBounds.height / 4 );
+    axisShape.lineTo( graphViewBounds.centerX + TICK_LENGTH, graphViewBounds.centerY - graphViewBounds.height / 4 );
     axisShape.moveTo( graphViewBounds.centerX - TICK_LENGTH, graphViewBounds.maxY - AXIS_OPTIONS.lineWidth / 2 );
     axisShape.lineTo( graphViewBounds.centerX + TICK_LENGTH, graphViewBounds.maxY - AXIS_OPTIONS.lineWidth / 2 );
 
