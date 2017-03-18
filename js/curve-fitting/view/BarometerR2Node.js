@@ -28,11 +28,11 @@ define( function( require ) {
   var TICK_FONT = new PhetFont( 12 );
 
   /**
-   * @param {Property.<number>} rSquareProperty - Property that represents r-deviation.
+   * @param {Property.<number>} rSquaredProperty - Property that represents r-deviation.
    * @param {Object} [options] for graph node.
    * @constructor
    */
-  function BarometerR2Node( rSquareProperty, options ) {
+  function BarometerR2Node( rSquaredProperty, options ) {
 
     // value shown on the barometer
     var valueRectNode = new Rectangle(
@@ -51,8 +51,8 @@ define( function( require ) {
     this.addTicks( [ 0, 0.25, 0.5, 0.75, 1 ] );
 
     //TODO unlink?
-    rSquareProperty.link( function( rSquare ) {
-      valueRectNode.setRectHeight( ( RANGE.min + rSquare / RANGE.max ) * CurveFittingConstants.BAROMETER_HEIGHT );
+    rSquaredProperty.link( function( rSquared ) {
+      valueRectNode.setRectHeight( ( RANGE.min + rSquared / RANGE.max ) * CurveFittingConstants.BAROMETER_HEIGHT );
     } );
   }
 

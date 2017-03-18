@@ -44,12 +44,12 @@ define( function( require ) {
   var UPPER_LIMIT_ARRAY = [ 3.8, 3, 2.6, 2.37, 2.21, 2.1, 2.01, 1.94, 1.88, 1.83, 1.57, 1.35, 1.24, 1.07 ];
 
   /**
-   * @param {Property.<number>} chiSquareProperty - Property that represents x-deviation.
+   * @param {Property.<number>} chiSquaredProperty - Property that represents x-deviation.
    * @param {ObservableArray.<Point>} points - Array of points for plotting curve.
    * @param {Object} [options] for graph node.
    * @constructor
    */
-  function BarometerX2Node( chiSquareProperty, points, options ) {
+  function BarometerX2Node( chiSquaredProperty, points, options ) {
     var valueRectNode = new Rectangle( -2 * CurveFittingConstants.BAROMETER_TICK_WIDTH / 3 - 0.5, 0, 2 * CurveFittingConstants.BAROMETER_TICK_WIDTH / 3, 0, { fill: CurveFittingConstants.BLUE_COLOR } );
     valueRectNode.rotation = Math.PI;
 
@@ -74,12 +74,12 @@ define( function( require ) {
     this.addTicks( [ 0, 0.5, 1, 2, 3, 10, 30, 100 ] );
 
     var updateChiFill = function() {
-      valueRectNode.setFill( getChiFillFromChiValue( chiSquareProperty.value, points.length ) );
+      valueRectNode.setFill( getChiFillFromChiValue( chiSquaredProperty.value, points.length ) );
     };
 
     //TODO unlink?
-    chiSquareProperty.link( function( chiSquare ) {
-      valueRectNode.setRectHeight( valueToYPosition( chiSquare ) );
+    chiSquaredProperty.link( function( chiSquared ) {
+      valueRectNode.setRectHeight( valueToYPosition( chiSquared ) );
       updateChiFill();
     } );
 

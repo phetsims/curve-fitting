@@ -71,10 +71,10 @@ define( function( require ) {
     }, options );
 
     // X^2 barometer
-    var barometerX2 = new BarometerX2Node( curve.chiSquareProperty, curve.points );
+    var barometerX2 = new BarometerX2Node( curve.chiSquaredProperty, curve.points );
 
     // r^2 barometer
-    var barometerR2 = new BarometerR2Node( curve.rSquareProperty );
+    var barometerR2 = new BarometerR2Node( curve.rSquaredProperty );
 
     // help dialog, created on demand
     var helpDialog = null;
@@ -95,14 +95,14 @@ define( function( require ) {
     } );
 
     // X^2 value
-    var chiSquareValueNode = new Text( '0.00', {
+    var chiSquaredValueNode = new Text( '0.00', {
       font: TEXT_PANEL_FONT,
       textAlign: 'left',
       maxWidth: 22
     } );
 
     // r^2 value
-    var rSquareValueNode = new Text( '0.00', {
+    var rSquaredValueNode = new Text( '0.00', {
       font: TEXT_PANEL_FONT,
       textAlign: 'left',
       maxWidth: 22
@@ -115,11 +115,11 @@ define( function( require ) {
 
         //TODO 'X' does not match equation font, not italic
         new SubSupText( symbolChiString + '<sup>2</sup>=', { font: TEXT_FONT } ),
-        new Panel( chiSquareValueNode, VALUE_PANEL_OPTIONS ),
+        new Panel( chiSquaredValueNode, VALUE_PANEL_OPTIONS ),
 
         //TODO 'r' does not match equation font, not italic
         new SubSupText( symbolRString + '<sup>2</sup>=', { font: TEXT_FONT } ),
-        new Panel( rSquareValueNode, VALUE_PANEL_OPTIONS )
+        new Panel( rSquaredValueNode, VALUE_PANEL_OPTIONS )
       ]
     } );
 
@@ -139,21 +139,21 @@ define( function( require ) {
     } );
 
     // unlink unnecessary, present for the lifetime of the sim
-    curve.chiSquareProperty.link( function( chiSquare ) {
+    curve.chiSquaredProperty.link( function( chiSquared ) {
 
-      // If chiSquare is greater than 10 we have a bad fit so less precision is needed.
-      // If chiSquare if greater than 100 we have a really bad fit and decimals are inconsequential.
-      chiSquareValueNode.setText( formatNumber( chiSquare, 2 ) );
+      // If chiSquared is greater than 10 we have a bad fit so less precision is needed.
+      // If chiSquared if greater than 100 we have a really bad fit and decimals are inconsequential.
+      chiSquaredValueNode.setText( formatNumber( chiSquared, 2 ) );
     } );
 
     // unlink unnecessary, present for the lifetime of the sim
-    curve.rSquareProperty.link( function( rSquare ) {
+    curve.rSquaredProperty.link( function( rSquared ) {
 
       //TODO this assertion fails with alarming regularity, it should be investigated
-      // assert && assert( rSquare >= 0 && rSquare <= 1, 'rSquare out of range: ' + rSquare );
+      // assert && assert( rSquared >= 0 && rSquared <= 1, 'rSquared out of range: ' + rSquared );
 
-      // rSquare can only be between 0 and 1 so it will always need 2 decimal points.
-      rSquareValueNode.setText( formatNumber( rSquare, 2 ) );
+      // rSquared can only be between 0 and 1 so it will always need 2 decimal points.
+      rSquaredValueNode.setText( formatNumber( rSquared, 2 ) );
     } );
 
     AccordionBox.call( this, content, options );

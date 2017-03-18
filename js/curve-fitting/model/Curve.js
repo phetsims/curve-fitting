@@ -34,11 +34,9 @@ define( function( require ) {
       c: 0, // coefficient for x^1 term
       d: 0, // polynomial constant term
 
-      //TODO rename to chiSquared
-      chiSquare: 0, // X^2 deviation value
+      chiSquared: 0, // X^2 deviation value
 
-      //TODO rename to rSquared
-      rSquare: 0, // r^2 deviation value
+      rSquared: 0, // r^2 deviation value
 
       //TODO this is a view-specific Property, move to CurveFittingScreenView
       isVisible: false // curve flag visibility
@@ -236,11 +234,11 @@ define( function( require ) {
       var yAt;
       var weight;
       var numberOfPoints = points.length; //  number of points in the array
-      var rSquare;
+      var rSquared;
 
       if ( numberOfPoints < 2 ) {
-        // rSquare does not have any meaning, set to zero
-        rSquare = 0;
+        // rSquared does not have any meaning, set to zero
+        rSquared = 0;
       }
       else {
         points.forEach( function( point ) {
@@ -265,27 +263,27 @@ define( function( require ) {
         var yAtyAverage = yAtySum / denominator; // weighted average of the <yat_i yat_i> correlation
 
         // weighted value of r square
-        rSquare = 1 - ((yyAverage - 2 * yAtyAverage + yAtyAtAverage) /
+        rSquared = 1 - ((yyAverage - 2 * yAtyAverage + yAtyAtAverage) /
                        (yyAverage - yAverage * yAverage));
       }
 
-      // rSquare can be negative if the curve fitting is done by the user.
-      if ( rSquare < 0 || isNaN( rSquare ) ) {
-        this.rSquare = 0;
+      // rSquared can be negative if the curve fitting is done by the user.
+      if ( rSquared < 0 || isNaN( rSquared ) ) {
+        this.rSquared = 0;
       }
       else {
-        this.rSquare = rSquare;
+        this.rSquared = rSquared;
       }
 
-      // calculation of chiSquare
+      // calculation of chiSquared
       var order = this.orderProperty.value;
       var degreesOfFreedom = numberOfPoints - order - 1;
 
       if ( numberOfPoints > order + 1 ) {
-        this.chiSquare = (yySum - 2 * yAtySum + yAtyAtSum) / degreesOfFreedom;
+        this.chiSquared = (yySum - 2 * yAtySum + yAtyAtSum) / degreesOfFreedom;
       }
       else {
-        this.chiSquare = 0;
+        this.chiSquared = 0;
       }
     },
 
