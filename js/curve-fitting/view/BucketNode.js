@@ -19,7 +19,16 @@ define( function( require ) {
 
   // constants
   var POINT_POSITIONS = [
-    { x: -33, y: 4 },
+    { x: -3, y: 10 },
+    { x: -25, y: 10 },
+    { x:  -5, y: 8 },
+    { x: -15, y: 8 },
+    { x:  10, y: 9 },
+    { x:  5 , y: 9 },
+    { x:  15, y: 9 },
+    { x:  23, y: 9 },
+    { x:  33, y: 9 },
+    { x: -33, y: 8 },
     { x: -25, y: -1 },
     { x: -19, y: -4 },
     { x: 8, y: -12 },
