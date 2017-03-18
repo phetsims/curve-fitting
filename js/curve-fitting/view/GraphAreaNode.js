@@ -115,6 +115,13 @@ define( function( require ) {
         if ( order === 1 ) {
           curveShape.lineTo( xMax, curve.getYValueAt( xMax ) );
         }
+        else if ( order === 2 ) {
+          // use bezier curve : must determine the control points
+          // note that the curve will not go through the control point.
+          var cpx = (xMin + xMax) / 2;
+          var cpy = (b * xMin + c / 2) * (xMax - xMin) + curve.getYValueAt( xMin );
+          curveShape.quadraticCurveTo( cpx, cpy, xMax, curve.getYValueAt( xMax ) );
+        }
         else {
           for ( x = xMin; x < xMax; x += PLOT_STEP ) {
             curveShape.lineTo( x, curve.getYValueAt( x ) );
