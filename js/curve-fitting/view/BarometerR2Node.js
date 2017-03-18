@@ -50,7 +50,7 @@ define( function( require ) {
 
     this.addTicks( [ 0, 0.25, 0.5, 0.75, 1 ] );
 
-    //TODO unlink?
+    // no need to unlink, present for the lifetime of the sim
     rSquaredProperty.link( function( rSquared ) {
       valueRectNode.setRectHeight( ( RANGE.min + rSquared / RANGE.max ) * CurveFittingConstants.BAROMETER_HEIGHT );
     } );

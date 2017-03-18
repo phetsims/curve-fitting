@@ -77,7 +77,7 @@ define( function( require ) {
       valueRectNode.setFill( getChiFillFromChiValue( chiSquaredProperty.value, points.length ) );
     };
 
-    //TODO unlink?
+    // no need to unlink, present for the lifetime of the sim
     chiSquaredProperty.link( function( chiSquared ) {
       valueRectNode.setRectHeight( valueToYPosition( chiSquared ) );
       updateChiFill();
