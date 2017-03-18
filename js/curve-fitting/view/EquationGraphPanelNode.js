@@ -159,7 +159,7 @@ define( function( require ) {
     equationPanelExpandedProperty.link( updateCParameter );
 
     var updateDParameter = function() {
-      var numberInfo = roundNumber( curve.cProperty.value, 1 );
+      var numberInfo = roundNumber( curve.dProperty.value, 1 );
       dParameterNode.setText( numberInfo.signToString + numberInfo.absoluteNumberToString );
     };
     curve.dProperty.lazyLink( updateDParameter );
