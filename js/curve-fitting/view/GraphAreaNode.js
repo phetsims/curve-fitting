@@ -24,7 +24,6 @@ define( function( require ) {
     lineWidth: 1,
     stroke: 'black'
   };
-  var PLOT_STEP = 0.1;
   var TICK_LENGTH = 7;
 
   /**
@@ -103,7 +102,6 @@ define( function( require ) {
       var b = curve.b;
       var c = curve.c;
       var d = curve.d;
-      var x;
 
       //TODO This expression looks suspect, or at least overly complicated. Simplify or document.
       //TODO curve.fitProperty is private, should not be assigned here!!
@@ -112,22 +110,30 @@ define( function( require ) {
         // update curve path
         curveShape = new Shape();
         curveShape.moveTo( xMin, curve.getYValueAt( xMin ) );
-        if ( order === 1 ) {
-          curveShape.lineTo( xMax, curve.getYValueAt( xMax ) );
-        }
-        else if ( order === 2 ) {
-          // use bezier curve : must determine the control points
-          // note that the curve will not go through the control point.
-          var cpx = (xMin + xMax) / 2;
-          var cpy = (b * xMin + c / 2) * (xMax - xMin) + curve.getYValueAt( xMin );
-          curveShape.quadraticCurveTo( cpx, cpy, xMax, curve.getYValueAt( xMax ) );
-        }
-        else {
-          for ( x = xMin; x < xMax; x += PLOT_STEP ) {
-            curveShape.lineTo( x, curve.getYValueAt( x ) );
-          }
-          // we want to make sure to end on xMax, irrespective of the value of PLOT_STEP
-          curveShape.lineTo( xMax, curve.getYValueAt( xMax ) );
+
+        switch( order ) {
+          case 1:
+            curveShape.lineTo( xMax, curve.getYValueAt( xMax ) );
+            break;
+          case 2:
+            // use bezier curve : must determine the control point
+            // note that the curve will not go through the control point.
+            var cpx = (xMin + xMax) / 2;
+            var cpy = (b * xMin + c / 2) * (xMax - xMin) + curve.getYValueAt( xMin );
+            curveShape.quadraticCurveTo( cpx, cpy, xMax, curve.getYValueAt( xMax ) );
+            break;
+          case 3:
+            // use bezier curve : must determine the control points
+            // note that the curve will not go through the control points.
+            var cp1x = (2 * xMin + xMax) / 3; // one third of the way between xMmin and xMax
+            var cp2x = (xMin + 2 * xMax) / 3; // two third of the way between xMmin and xMax
+            var cp1y = a * xMax * xMin * xMin + b * (xMin + 2 * xMax) * xMin / 3 + c * (2 * xMin + xMax) / 3 + d;
+            var cp2y = a * xMin * xMax * xMax + b * (xMax + 2 * xMin) * xMax / 3 + c * (2 * xMax + xMin) / 3 + d;
+            curveShape.cubicCurveTo( cp1x, cp1y, cp2x, cp2y, xMax, curve.getYValueAt( xMax ) );
+            break;
+          default:
+            assert && assert( true, 'order should be 1 2 or 3');
+            break;
         }
 
         // update path residuals
