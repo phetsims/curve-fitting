@@ -131,9 +131,6 @@ define( function( require ) {
             var cp2y = a * xMin * xMax * xMax + b * (xMax + 2 * xMin) * xMax / 3 + c * (2 * xMax + xMin) / 3 + d;
             curveShape.cubicCurveTo( cp1x, cp1y, cp2x, cp2y, xMax, curve.getYValueAt( xMax ) );
             break;
-          default:
-            assert && assert( true, 'order should be 1 2 or 3');
-            break;
         }
 
         // update path residuals
