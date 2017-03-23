@@ -95,8 +95,6 @@ define( function( require ) {
       var curveShape = null;
       var residualsShape = null;
       var order = orderProperty.value;
-      var xMin = graphBounds.minX;
-      var xMax = graphBounds.maxX;
       var points = curve.getPoints();
       var a = curve.a;
       var b = curve.b;
@@ -107,20 +105,28 @@ define( function( require ) {
       //TODO curve.fitProperty is private, should not be assigned here!!
       if ( ( points.length > 1 || curve.fitProperty.value === 'adjustable' ) && !isNaN( a ) && !isNaN( b ) && !isNaN( c ) && !isNaN( d ) ) {
 
+
+        // convenience variables
+        var xMin = graphBounds.minX; // minimum value of the x range
+        var xMax = graphBounds.maxX; // maximum value of the x range
+        var yAtXMin =  curve.getYValueAt( xMin );
+        var yAtXMax =  curve.getYValueAt( xMax );
+
         // update curve path
         curveShape = new Shape();
-        curveShape.moveTo( xMin, curve.getYValueAt( xMin ) );
+        curveShape.moveTo( xMin, yAtXMin);
 
+        // curve is a line, quadratic or cubic depending on the order of the fit.
         switch( order ) {
           case 1:
-            curveShape.lineTo( xMax, curve.getYValueAt( xMax ) );
+            curveShape.lineTo( xMax, yAtXMax);
             break;
           case 2:
             // use bezier curve : must determine the control point
             // note that the curve will not go through the control point.
-            var cpx = (xMin + xMax) / 2;
-            var cpy = (b * xMin + c / 2) * (xMax - xMin) + curve.getYValueAt( xMin );
-            curveShape.quadraticCurveTo( cpx, cpy, xMax, curve.getYValueAt( xMax ) );
+            var cpx = (xMin + xMax) / 2; // point halfway between xMin and xMax
+            var cpy = (b * xMin + c / 2) * (xMax - xMin) + yAtXMin;
+            curveShape.quadraticCurveTo( cpx, cpy, xMax, yAtXMax );
             break;
           case 3:
             // use bezier curve : must determine the control points
@@ -129,11 +135,11 @@ define( function( require ) {
             var cp2x = (xMin + 2 * xMax) / 3; // two third of the way between xMmin and xMax
             var cp1y = a * xMax * xMin * xMin + b * (xMin + 2 * xMax) * xMin / 3 + c * (2 * xMin + xMax) / 3 + d;
             var cp2y = a * xMin * xMax * xMax + b * (xMax + 2 * xMin) * xMax / 3 + c * (2 * xMax + xMin) / 3 + d;
-            curveShape.cubicCurveTo( cp1x, cp1y, cp2x, cp2y, xMax, curve.getYValueAt( xMax ) );
+            curveShape.cubicCurveTo( cp1x, cp1y, cp2x, cp2y, xMax, yAtXMax );
             break;
         }
 
-        // update path residuals
+        // update path residuals, i.e. vertical line connecting data point to curve
         if ( residualsVisibleProperty.value ) {
           residualsShape = new Shape();
 
