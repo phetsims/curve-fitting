@@ -102,10 +102,12 @@ define( function( require ) {
       var c = curve.c;
       var d = curve.d;
 
+      // ensure the order is 1, 2 or 3, linear, quadratic or cubic
+      assert && assert( order === 1 || order === 2 || order === 3, 'invalid order: ' + order );
+
       //TODO This expression looks suspect, or at least overly complicated. Simplify or document.
       //TODO curve.fitProperty is private, should not be assigned here!!
       if ( ( points.length > 1 || curve.fitProperty.value === 'adjustable' ) && !isNaN( a ) && !isNaN( b ) && !isNaN( c ) && !isNaN( d ) ) {
-
 
         // convenience variables
         var xMin = graphBounds.minX; // minimum value of the x range
@@ -119,16 +121,6 @@ define( function( require ) {
 
         // curve is a line, quadratic or cubic depending on the order of the fit.
         switch( order ) {
-          case 1:
-            curveShape.lineTo( xMax, yAtXMax );
-            break;
-          case 2:
-            // use bezier curve : must determine the control point
-            // note that the curve will not go through the control point.
-            var cpx = (xMin + xMax) / 2; // point halfway between xMin and xMax
-            var cpy = (b * xMin + c / 2) * (xMax - xMin) + yAtXMin;
-            curveShape.quadraticCurveTo( cpx, cpy, xMax, yAtXMax );
-            break;
           case 3:
             // use bezier curve : must determine the control points
             // note that the curve will not go through the control points.
@@ -137,6 +129,16 @@ define( function( require ) {
             var cp1y = a * xMax * xMin * xMin + b * (xMin + 2 * xMax) * xMin / 3 + c * (2 * xMin + xMax) / 3 + d;
             var cp2y = a * xMin * xMax * xMax + b * (xMax + 2 * xMin) * xMax / 3 + c * (2 * xMax + xMin) / 3 + d;
             curveShape.cubicCurveTo( cp1x, cp1y, cp2x, cp2y, xMax, yAtXMax );
+            break;
+          case 2:
+            // use bezier curve : must determine the control point
+            // note that the curve will not go through the control point.
+            var cpx = (xMin + xMax) / 2; // point halfway between xMin and xMax
+            var cpy = (b * xMin * xMax) + c * (xMax + xMin) / 2 + d;
+            curveShape.quadraticCurveTo( cpx, cpy, xMax, yAtXMax );
+            break;
+          default:
+            curveShape.lineTo( xMax, yAtXMax );
             break;
         }
 
