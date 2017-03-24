@@ -15,7 +15,7 @@ define( function( require ) {
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var Dimension2 = require( 'DOT/Dimension2' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var PropertySet = require( 'AXON/PropertySet' );
+  var Property = require( 'AXON/Property' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // constants
@@ -30,12 +30,11 @@ define( function( require ) {
    */
   function CurveFittingModel() {
 
-    PropertySet.call( this, {
+    // @public {Property.<number>} order of the polynomial that describes the curve, valid values are 1, 2, 3
+    this.orderProperty = new Property( 1 );
 
-      // @public
-      order: 1, // {number} order of the polynomial that describes the curve
-      fit: 'best' // {string} the method of fitting the curve to data points, see VALID_FIT_VALUES
-    } );
+    // @public {Property.<string>}, the method of fitting the curve to data points, see VALID_FIT_VALUES
+    this.fitProperty = new Property( 'best' );
 
     // validate Property values
     this.orderProperty.link( function( order ) {
@@ -62,11 +61,12 @@ define( function( require ) {
 
   curveFitting.register( 'CurveFittingModel', CurveFittingModel );
 
-  return inherit( PropertySet, CurveFittingModel, {
+  return inherit( Object, CurveFittingModel, {
 
     // @public
     reset: function() {
-      PropertySet.prototype.reset.call( this );
+      this.orderProperty.reset();
+      this.fitProperty.reset();
       this.curve.reset();
     }
   } );
