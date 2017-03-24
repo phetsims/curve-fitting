@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
   var BucketAndGraphAreaNode = require( 'CURVE_FITTING/curve-fitting/view/BucketAndGraphAreaNode' );
   var ControlPanels = require( 'CURVE_FITTING/curve-fitting/view/ControlPanels' );
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
@@ -16,7 +17,6 @@ define( function( require ) {
   var DeviationsAccordionBox = require( 'CURVE_FITTING/curve-fitting/view/DeviationsAccordionBox' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
-  var Property = require( 'AXON/Property' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var Vector2 = require( 'DOT/Vector2' );
@@ -34,10 +34,17 @@ define( function( require ) {
     ScreenView.call( this, CurveFittingConstants.SCREEN_VIEW_OPTIONS );
 
     // view-specific Properties
-    var  deviationsAccordionBoxExpandedProperty = new Property(true);
-    var  equationPanelExpandedProperty= new Property(true);
-    var  residualsVisibleProperty= new Property(false);
-    var  valuesVisibleProperty = new Property(false);
+    // @public {Property.<boolean>} determines visibility of the "Deviations" accordion box (upper left hand side panel)
+    var deviationsAccordionBoxExpandedProperty = new BooleanProperty( true );
+
+    // @public {Property.<boolean>} determines expansion status of the equation node on graph
+    var equationPanelExpandedProperty = new BooleanProperty( true );
+
+    // @public {Property.<boolean>} determines visibility of residuals
+    var residualsVisibleProperty = new BooleanProperty( false );
+
+    // @public {Property.<boolean>} determines visibility of value
+    var valuesVisibleProperty = new BooleanProperty( false );
 
     // Deviations accordion box, at left of screen
     var deviationsAccordionBox = new DeviationsAccordionBox( deviationsAccordionBoxExpandedProperty, model.curve, {
@@ -69,7 +76,10 @@ define( function( require ) {
     var resetAllButton = new ResetAllButton( {
       listener: function() {
         model.reset();
-        viewProperties.reset();
+        deviationsAccordionBoxExpandedProperty.reset();
+        equationPanelExpandedProperty.reset();
+        residualsVisibleProperty.reset();
+        valuesVisibleProperty.reset();
       }
     } );
     resetAllButton.scale( 0.75 );
