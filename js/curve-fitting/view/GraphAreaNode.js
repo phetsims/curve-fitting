@@ -30,12 +30,13 @@ define( function( require ) {
    * @param {Curve} curve - curve model.
    * @param {Property.<number>} orderProperty
    * @param {Property.<boolean>} residualsVisibleProperty
+   * @param {Property.<boolean>} curveVisibleProperty
    * @param {Bounds2} graphBounds -  bounds of the graph, in model coordinate frame
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Object} [options] for graph node.
    * @constructor
    */
-  function GraphAreaNode( curve, orderProperty, residualsVisibleProperty, graphBounds, modelViewTransform, options ) {
+  function GraphAreaNode( curve, orderProperty, residualsVisibleProperty, curveVisibleProperty, graphBounds, modelViewTransform, options ) {
 
     Node.call( this, options );
 
@@ -109,17 +110,17 @@ define( function( require ) {
         // convenience variables
         var xMin = graphBounds.minX; // minimum value of the x range
         var xMax = graphBounds.maxX; // maximum value of the x range
-        var yAtXMin =  curve.getYValueAt( xMin );
-        var yAtXMax =  curve.getYValueAt( xMax );
+        var yAtXMin = curve.getYValueAt( xMin );
+        var yAtXMax = curve.getYValueAt( xMax );
 
         // update curve path
         curveShape = new Shape();
-        curveShape.moveTo( xMin, yAtXMin);
+        curveShape.moveTo( xMin, yAtXMin );
 
         // curve is a line, quadratic or cubic depending on the order of the fit.
         switch( order ) {
           case 1:
-            curveShape.lineTo( xMax, yAtXMax);
+            curveShape.lineTo( xMax, yAtXMax );
             break;
           case 2:
             // use bezier curve : must determine the control point
@@ -166,7 +167,7 @@ define( function( require ) {
       }
     };
 
-    curve.isVisibleProperty.linkAttribute( curvePath, 'visible' );
+    curveVisibleProperty.linkAttribute( curvePath, 'visible' );
     orderProperty.lazyLink( updateShape );
     residualsVisibleProperty.link( updateShape );
     curve.updateCurveEmitter.addListener( updateShape );

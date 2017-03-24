@@ -60,7 +60,7 @@ define( function( require ) {
     VBox.call( this, options );
 
     // hide panels when curve is not visible
-    curve.isVisibleProperty.link( function( curveVisible ) {
+    curveVisibleProperty.link( function( curveVisible ) {
       orderPanel.visible = fitPanel.visible = curveVisible;
     } );
   }

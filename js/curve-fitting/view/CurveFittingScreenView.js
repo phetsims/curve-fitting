@@ -46,6 +46,9 @@ define( function( require ) {
     // @public {Property.<boolean>} determines visibility of value
     var valuesVisibleProperty = new BooleanProperty( false );
 
+    // @public {Property.<boolean>} determines visibility of the curve fit
+    var curveVisibleProperty = new BooleanProperty( false );
+
     // Deviations accordion box, at left of screen
     var deviationsAccordionBox = new DeviationsAccordionBox( deviationsAccordionBoxExpandedProperty, model.curve, {
       left: 10,
@@ -54,7 +57,7 @@ define( function( require ) {
 
     // All other controls, at right of screen
     var controlPanels = new ControlPanels( model.curve, model.orderProperty, model.fitProperty,
-      model.curve.isVisibleProperty, residualsVisibleProperty, valuesVisibleProperty, {
+      curveVisibleProperty, residualsVisibleProperty, valuesVisibleProperty, {
         right: this.layoutBounds.right - 10,
         top: deviationsAccordionBox.top
       } );
@@ -69,7 +72,7 @@ define( function( require ) {
     // create bucket and graph area node
     var bucketAndGraphAreaNode = new BucketAndGraphAreaNode(
       model.curve, model.bucket, model.orderProperty, model.graphModelBounds,
-      residualsVisibleProperty, valuesVisibleProperty, equationPanelExpandedProperty,
+      residualsVisibleProperty, curveVisibleProperty, valuesVisibleProperty, equationPanelExpandedProperty,
       modelViewTransform );
 
     // create reset all button
@@ -80,6 +83,7 @@ define( function( require ) {
         equationPanelExpandedProperty.reset();
         residualsVisibleProperty.reset();
         valuesVisibleProperty.reset();
+        curveVisibleProperty.reset();
       }
     } );
     resetAllButton.scale( 0.75 );

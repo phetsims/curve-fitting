@@ -36,10 +36,8 @@ define( function( require ) {
 
       chiSquared: 0, // X^2 deviation value
 
-      rSquared: 0, // r^2 deviation value
+      rSquared: 0 // r^2 deviation value
 
-      //TODO this is a view-specific Property, move to CurveFittingScreenView
-      isVisible: false // curve flag visibility
     } );
 
     // @private
@@ -99,14 +97,6 @@ define( function( require ) {
     // adjustable values will be restored from storage. If "Curve" is turn off then storage values is flush.
     this._storage = {}; // @private
     setDefaultAdjustableValues( this._storage );
-
-    //TODO unlink?
-    //TODO this is not the desired behavior, see https://github.com/phetsims/curve-fitting/issues/89
-    this.isVisibleProperty.link( function( isVisible ) {
-      if ( isVisible ) {
-        self.updateFit();
-      }
-    } );
 
     //TODO This many lazyLink calls looks suspicious, probably making assumption about initial state of sim
     this.aProperty.lazyLink( this.updateFitBinded );
@@ -264,7 +254,7 @@ define( function( require ) {
 
         // weighted value of r square
         rSquared = 1 - ((yyAverage - 2 * yAtyAverage + yAtyAtAverage) /
-                       (yyAverage - yAverage * yAverage));
+                        (yyAverage - yAverage * yAverage));
       }
 
       // rSquared can be negative if the curve fitting is done by the user.
@@ -319,21 +309,18 @@ define( function( require ) {
      */
     updateFit: function() {
 
-      //TODO if this is updating only when visible, then I would expect to see setVisible override, probably some workaround instead
-      // update only when curve visible
-      if ( this.isVisible ) {
-        if ( this.fitProperty.value === 'best' ) {
-          var fit = this.fitMaker.getFit( this.getPoints(), this.orderProperty.value );
 
-          this.d = isFinite( fit[ 0 ] ) ? fit[ 0 ] : 0;
-          this.c = isFinite( fit[ 1 ] ) ? fit[ 1 ] : 0;
-          this.b = isFinite( fit[ 2 ] ) ? fit[ 2 ] : 0;
-          this.a = isFinite( fit[ 3 ] ) ? fit[ 3 ] : 0;
-        }
+      if ( this.fitProperty.value === 'best' ) {
+        var fit = this.fitMaker.getFit( this.getPoints(), this.orderProperty.value );
 
-        this.updateRAndChiSquared();
-        this.updateCurveEmitter.emit();
+        this.d = isFinite( fit[ 0 ] ) ? fit[ 0 ] : 0;
+        this.c = isFinite( fit[ 1 ] ) ? fit[ 1 ] : 0;
+        this.b = isFinite( fit[ 2 ] ) ? fit[ 2 ] : 0;
+        this.a = isFinite( fit[ 3 ] ) ? fit[ 3 ] : 0;
       }
+
+      this.updateRAndChiSquared();
+      this.updateCurveEmitter.emit();
     }
   } );
 } );

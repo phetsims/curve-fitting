@@ -26,13 +26,14 @@ define( function( require ) {
    * @param {Property.<number>} orderProperty
    * @param {Bounds2} graphBounds - bounds of the graph, in model coordinate frame
    * @param {Property.<boolean>} residualsVisibleProperty
+   * @param {Property.<boolean>} curveVisibleProperty
    * @param {Property.<boolean>} valuesVisibleProperty
    * @param {Property.<boolean>} equationPanelExpandedProperty
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Object} [options]
    * @constructor
    */
-  function BucketAndGraphAreaNode( curve, bucket, orderProperty, graphBounds, residualsVisibleProperty, valuesVisibleProperty, equationPanelExpandedProperty, modelViewTransform, options ) {
+  function BucketAndGraphAreaNode( curve, bucket, orderProperty, graphBounds, residualsVisibleProperty, curveVisibleProperty, valuesVisibleProperty, equationPanelExpandedProperty, modelViewTransform, options ) {
 
     //TODO options should not be passed to supertype this early, call this.mutate( options ) at end of constructor
     Node.call( this, options );
@@ -43,10 +44,10 @@ define( function( require ) {
     var bucketNode = new BucketNode( bucket, modelViewTransform );
 
     // create the graph area node - responsible for the rendering of the curves, as well as the axes and background.
-    var graphAreaNode = new GraphAreaNode( curve, orderProperty, residualsVisibleProperty, graphBounds, modelViewTransform );
+    var graphAreaNode = new GraphAreaNode( curve, orderProperty, residualsVisibleProperty, curveVisibleProperty, graphBounds, modelViewTransform );
 
     // create the equation node (accordion box) in the upper left corner of the graph
-    var equationGraphPanelNode = new EquationGraphPanelNode( equationPanelExpandedProperty, curve, orderProperty );
+    var equationGraphPanelNode = new EquationGraphPanelNode( equationPanelExpandedProperty, curveVisibleProperty, curve, orderProperty );
 
     // create a separate layers for all the points
     var pointsNode = new Node();

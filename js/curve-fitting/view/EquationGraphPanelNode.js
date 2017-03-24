@@ -48,12 +48,13 @@ define( function( require ) {
 
   /**
    * @param {Property.<boolean>} equationPanelExpandedProperty
-   * @param {Curve} curve model.
-   * @param {Property.<number>} orderFitProperty parameter to track.
+   * @param {Property.<boolean>} curveVisibleProperty
+   * @param {Curve} curve - model of curve
+   * @param {Property.<number>} orderFitProperty - parameter to track.
    * @param {Object} [options] for slider node.
    * @constructor
    */
-  function EquationGraphPanelNode( equationPanelExpandedProperty, curve, orderFitProperty, options ) {
+  function EquationGraphPanelNode( equationPanelExpandedProperty, curveVisibleProperty, curve, orderFitProperty, options ) {
     var boxNode = new HBox( { align: 'bottom' } );
     var titleNode = new Text( equationString, TEXT_OPTIONS );
 
@@ -125,37 +126,37 @@ define( function( require ) {
       }
     } );
 
-    //TODO unlink?
-    curve.isVisibleProperty.linkAttribute( this, 'visible' );
+    // present of the lifetime of the simulation
+    curveVisibleProperty.linkAttribute( this, 'visible' );
 
     var updateAParameter = function() {
-      if ( equationPanelExpandedProperty.value && curve.isVisible ) {
+      if ( equationPanelExpandedProperty.value && curveVisibleProperty.value ) {
         var numberInfo = roundNumber( curve.aProperty.value, 3 );
         aParameterNode.setText( numberInfo.signToString + numberInfo.absoluteNumberToString );
       }
     };
     curve.aProperty.lazyLink( updateAParameter );
-    curve.isVisibleProperty.lazyLink( updateAParameter );
+    curveVisibleProperty.lazyLink( updateAParameter );
     equationPanelExpandedProperty.link( updateAParameter );
 
     var updateBParameter = function() {
-      if ( equationPanelExpandedProperty.value && curve.isVisible ) {
+      if ( equationPanelExpandedProperty.value && curveVisibleProperty.value ) {
         var numberInfo = roundNumber( curve.bProperty.value, 3 );
         bParameterNode.setText( numberInfo.signToString + numberInfo.absoluteNumberToString );
       }
     };
     curve.bProperty.lazyLink( updateBParameter );
-    curve.isVisibleProperty.lazyLink( updateBParameter );
+    curveVisibleProperty.lazyLink( updateBParameter );
     equationPanelExpandedProperty.link( updateBParameter );
 
     var updateCParameter = function() {
-      if ( equationPanelExpandedProperty.value && curve.isVisible ) {
+      if ( equationPanelExpandedProperty.value && curveVisibleProperty.value ) {
         var numberInfo = roundNumber( curve.cProperty.value, 2 );
         cParameterNode.setText( numberInfo.signToString + numberInfo.absoluteNumberToString );
       }
     };
     curve.cProperty.lazyLink( updateCParameter );
-    curve.isVisibleProperty.lazyLink( updateCParameter );
+    curveVisibleProperty.lazyLink( updateCParameter );
     equationPanelExpandedProperty.link( updateCParameter );
 
     var updateDParameter = function() {
@@ -163,7 +164,7 @@ define( function( require ) {
       dParameterNode.setText( numberInfo.signToString + numberInfo.absoluteNumberToString );
     };
     curve.dProperty.lazyLink( updateDParameter );
-    curve.isVisibleProperty.lazyLink( updateDParameter );
+    curveVisibleProperty.lazyLink( updateDParameter );
     equationPanelExpandedProperty.link( updateDParameter );
 
     /**
