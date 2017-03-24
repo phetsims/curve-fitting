@@ -16,7 +16,7 @@ define( function( require ) {
   var DeviationsAccordionBox = require( 'CURVE_FITTING/curve-fitting/view/DeviationsAccordionBox' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
-  var PropertySet = require( 'AXON/PropertySet' );
+  var Property = require( 'AXON/Property' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var Vector2 = require( 'DOT/Vector2' );
@@ -34,22 +34,20 @@ define( function( require ) {
     ScreenView.call( this, CurveFittingConstants.SCREEN_VIEW_OPTIONS );
 
     // view-specific Properties
-    var viewProperties = new PropertySet( {
-      deviationsAccordionBoxExpanded: true,  //TODO layout is hosed if this is initially false
-      equationPanelExpanded: true,
-      residualsVisible: false,
-      valuesVisible: false
-    } );
+    var  deviationsAccordionBoxExpandedProperty = new Property(true);
+    var  equationPanelExpandedProperty= new Property(true);
+    var  residualsVisibleProperty= new Property(false);
+    var  valuesVisibleProperty = new Property(false);
 
     // Deviations accordion box, at left of screen
-    var deviationsAccordionBox = new DeviationsAccordionBox( viewProperties.deviationsAccordionBoxExpandedProperty, model.curve, {
+    var deviationsAccordionBox = new DeviationsAccordionBox( deviationsAccordionBoxExpandedProperty, model.curve, {
       left: 10,
       top: 10
     } );
 
     // All other controls, at right of screen
     var controlPanels = new ControlPanels( model.curve, model.orderProperty, model.fitProperty,
-      model.curve.isVisibleProperty, viewProperties.residualsVisibleProperty, viewProperties.valuesVisibleProperty, {
+      model.curve.isVisibleProperty, residualsVisibleProperty, valuesVisibleProperty, {
         right: this.layoutBounds.right - 10,
         top: deviationsAccordionBox.top
       } );
@@ -64,7 +62,7 @@ define( function( require ) {
     // create bucket and graph area node
     var bucketAndGraphAreaNode = new BucketAndGraphAreaNode(
       model.curve, model.bucket, model.orderProperty, model.graphModelBounds,
-      viewProperties.residualsVisibleProperty, viewProperties.valuesVisibleProperty, viewProperties.equationPanelExpandedProperty,
+      residualsVisibleProperty, valuesVisibleProperty, equationPanelExpandedProperty,
       modelViewTransform );
 
     // create reset all button
