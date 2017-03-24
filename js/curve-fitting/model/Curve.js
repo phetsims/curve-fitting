@@ -112,7 +112,7 @@ define( function( require ) {
         }
 
         self.updateFit();
-        self.updateCurveEmitter.emit(); //TODO this is already called by updateFit, may be causing an unnecessary update
+
       }
       else if ( fit === 'adjustable' ) {
         // restore adjustable values from storage
