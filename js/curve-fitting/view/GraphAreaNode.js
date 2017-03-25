@@ -134,7 +134,7 @@ define( function( require ) {
             // use bezier curve : must determine the control point
             // note that the curve will not go through the control point.
             var cpx = (xMin + xMax) / 2; // point halfway between xMin and xMax
-            var cpy = (b * xMin * xMax) + c * (xMax + xMin) / 2 + d;
+            var cpy = b * xMin * xMax + c * (xMax + xMin) / 2 + d;
             curveShape.quadraticCurveTo( cpx, cpy, xMax, yAtXMax );
             break;
           default:

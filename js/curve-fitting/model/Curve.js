@@ -13,6 +13,7 @@ define( function( require ) {
   var Emitter = require( 'AXON/Emitter' );
   var FitMaker = require( 'CURVE_FITTING/curve-fitting/model/FitMaker' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
   var ObservableArray = require( 'AXON/ObservableArray' );
   var PropertySet = require( 'AXON/PropertySet' );
 
@@ -32,13 +33,14 @@ define( function( require ) {
       a: 0, // coefficient for x^3 term
       b: 0, // coefficient for x^2 term
       c: 0, // coefficient for x^1 term
-      d: 0, // polynomial constant term
-
-      chiSquared: 0, // X^2 deviation value
-
-      rSquared: 0 // r^2 deviation value
-
+      d: 0  // coefficient for x^0 term (constant term)
     } );
+
+    // @public {Property.<number>}  X^2 deviation value, a number ranging from 0 to +\infty
+    this.chiSquaredProperty = new NumberProperty( 0 );
+
+    // @public {Property.<number>}  r^2 deviation value, a number ranging from 0 to 1
+    this.rSquaredProperty = new NumberProperty( 0 );
 
     // @private
     this.orderProperty = orderProperty;
@@ -117,7 +119,6 @@ define( function( require ) {
       else if ( fit === 'adjustable' ) {
         // restore adjustable values from storage
         self.restoreValuesFromStorage();
-        self.updateCurveEmitter.emit(); //TODO is this being called when the curve is not visible?
       }
     } );
   }
@@ -139,6 +140,8 @@ define( function( require ) {
     // @public
     reset: function() {
       PropertySet.prototype.reset.call( this );
+      this.rSquaredProperty.reset();
+      this.chiSquaredProperty.reset();
       setDefaultAdjustableValues( this._storage );
       this.points.clear();
     },
@@ -259,10 +262,10 @@ define( function( require ) {
 
       // rSquared can be negative if the curve fitting is done by the user.
       if ( rSquared < 0 || isNaN( rSquared ) ) {
-        this.rSquared = 0;
+        this.rSquaredProperty.set( 0 );
       }
       else {
-        this.rSquared = rSquared;
+        this.rSquaredProperty.set( rSquared );
       }
 
       // calculation of chiSquared
@@ -270,10 +273,11 @@ define( function( require ) {
       var degreesOfFreedom = numberOfPoints - order - 1;
 
       if ( numberOfPoints > order + 1 ) {
-        this.chiSquared = (yySum - 2 * yAtySum + yAtyAtSum) / degreesOfFreedom;
+        var chiSquared = (yySum - 2 * yAtySum + yAtyAtSum) / degreesOfFreedom;
+        this.chiSquaredProperty.set( chiSquared );
       }
       else {
-        this.chiSquared = 0;
+        this.chiSquaredProperty.set( 0 );
       }
     },
 
