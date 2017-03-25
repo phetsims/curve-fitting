@@ -1,7 +1,7 @@
 // Copyright 2015-2016, University of Colorado Boulder
 
 /**
- * Bucket view in 'Curve Fitting' simulation.
+ * Bucket node with points in 'Curve Fitting' simulation.
  *
  * @author Andrey Zelenkov (Mlearner)
  */
@@ -9,25 +9,28 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  var Circle = require( 'SCENERY/nodes/Circle' );
-  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
   var BucketFront = require( 'SCENERY_PHET/bucket/BucketFront' );
   var BucketHole = require( 'SCENERY_PHET/bucket/BucketHole' );
+  var Circle = require( 'SCENERY/nodes/Circle' );
+  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var Node = require( 'SCENERY/nodes/Node' );
+  var Point = require( 'CURVE_FITTING/curve-fitting/model/Point' );
+  var PointNode = require( 'CURVE_FITTING/curve-fitting/view/PointNode' );
+  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
   // constants
   var POINT_POSITIONS = [
     { x: -3, y: 10 },
     { x: -25, y: 10 },
-    { x:  -5, y: 8 },
+    { x: -5, y: 8 },
     { x: -15, y: 8 },
-    { x:  10, y: 9 },
-    { x:  5 , y: 9 },
-    { x:  15, y: 9 },
-    { x:  23, y: 9 },
-    { x:  33, y: 9 },
+    { x: 10, y: 9 },
+    { x: 5, y: 9 },
+    { x: 15, y: 9 },
+    { x: 23, y: 9 },
+    { x: 33, y: 9 },
     { x: -33, y: 8 },
     { x: -25, y: -1 },
     { x: -19, y: -4 },
@@ -51,15 +54,16 @@ define( function( require ) {
 
   /**
    * @param {Bucket} bucket
+   * @param {ObservableArray.<point>} points
+   * @param {Property.<boolean>} residualsVisibleProperty
+   * @param {Property.<boolean>} valuesVisibleProperty
    * @param {ModelViewTransform2} modelViewTransform
-   * @param {Object} [options]
    * @constructor
    */
-  function BucketNode( bucket, modelViewTransform, options ) {
+  function BucketNode( bucket, points, residualsVisibleProperty, valuesVisibleProperty, modelViewTransform ) {
 
-    options = _.extend( {
-      cursor: 'pointer'
-    }, options );
+    Node.call( this );
+    var self = this;
 
     // front of the bucket
     var bucketFrontNode = new BucketFront( bucket, modelViewTransform );
@@ -81,10 +85,54 @@ define( function( require ) {
     } );
     pointsNode.center = bucketHoleNode.center.plusXY( 0, -6 ); // tuned by hand, slightly above bucket
 
-    assert && assert( !options.children, 'decoration not supported' );
-    options.children = [ bucketHoleNode, pointsNode, bucketFrontNode ];
+    // add
+    this.addChild( bucketHoleNode );
+    this.addChild( pointsNode );
+    this.addChild( bucketFrontNode );
 
-    Node.call( this, options );
+    // add drag handler to the points
+    var point = null;
+    pointsNode.addInputListener( new SimpleDragHandler( {
+
+      allowTouchSnag: true,
+
+      start: function( event ) {
+
+        // create a model point
+        var viewPosition = self.globalToLocalPoint( event.pointer.point );
+        var modelPosition = modelViewTransform.viewToModelPosition( viewPosition );
+        point = new Point( {
+          position: modelPosition,
+          dragging: true
+        } );
+
+        // add the model point to the observable array in model curve
+        points.add( point );
+      },
+
+      translate: function( translationParams ) {
+        point.position = point.position.plus( modelViewTransform.viewToModelDelta( translationParams.delta ) );
+      },
+
+      end: function() {
+        point.dragging = false;
+        point = null;
+      }
+    } ) );
+
+    // handle the coming and going of points
+    points.addItemAddedListener( function( addedPoint ) {
+      var pointNode = new PointNode( addedPoint, residualsVisibleProperty, valuesVisibleProperty, modelViewTransform );
+      self.addChild( pointNode );
+
+      points.addItemRemovedListener( function removalListener( removedPoint ) {
+        if ( removedPoint === addedPoint ) {
+          self.removeChild( pointNode );
+          pointNode.dispose();
+          points.removeItemRemovedListener( removalListener );
+        }
+      } );
+    } );
   }
 
   curveFitting.register( 'BucketNode', BucketNode );
