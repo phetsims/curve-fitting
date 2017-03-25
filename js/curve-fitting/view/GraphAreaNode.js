@@ -28,17 +28,15 @@ define( function( require ) {
 
   /**
    * @param {Curve} curve - curve model.
-   * @param {Property.<number>} orderProperty
    * @param {Property.<boolean>} residualsVisibleProperty
    * @param {Property.<boolean>} curveVisibleProperty
    * @param {Bounds2} graphBounds -  bounds of the graph, in model coordinate frame
    * @param {ModelViewTransform2} modelViewTransform
-   * @param {Object} [options] for graph node.
    * @constructor
    */
-  function GraphAreaNode( curve, orderProperty, residualsVisibleProperty, curveVisibleProperty, graphBounds, modelViewTransform, options ) {
+  function GraphAreaNode( curve, residualsVisibleProperty, curveVisibleProperty, graphBounds, modelViewTransform ) {
 
-    Node.call( this, options );
+    Node.call( this );
 
     // determine the graph are bounds in the view
     var graphViewBounds = modelViewTransform.modelToViewBounds( graphBounds );
@@ -95,7 +93,7 @@ define( function( require ) {
     var updateShape = function() {
       var curveShape = null;
       var residualsShape = null;
-      var order = orderProperty.value;
+      var order = curve.orderProperty.value;
       var points = curve.getPoints();
       var a = curve.a;
       var b = curve.b;
@@ -170,7 +168,7 @@ define( function( require ) {
     };
 
     curveVisibleProperty.linkAttribute( curvePath, 'visible' );
-    orderProperty.lazyLink( updateShape );
+    curve.orderProperty.lazyLink( updateShape );
     residualsVisibleProperty.link( updateShape );
     curve.updateCurveEmitter.addListener( updateShape );
   }

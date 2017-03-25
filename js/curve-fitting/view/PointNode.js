@@ -56,14 +56,14 @@ define( function( require ) {
   };
 
   /**
-   * @param {Point} point - Model for single point.
-   * @param {Property.<boolean>} valuesVisibleProperty
+   * @param {Point} point - Model for single point
    * @param {Property.<boolean>} residualsVisibleProperty
+   * @param {Property.<boolean>} valuesVisibleProperty
    * @param {ModelViewTransform2} modelViewTransform
    * @param {Object} [options] for graph node.
    * @constructor
    */
-  function PointNode( point, valuesVisibleProperty, residualsVisibleProperty, modelViewTransform, options ) {
+  function PointNode( point, residualsVisibleProperty, valuesVisibleProperty, modelViewTransform, options ) {
 
     Node.call( this, _.extend( { cursor: 'pointer' }, options ) );
 

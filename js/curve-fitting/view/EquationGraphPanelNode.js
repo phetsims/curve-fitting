@@ -47,14 +47,14 @@ define( function( require ) {
   var TEXT_OPTIONS = { font: new PhetFont( 12 ) };
 
   /**
+   * @param {Curve} curve - model of curve
+   * @param {Property.<number>} orderProperty - order of the polynomial:(1,2,3)
    * @param {Property.<boolean>} equationPanelExpandedProperty
    * @param {Property.<boolean>} curveVisibleProperty
-   * @param {Curve} curve - model of curve
-   * @param {Property.<number>} orderFitProperty - parameter to track.
    * @param {Object} [options] for slider node.
    * @constructor
    */
-  function EquationGraphPanelNode( equationPanelExpandedProperty, curveVisibleProperty, curve, orderFitProperty, options ) {
+  function EquationGraphPanelNode( curve, orderProperty, equationPanelExpandedProperty, curveVisibleProperty, options ) {
     var boxNode = new HBox( { align: 'bottom' } );
     var titleNode = new Text( equationString, TEXT_OPTIONS );
 
@@ -105,14 +105,14 @@ define( function( require ) {
     Panel.call( this, content, _.extend( PANEL_OPTIONS, options ) );
 
     // add observers
-    orderFitProperty.link( function( orderFit ) {
-      if ( orderFit === 1 ) {
+    orderProperty.link( function( order ) {
+      if ( order === 1 ) {
         boxNode.children = [ yNode, cdBlockNode ];
       }
-      else if ( orderFit === 2 ) {
+      else if ( order === 2 ) {
         boxNode.children = [ yNode, bBlockNode, cdBlockNode ];
       }
-      else if ( orderFit === 3 ) {
+      else if ( order === 3 ) {
         boxNode.children = [ yNode, aBlockNode, bBlockNode, cdBlockNode ];
       }
     } );

@@ -20,6 +20,8 @@ define( function( require ) {
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var Vector2 = require( 'DOT/Vector2' );
+  var EquationGraphPanelNode = require( 'CURVE_FITTING/curve-fitting/view/EquationGraphPanelNode' );
+  var GraphAreaNode = require( 'CURVE_FITTING/curve-fitting/view/GraphAreaNode' );
 
   // constants
   var GRAPH_PADDING_LEFT_RIGHT = 15;
@@ -69,10 +71,20 @@ define( function( require ) {
     var scale = graphAreaWidth / GRAPH_MODEL_BOUNDS.width;
     var modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping( new Vector2( 0, 0 ), new Vector2( graphCenterX, graphCenterY ), scale );
 
+    // create the graph area node - responsible for the rendering of the curves, as well as the axes and background.
+    var graphAreaNode = new GraphAreaNode( model.curve, residualsVisibleProperty, curveVisibleProperty, model.graphModelBounds, modelViewTransform );
+
+    // create the equation node (accordion box) in the upper left corner of the graph
+    var equationGraphPanelNode = new EquationGraphPanelNode( model.curve, model.orderProperty, equationPanelExpandedProperty, curveVisibleProperty );
+
+    // layout of equation inset on graph
+    equationGraphPanelNode.left = graphAreaNode.left + 10;
+    equationGraphPanelNode.top = graphAreaNode.top + 10;
+
     // create bucket and graph area node
     var bucketAndGraphAreaNode = new BucketAndGraphAreaNode(
-      model.curve, model.bucket, model.orderProperty, model.graphModelBounds,
-      residualsVisibleProperty, curveVisibleProperty, valuesVisibleProperty, equationPanelExpandedProperty,
+      model.curve.points, model.bucket,
+      residualsVisibleProperty, valuesVisibleProperty,
       modelViewTransform );
 
     // create reset all button
@@ -93,6 +105,8 @@ define( function( require ) {
     // add the children to the scene graph
     this.addChild( deviationsAccordionBox );
     this.addChild( controlPanels );
+    this.addChild( graphAreaNode );
+    this.addChild( equationGraphPanelNode );
     this.addChild( bucketAndGraphAreaNode );
     this.addChild( resetAllButton );
   }

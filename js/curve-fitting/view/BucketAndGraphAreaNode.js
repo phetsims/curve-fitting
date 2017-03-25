@@ -1,6 +1,5 @@
 // Copyright 2015-2016, University of Colorado Boulder
 
-//TODO redesign this, see https://github.com/phetsims/curve-fitting/issues/99
 /**
  * Bucket node and graph area node in 'Curve Fitting' simulation.
  *
@@ -12,8 +11,6 @@ define( function( require ) {
   // modules
   var BucketNode = require( 'CURVE_FITTING/curve-fitting/view/BucketNode' );
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  var EquationGraphPanelNode = require( 'CURVE_FITTING/curve-fitting/view/EquationGraphPanelNode' );
-  var GraphAreaNode = require( 'CURVE_FITTING/curve-fitting/view/GraphAreaNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Point = require( 'CURVE_FITTING/curve-fitting/model/Point' );
@@ -21,33 +18,21 @@ define( function( require ) {
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
   /**
-   * @param {Curve} curve
+   * @param {ObservableArray.<point>} points
    * @param {Bucket} bucket
-   * @param {Property.<number>} orderProperty
-   * @param {Bounds2} graphBounds - bounds of the graph, in model coordinate frame
    * @param {Property.<boolean>} residualsVisibleProperty
-   * @param {Property.<boolean>} curveVisibleProperty
    * @param {Property.<boolean>} valuesVisibleProperty
-   * @param {Property.<boolean>} equationPanelExpandedProperty
    * @param {ModelViewTransform2} modelViewTransform
-   * @param {Object} [options]
    * @constructor
    */
-  function BucketAndGraphAreaNode( curve, bucket, orderProperty, graphBounds, residualsVisibleProperty, curveVisibleProperty, valuesVisibleProperty, equationPanelExpandedProperty, modelViewTransform, options ) {
+  function BucketAndGraphAreaNode( points, bucket, residualsVisibleProperty, valuesVisibleProperty, modelViewTransform ) {
 
-    //TODO options should not be passed to supertype this early, call this.mutate( options ) at end of constructor
-    Node.call( this, options );
+    Node.call( this );
 
     var self = this;
 
     // create the bucket node
     var bucketNode = new BucketNode( bucket, modelViewTransform );
-
-    // create the graph area node - responsible for the rendering of the curves, as well as the axes and background.
-    var graphAreaNode = new GraphAreaNode( curve, orderProperty, residualsVisibleProperty, curveVisibleProperty, graphBounds, modelViewTransform );
-
-    // create the equation node (accordion box) in the upper left corner of the graph
-    var equationGraphPanelNode = new EquationGraphPanelNode( equationPanelExpandedProperty, curveVisibleProperty, curve, orderProperty );
 
     // create a separate layers for all the points
     var pointsNode = new Node();
@@ -55,28 +40,23 @@ define( function( require ) {
     this.pointsNode = pointsNode;
 
     // add the children to the screen graph
-    this.addChild( graphAreaNode );
     this.addChild( bucketNode );
-    this.addChild( equationGraphPanelNode );
     this.addChild( pointsNode );
 
     // handle the coming and going of points
-    curve.points.addItemAddedListener( function( addedPoint ) {
-      var pointNode = new PointNode( addedPoint, valuesVisibleProperty, residualsVisibleProperty, modelViewTransform );
+    points.addItemAddedListener( function( addedPoint ) {
+      var pointNode = new PointNode( addedPoint, residualsVisibleProperty, valuesVisibleProperty, modelViewTransform );
       self.addChild( pointNode );
 
-      curve.points.addItemRemovedListener( function removalListener( removedPoint ) {
+      points.addItemRemovedListener( function removalListener( removedPoint ) {
         if ( removedPoint === addedPoint ) {
           self.removeChild( pointNode );
           pointNode.dispose();
-          curve.points.removeItemRemovedListener( removalListener );
+          points.removeItemRemovedListener( removalListener );
         }
       } );
     } );
 
-    // layout
-    equationGraphPanelNode.left = graphAreaNode.left + 10;
-    equationGraphPanelNode.top = graphAreaNode.top + 10;
 
     // add drag handler to the bucketNode
     var point = null;
@@ -95,7 +75,7 @@ define( function( require ) {
         } );
 
         // add the point to the curve
-        curve.points.add( point );
+        points.add( point );
       },
 
       translate: function( translationParams ) {
