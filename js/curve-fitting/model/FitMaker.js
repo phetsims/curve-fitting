@@ -15,7 +15,7 @@ define( function( require ) {
   var Matrix = require( 'DOT/Matrix' );
 
   // constants
-  var solutionArrayLength = CurveFittingConstants.MAX_ORDER_OF_FIT + 1;
+  var EPSILON = 1E-12;
 
   /**
    * @constructor
@@ -45,8 +45,10 @@ define( function( require ) {
       // size of the column matrix
       var numberOfRows = solutionMatrix.getRowDimension();
 
+      var solutionArrayLength = CurveFittingConstants.MAX_ORDER_OF_FIT + 1;
       // the solutionArray has solutionArrayLength elements, regardless of the dimensions of the solution matrix
       // the missing elements are padded with zeros
+
       for ( var k = 0; k < solutionArrayLength; ++k ) {
         this.solutionArray[ k ] = (k < numberOfRows) ? solutionMatrix.get( k, 0 ) : 0;
       }
@@ -90,8 +92,19 @@ define( function( require ) {
         }
       } );
 
-      // the solution matrix, A, is X^-1 * Y
-      return squareMatrix.solve( columnMatrix );
+      //  column solution Matrix,
+      // the coefficients are ordered in order of polynomial, eg. a_0, a_1, a_2, etc,
+      var solutionMatrix;
+
+      if ( Math.abs( squareMatrix.det() ) > EPSILON ) {
+        // the solution matrix, A, is X^-1 * Y
+        solutionMatrix = squareMatrix.solve( columnMatrix );
+      }
+      else {
+        // the matrix is singular, the solution Matrix is filled with zeros
+        solutionMatrix = new Matrix( m, 1, 0 );
+      }
+      return solutionMatrix;
     }
   } );
 } );
