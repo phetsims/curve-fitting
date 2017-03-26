@@ -3,7 +3,7 @@
 //TODO rename, untangle
 /**
  * Graph area node in 'Curve Fitting' simulation.
- * Contains graph area, curve and panel with equation parameters.
+ * Contains graph area and curve with residual lines
  *
  * @author Andrey Zelenkov (Mlearner)
  */
@@ -151,7 +151,8 @@ define( function( require ) {
               residualsShape.verticalLineTo( curve.getYValueAt( point.position.x ) );
           } );
         }
-      }
+      } // end of if statement
+
       if ( curveShape ) {
         curvePath.setShape( modelViewTransform.modelToViewShape( curveShape ) );
       }
@@ -167,8 +168,8 @@ define( function( require ) {
     };
 
     curveVisibleProperty.linkAttribute( curvePath, 'visible' );
-    curve.orderProperty.lazyLink( updateShape );
     residualsVisibleProperty.link( updateShape );
+    curve.orderProperty.lazyLink( updateShape );
     curve.updateCurveEmitter.addListener( updateShape );
   }
 
