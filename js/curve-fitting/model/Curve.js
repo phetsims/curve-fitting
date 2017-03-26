@@ -33,7 +33,7 @@ define( function( require ) {
       a: 0, // coefficient for x^3 term
       b: 0, // coefficient for x^2 term
       c: 0, // coefficient for x^1 term
-      d: 0  // coefficient for x^0 term (constant term)
+      d: 2.7  // coefficient for x^0 term (constant term)
     } );
 
     // @public {Property.<number>}  X^2 deviation value, a number ranging from 0 to +\infty

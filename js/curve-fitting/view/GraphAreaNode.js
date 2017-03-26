@@ -30,13 +30,15 @@ define( function( require ) {
    * @param {Curve} curve - curve model.
    * @param {Property.<boolean>} residualsVisibleProperty
    * @param {Property.<boolean>} curveVisibleProperty
-   * @param {Bounds2} graphBounds -  bounds of the graph, in model coordinate frame
    * @param {ModelViewTransform2} modelViewTransform
    * @constructor
    */
-  function GraphAreaNode( curve, residualsVisibleProperty, curveVisibleProperty, graphBounds, modelViewTransform ) {
+  function GraphAreaNode( curve, residualsVisibleProperty, curveVisibleProperty, modelViewTransform ) {
 
     Node.call( this );
+
+    // model bounds of the graph
+    var graphBounds = CurveFittingConstants.GRAPH_MODEL_BOUNDS;
 
     // determine the graph are bounds in the view
     var graphViewBounds = modelViewTransform.modelToViewBounds( graphBounds );

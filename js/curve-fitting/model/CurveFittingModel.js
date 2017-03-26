@@ -44,10 +44,6 @@ define( function( require ) {
       assert && assert( _.includes( VALID_FIT_VALUES, fit ), 'invalid fit: ' + fit );
     } );
 
-    //TODO this field is not used consistently, see https://github.com/phetsims/curve-fitting/issues/88
-    // @public (read-only)
-    this.graphModelBounds = CurveFittingConstants.GRAPH_MODEL_BOUNDS;
-
     // @public (read-only)
     this.bucket = new Bucket( {
       position: BUCKET_POSITION,

@@ -25,7 +25,6 @@ define( function( require ) {
 
   // constants
   var GRAPH_PADDING_LEFT_RIGHT = 15;
-  var GRAPH_MODEL_BOUNDS = CurveFittingConstants.GRAPH_MODEL_BOUNDS;
 
   /**
    * @param {CurveFittingModel} model
@@ -74,7 +73,7 @@ define( function( require ) {
     var graphAreaWidth = controlPanels.left - deviationsAccordionBox.right - GRAPH_PADDING_LEFT_RIGHT * 2;
     var graphCenterX = 0.5 * (controlPanels.left + deviationsAccordionBox.right);
     var graphCenterY = this.layoutBounds.centerY;
-    var scale = graphAreaWidth / GRAPH_MODEL_BOUNDS.width;
+    var scale = graphAreaWidth / CurveFittingConstants.GRAPH_MODEL_BOUNDS.width;
     var modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping(
       new Vector2( 0, 0 ),
       new Vector2( graphCenterX, graphCenterY ),
@@ -85,7 +84,6 @@ define( function( require ) {
       model.curve,
       residualsVisibleProperty,
       curveVisibleProperty,
-      model.graphModelBounds,
       modelViewTransform );
 
     // create the equation node (accordion box) in the upper left corner of the graph
