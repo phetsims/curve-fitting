@@ -147,11 +147,8 @@ define( function( require ) {
           residualsShape = new Shape();
 
           points.forEach( function( point ) {
-            //TODO why is this not testing for a specific order value?
-            if ( order ) {
               residualsShape.moveToPoint( point.position );
               residualsShape.verticalLineTo( curve.getYValueAt( point.position.x ) );
-            }
           } );
         }
       }
