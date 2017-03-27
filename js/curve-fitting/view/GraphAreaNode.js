@@ -24,7 +24,9 @@ define( function( require ) {
     lineWidth: 1,
     stroke: 'black'
   };
-  var TICK_LENGTH = 7;
+  var TICK_LENGTH = 0.3; // in model coordinate
+  var HORIZONTAL_TICKS = [ -10, -5, 5, 10 ];
+  var VERTICAL_TICKS = [ -10, -5, 5, 10 ];
 
   /**
    * @param {Curve} curve - curve model.
@@ -38,54 +40,46 @@ define( function( require ) {
 
     Node.call( this );
 
-    // determine the graph are bounds in the view
-    var graphViewBounds = modelViewTransform.modelToViewBounds( graphBounds );
-
     // create and add white background
-    this.addChild( new Rectangle.bounds( graphViewBounds, {
+    this.addChild( new Rectangle.bounds( modelViewTransform.modelToViewBounds( graphBounds ), {
       fill: 'white',
       lineWidth: 2,
       stroke: 'rgb( 214, 223, 226 )'
     } ) );
 
     var axisShape = new Shape();
-    this.addChild( new Path( axisShape, AXIS_OPTIONS ) );
 
-    // add X-axis
-    axisShape.moveTo( graphViewBounds.minX, graphViewBounds.centerY );
-    axisShape.lineTo( graphViewBounds.maxX, graphViewBounds.centerY );
+    // create X axis
+    axisShape.moveTo( graphBounds.minX, 0 ).horizontalLineTo( graphBounds.maxX );
+
+    // create Y axis
+    axisShape.moveTo( 0, graphBounds.minY ).verticalLineTo( graphBounds.maxY );
+
+    // add axes
+    this.addChild( new Path( modelViewTransform.modelToViewShape( axisShape ), AXIS_OPTIONS ) );
+
+    var ticksShape = new Shape();
+
+    // create horizontal tick lines
+    this.addTicks( ticksShape, HORIZONTAL_TICKS );
+
+    // create vertical tick lines
+    this.addTicks( ticksShape, VERTICAL_TICKS, { axis: 'vertical' } );
 
     // add ticks
-    axisShape.moveTo( graphViewBounds.minX + AXIS_OPTIONS.lineWidth / 2, graphViewBounds.centerY - TICK_LENGTH );
-    axisShape.lineTo( graphViewBounds.minX + AXIS_OPTIONS.lineWidth / 2, graphViewBounds.centerY + TICK_LENGTH );
-    axisShape.moveTo( graphViewBounds.minX + graphViewBounds.width / 4, graphViewBounds.centerY - TICK_LENGTH );
-    axisShape.lineTo( graphViewBounds.minX + graphViewBounds.width / 4, graphViewBounds.centerY + TICK_LENGTH );
-    axisShape.moveTo( graphViewBounds.minX + 3 * graphViewBounds.width / 4, graphViewBounds.centerY - TICK_LENGTH );
-    axisShape.lineTo( graphViewBounds.minX + 3 * graphViewBounds.width / 4, graphViewBounds.centerY + TICK_LENGTH );
-    axisShape.moveTo( graphViewBounds.maxX - AXIS_OPTIONS.lineWidth / 2, graphViewBounds.centerY - TICK_LENGTH );
-    axisShape.lineTo( graphViewBounds.maxX - AXIS_OPTIONS.lineWidth / 2, graphViewBounds.centerY + TICK_LENGTH );
-
-    // add Y-axis and ticks
-    axisShape.moveTo( graphViewBounds.centerX, graphViewBounds.minY );
-    axisShape.lineTo( graphViewBounds.centerX, graphViewBounds.maxY );
-
-    axisShape.moveTo( graphViewBounds.centerX - TICK_LENGTH, graphViewBounds.minY + AXIS_OPTIONS.lineWidth / 2 );
-    axisShape.lineTo( graphViewBounds.centerX + TICK_LENGTH, graphViewBounds.minY + AXIS_OPTIONS.lineWidth / 2 );
-    axisShape.moveTo( graphViewBounds.centerX - TICK_LENGTH, graphViewBounds.centerY + graphViewBounds.height / 4 );
-    axisShape.lineTo( graphViewBounds.centerX + TICK_LENGTH, graphViewBounds.centerY + graphViewBounds.height / 4 );
-    axisShape.moveTo( graphViewBounds.centerX - TICK_LENGTH, graphViewBounds.centerY - graphViewBounds.height / 4 );
-    axisShape.lineTo( graphViewBounds.centerX + TICK_LENGTH, graphViewBounds.centerY - graphViewBounds.height / 4 );
-    axisShape.moveTo( graphViewBounds.centerX - TICK_LENGTH, graphViewBounds.maxY - AXIS_OPTIONS.lineWidth / 2 );
-    axisShape.lineTo( graphViewBounds.centerX + TICK_LENGTH, graphViewBounds.maxY - AXIS_OPTIONS.lineWidth / 2 );
+    this.addChild( new Path( modelViewTransform.modelToViewShape( ticksShape ), AXIS_OPTIONS ) );
 
     // add clip area
-    this.clipArea = Shape.bounds( graphViewBounds );
+    this.clipArea = Shape.bounds( modelViewTransform.modelToViewBounds( graphBounds ) );
 
+    // create and add curve
     var curvePath = new Path( null, { stroke: 'black', lineWidth: 2 } );
     this.addChild( curvePath );
 
+    // create and add residual lines
     var residualsPath = new Path( null, { stroke: CurveFittingConstants.GRAY_COLOR, lineWidth: 2 } );
     this.addChild( residualsPath );
+
 
     /**
      * updates the shape of the curve and the residuals
@@ -175,5 +169,42 @@ define( function( require ) {
 
   curveFitting.register( 'GraphAreaNode', GraphAreaNode );
 
-  return inherit( Node, GraphAreaNode );
-} );
+  return inherit( Node, GraphAreaNode, {
+    /**
+     * @private
+     * @param {Shape} shape
+     * @param {number} location
+     * @param {Object} options
+     */
+    addTick: function( shape, location, options ) {
+      options = _.extend(
+        {
+          axis: 'horizontal'
+        }, options );
+
+      if ( options.axis === 'horizontal' ) {
+        shape.moveTo( location, -TICK_LENGTH / 2 ); // ticks are below and above x-axis
+        shape.verticalLineToRelative( TICK_LENGTH );
+      }
+      else {
+        shape.moveTo( -TICK_LENGTH / 2, location );
+        shape.horizontalLineToRelative( TICK_LENGTH );
+      }
+    },
+    /**
+     * @private
+     * @param  {Shape} shape
+     * @param {Array.<number>} ticksLocation - in model coordinates
+     * @param {Object} options
+     */
+    addTicks: function( shape, ticksLocation, options ) {
+      var self = this;
+
+      ticksLocation.forEach( function( location ) {
+        self.addTick( shape, location, options );
+      } );
+    }
+
+  } );
+} )
+;
