@@ -44,7 +44,7 @@ define( function( require ) {
     // @public {Property.<boolean>} determines visibility of residuals
     var residualsVisibleProperty = new BooleanProperty( false );
 
-    // @public {Property.<boolean>} determines visibility of value
+    // @public {Property.<boolean>} determines visibility of values
     var valuesVisibleProperty = new BooleanProperty( false );
 
     // @public {Property.<boolean>} determines visibility of the curve fit
@@ -72,7 +72,7 @@ define( function( require ) {
     // create a model view transform
     var graphAreaWidth = controlPanels.left - deviationsAccordionBox.right - GRAPH_PADDING_LEFT_RIGHT * 2;
     var graphCenterX = 0.5 * (controlPanels.left + deviationsAccordionBox.right);
-    var graphCenterY = this.layoutBounds.centerY;
+    var graphCenterY = graphAreaWidth / 2 + deviationsAccordionBox.top;
     var scale = graphAreaWidth / CurveFittingConstants.GRAPH_MODEL_BOUNDS.width;
     var modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping(
       new Vector2( 0, 0 ),
@@ -97,9 +97,8 @@ define( function( require ) {
     equationGraphPanelNode.left = graphAreaNode.left + 10;
     equationGraphPanelNode.top = graphAreaNode.top + 10;
 
-    // create bucket and graph area node
+    // create bucket (and handle responsibilities associated with points)
     var bucketNode = new BucketNode(
-      model.bucket,
       model.curve.points,
       residualsVisibleProperty,
       valuesVisibleProperty,
@@ -126,7 +125,7 @@ define( function( require ) {
     this.addChild( graphAreaNode );
     this.addChild( equationGraphPanelNode );
     this.addChild( resetAllButton );
-    this.addChild( bucketNode );
+    this.addChild( bucketNode ); // must be last in the z-ordering
   }
 
   curveFitting.register( 'CurveFittingScreenView', CurveFittingScreenView );

@@ -9,20 +9,13 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Bucket = require( 'PHETCOMMON/model/Bucket' );
   var Curve = require( 'CURVE_FITTING/curve-fitting/model/Curve' );
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var Dimension2 = require( 'DOT/Dimension2' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
   var Property = require( 'AXON/Property' );
-  var Vector2 = require( 'DOT/Vector2' );
 
   // constants
-  var BUCKET_WIDTH = 5; // in model coordinates
-  var BUCKET_HEIGHT = BUCKET_WIDTH * 0.50;
-  // bucket is to the left and up from the bottom left corner of graph, in model coordinates
-  var BUCKET_POSITION = new Vector2( CurveFittingConstants.GRAPH_MODEL_BOUNDS.minX - 3, CurveFittingConstants.GRAPH_MODEL_BOUNDS.minY + 1 );
   var VALID_FIT_VALUES = [ 'best', 'adjustable' ];
 
   /**
@@ -31,7 +24,7 @@ define( function( require ) {
   function CurveFittingModel() {
 
     // @public {Property.<number>} order of the polynomial that describes the curve, valid values are 1, 2, 3
-    this.orderProperty = new Property( 1 );
+    this.orderProperty = new NumberProperty( 1 );
 
     // @public {Property.<string>}, the method of fitting the curve to data points, see VALID_FIT_VALUES
     this.fitProperty = new Property( 'best' );
@@ -44,13 +37,6 @@ define( function( require ) {
       assert && assert( _.includes( VALID_FIT_VALUES, fit ), 'invalid fit: ' + fit );
     } );
 
-    // @public (read-only)
-    this.bucket = new Bucket( {
-      position: BUCKET_POSITION,
-      size: new Dimension2( BUCKET_WIDTH, BUCKET_HEIGHT ),
-      baseColor: 'rgb( 65, 63, 117 )'
-    } );
-
     // @public
     this.curve = new Curve( this.orderProperty, this.fitProperty );
   }
@@ -59,7 +45,9 @@ define( function( require ) {
 
   return inherit( Object, CurveFittingModel, {
 
-    // @public
+    /**
+     * @public Resets the model
+     */
     reset: function() {
       this.orderProperty.reset();
       this.fitProperty.reset();
