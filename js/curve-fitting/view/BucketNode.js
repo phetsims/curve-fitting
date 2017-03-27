@@ -62,7 +62,7 @@ define( function( require ) {
   ];
 
   /**
-   * @param {ObservableArray.<point>} points
+   * @param {Points} points
    * @param {Property.<boolean>} residualsVisibleProperty
    * @param {Property.<boolean>} valuesVisibleProperty
    * @param {ModelViewTransform2} modelViewTransform

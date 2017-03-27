@@ -44,8 +44,8 @@ define( function( require ) {
   var UPPER_LIMIT_ARRAY = [ 3.8, 3, 2.6, 2.37, 2.21, 2.1, 2.01, 1.94, 1.88, 1.83, 1.57, 1.35, 1.24, 1.07 ];
 
   /**
-   * @param {Property.<number>} chiSquaredProperty - Property that represents x-deviation.
-   * @param {ObservableArray.<Point>} points - Array of points for plotting curve.
+   * @param {Property.<number>} chiSquaredProperty - Property that represents x squared deviation.
+   * @param {Points} points
    * @param {Object} [options] for graph node.
    * @constructor
    */
@@ -74,7 +74,7 @@ define( function( require ) {
     this.addTicks( [ 0, 0.5, 1, 2, 3, 10, 30, 100 ] );
 
     var updateChiFill = function() {
-      valueRectNode.setFill( getChiFillFromChiValue( chiSquaredProperty.value, points.length ) );
+      valueRectNode.setFill( getChiFillFromChiValue( chiSquaredProperty.value, points.getPointsOnGraph().length ) );
     };
 
     // no need to unlink, present for the lifetime of the sim
@@ -94,7 +94,7 @@ define( function( require ) {
    * This algorithm was copied directly from Flash simulation.
    *
    * @param {number} chiValue - Chi value.
-   * @param {number} numberOfPoints - Number of points that have been taken to plot curve.
+   * @param {number} numberOfPoints - Number of points on Graph.
    */
   function getChiFillFromChiValue( chiValue, numberOfPoints ) {
 

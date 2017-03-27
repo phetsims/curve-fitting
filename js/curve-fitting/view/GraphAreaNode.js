@@ -27,13 +27,14 @@ define( function( require ) {
   var TICK_LENGTH = 7;
 
   /**
+   * @param {Points} points
    * @param {Curve} curve - curve model.
    * @param {Property.<boolean>} residualsVisibleProperty
    * @param {Property.<boolean>} curveVisibleProperty
    * @param {ModelViewTransform2} modelViewTransform
    * @constructor
    */
-  function GraphAreaNode( curve, residualsVisibleProperty, curveVisibleProperty, modelViewTransform ) {
+  function GraphAreaNode( points, curve, residualsVisibleProperty, curveVisibleProperty, modelViewTransform ) {
 
     Node.call( this );
 
@@ -95,8 +96,8 @@ define( function( require ) {
     var updateShape = function() {
       var curveShape = null;
       var residualsShape = null;
+      var pointsOnGraph = points.getPointsOnGraph();
       var order = curve.orderProperty.value;
-      var points = curve.getPoints();
       var a = curve.a;
       var b = curve.b;
       var c = curve.c;
@@ -107,7 +108,7 @@ define( function( require ) {
 
       //TODO This expression looks suspect, or at least overly complicated. Simplify or document.
       //TODO curve.fitProperty is private, should not be assigned here!!
-      if ( ( points.length > 1 || curve.fitProperty.value === 'adjustable' ) && !isNaN( a ) && !isNaN( b ) && !isNaN( c ) && !isNaN( d ) ) {
+      if ( ( pointsOnGraph.length > 1 || curve.fitProperty.value === 'adjustable' ) && !isNaN( a ) && !isNaN( b ) && !isNaN( c ) && !isNaN( d ) ) {
 
         // convenience variables
         var xMin = graphBounds.minX; // minimum value of the x range
@@ -146,9 +147,9 @@ define( function( require ) {
         if ( residualsVisibleProperty.value ) {
           residualsShape = new Shape();
 
-          points.forEach( function( point ) {
-              residualsShape.moveToPoint( point.position );
-              residualsShape.verticalLineTo( curve.getYValueAt( point.position.x ) );
+          pointsOnGraph.forEach( function( point ) {
+            residualsShape.moveToPoint( point.position );
+            residualsShape.verticalLineTo( curve.getYValueAt( point.position.x ) );
           } );
         }
       } // end of if statement

@@ -28,7 +28,7 @@ define( function( require ) {
 
   // strings
   var deviationsString = require( 'string!CURVE_FITTING/deviations' );
-  
+
   // constants
   var TEXT_FONT = new PhetFont( 12 ); //TODO use CurveFittingConstants
   var TEXT_PANEL_FONT = new PhetFont( 10 ); //TODO use CurveFittingConstants
@@ -48,11 +48,13 @@ define( function( require ) {
 
   /**
    * @param {Property.<boolean>} expandedProperty - is this panel expanded?
-   * @param {Curve} curve
+   * @param {Points} points
+   * @param {Property.<number>} chiSquaredProperty
+   * @param {Property.<number>} rSquaredProperty
    * @param {Object} [options]
    * @constructor
    */
-  function DeviationsAccordionBox( expandedProperty, curve, options ) {
+  function DeviationsAccordionBox( expandedProperty, points, chiSquaredProperty, rSquaredProperty, options ) {
 
     options = _.extend( {
       cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
@@ -71,10 +73,10 @@ define( function( require ) {
     }, options );
 
     // X^2 barometer
-    var barometerX2 = new BarometerX2Node( curve.chiSquaredProperty, curve.points );
+    var barometerX2 = new BarometerX2Node( chiSquaredProperty, points );
 
     // r^2 barometer
-    var barometerR2 = new BarometerR2Node( curve.rSquaredProperty );
+    var barometerR2 = new BarometerR2Node( rSquaredProperty );
 
     // help dialog, created on demand
     var helpDialog = null;
@@ -139,7 +141,7 @@ define( function( require ) {
     } );
 
     // unlink unnecessary, present for the lifetime of the sim
-    curve.chiSquaredProperty.link( function( chiSquared ) {
+    chiSquaredProperty.link( function( chiSquared ) {
 
       // If chiSquared is greater than 10 we have a bad fit so less precision is needed.
       // If chiSquared if greater than 100 we have a really bad fit and decimals are inconsequential.
@@ -147,7 +149,7 @@ define( function( require ) {
     } );
 
     // unlink unnecessary, present for the lifetime of the sim
-    curve.rSquaredProperty.link( function( rSquared ) {
+    rSquaredProperty.link( function( rSquared ) {
 
       //TODO this assertion fails with alarming regularity, it should be investigated
       // assert && assert( rSquared >= 0 && rSquared <= 1, 'rSquared out of range: ' + rSquared );
@@ -195,7 +197,7 @@ define( function( require ) {
     else {
       decimalPlaces = digits;
     }
-    
+
     return Util.toFixed( number, decimalPlaces );
   }
 

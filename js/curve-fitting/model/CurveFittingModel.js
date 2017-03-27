@@ -13,6 +13,7 @@ define( function( require ) {
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var inherit = require( 'PHET_CORE/inherit' );
   var NumberProperty = require( 'AXON/NumberProperty' );
+  var Points = require( 'CURVE_FITTING/curve-fitting/model/Points' );
   var Property = require( 'AXON/Property' );
 
   // constants
@@ -37,8 +38,17 @@ define( function( require ) {
       assert && assert( _.includes( VALID_FIT_VALUES, fit ), 'invalid fit: ' + fit );
     } );
 
+    // @public - Points for plotting curve. This includes points that are outside the bounds of the graph, so
+    // be careful to call getPointsOnGraph when using points in calculations. Order of the points doesn't matter.
+    this.points = new Points();
+
     // @public
-    this.curve = new Curve( this.orderProperty, this.fitProperty );
+    this.curve = new Curve( this.points, this.orderProperty, this.fitProperty );
+
+    // Add internal listeners for adding and removing points
+    this.points.addItemAddedListener( this.addPoint.bind( this ) );
+    this.points.addItemRemovedListener( this.removePoint.bind( this ) );
+
   }
 
   curveFitting.register( 'CurveFittingModel', CurveFittingModel );
@@ -51,7 +61,43 @@ define( function( require ) {
     reset: function() {
       this.orderProperty.reset();
       this.fitProperty.reset();
+      this.points.clear();
       this.curve.reset();
+    },
+    /**
+     * Adds a point
+     *
+     * @param {Point} point
+     * @private
+     */
+    addPoint: function( point ) {
+      var self = this;
+
+      // These are unlinked in removePoint
+      point.positionProperty.link( this.curve.updateFitBinded );
+      point.isInsideGraphProperty.lazyLink( this.curve.updateFitBinded );
+      point.deltaProperty.link( this.curve.updateFitBinded );
+
+      // remove points when they have returned to the bucket
+      point.returnToOriginEmitter.addListener( function removePointListener() {
+        self.points.remove( point );
+        point.returnToOriginEmitter.removeListener( removePointListener );
+      } );
+    },
+
+    /**
+     * Removes a point
+     *
+     * @param {Point} point
+     * @private
+     */
+    removePoint: function( point ) {
+
+      point.positionProperty.unlink( this.curve.updateFitBinded );
+      point.isInsideGraphProperty.unlink( this.curve.updateFitBinded );
+      point.deltaProperty.unlink( this.curve.updateFitBinded );
+
+      this.curve.updateFit();
     }
   } );
 } );

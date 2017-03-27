@@ -14,15 +14,15 @@ define( function( require ) {
   var FitMaker = require( 'CURVE_FITTING/curve-fitting/model/FitMaker' );
   var inherit = require( 'PHET_CORE/inherit' );
   var NumberProperty = require( 'AXON/NumberProperty' );
-  var ObservableArray = require( 'AXON/ObservableArray' );
   var PropertySet = require( 'AXON/PropertySet' );
 
   /**
+   * @param {Points} points - array of points
    * @param {Property.<number>} orderProperty - order of the polynomial that describes the curve
    * @param {Property.<string>} fitProperty - the method of fitting the curve to data points
    * @constructor
    */
-  function Curve( orderProperty, fitProperty ) {
+  function Curve( points, orderProperty, fitProperty ) {
     var self = this;
 
     PropertySet.call( this, {
@@ -46,10 +46,6 @@ define( function( require ) {
     this.orderProperty = orderProperty;
     this.fitProperty = fitProperty;
 
-    // @public Points for plotting curve. This includes points that are outside the bounds of the graph, so
-    // be careful to call getPoints when using points in calculations. Order of the points doesn't matter.
-    this.points = new ObservableArray();
-
     // @private creates a fit for points
     this.fitMaker = new FitMaker();
 
@@ -58,9 +54,8 @@ define( function( require ) {
 
     this.updateFitBinded = this.updateFit.bind( this ); // @private
 
-    // Add internal listeners for adding and removing points
-    this.points.addItemAddedListener( this.addPoint.bind( this ) );
-    this.points.addItemRemovedListener( this.removePoint.bind( this ) );
+    // @private
+    this.pointsOnGraph = points.getPointsOnGraph();
 
     orderProperty.lazyLink( function( order, oldOrder ) {
 
@@ -126,6 +121,10 @@ define( function( require ) {
   curveFitting.register( 'Curve', Curve );
 
   // set default adjustable values
+  /**
+   *
+   * @param obj
+   */
   function setDefaultAdjustableValues( obj ) {
 
     //TODO Why aren't we just resetting these Properties?
@@ -137,17 +136,18 @@ define( function( require ) {
 
   return inherit( PropertySet, Curve, {
 
-    // @public
+    /**
+     * @public
+     */
     reset: function() {
       PropertySet.prototype.reset.call( this );
       this.rSquaredProperty.reset();
       this.chiSquaredProperty.reset();
       setDefaultAdjustableValues( this._storage );
-      this.points.clear();
     },
 
     /**
-     * Gets the y coordinate of a point on the curve, given the x coordinate.
+     * Gets the y value of the curve associated with the x coordinate
      *
      * @param {number} x
      * @returns {number}
@@ -158,54 +158,7 @@ define( function( require ) {
       return this.a * Math.pow( x, 3 ) + this.b * Math.pow( x, 2 ) + this.c * ( x  ) + this.d;
     },
 
-    //TODO give this a better name, like getPointsOnGraph
-    /**
-     * Gets all points that are within the graph bounds.
-     *
-     * @returns {Array.<Point>}
-     * @public
-     */
-    getPoints: function() {
-      return this.points.getArray().filter( function( point ) {
-        return point.isInsideGraph;
-      } );
-    },
 
-    /**
-     * Adds a point to the curve.
-     *
-     * @param {Point} point
-     * @private
-     */
-    addPoint: function( point ) {
-      var self = this;
-
-      // These are unlinked in removePoint
-      point.positionProperty.link( this.updateFitBinded );
-      point.isInsideGraphProperty.lazyLink( this.updateFitBinded );
-      point.deltaProperty.link( this.updateFitBinded );
-
-      // remove points when they have returned to the bucket
-      point.returnToOriginEmitter.addListener( function removePointListener() {
-        self.points.remove( point );
-        point.returnToOriginEmitter.removeListener( removePointListener );
-      } );
-    },
-
-    /**
-     * Removes a point from the curve.
-     *
-     * @param {Point} point
-     * @private
-     */
-    removePoint: function( point ) {
-
-      point.positionProperty.unlink( this.updateFitBinded );
-      point.isInsideGraphProperty.unlink( this.updateFitBinded );
-      point.deltaProperty.unlink( this.updateFitBinded );
-
-      this.updateFit();
-    },
 
     /**
      * Updates Chi Square and r^2 deviation.
@@ -215,7 +168,7 @@ define( function( require ) {
     updateRAndChiSquared: function() {
 
       var self = this;
-      var points = this.getPoints();
+      var points = this.pointsOnGraph;
       var weightSum = 0;
       var ySum = 0;
       var yySum = 0;
@@ -309,13 +262,12 @@ define( function( require ) {
     /**
      * Updates fit for current points.
      *
-     * @private
+     * @public
      */
     updateFit: function() {
 
-
       if ( this.fitProperty.value === 'best' ) {
-        var fit = this.fitMaker.getFit( this.getPoints(), this.orderProperty.value );
+        var fit = this.fitMaker.getFit( this.pointsOnGraph, this.orderProperty.value );
 
         this.d = isFinite( fit[ 0 ] ) ? fit[ 0 ] : 0;
         this.c = isFinite( fit[ 1 ] ) ? fit[ 1 ] : 0;

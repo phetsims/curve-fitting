@@ -51,10 +51,11 @@ define( function( require ) {
     var curveVisibleProperty = new BooleanProperty( false );
 
     // Deviations accordion box, at left of screen
-    var deviationsAccordionBox = new DeviationsAccordionBox( deviationsAccordionBoxExpandedProperty, model.curve, {
-      left: 10,
-      top: 10
-    } );
+    var deviationsAccordionBox = new DeviationsAccordionBox( deviationsAccordionBoxExpandedProperty,
+      model.points, model.curve.chiSquaredProperty, model.curve.rSquaredProperty, {
+        left: 10,
+        top: 10
+      } );
 
     // All other controls, at right of screen
     var controlPanels = new ControlPanels(
@@ -81,6 +82,7 @@ define( function( require ) {
 
     // create the graph area node - responsible for the rendering of the curves, as well as the axes and background.
     var graphAreaNode = new GraphAreaNode(
+      model.points,
       model.curve,
       residualsVisibleProperty,
       curveVisibleProperty,
@@ -99,10 +101,12 @@ define( function( require ) {
 
     // create bucket (and handle responsibilities associated with points)
     var bucketNode = new BucketNode(
-      model.curve.points,
+      model.points,
       residualsVisibleProperty,
       valuesVisibleProperty,
-      modelViewTransform );
+      modelViewTransform
+      )
+    ;
 
     // create reset all button
     var resetAllButton = new ResetAllButton( {
