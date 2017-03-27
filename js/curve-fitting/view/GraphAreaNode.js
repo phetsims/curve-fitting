@@ -16,17 +16,25 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
+  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
+  var Text = require( 'SCENERY/nodes/Text' );
+  var Util = require( 'DOT/Util' );
 
   // constants
-  var AXIS_OPTIONS = {
-    lineWidth: 1,
-    stroke: 'black'
-  };
+  var AXIS_OPTIONS = { lineWidth: 1, stroke: 'black' };
+  var CURVE_OPTIONS = { stroke: 'black', lineWidth: 2 };
+  var RESIDUAL_OPTIONS = { stroke: CurveFittingConstants.GRAY_COLOR, lineWidth: 2 };
+  var GRAPH_BACKGROUND_OPTIONS = { fill: 'white', lineWidth: 2, stroke: 'rgb( 214, 223, 226 )' };
+
+  // ticks
   var TICK_LENGTH = 0.3; // in model coordinate
   var HORIZONTAL_TICKS = [ -10, -5, 5, 10 ];
   var VERTICAL_TICKS = [ -10, -5, 5, 10 ];
+  var TICK_DECIMAL_PLACES = 0;
+  var TICK_FONT_OPTIONS = { font: new PhetFont( 12 ), fill: 'black' };
+
 
   /**
    * @param {Curve} curve - curve model.
@@ -40,12 +48,10 @@ define( function( require ) {
 
     Node.call( this );
 
+    this.modelViewTransform = modelViewTransform;
+
     // create and add white background
-    this.addChild( new Rectangle.bounds( modelViewTransform.modelToViewBounds( graphBounds ), {
-      fill: 'white',
-      lineWidth: 2,
-      stroke: 'rgb( 214, 223, 226 )'
-    } ) );
+    this.addChild( new Rectangle.bounds( modelViewTransform.modelToViewBounds( graphBounds ), GRAPH_BACKGROUND_OPTIONS ) );
 
     var axisShape = new Shape();
 
@@ -58,26 +64,21 @@ define( function( require ) {
     // add axes
     this.addChild( new Path( modelViewTransform.modelToViewShape( axisShape ), AXIS_OPTIONS ) );
 
-    var ticksShape = new Shape();
+    // create and add horizontal tick lines and labels
+    this.addTicks( HORIZONTAL_TICKS );
 
-    // create horizontal tick lines
-    this.addTicks( ticksShape, HORIZONTAL_TICKS );
-
-    // create vertical tick lines
-    this.addTicks( ticksShape, VERTICAL_TICKS, { axis: 'vertical' } );
-
-    // add ticks
-    this.addChild( new Path( modelViewTransform.modelToViewShape( ticksShape ), AXIS_OPTIONS ) );
+    // create and add vertical tick lines and labels
+    this.addTicks( VERTICAL_TICKS, { axis: 'vertical' } );
 
     // add clip area
     this.clipArea = Shape.bounds( modelViewTransform.modelToViewBounds( graphBounds ) );
 
     // create and add curve
-    var curvePath = new Path( null, { stroke: 'black', lineWidth: 2 } );
+    var curvePath = new Path( null, CURVE_OPTIONS );
     this.addChild( curvePath );
 
     // create and add residual lines
-    var residualsPath = new Path( null, { stroke: CurveFittingConstants.GRAY_COLOR, lineWidth: 2 } );
+    var residualsPath = new Path( null, RESIDUAL_OPTIONS );
     this.addChild( residualsPath );
 
 
@@ -170,41 +171,76 @@ define( function( require ) {
   curveFitting.register( 'GraphAreaNode', GraphAreaNode );
 
   return inherit( Node, GraphAreaNode, {
-    /**
-     * @private
-     * @param {Shape} shape
+    /***
+     * create and add a tick line
      * @param {number} location
-     * @param {Object} options
+     * @param {Object} [options]
+     * @private
      */
-    addTick: function( shape, location, options ) {
+    addTickLine: function( location, options ) {
       options = _.extend(
         {
           axis: 'horizontal'
         }, options );
 
+      var tickShape = new Shape();
+
       if ( options.axis === 'horizontal' ) {
-        shape.moveTo( location, -TICK_LENGTH / 2 ); // ticks are below and above x-axis
-        shape.verticalLineToRelative( TICK_LENGTH );
+        tickShape.moveTo( location, -TICK_LENGTH / 2 ); // ticks are below and above x-axis
+        tickShape.verticalLineToRelative( TICK_LENGTH );
       }
       else {
-        shape.moveTo( -TICK_LENGTH / 2, location );
-        shape.horizontalLineToRelative( TICK_LENGTH );
+        tickShape.moveTo( -TICK_LENGTH / 2, location );
+        tickShape.horizontalLineToRelative( TICK_LENGTH );
       }
+      this.addChild( new Path( this.modelViewTransform.modelToViewShape( tickShape ), AXIS_OPTIONS ) );
     },
+
     /**
-     * @private
-     * @param  {Shape} shape
-     * @param {Array.<number>} ticksLocation - in model coordinates
-     * @param {Object} options
+     * create and add a tick label
+     * @param {number} value
+     * @param {Object} [options]
      */
-    addTicks: function( shape, ticksLocation, options ) {
+    tickLabel: function( value, options ) {
+      options = _.extend(
+        {
+          axis: 'horizontal'
+        }, options );
+
+      var tickLabel = new Text( Util.toFixed( value, TICK_DECIMAL_PLACES ), TICK_FONT_OPTIONS );
+
+      if ( options.axis === 'horizontal' ) {
+        tickLabel.centerX = this.modelViewTransform.modelToViewX( value );
+        tickLabel.top = this.modelViewTransform.modelToViewY( -TICK_LENGTH / 2 );
+      }
+      else {
+        tickLabel.centerY = this.modelViewTransform.modelToViewY( value );
+        tickLabel.right = this.modelViewTransform.modelToViewX( -TICK_LENGTH / 2 );
+      }
+      this.addChild( tickLabel );
+    },
+
+    /**
+     * create and add ticks and labels
+     * @param {Array.<number>} ticksLocation - in model coordinates
+     * @param {Object} [options]
+     * @private
+     */
+    addTicks: function( ticksLocation, options ) {
+
+      options = _.extend(
+        {
+          withLabels: true
+        }, options );
+
       var self = this;
 
       ticksLocation.forEach( function( location ) {
-        self.addTick( shape, location, options );
+        self.addTickLine( location, options );
+        if ( options.withLabels ) {
+          self.tickLabel( location, options );
+        }
       } );
     }
-
   } );
-} )
-;
+} );
