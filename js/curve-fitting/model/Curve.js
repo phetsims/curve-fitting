@@ -87,7 +87,7 @@ define( function( require ) {
     // If after that user switch back "Adjustable fit" (without turn on/off "Curve" between operations)
     // adjustable values will be restored from storage. If "Curve" is turn off then storage values is flush.
     this._storage = {}; // @private
-    setDefaultAdjustableValues( this._storage );
+    this.setDefaultAdjustableValues( this._storage );
 
     //TODO This many lazyLink calls looks suspicious, probably making assumption about initial state of sim
     this.aProperty.lazyLink( this.updateFitBinded );
@@ -114,20 +114,6 @@ define( function( require ) {
 
   curveFitting.register( 'Curve', Curve );
 
-  // set default adjustable values
-  /**
-   *
-   * @param obj
-   */
-  function setDefaultAdjustableValues( obj ) {
-
-    //TODO Why aren't we just resetting these Properties?
-    obj.a = 0;
-    obj.b = 0;
-    obj.c = 0;
-    obj.d = 2.7; //TODO why this magic value? dProperty should be initialized to this value
-  }
-
   return inherit( Object, Curve, {
 
     /**
@@ -140,7 +126,7 @@ define( function( require ) {
       this.dProperty.reset();
       this.rSquaredProperty.reset();
       this.chiSquaredProperty.reset();
-      setDefaultAdjustableValues( this._storage );
+      this.setDefaultAdjustableValues( this._storage );
     },
 
     /**
@@ -230,6 +216,18 @@ define( function( require ) {
       else {
         this.chiSquaredProperty.set( 0 );
       }
+    },
+
+    /**
+     * set default adjustable values
+     * @param {Object} storage
+     * @private
+     */
+    setDefaultAdjustableValues: function( storage ) {
+      storage.a = this.aProperty.initialValue;
+      storage.b = this.bProperty.initialValue;
+      storage.c = this.cProperty.initialValue;
+      storage.d = this.dProperty.initialValue;
     },
 
     /**
