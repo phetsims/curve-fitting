@@ -50,6 +50,8 @@ define( function( require ) {
 
     this.modelViewTransform = modelViewTransform;
 
+    var graphBounds = CurveFittingConstants.GRAPH_MODEL_BOUNDS;
+
     // create and add white background
     this.addChild( new Rectangle.bounds( modelViewTransform.modelToViewBounds( graphBounds ), GRAPH_BACKGROUND_OPTIONS ) );
 
@@ -90,7 +92,6 @@ define( function( require ) {
       var residualsShape = null;
       var pointsOnGraph = points.getPointsOnGraph();
       var order = curve.orderProperty.value;
-      var points = curve.getPoints();
       var a = curve.a;
       var b = curve.b;
       var c = curve.c;

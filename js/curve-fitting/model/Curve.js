@@ -14,7 +14,7 @@ define( function( require ) {
   var FitMaker = require( 'CURVE_FITTING/curve-fitting/model/FitMaker' );
   var inherit = require( 'PHET_CORE/inherit' );
   var NumberProperty = require( 'AXON/NumberProperty' );
-  var PropertySet = require( 'AXON/PropertySet' );
+
 
   /**
    * @param {Points} points - array of points
@@ -25,18 +25,13 @@ define( function( require ) {
   function Curve( points, orderProperty, fitProperty ) {
     var self = this;
 
-    PropertySet.call( this, {
+    // @public
+    this.aProperty = new NumberProperty( 0 ); // coefficient for x^3 term
+    this.bProperty = new NumberProperty( 0 );// coefficient for x^2 term
+    this.cProperty = new NumberProperty( 0 );// coefficient for x^1 term
+    this.dProperty = new NumberProperty( 2.7 );// coefficient for x^0 term (constant term)
 
-      //TODO rather than a, b, c, this should be coefficients, an array of coefficients, indexed by order
-      //TODO rather than d, this should be constantTerm
-      // @public
-      a: 0, // coefficient for x^3 term
-      b: 0, // coefficient for x^2 term
-      c: 0, // coefficient for x^1 term
-      d: 2.7  // coefficient for x^0 term (constant term)
-    } );
-
-    // @public {Property.<number>}  X^2 deviation value, a number ranging from 0 to +\infty
+    // @public {Property.<number>}  X^2 deviation value, a number ranging from 0 to + $\infty$
     this.chiSquaredProperty = new NumberProperty( 0 );
 
     // @public {Property.<number>}  r^2 deviation value, a number ranging from 0 to 1
@@ -54,8 +49,7 @@ define( function( require ) {
 
     this.updateFitBinded = this.updateFit.bind( this ); // @private
 
-    // @private
-    this.pointsOnGraph = points.getPointsOnGraph();
+    this.points = points;
 
     orderProperty.lazyLink( function( order, oldOrder ) {
 
@@ -63,25 +57,25 @@ define( function( require ) {
 
       // save and restore coefficient values
       if ( order === 3 ) {
-        self.a = self._storage.a;
+        self.aProperty.value = self._storage.a;
       }
       else if ( order === 2 ) {
         if ( oldOrder === 3 ) {
-          self._storage.a = self.a;
-          self.a = 0;
+          self._storage.a = self.aProperty.value;
+          self.aProperty.value = 0;
         }
         else {
-          self.b = self._storage.b;
+          self.bProperty.value = self._storage.b;
         }
       }
       else if ( order === 1 ) {
         if ( oldOrder === 3 ) {
-          self._storage.a = self.a;
-          self.a = 0;
+          self._storage.a = self.aProperty.value;
+          self.aProperty.value = 0;
         }
         if ( oldOrder >= 2 ) {
-          self._storage.b = self.b;
-          self.b = 0;
+          self._storage.b = self.bProperty.value;
+          self.bProperty.value = 0;
         }
       }
 
@@ -134,13 +128,16 @@ define( function( require ) {
     obj.d = 2.7; //TODO why this magic value? dProperty should be initialized to this value
   }
 
-  return inherit( PropertySet, Curve, {
+  return inherit( Object, Curve, {
 
     /**
      * @public
      */
     reset: function() {
-      PropertySet.prototype.reset.call( this );
+      this.aProperty.reset();
+      this.bProperty.reset()
+      this.cProperty.reset()
+      this.dProperty.reset()
       this.rSquaredProperty.reset();
       this.chiSquaredProperty.reset();
       setDefaultAdjustableValues( this._storage );
@@ -155,10 +152,11 @@ define( function( require ) {
      */
     getYValueAt: function( x ) {
       //TODO this should use orderProperty to determine which coefficients are relevant
-      return this.a * Math.pow( x, 3 ) + this.b * Math.pow( x, 2 ) + this.c * ( x  ) + this.d;
+      return this.aProperty.value * Math.pow( x, 3 )
+             + this.bProperty.value * Math.pow( x, 2 )
+             + this.cProperty.value * ( x  )
+             + this.dProperty.value;
     },
-
-
 
     /**
      * Updates Chi Square and r^2 deviation.
@@ -168,7 +166,7 @@ define( function( require ) {
     updateRAndChiSquared: function() {
 
       var self = this;
-      var points = this.pointsOnGraph;
+      var points = this.points.getPointsOnGraph();
       var weightSum = 0;
       var ySum = 0;
       var yySum = 0;
@@ -188,10 +186,10 @@ define( function( require ) {
       }
       else {
         points.forEach( function( point ) {
-          x = point.position.x; // x value of this point
-          y = point.position.y; // y value of this point
+          x = point.positionProperty.value.x; // x value of this point
+          y = point.positionProperty.value.y; // y value of this point
           yAt = self.getYValueAt( x ); // y value of the curve
-          weight = 1 / (point.delta * point.delta); // weight of this point
+          weight = 1 / (point.deltaProperty.value * point.deltaProperty.value); // weight of this point
 
           weightSum = weightSum + weight; // sum of weights
           ySum = ySum + weight * y;   // weighted sum of y values
@@ -240,10 +238,10 @@ define( function( require ) {
      * @private
      */
     saveValuesToStorage: function() {
-      this._storage.a = this.a;
-      this._storage.b = this.b;
-      this._storage.c = this.c;
-      this._storage.d = this.d;
+      this._storage.a = this.aProperty.value;
+      this._storage.b = this.bProperty.value;
+      this._storage.c = this.cProperty.value;
+      this._storage.d = this.dProperty.value;
     },
 
     /**
@@ -252,10 +250,10 @@ define( function( require ) {
      * @private
      */
     restoreValuesFromStorage: function() {
-      this.a = this._storage.a;
-      this.b = this._storage.b;
-      this.c = this._storage.c;
-      this.d = this._storage.d;
+      this.aProperty.set( this._storage.a );
+      this.bProperty.set( this._storage.b );
+      this.cProperty.set( this._storage.c );
+      this.dProperty.set( this._storage.d );
       //TODO why doesn't this call updateCurveEmitter.emit?
     },
 
@@ -267,12 +265,12 @@ define( function( require ) {
     updateFit: function() {
 
       if ( this.fitProperty.value === 'best' ) {
-        var fit = this.fitMaker.getFit( this.pointsOnGraph, this.orderProperty.value );
+        var fit = this.fitMaker.getFit( this.points.getPointsOnGraph(), this.orderProperty.value );
 
-        this.d = isFinite( fit[ 0 ] ) ? fit[ 0 ] : 0;
-        this.c = isFinite( fit[ 1 ] ) ? fit[ 1 ] : 0;
-        this.b = isFinite( fit[ 2 ] ) ? fit[ 2 ] : 0;
-        this.a = isFinite( fit[ 3 ] ) ? fit[ 3 ] : 0;
+        this.dProperty.value = isFinite( fit[ 0 ] ) ? fit[ 0 ] : 0;
+        this.cProperty.value = isFinite( fit[ 1 ] ) ? fit[ 1 ] : 0;
+        this.bProperty.value = isFinite( fit[ 2 ] ) ? fit[ 2 ] : 0;
+        this.aProperty.value = isFinite( fit[ 3 ] ) ? fit[ 3 ] : 0;
       }
 
       this.updateRAndChiSquared();

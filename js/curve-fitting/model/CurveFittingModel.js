@@ -46,8 +46,13 @@ define( function( require ) {
     this.curve = new Curve( this.points, this.orderProperty, this.fitProperty );
 
     // Add internal listeners for adding and removing points
-    this.points.addItemAddedListener( this.addPoint.bind( this ) );
-    this.points.addItemRemovedListener( this.removePoint.bind( this ) );
+    var self = this;
+    this.points.addItemAddedListener( function( point ) {
+      self.addPoint( point );
+    } );
+    this.points.addItemRemovedListener( function( point ) {
+      self.removePoint( point );
+    } );
 
   }
 
@@ -61,7 +66,7 @@ define( function( require ) {
     reset: function() {
       this.orderProperty.reset();
       this.fitProperty.reset();
-      this.points.clear();
+      this.points.reset();
       this.curve.reset();
     },
     /**
@@ -96,7 +101,6 @@ define( function( require ) {
       point.positionProperty.unlink( this.curve.updateFitBinded );
       point.isInsideGraphProperty.unlink( this.curve.updateFitBinded );
       point.deltaProperty.unlink( this.curve.updateFitBinded );
-
       this.curve.updateFit();
     }
   } );

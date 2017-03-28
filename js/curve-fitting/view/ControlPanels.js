@@ -25,7 +25,7 @@ define( function( require ) {
     xMargin: CurveFittingConstants.PANEL_MARGIN,
     yMargin: CurveFittingConstants.PANEL_MARGIN,
     maxWidth: CurveFittingConstants.PANEL_MAX_WIDTH,
-    minWidth: CurveFittingConstants.PANEL_MIN_WIDTH,
+    minWidth: CurveFittingConstants.PANEL_MIN_WIDTH
   };
 
   /**

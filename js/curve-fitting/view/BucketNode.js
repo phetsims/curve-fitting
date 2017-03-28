@@ -127,11 +127,11 @@ define( function( require ) {
       },
 
       translate: function( translationParams ) {
-        point.position = point.position.plus( modelViewTransform.viewToModelDelta( translationParams.delta ) );
+        point.positionProperty.value = point.positionProperty.value.plus( modelViewTransform.viewToModelDelta( translationParams.delta ) );
       },
 
       end: function() {
-        point.dragging = false;
+        point.draggingProperty.set( false );
         point = null;
       }
     } ) );

@@ -80,9 +80,9 @@ define( function( require ) {
 
       // fill out the elements of the matrices Y and X
       points.forEach( function( point ) {
-        var deltaSquared = point.delta * point.delta;
-        var x = point.position.x;
-        var y = point.position.y;
+        var deltaSquared = point.deltaProperty.value * point.deltaProperty.value;
+        var x = point.positionProperty.value.x;
+        var y = point.positionProperty.value.y;
 
         for ( var j = 0; j < m; ++j ) {
           for ( var k = 0; k < m; ++k ) {

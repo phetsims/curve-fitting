@@ -9,11 +9,13 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var PropertySet = require( 'AXON/PropertySet' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
+  var Property = require( 'AXON/Property' );
   var Vector2 = require( 'DOT/Vector2' );
 
   /**
@@ -28,43 +30,45 @@ define( function( require ) {
     }, options );
 
     var self = this;
+    // @public
+    this.positionProperty = new Property( options.position );
 
-    PropertySet.call( this, {
-      position: options.position,
+    //TODO describe why this is needed
+    // @public
+    this.isInsideGraphProperty = new BooleanProperty( false );
+    // {boolean} is the point inside the graph?
+    // @public
+    this.draggingProperty = new BooleanProperty( options.dragging ); // {boolean} is the user dragging the point?
 
-      //TODO describe why this is needed
-      isInsideGraph: false, // {boolean} is the point inside the graph?
+    // @public
+    //TODO rename, too vague
+    this.deltaProperty = new NumberProperty( 0.8 ); // delta variation of point
 
-      dragging: options.dragging, // {boolean} is the user dragging the point?
 
-      //TODO rename, too vague
-      delta: 0.8 // delta variation of point
-    } );
-
-    //TODO describe why this flag is need (if it's in fact really needed)
-    // @private is the point animating?
+//TODO describe why this flag is need (if it's in fact really needed)
+// @private is the point animating?
     this.animating = false;
 
-    // check and set the flag that indicates if the point is within the bounds of the graph
+// check and set the flag that indicates if the point is within the bounds of the graph
     this.positionProperty.link( function( position ) {
       // Determines if the position of a point is within the visual bounds of the graph and is not animated on its way back
-      self.isInsideGraph = CurveFittingConstants.GRAPH_MODEL_BOUNDS.containsPoint( position ) && !self.animating;
+      self.isInsideGraphProperty.set( CurveFittingConstants.GRAPH_MODEL_BOUNDS.containsPoint( position ) && !self.animating );
     } );
 
-    //if the user dropped the ball outside of the graph send it back to the bucket
+//if the user dropped the ball outside of the graph send it back to the bucket
     this.draggingProperty.lazyLink( function( dragging ) {
-      if ( !dragging && !self.isInsideGraph && !self.animating ) {
+      if ( !dragging && !self.isInsideGraphProperty.value && !self.animating ) {
         self.animate();
       }
     } );
 
-    // create emitter that will signal that the point has returned to the bucket
+// create emitter that will signal that the point has returned to the bucket
     this.returnToOriginEmitter = new Emitter();
   }
 
   curveFitting.register( 'Point', Point );
 
-  return inherit( PropertySet, Point, {
+  return inherit( Object, Point, {
 
     /**
      * Animates the point back to the bucket.
@@ -77,12 +81,12 @@ define( function( require ) {
       this.animating = true;
 
       var location = {
-        x: this.position.x,
-        y: this.position.y
+        x: this.positionProperty.value.x,
+        y: this.positionProperty.value.y
       };
 
       // distance to the bucket
-      var distance = this.positionProperty.initialValue.distance( this.position );
+      var distance = this.positionProperty.initialValue.distance( this.positionProperty.value );
 
       if ( distance > 0 ) {
         var animationTween = new TWEEN.Tween( location )
@@ -90,7 +94,7 @@ define( function( require ) {
             distance / CurveFittingConstants.ANIMATION_SPEED )
           .easing( TWEEN.Easing.Cubic.In )
           .onUpdate( function() {
-            self.position = new Vector2( location.x, location.y );
+            self.positionProperty.set( new Vector2( location.x, location.y ) );
           } )
           .onComplete( function() {
             self.animating = false;
@@ -101,4 +105,5 @@ define( function( require ) {
       }
     }
   } );
-} );
+} )
+;

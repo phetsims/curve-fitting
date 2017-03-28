@@ -82,11 +82,11 @@ define( function( require ) {
       },
       translate: function( translationParams ) {
         if ( draggingDeltaTop ) {
-          newDeltaValue = point.delta + modelViewTransform.viewToModelDeltaY( translationParams.delta.y );
+          newDeltaValue = point.deltaProperty.value + modelViewTransform.viewToModelDeltaY( translationParams.delta.y );
 
           // don't let the top error bar become the bottom error bar
           if ( newDeltaValue > 0 ) {
-            point.delta = newDeltaValue;
+            point.deltaProperty.value = newDeltaValue;
           }
         }
       },
@@ -115,11 +115,11 @@ define( function( require ) {
       },
       translate: function( translationParams ) {
         if ( draggingDeltaBottom ) {
-          newDeltaValue = point.delta - modelViewTransform.viewToModelDeltaY( translationParams.delta.y );
+          newDeltaValue = point.deltaProperty.value - modelViewTransform.viewToModelDeltaY( translationParams.delta.y );
 
           // don't let the bottom error bar become the top error bar
           if ( newDeltaValue > 0 ) {
-            point.delta = newDeltaValue;
+            point.deltaProperty.value = newDeltaValue;
           }
         }
       },
@@ -173,21 +173,21 @@ define( function( require ) {
     // add drag handler for point
     circleView.addInputListener( new SimpleDragHandler( {
       start: function() {
-        point.dragging = true;
+        point.draggingProperty.set( true );
       },
       translate: function( translationParams ) {
-        if ( point.dragging ) {
+        if ( point.draggingProperty.value ) {
           // self.setTranslation( parentNode.globalToLocalPoint( e.pointer.point ) );
-          point.position = point.position.plus( modelViewTransform.viewToModelDelta( translationParams.delta ) );
+          point.positionProperty.value = point.positionProperty.value.plus( modelViewTransform.viewToModelDelta( translationParams.delta ) );
         }
       },
       end: function() {
-        point.dragging = false;
+        point.draggingProperty.set( false );
       }
     } ) );
 
     // add value text label
-    var valueTextLabel = new Text( StringUtils.format( pattern0ValueX1ValueYString, Util.toFixed( point.position.x, 1 ), Util.toFixed( point.position.y, 1 ) ), {
+    var valueTextLabel = new Text( StringUtils.format( pattern0ValueX1ValueYString, Util.toFixed( point.positionProperty.value.x, 1 ), Util.toFixed( point.positionProperty.value.y, 1 ) ), {
       font: FONT
     } );
     this.addChild( valueTextLabel );
@@ -202,7 +202,7 @@ define( function( require ) {
      *
      */
     var updateErrorBars = function() {
-      var lineHeight = modelViewTransform.modelToViewDeltaY( point.delta );
+      var lineHeight = modelViewTransform.modelToViewDeltaY( point.deltaProperty.value );
 
       // update top error bar
       errorBarTop.setTranslation( circleView.centerX, circleView.centerY + lineHeight - ERROR_BAR_BOUNDS.height / 2 );
@@ -229,8 +229,8 @@ define( function( require ) {
      * updates the value text for the points
      */
     var updateValueText = function() {
-      if ( valueTextLabel.visible && point.isInsideGraph ) {
-        valueTextLabel.setText( StringUtils.format( pattern0ValueX1ValueYString, Util.toFixed( point.position.x, 1 ), Util.toFixed( point.position.y, 1 ) ) );
+      if ( valueTextLabel.visible && point.isInsideGraphProperty.value ) {
+        valueTextLabel.setText( StringUtils.format( pattern0ValueX1ValueYString, Util.toFixed( point.positionProperty.value.x, 1 ), Util.toFixed( point.positionProperty.value.y, 1 ) ) );
       }
       else {
         valueTextLabel.setText( '' );
@@ -241,11 +241,11 @@ define( function( require ) {
     point.positionProperty.link( updateValueText );
 
     /**
-     * Update the text attached tp the error bar
+     * Update the text attached to the error bar
      */
     var updateDeltaText = function() {
       if ( deltaTextLabel.visible ) {
-        deltaTextLabel.setText( StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( point.delta, 1 ) ) );
+        deltaTextLabel.setText( StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( point.deltaProperty.value, 1 ) ) );
       }
     };
     var updateDeltaTextHandle = valuesVisibleProperty.onValue( true, updateDeltaText );

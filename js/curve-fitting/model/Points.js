@@ -1,9 +1,9 @@
 // Copyright 2015-2017, University of Colorado Boulder
 
 /**
- * Point model in 'Curve Fitting' simulation.
+ * Points is a collection of Point in 'Curve Fitting' simulation.
  *
- * @author Andrey Zelenkov (Mlearner)
+ * @author Martin Veillette (Berea College)
  */
 define( function( require ) {
   'use strict';
@@ -24,7 +24,8 @@ define( function( require ) {
 
   return inherit( ObservableArray, Points, {
     /**
-     * @public Resets the model
+     * Resets the model
+     * @public
      */
     reset: function() {
       this.clear();
@@ -38,17 +39,8 @@ define( function( require ) {
      */
     getPointsOnGraph: function() {
       return this.getArray().filter( function( point ) {
-        return point.isInsideGraph;
+        return point.isInsideGraphProperty.value;
       } );
-    },
-
-    /**
-     * Gets the number of points inside the graph bounds.
-     * @returns {number}
-     * @public (read-only)
-     */
-    getNumberOfPointsOnGraph: function() {
-      return this.getPointsOnGraph().length;
     }
   } );
 } );
