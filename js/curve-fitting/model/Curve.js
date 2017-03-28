@@ -117,6 +117,7 @@ define( function( require ) {
   return inherit( Object, Curve, {
 
     /**
+     * Reset
      * @public
      */
     reset: function() {
@@ -127,6 +128,63 @@ define( function( require ) {
       this.rSquaredProperty.reset();
       this.chiSquaredProperty.reset();
       this.setDefaultAdjustableValues( this._storage );
+    },
+
+    /**
+     * set default adjustable values
+     * @param {Object} storage
+     * @private
+     */
+    setDefaultAdjustableValues: function( storage ) {
+      storage.a = this.aProperty.initialValue;
+      storage.b = this.bProperty.initialValue;
+      storage.c = this.cProperty.initialValue;
+      storage.d = this.dProperty.initialValue;
+    },
+
+    /**
+     * Save values to storage. Necessary when switching to adjustable mode.
+     *
+     * @private
+     */
+    saveValuesToStorage: function() {
+      this._storage.a = this.aProperty.value;
+      this._storage.b = this.bProperty.value;
+      this._storage.c = this.cProperty.value;
+      this._storage.d = this.dProperty.value;
+    },
+
+    /**
+     * Restores values from storage. Necessary when switching back from adjustable mode.
+     *
+     * @private
+     */
+    restoreValuesFromStorage: function() {
+      this.aProperty.set( this._storage.a );
+      this.bProperty.set( this._storage.b );
+      this.cProperty.set( this._storage.c );
+      this.dProperty.set( this._storage.d );
+      //TODO why doesn't this call updateCurveEmitter.emit?
+    },
+
+    /**
+     * Updates fit for current points.
+     *
+     * @public
+     */
+    updateFit: function() {
+
+      if ( this.fitProperty.value === 'best' ) {
+        var fit = this.fitMaker.getFit( this.points.getPointsOnGraph(), this.orderProperty.value );
+
+        this.dProperty.value = isFinite( fit[ 0 ] ) ? fit[ 0 ] : 0;
+        this.cProperty.value = isFinite( fit[ 1 ] ) ? fit[ 1 ] : 0;
+        this.bProperty.value = isFinite( fit[ 2 ] ) ? fit[ 2 ] : 0;
+        this.aProperty.value = isFinite( fit[ 3 ] ) ? fit[ 3 ] : 0;
+      }
+
+      this.updateRAndChiSquared();
+      this.updateCurveEmitter.emit();
     },
 
     /**
@@ -216,63 +274,6 @@ define( function( require ) {
       else {
         this.chiSquaredProperty.set( 0 );
       }
-    },
-
-    /**
-     * set default adjustable values
-     * @param {Object} storage
-     * @private
-     */
-    setDefaultAdjustableValues: function( storage ) {
-      storage.a = this.aProperty.initialValue;
-      storage.b = this.bProperty.initialValue;
-      storage.c = this.cProperty.initialValue;
-      storage.d = this.dProperty.initialValue;
-    },
-
-    /**
-     * Save values to storage. Necessary when switching to adjustable mode.
-     *
-     * @private
-     */
-    saveValuesToStorage: function() {
-      this._storage.a = this.aProperty.value;
-      this._storage.b = this.bProperty.value;
-      this._storage.c = this.cProperty.value;
-      this._storage.d = this.dProperty.value;
-    },
-
-    /**
-     * Restores values from storage. Necessary when switching back from adjustable mode.
-     *
-     * @private
-     */
-    restoreValuesFromStorage: function() {
-      this.aProperty.set( this._storage.a );
-      this.bProperty.set( this._storage.b );
-      this.cProperty.set( this._storage.c );
-      this.dProperty.set( this._storage.d );
-      //TODO why doesn't this call updateCurveEmitter.emit?
-    },
-
-    /**
-     * Updates fit for current points.
-     *
-     * @public
-     */
-    updateFit: function() {
-
-      if ( this.fitProperty.value === 'best' ) {
-        var fit = this.fitMaker.getFit( this.points.getPointsOnGraph(), this.orderProperty.value );
-
-        this.dProperty.value = isFinite( fit[ 0 ] ) ? fit[ 0 ] : 0;
-        this.cProperty.value = isFinite( fit[ 1 ] ) ? fit[ 1 ] : 0;
-        this.bProperty.value = isFinite( fit[ 2 ] ) ? fit[ 2 ] : 0;
-        this.aProperty.value = isFinite( fit[ 3 ] ) ? fit[ 3 ] : 0;
-      }
-
-      this.updateRAndChiSquared();
-      this.updateCurveEmitter.emit();
     }
   } );
 } );
