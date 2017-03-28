@@ -14,6 +14,7 @@ define( function( require ) {
   var ControlPanels = require( 'CURVE_FITTING/curve-fitting/view/ControlPanels' );
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  var CurveNode = require( 'CURVE_FITTING/curve-fitting/view/CurveNode' );
   var DeviationsAccordionBox = require( 'CURVE_FITTING/curve-fitting/view/DeviationsAccordionBox' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
@@ -80,13 +81,8 @@ define( function( require ) {
       new Vector2( graphCenterX, graphCenterY ),
       scale );
 
-    // create the graph area node - responsible for the rendering of the curves, as well as the axes and background.
-    var graphAreaNode = new GraphAreaNode(
-      model.points,
-      model.curve,
-      residualsVisibleProperty,
-      curveVisibleProperty,
-      modelViewTransform );
+    // create the graph area node - responsible for the rendering of the axes, ticks and background.
+    var graphAreaNode = new GraphAreaNode( modelViewTransform );
 
     // create the equation node (accordion box) in the upper left corner of the graph
     var equationGraphPanelNode = new EquationGraphPanelNode(
@@ -94,6 +90,14 @@ define( function( require ) {
       model.orderProperty,
       equationPanelExpandedProperty,
       curveVisibleProperty );
+
+    // create the curve and the residual lines
+    var curveNode = new CurveNode(
+      model.points,
+      model.curve,
+      residualsVisibleProperty,
+      curveVisibleProperty,
+      modelViewTransform);
 
     // layout of equation inset on graph
     equationGraphPanelNode.left = graphAreaNode.left + 10;
@@ -129,6 +133,7 @@ define( function( require ) {
     this.addChild( graphAreaNode );
     this.addChild( equationGraphPanelNode );
     this.addChild( resetAllButton );
+    this.addChild( curveNode );
     this.addChild( bucketNode ); // must be last in the z-ordering
   }
 
