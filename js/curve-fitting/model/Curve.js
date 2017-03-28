@@ -47,7 +47,8 @@ define( function( require ) {
     // @public (read-only)
     this.updateCurveEmitter = new Emitter();
 
-    this.updateFitBinded = this.updateFit.bind( this ); // @private
+    // @public
+    this.updateFitBinded = this.updateFit.bind( this );
 
     this.points = points;
 

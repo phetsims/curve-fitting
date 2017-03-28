@@ -192,7 +192,7 @@ define( function( require ) {
     } );
     this.addChild( valueTextLabel );
 
-    var deltaTextLabel = new SubSupText( StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( point.delta, 1 ) ), {
+    var deltaTextLabel = new SubSupText( StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( point.deltaProperty.value, 1 ) ), {
       font: FONT
     } );
     this.addChild( deltaTextLabel );
