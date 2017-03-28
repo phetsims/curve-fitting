@@ -135,9 +135,9 @@ define( function( require ) {
      */
     reset: function() {
       this.aProperty.reset();
-      this.bProperty.reset()
-      this.cProperty.reset()
-      this.dProperty.reset()
+      this.bProperty.reset();
+      this.cProperty.reset();
+      this.dProperty.reset();
       this.rSquaredProperty.reset();
       this.chiSquaredProperty.reset();
       setDefaultAdjustableValues( this._storage );
