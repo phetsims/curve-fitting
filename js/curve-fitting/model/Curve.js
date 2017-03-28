@@ -47,6 +47,7 @@ define( function( require ) {
     // @public (read-only)
     this.updateCurveEmitter = new Emitter();
 
+    //TODO : not private, this is called by curveFittingModel
     this.updateFitBinded = this.updateFit.bind( this ); // @private
 
     this.points = points;

@@ -42,6 +42,7 @@ define( function( require ) {
 
     Node.call( this );
 
+    // @private
     this.modelViewTransform = modelViewTransform;
 
     var graphBounds = CurveFittingConstants.GRAPH_MODEL_BOUNDS;
