@@ -59,7 +59,7 @@ define( function( require ) {
     },
 
     // size
-    GRAPH_MODEL_BOUNDS: new Bounds2( -10, -10, 10, 10 )
+    GRAPH_MODEL_BOUNDS: new Bounds2( -11, -11, 11, 11 )
   };
 
   curveFitting.register( 'CurveFittingConstants', CurveFittingConstants );
