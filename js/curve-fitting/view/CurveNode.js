@@ -21,7 +21,6 @@ define( function( require ) {
   var CURVE_OPTIONS = { stroke: 'black', lineWidth: 2 };
   var RESIDUAL_OPTIONS = { stroke: CurveFittingConstants.GRAY_COLOR, lineWidth: 2 };
 
-
   /**
    * @param {Points} points
    * @param {Curve} curve - curve model.
@@ -36,8 +35,6 @@ define( function( require ) {
 
     // model bounds of the graph
     var graphBounds = CurveFittingConstants.GRAPH_MODEL_BOUNDS;
-
-    this.modelViewTransform = modelViewTransform;
 
     // add clip area
     this.clipArea = Shape.bounds( modelViewTransform.modelToViewBounds( graphBounds ) );
