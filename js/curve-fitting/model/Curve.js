@@ -47,8 +47,7 @@ define( function( require ) {
     // @public (read-only)
     this.updateCurveEmitter = new Emitter();
 
-    // @public
-    this.updateFitBinded = this.updateFit.bind( this );
+    this.updateFitBinded = this.updateFit.bind( this ); // @private
 
     this.points = points;
 
@@ -118,8 +117,7 @@ define( function( require ) {
   return inherit( Object, Curve, {
 
     /**
-     * Reset
-     * @public
+     * Reset @public
      */
     reset: function() {
       this.aProperty.reset();
@@ -196,11 +194,18 @@ define( function( require ) {
      * @public
      */
     getYValueAt: function( x ) {
-      //TODO this should use orderProperty to determine which coefficients are relevant
-      return this.aProperty.value * Math.pow( x, 3 )
-             + this.bProperty.value * Math.pow( x, 2 )
-             + this.cProperty.value * ( x  )
-             + this.dProperty.value;
+      var yValue = this.dProperty.value;
+      if ( this.orderProperty.value >= 1 ) {
+        yValue += this.cProperty.value * x ;
+      }
+      if ( this.orderProperty.value >= 2 ) {
+        yValue += this.bProperty.value * Math.pow( x, 2 );
+      }
+      if ( this.orderProperty.value >= 3 ) {
+        yValue += this.aProperty.value * Math.pow( x, 3 );
+      }
+
+      return yValue;
     },
 
     /**
