@@ -24,6 +24,7 @@ define( function( require ) {
    */
   function CurveFittingModel() {
 
+    var self = this;
     // @public {Property.<number>} order of the polynomial that describes the curve, valid values are 1, 2, 3
     this.orderProperty = new NumberProperty( 1 );
 
@@ -46,14 +47,12 @@ define( function( require ) {
     this.curve = new Curve( this.points, this.orderProperty, this.fitProperty );
 
     // Add internal listeners for adding and removing points
-    var self = this;
     this.points.addItemAddedListener( function( point ) {
       self.addPoint( point );
     } );
     this.points.addItemRemovedListener( function( point ) {
       self.removePoint( point );
     } );
-
   }
 
   curveFitting.register( 'CurveFittingModel', CurveFittingModel );
