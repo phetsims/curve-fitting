@@ -32,7 +32,7 @@ define( function( require ) {
 
     /**
      * Returns a numerical array of the coefficients of the polynomial
-     * @param {Array.<Point>} points
+     * @param {Points} points
      * @param {number} order
      * @returns {Array}
      * @public
@@ -65,7 +65,7 @@ define( function( require ) {
      *
      * see http://mathworld.wolfram.com/LeastSquaresFittingPolynomial.html
      *
-     * @param {Array.<Point>} points
+     * @param {Points} points
      * @param {number} order
      * @returns {Matrix} the column matrix A
      * @private

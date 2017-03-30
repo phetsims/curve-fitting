@@ -105,5 +105,4 @@ define( function( require ) {
       }
     }
   } );
-} )
-;
+} );
