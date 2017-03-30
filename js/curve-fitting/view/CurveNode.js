@@ -37,8 +37,6 @@ define( function( require ) {
     // model bounds of the graph
     var graphBounds = CurveFittingConstants.GRAPH_MODEL_BOUNDS;
 
-    this.modelViewTransform = modelViewTransform;
-
     // add clip area
     this.clipArea = Shape.bounds( modelViewTransform.modelToViewBounds( graphBounds ) );
 
