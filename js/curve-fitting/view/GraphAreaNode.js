@@ -1,11 +1,11 @@
 // Copyright 2015-2016, University of Colorado Boulder
 
-//TODO rename, untangle
 /**
  * Graph area node in 'Curve Fitting' simulation.
  * Contains static graph area with axes, tick lines and labels
  *
  * @author Andrey Zelenkov (Mlearner)
+ * @author Martin Veillette (Berea college)
  */
 define( function( require ) {
   'use strict';
@@ -33,7 +33,6 @@ define( function( require ) {
   var TICK_DECIMAL_PLACES = 0;
   var TICK_FONT_OPTIONS = { font: new PhetFont( 12 ), fill: 'black' };
 
-
   /**
    * @param {ModelViewTransform2} modelViewTransform
    * @constructor
@@ -42,9 +41,11 @@ define( function( require ) {
 
     Node.call( this );
 
-    this.modelViewTransform = modelViewTransform;
-
+    // convenience variable, graph bound in model coordinates.
     var graphBounds = CurveFittingConstants.GRAPH_MODEL_BOUNDS;
+
+    // @private
+    this.modelViewTransform = modelViewTransform;
 
     // create and add white background
     this.addChild( new Rectangle.bounds( modelViewTransform.modelToViewBounds( graphBounds ), GRAPH_BACKGROUND_OPTIONS ) );
@@ -89,7 +90,7 @@ define( function( require ) {
       var tickShape = new Shape();
 
       if ( options.axis === 'horizontal' ) {
-        tickShape.moveTo( location, -TICK_LENGTH / 2 ); // ticks are below and above x-axis
+        tickShape.moveTo( location, -TICK_LENGTH / 2 ); // tick lines are straddling the x-axis
         tickShape.verticalLineToRelative( TICK_LENGTH );
       }
       else {
