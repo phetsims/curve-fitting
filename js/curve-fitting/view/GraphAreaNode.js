@@ -5,7 +5,6 @@
  * Contains static graph area with axes, tick lines and labels
  *
  * @author Andrey Zelenkov (Mlearner)
- * @author Martin Veillette (Berea college)
  */
 define( function( require ) {
   'use strict';
@@ -41,11 +40,11 @@ define( function( require ) {
 
     Node.call( this );
 
-    // convenience variable, graph bound in model coordinates.
-    var graphBounds = CurveFittingConstants.GRAPH_MODEL_BOUNDS;
-
     // @private
     this.modelViewTransform = modelViewTransform;
+
+    // convenience variable, graph bound in model coordinates.
+    var graphBounds = CurveFittingConstants.GRAPH_MODEL_BOUNDS;
 
     // create and add white background
     this.addChild( new Rectangle.bounds( modelViewTransform.modelToViewBounds( graphBounds ), GRAPH_BACKGROUND_OPTIONS ) );

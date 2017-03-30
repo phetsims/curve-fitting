@@ -21,7 +21,6 @@ define( function( require ) {
   var CURVE_OPTIONS = { stroke: 'black', lineWidth: 2 };
   var RESIDUAL_OPTIONS = { stroke: CurveFittingConstants.GRAY_COLOR, lineWidth: 2 };
 
-
   /**
    * @param {Points} points
    * @param {Curve} curve - curve model.
