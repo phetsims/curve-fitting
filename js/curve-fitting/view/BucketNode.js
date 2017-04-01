@@ -14,6 +14,7 @@ define( function( require ) {
   var BucketHole = require( 'SCENERY_PHET/bucket/BucketHole' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  var CurveFittingQueryParameters = require( 'CURVE_FITTING/curve-fitting/CurveFittingQueryParameters' );
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var Dimension2 = require( 'DOT/Dimension2' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -21,6 +22,7 @@ define( function( require ) {
   var Point = require( 'CURVE_FITTING/curve-fitting/model/Point' );
   var PointNode = require( 'CURVE_FITTING/curve-fitting/view/PointNode' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  var Util = require( 'DOT/Util' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // constants
@@ -131,8 +133,15 @@ define( function( require ) {
       },
 
       end: function() {
+        if ( CurveFittingQueryParameters.snapToGrid ) {
+          point.positionProperty.set( new Vector2(
+            Util.roundSymmetric( point.positionProperty.value.x ),
+            Util.roundSymmetric( point.positionProperty.value.y )
+          ) );
+        }
         point.draggingProperty.set( false );
         point = null;
+
       }
     } ) );
 

@@ -15,6 +15,7 @@ define( function( require ) {
   var Color = require( 'SCENERY/util/Color' );
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  var CurveFittingQueryParameters = require( 'CURVE_FITTING/curve-fitting/CurveFittingQueryParameters' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -25,6 +26,7 @@ define( function( require ) {
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   // strings
   var pattern0ValueX1ValueYString = require( 'string!CURVE_FITTING/pattern.0valueX.1valueY' );
@@ -183,6 +185,12 @@ define( function( require ) {
       },
       end: function() {
         point.draggingProperty.set( false );
+        if ( CurveFittingQueryParameters.snapToGrid ) {
+          point.positionProperty.set( new Vector2(
+            Util.roundSymmetric( point.positionProperty.value.x ),
+            Util.roundSymmetric( point.positionProperty.value.y )
+          ) );
+        }
       }
     } ) );
 
