@@ -30,39 +30,35 @@ define( function( require ) {
     }, options );
 
     var self = this;
-    // @public
+    // @public {Property.<Vector2>} position of point
     this.positionProperty = new Property( options.position );
 
-    //TODO describe why this is needed
-    // @public
+    // @public (read-only) {Property.<boolean>}  is the point inside the graph? (points outside the graph ares are not used for curve fitting purposes)
     this.isInsideGraphProperty = new BooleanProperty( false );
-    // {boolean} is the point inside the graph?
-    // @public
+
+    // @public {Property.<boolean>}
     this.draggingProperty = new BooleanProperty( options.dragging ); // {boolean} is the user dragging the point?
 
-    // @public
-    //TODO rename, too vague
-    this.deltaProperty = new NumberProperty( 0.8 ); // delta variation of point
+    // @public {Property.<number>} vertical uncertainty of the point.
+    this.deltaProperty = new NumberProperty( 0.8 );
 
+    // @private {boolean} is the point animated by external means (say TWEEN). Animated points are not used for curve fits
+    this.animated = false;
 
-//TODO describe why this flag is need (if it's in fact really needed)
-// @private is the point animating?
-    this.animating = false;
-
-// check and set the flag that indicates if the point is within the bounds of the graph
+    // check and set the flag that indicates if the point is within the bounds of the graph
     this.positionProperty.link( function( position ) {
       // Determines if the position of a point is within the visual bounds of the graph and is not animated on its way back
-      self.isInsideGraphProperty.set( CurveFittingConstants.GRAPH_MODEL_BOUNDS.containsPoint( position ) && !self.animating );
+      self.isInsideGraphProperty.set( CurveFittingConstants.GRAPH_MODEL_BOUNDS.containsPoint( position ) );
     } );
 
-//if the user dropped the ball outside of the graph send it back to the bucket
+    //if the user dropped the point outside of the graph send it back to the bucket
     this.draggingProperty.lazyLink( function( dragging ) {
-      if ( !dragging && !self.isInsideGraphProperty.value && !self.animating ) {
+      if ( !dragging && !self.isInsideGraphProperty.value && !self.animated ) {
         self.animate();
       }
     } );
 
-// create emitter that will signal that the point has returned to the bucket
+    // create emitter that will signal that the point has returned to the bucket
     this.returnToOriginEmitter = new Emitter();
   }
 
@@ -71,21 +67,21 @@ define( function( require ) {
   return inherit( Object, Point, {
 
     /**
-     * Animates the point back to the bucket.
+     * Animates the point back to its original position (inside the bucket).
      *
      * @public
      */
     animate: function() {
 
       var self = this;
-      this.animating = true;
+      this.animated = true;
 
       var location = {
         x: this.positionProperty.value.x,
         y: this.positionProperty.value.y
       };
 
-      // distance to the bucket
+      // distance to the origin
       var distance = this.positionProperty.initialValue.distance( this.positionProperty.value );
 
       if ( distance > 0 ) {
@@ -97,7 +93,7 @@ define( function( require ) {
             self.positionProperty.set( new Vector2( location.x, location.y ) );
           } )
           .onComplete( function() {
-            self.animating = false;
+            self.animated = false;
             self.returnToOriginEmitter.emit();
           } );
 

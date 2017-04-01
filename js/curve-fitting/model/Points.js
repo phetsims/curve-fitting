@@ -32,14 +32,14 @@ define( function( require ) {
     },
 
     /**
-     * Gets all points that are within the graph bounds.
-     *
+     * Gets all points that are within the graph bound and are not animated.
+     * Only these points are used for curve-fitting calculations
      * @returns {Array.<Point>}
      * @public
      */
     getPointsOnGraph: function() {
       return this.getArray().filter( function( point ) {
-        return point.isInsideGraphProperty.value;
+        return point.isInsideGraphProperty.value && !point.animated;
       } );
     }
   } );
