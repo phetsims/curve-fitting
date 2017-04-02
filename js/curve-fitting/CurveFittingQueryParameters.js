@@ -16,6 +16,11 @@ define( function( require ) {
     snapToGrid: {
       type: 'boolean',
       defaultValue: false
+    },
+
+    animatedPoints: {
+      type: 'boolean',
+      defaultValue: false
     }
   } );
 
