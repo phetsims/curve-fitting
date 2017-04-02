@@ -17,6 +17,9 @@ define( function( require ) {
   var NumberProperty = require( 'AXON/NumberProperty' );
   var Shape = require( 'KITE/Shape' );
 
+  // constants
+  var DEBUG = false;
+
   /**
    * @param {Points} points - array of points
    * @param {Property.<number>} orderProperty - order of the polynomial that describes the curve
@@ -251,7 +254,7 @@ define( function( require ) {
       var graphBounds = CurveFittingConstants.GRAPH_MODEL_BOUNDS;
 
       // convenience variables
-      var xMin = graphBounds.minX;// minimum value of the x range
+      var xMin = graphBounds.minX; // minimum value of the x range
       var xMax = graphBounds.maxX; // maximum value of the x range
       var yAtXMin = this.getYValueAt( xMin );
       var yAtXMax = this.getYValueAt( xMax );
@@ -285,8 +288,19 @@ define( function( require ) {
         default: // linear
           curveShape.lineTo( xMax, yAtXMax );
           break;
-      } //end of switch statement
+      } // end of switch statement
 
+      if ( DEBUG ) {
+        var steps = 1000;
+        var interval = (xMax - xMin) / steps;
+        var i = 0;
+        var xValue;
+        curveShape.moveTo( xMin, yAtXMin );
+        for ( i; i < steps; i++ ) {
+          xValue = xMin + i * interval;
+          curveShape.lineTo( xValue, this.getYValueAt( xValue ) );
+        }
+      }
       return curveShape;
     },
 
