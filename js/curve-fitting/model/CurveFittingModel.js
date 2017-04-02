@@ -33,7 +33,8 @@ define( function( require ) {
 
     // validate Property values
     this.orderProperty.link( function( order ) {
-      assert && assert( order >= 1 && order <= 3, 'invalid order: ' + order );
+      // ensure the order is 1, 2 or 3: linear, quadratic or cubic
+      assert && assert( order === 1 || order === 2 || order === 3, 'invalid order: ' + order );
     } );
     this.fitProperty.link( function( fit ) {
       assert && assert( _.includes( VALID_FIT_VALUES, fit ), 'invalid fit: ' + fit );

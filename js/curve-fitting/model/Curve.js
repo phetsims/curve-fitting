@@ -196,7 +196,7 @@ define( function( require ) {
     getYValueAt: function( x ) {
       var yValue = this.dProperty.value;
       if ( this.orderProperty.value >= 1 ) {
-        yValue += this.cProperty.value * x ;
+        yValue += this.cProperty.value * x;
       }
       if ( this.orderProperty.value >= 2 ) {
         yValue += this.bProperty.value * Math.pow( x, 2 );
@@ -207,6 +207,27 @@ define( function( require ) {
 
       return yValue;
     },
+
+    /**
+     * is the fit valid
+     * @returns (boolean}
+     * @public (read-only)
+     */
+    isValidFit: function() {
+      var isValidFit = !isNaN(this.dProperty.value);
+      if ( this.orderProperty.value >= 1 ) {
+        isValidFit *=!isNaN(this.cProperty.value );
+      }
+      if ( this.orderProperty.value >= 2 ) {
+        isValidFit *= !isNaN(this.bProperty.value);
+      }
+      if ( this.orderProperty.value >= 3 ) {
+        isValidFit *= !isNan(this.aProperty.value);
+      }
+
+      return isValidFit;
+    },
+
 
     /**
      * Updates Chi Square and r^2 deviation.
@@ -281,5 +302,7 @@ define( function( require ) {
         this.chiSquaredProperty.set( 0 );
       }
     }
-  } );
-} );
+  } )
+    ;
+} )
+;

@@ -16,13 +16,15 @@ define( function( require ) {
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var CurveNode = require( 'CURVE_FITTING/curve-fitting/view/CurveNode' );
   var DeviationsAccordionBox = require( 'CURVE_FITTING/curve-fitting/view/DeviationsAccordionBox' );
+  var EquationGraphPanelNode = require( 'CURVE_FITTING/curve-fitting/view/EquationGraphPanelNode' );
+  var GraphAreaNode = require( 'CURVE_FITTING/curve-fitting/view/GraphAreaNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
+  var ResidualsNode = require( 'CURVE_FITTING/curve-fitting/view/ResidualsNode' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var Vector2 = require( 'DOT/Vector2' );
-  var EquationGraphPanelNode = require( 'CURVE_FITTING/curve-fitting/view/EquationGraphPanelNode' );
-  var GraphAreaNode = require( 'CURVE_FITTING/curve-fitting/view/GraphAreaNode' );
+
 
   // constants
   var GRAPH_PADDING_LEFT_RIGHT = 15;
@@ -95,8 +97,14 @@ define( function( require ) {
     var curveNode = new CurveNode(
       model.points,
       model.curve,
-      residualsVisibleProperty,
       curveVisibleProperty,
+      modelViewTransform);
+
+    // create the residual lines
+    var residualsNode = new ResidualsNode(
+      model.points,
+      model.curve,
+      residualsVisibleProperty,
       modelViewTransform);
 
     // layout of equation inset on graph
@@ -134,6 +142,7 @@ define( function( require ) {
     this.addChild( equationGraphPanelNode );
     this.addChild( resetAllButton );
     this.addChild( curveNode );
+    this.addChild( residualsNode );
     this.addChild( bucketNode ); // must be last in the z-ordering
   }
 
