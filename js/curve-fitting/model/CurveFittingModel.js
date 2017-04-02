@@ -80,7 +80,7 @@ define( function( require ) {
 
       // These are unlinked in removePoint
       point.positionProperty.link( this.curve.updateFitBinded );
-      point.isInsideGraphProperty.lazyLink( this.curve.updateFitBinded );
+      point.isInsideGraphProperty.link( this.curve.updateFitBinded );
       point.deltaProperty.link( this.curve.updateFitBinded );
 
       // remove points when they have returned to the bucket

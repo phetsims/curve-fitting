@@ -52,7 +52,7 @@ define( function( require ) {
     } );
 
     //if the user dropped the point outside of the graph send it back to the bucket
-    this.draggingProperty.lazyLink( function( dragging ) {
+    this.draggingProperty.link( function( dragging ) {
       if ( !dragging && !self.isInsideGraphProperty.value && !self.animated ) {
         self.animate();
       }

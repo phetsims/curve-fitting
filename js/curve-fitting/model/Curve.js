@@ -89,13 +89,12 @@ define( function( require ) {
     this._storage = {}; // @private
     this.setDefaultAdjustableValues( this._storage );
 
-    //TODO This many lazyLink calls looks suspicious, probably making assumption about initial state of sim
-    this.aProperty.lazyLink( this.updateFitBinded );
-    this.bProperty.lazyLink( this.updateFitBinded );
-    this.cProperty.lazyLink( this.updateFitBinded );
-    this.dProperty.lazyLink( this.updateFitBinded );
+    this.aProperty.link( this.updateFitBinded );
+    this.bProperty.link( this.updateFitBinded );
+    this.cProperty.link( this.updateFitBinded );
+    this.dProperty.link( this.updateFitBinded );
 
-    fitProperty.lazyLink( function( fit, oldFit ) {
+    fitProperty.link( function( fit, oldFit ) {
       if ( fit === 'best' ) {
         if ( oldFit === 'adjustable' ) {
           // save adjustable values in storage
@@ -163,7 +162,6 @@ define( function( require ) {
       this.bProperty.set( this._storage.b );
       this.cProperty.set( this._storage.c );
       this.dProperty.set( this._storage.d );
-      //TODO why doesn't this call updateCurveEmitter.emit?
     },
 
     /**
