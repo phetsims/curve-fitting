@@ -176,10 +176,13 @@ define( function( require ) {
       if ( this.fitProperty.value === 'best' ) {
         var fit = this.fitMaker.getFit( this.points.getPointsOnGraph(), this.orderProperty.value );
 
-        this.dProperty.value = isFinite( fit[ 0 ] ) ? fit[ 0 ] : 0;
-        this.cProperty.value = isFinite( fit[ 1 ] ) ? fit[ 1 ] : 0;
-        this.bProperty.value = isFinite( fit[ 2 ] ) ? fit[ 2 ] : 0;
-        this.aProperty.value = isFinite( fit[ 3 ] ) ? fit[ 3 ] : 0;
+        assert && assert( isFinite( fit[ 0 ] ) && isFinite( fit[ 1 ] )
+        && isFinite( fit[ 2 ] ) && isFinite( fit[ 3 ] ), 'fit parameters are not finite' );
+
+        this.dProperty.value = fit[ 0 ];
+        this.cProperty.value = fit[ 1 ];
+        this.bProperty.value = fit[ 2 ];
+        this.aProperty.value = fit[ 3 ];
       }
 
       this.updateRAndChiSquared();
@@ -214,13 +217,13 @@ define( function( require ) {
      * @public (read-only)
      */
     isValidFit: function() {
-      var isValidFit = !isNaN( this.dProperty.value );
+      var isValidFit = isFinite( this.dProperty.value );
       if ( this.orderProperty.value >= 1 ) {
-        isValidFit = isValidFit && !isNaN( this.cProperty.value );
+        isValidFit = isValidFit && isFinite( this.cProperty.value );
         if ( this.orderProperty.value >= 2 ) {
-          isValidFit = isValidFit && !isNaN( this.bProperty.value );
+          isValidFit = isValidFit && isFinite( this.bProperty.value );
           if ( this.orderProperty.value >= 3 ) {
-            isValidFit = isValidFit && !isNaN( this.aProperty.value );
+            isValidFit = isValidFit && isFinite( this.aProperty.value );
           }
         }
       }
@@ -229,12 +232,13 @@ define( function( require ) {
 
     /**
      * is curve present
+     * curve fitting must have at least one point on graph (or set to ajustable fit)
      * @returns {boolean}
      * @public (read-only)
      */
     isCurvePresent: function() {
-      return this.isValidFit &&
-              ( this.points.getPointsOnGraph().length > 1 || this.fitProperty.value === 'adjustable' );
+      return this.isValidFit() &&
+             ( this.points.getPointsOnGraph().length > 1 || this.fitProperty.value === 'adjustable' );
     },
 
     /**
