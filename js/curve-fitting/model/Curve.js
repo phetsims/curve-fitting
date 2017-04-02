@@ -222,7 +222,7 @@ define( function( require ) {
         isValidFit *= !isNaN(this.bProperty.value);
       }
       if ( this.orderProperty.value >= 3 ) {
-        isValidFit *= !isNan(this.aProperty.value);
+        isValidFit *= !isNaN(this.aProperty.value);
       }
 
       return isValidFit;
