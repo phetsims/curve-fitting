@@ -15,15 +15,13 @@ define( function( require ) {
   var Matrix = require( 'DOT/Matrix' );
 
   // constants
-  var EPSILON = 1E-12;
+  var EPSILON = 1E-30;
 
   /**
    * @constructor
    */
   function FitMaker() {
 
-    // @private
-    this.solutionArray = [];
   }
 
   curveFitting.register( 'FitMaker', FitMaker );
@@ -32,12 +30,17 @@ define( function( require ) {
 
     /**
      * Returns a numerical array of the coefficients of the polynomial
-     * @param {Points} points
+     * @param {Array.<Point>} points - an array of points on graph
      * @param {number} order
      * @returns {Array}
      * @public
      */
     getFit: function( points, order ) {
+
+
+      points.forEach( function( point ) {
+        assert && assert( point.isInsideGraphProperty.value && !point.animated );
+      } );
 
       // column matrix with the coefficients
       var solutionMatrix = this.getSolutionMatrix( points, order );
@@ -46,13 +49,14 @@ define( function( require ) {
       var numberOfRows = solutionMatrix.getRowDimension();
 
       var solutionArrayLength = CurveFittingConstants.MAX_ORDER_OF_FIT + 1;
+
       // the solutionArray has solutionArrayLength elements, regardless of the dimensions of the solution matrix
       // the missing elements are padded with zeros
-
+      var solutionArray = [];
       for ( var k = 0; k < solutionArrayLength; ++k ) {
-        this.solutionArray[ k ] = (k < numberOfRows) ? solutionMatrix.get( k, 0 ) : 0;
+        solutionArray[ k ] = (k < numberOfRows) ? solutionMatrix.get( k, 0 ) : 0;
       }
-      return this.solutionArray;
+      return solutionArray;
     },
 
     /**
@@ -65,7 +69,7 @@ define( function( require ) {
      *
      * see http://mathworld.wolfram.com/LeastSquaresFittingPolynomial.html
      *
-     * @param {Points} points
+     * @param {Array.<Point>} points - an array of points on graph
      * @param {number} order
      * @returns {Matrix} the column matrix A
      * @private
