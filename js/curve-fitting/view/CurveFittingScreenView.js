@@ -95,7 +95,6 @@ define( function( require ) {
 
     // create the curve and the residual lines
     var curveNode = new CurveNode(
-      model.points,
       model.curve,
       curveVisibleProperty,
       modelViewTransform);

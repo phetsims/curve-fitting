@@ -10,11 +10,12 @@ define( function( require ) {
 
   // modules
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var Emitter = require( 'AXON/Emitter' );
   var FitMaker = require( 'CURVE_FITTING/curve-fitting/model/FitMaker' );
   var inherit = require( 'PHET_CORE/inherit' );
   var NumberProperty = require( 'AXON/NumberProperty' );
-
+  var Shape = require( 'KITE/Shape' );
 
   /**
    * @param {Points} points - array of points
@@ -116,7 +117,8 @@ define( function( require ) {
   return inherit( Object, Curve, {
 
     /**
-     * Reset @public
+     * Reset
+     * @public
      */
     reset: function() {
       this.aProperty.reset();
@@ -189,18 +191,18 @@ define( function( require ) {
      *
      * @param {number} x
      * @returns {number}
-     * @public
+     * @public (read-only)
      */
     getYValueAt: function( x ) {
       var yValue = this.dProperty.value;
       if ( this.orderProperty.value >= 1 ) {
         yValue += this.cProperty.value * x;
-      }
-      if ( this.orderProperty.value >= 2 ) {
-        yValue += this.bProperty.value * Math.pow( x, 2 );
-      }
-      if ( this.orderProperty.value >= 3 ) {
-        yValue += this.aProperty.value * Math.pow( x, 3 );
+        if ( this.orderProperty.value >= 2 ) {
+          yValue += this.bProperty.value * Math.pow( x, 2 );
+          if ( this.orderProperty.value >= 3 ) {
+            yValue += this.aProperty.value * Math.pow( x, 3 );
+          }
+        }
       }
 
       return yValue;
@@ -212,23 +214,80 @@ define( function( require ) {
      * @public (read-only)
      */
     isValidFit: function() {
-      var isValidFit = !isNaN(this.dProperty.value);
+      var isValidFit = !isNaN( this.dProperty.value );
       if ( this.orderProperty.value >= 1 ) {
-        isValidFit *=!isNaN(this.cProperty.value );
+        isValidFit = isValidFit && !isNaN( this.cProperty.value );
+        if ( this.orderProperty.value >= 2 ) {
+          isValidFit = isValidFit && !isNaN( this.bProperty.value );
+          if ( this.orderProperty.value >= 3 ) {
+            isValidFit = isValidFit && !isNaN( this.aProperty.value );
+          }
+        }
       }
-      if ( this.orderProperty.value >= 2 ) {
-        isValidFit *= !isNaN(this.bProperty.value);
-      }
-      if ( this.orderProperty.value >= 3 ) {
-        isValidFit *= !isNaN(this.aProperty.value);
-      }
-
       return isValidFit;
     },
 
+    /**
+     * is curve present
+     * @returns {boolean}
+     * @public (read-only)
+     */
+    isCurvePresent: function() {
+      return this.isValidFit &&
+              ( this.points.getPointsOnGraph().length > 1 || this.fitProperty.value === 'adjustable' );
+    },
 
     /**
-     * Updates Chi Square and r^2 deviation.
+     * gets the shape of the curve
+     * @returns {Shape}
+     * @public (read-only)
+     */
+    getShape: function() {
+
+      var graphBounds = CurveFittingConstants.GRAPH_MODEL_BOUNDS;
+
+      // convenience variables
+      var xMin = graphBounds.minX;// minimum value of the x range
+      var xMax = graphBounds.maxX; // maximum value of the x range
+      var yAtXMin = this.getYValueAt( xMin );
+      var yAtXMax = this.getYValueAt( xMax );
+      var a = this.aProperty.value;
+      var b = this.bProperty.value;
+      var c = this.cProperty.value;
+      var d = this.dProperty.value;
+
+      // create a new shape
+      var curveShape = new Shape();
+      curveShape.moveTo( xMin, yAtXMin );
+
+      // curve is a line, quadratic or cubic depending on the order of the fit.
+      switch( this.orderProperty.value ) {
+        case 3: //cubic
+          // use bezier curve : must determine the control points
+          // note that the curve will not go through the control points.
+          var cp1x = (2 * xMin + xMax) / 3; // one third of the way between xMin and xMax
+          var cp2x = (xMin + 2 * xMax) / 3; // two third of the way between xMin and xMax
+          var cp1y = a * xMax * xMin * xMin + b * (xMin + 2 * xMax) * xMin / 3 + c * (2 * xMin + xMax) / 3 + d;
+          var cp2y = a * xMin * xMax * xMax + b * (xMax + 2 * xMin) * xMax / 3 + c * (2 * xMax + xMin) / 3 + d;
+          curveShape.cubicCurveTo( cp1x, cp1y, cp2x, cp2y, xMax, yAtXMax );
+          break;
+        case 2: // quadratic
+          // use bezier curve : must determine the control point
+          // note that the curve will not go through the control point.
+          var cpx = (xMin + xMax) / 2; // point halfway between xMin and xMax
+          var cpy = b * xMin * xMax + c * (xMax + xMin) / 2 + d;
+          curveShape.quadraticCurveTo( cpx, cpy, xMax, yAtXMax );
+          break;
+        default: // linear
+          curveShape.lineTo( xMax, yAtXMax );
+          break;
+      } //end of switch statement
+
+      return curveShape;
+    },
+
+    /**
+     * Updates chi^2 and r^2 deviation.
      *
      * @private
      */
@@ -300,7 +359,5 @@ define( function( require ) {
         this.chiSquaredProperty.set( 0 );
       }
     }
-  } )
-    ;
-} )
-;
+  } );
+} );

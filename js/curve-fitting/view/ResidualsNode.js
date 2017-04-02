@@ -43,7 +43,7 @@ define( function( require ) {
     var updateResiduals = function() {
       var pointsOnGraph = points.getPointsOnGraph();
 
-      if ( residualsVisibleProperty.value && ( pointsOnGraph.length > 1 || curve.fitProperty.value === 'adjustable' ) ) {
+      if ( residualsVisibleProperty.value && curve.isCurvePresent() ) {
 
         var residualsShape = new Shape();
         // update path residuals, i.e. vertical lines connecting data points to curve
