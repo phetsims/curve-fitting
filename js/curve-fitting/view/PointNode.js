@@ -33,7 +33,7 @@ define( function( require ) {
   var patternDelta0ValueDeltaString = require( 'string!CURVE_FITTING/pattern.delta.0valueDelta' );
 
   // constants
-  var FONT = new PhetFont( 11 );
+  var VALUE_FONT = new PhetFont( 11 );
   var BAR_COLOR = Color.toColor( CurveFittingConstants.BLUE_COLOR );
   var CENTRAL_LINE_OPTIONS = {
     stroke: CurveFittingConstants.BLUE_COLOR,
@@ -196,12 +196,12 @@ define( function( require ) {
 
     // add value text label
     var valueTextLabel = new Text( StringUtils.format( pattern0ValueX1ValueYString, Util.toFixed( point.positionProperty.value.x, 1 ), Util.toFixed( point.positionProperty.value.y, 1 ) ), {
-      font: FONT
+      font: VALUE_FONT
     } );
     this.addChild( valueTextLabel );
 
     var deltaTextLabel = new SubSupText( StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( point.deltaProperty.value, 1 ) ), {
-      font: FONT
+      font: VALUE_FONT
     } );
     this.addChild( deltaTextLabel );
 

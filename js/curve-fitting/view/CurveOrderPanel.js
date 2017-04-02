@@ -54,7 +54,7 @@ define( function( require ) {
    * Creates a radio button for this panel.
    *
    * @param {Property} property
-   * @param {*} value
+   * @param {number} value
    * @param {string} label
    * @returns {AquaRadioButton}
    */
