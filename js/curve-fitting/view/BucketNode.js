@@ -135,8 +135,8 @@ define( function( require ) {
       end: function() {
         if ( CurveFittingQueryParameters.snapToGrid ) {
           point.positionProperty.set( new Vector2(
-            Util.roundSymmetric( point.positionProperty.value.x ),
-            Util.roundSymmetric( point.positionProperty.value.y )
+            Util.toFixedNumber( point.positionProperty.value.x, 1 ),
+            Util.toFixedNumber( point.positionProperty.value.y, 1 )
           ) );
         }
         point.draggingProperty.set( false );
