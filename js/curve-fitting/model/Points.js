@@ -41,6 +41,16 @@ define( function( require ) {
       return this.getArray().filter( function( point ) {
         return point.isInsideGraphProperty.value && !point.animated;
       } );
+    },
+
+    /**
+     * Gets the number of points on the graph area that should be used for curve-fitting calculations
+     * @returns {number}
+     * @public
+     */
+    getNumberPointsOnGraph: function() {
+      return this.getPointsOnGraph().length;
+
     }
   } );
 } );

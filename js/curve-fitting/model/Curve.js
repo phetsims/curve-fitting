@@ -241,7 +241,7 @@ define( function( require ) {
      */
     isCurvePresent: function() {
       return this.isValidFit() &&
-             ( this.points.getPointsOnGraph().length > 1 || this.fitProperty.value === 'adjustable' );
+             ( this.points.getNumberPointsOnGraph() > 1 || this.fitProperty.value === 'adjustable' );
     },
 
     /**
@@ -256,54 +256,134 @@ define( function( require ) {
       // convenience variables
       var xMin = graphBounds.minX; // minimum value of the x range
       var xMax = graphBounds.maxX; // maximum value of the x range
-      var yAtXMin = this.getYValueAt( xMin );
-      var yAtXMax = this.getYValueAt( xMax );
-      var a = this.aProperty.value;
-      var b = this.bProperty.value;
-      var c = this.cProperty.value;
-      var d = this.dProperty.value;
 
       // create a new shape
       var curveShape = new Shape();
-      curveShape.moveTo( xMin, yAtXMin );
+
+      var i = 0;
+      var xStart;
+      var xEnd;
 
       // curve is a line, quadratic or cubic depending on the order of the fit.
       switch( this.orderProperty.value ) {
         case 3: //cubic
-          // use bezier curve : must determine the control points
-          // note that the curve will not go through the control points.
-          var cp1x = (2 * xMin + xMax) / 3; // one third of the way between xMin and xMax
-          var cp2x = (xMin + 2 * xMax) / 3; // two third of the way between xMin and xMax
-          var cp1y = a * xMax * xMin * xMin + b * (xMin + 2 * xMax) * xMin / 3 + c * (2 * xMin + xMax) / 3 + d;
-          var cp2y = a * xMin * xMax * xMax + b * (xMax + 2 * xMin) * xMax / 3 + c * (2 * xMax + xMin) / 3 + d;
-          curveShape.cubicCurveTo( cp1x, cp1y, cp2x, cp2y, xMax, yAtXMax );
+
+          var cubicSteps = 10;
+          var cubicInterval = (xMax - xMin) / cubicSteps;
+
+          for ( i = 0; i < cubicSteps; i++ ) {
+            xStart = xMin + i * cubicInterval;
+            xEnd = xStart + cubicInterval;
+            curveShape = this.addCubic( curveShape, xStart, xEnd );
+          }
           break;
-        case 2: // quadratic
-          // use bezier curve : must determine the control point
-          // note that the curve will not go through the control point.
-          var cpx = (xMin + xMax) / 2; // point halfway between xMin and xMax
-          var cpy = b * xMin * xMax + c * (xMax + xMin) / 2 + d;
-          curveShape.quadraticCurveTo( cpx, cpy, xMax, yAtXMax );
+        case 2 : // quadratic
+          var quadraticSteps = 10;
+          var quadraticInterval = (xMax - xMin) / quadraticSteps;
+
+          for ( i = 0; i < quadraticSteps; i++ ) {
+            xStart = xMin + i * quadraticInterval;
+            xEnd = xStart + quadraticInterval;
+            curveShape = this.addQuadratic( curveShape, xStart, xEnd );
+          }
           break;
         default: // linear
-          curveShape.lineTo( xMax, yAtXMax );
+
+          curveShape = this.addLinear( curveShape, xMin, xMax );
           break;
       } // end of switch statement
 
       if ( DEBUG ) {
         var steps = 1000;
         var interval = (xMax - xMin) / steps;
-        var i = 0;
+        i = 0;
         var xValue;
-        curveShape.moveTo( xMin, yAtXMin );
+        curveShape.moveTo( xMin, this.getYValueAt( xMin ) );
         for ( i; i < steps; i++ ) {
           xValue = xMin + i * interval;
           curveShape.lineTo( xValue, this.getYValueAt( xValue ) );
         }
       }
       return curveShape;
+    }
+    ,
+
+    /**
+     * Add a cubic segment shape between x position start and x position end
+     * @param {Shape} shape
+     * @param {number} start
+     * @param {number} end
+     * @returns {Shape}
+     */
+    addCubic: function( shape, start, end ) {
+
+      var cp1x = (2 * start + end) / 3; // one third of the way between start and end
+      var cp2x = (start + 2 * end) / 3; // two third of the way between start and end
+
+      // var a = this.aProperty.value;
+      // var b = this.bProperty.value;
+      // var c = this.cProperty.value;
+      // var d = this.dProperty.value;
+      // var cp1y = a * end * start * start + b * (start + 2 * end) * start / 3 + c * (2 * start + end) / 3 + d;
+      // var cp2y = a * start * end * end + b * (end + 2 * start) * end / 3 + c * (2 * end + start) / 3 + d;
+
+      var yAtStart = this.getYValueAt( start );
+      var yAtEnd = this.getYValueAt( end );
+      var yAtCp1x = this.getYValueAt( cp1x );
+      var yAtCp2x = this.getYValueAt( cp2x );
+
+      // the control points cp1y and cp2y are not given by the values at yAtCp1x and yAtCp2x, but are related tp them through the equations
+      var cp1y = (-5 * yAtStart + 18 * yAtCp1x - 9 * yAtCp2x + 2 * yAtEnd) / 6;
+      var cp2y = (+2 * yAtStart - 9 * yAtCp1x + 18 * yAtCp2x - 5 * yAtEnd) / 6;
+
+      shape.moveTo( start, yAtStart ).cubicCurveTo( cp1x, cp1y, cp2x, cp2y, end, yAtEnd );
+      return shape
     },
 
+
+    /**
+     * Add a quadratic segment shape between x position start and x position end
+     * @param {Shape} shape
+     * @param {number} start
+     * @param {number} end
+     * @returns {Shape}
+     */
+    addQuadratic: function( shape, start, end ) {
+
+      var cpx = (start + end) / 2; // point halfway between start and end
+
+      // var a = this.aProperty.value;
+      // var b = this.bProperty.value;
+      // var c = this.cProperty.value;
+      // var d = this.dProperty.value;
+      // var cpy = b * start * end + c * (start + end) / 2 + d;
+
+      var yAtStart = this.getYValueAt( start );
+      var yAtEnd = this.getYValueAt( end );
+      var yAtCpx = this.getYValueAt( cpx );
+
+      // curveShape.quadraticCurveTo( cpx, cpy, end, yAtEnd );
+      // the control points cpy is not the value of yAtCpx but is related to it by the equation
+      var cpy = (-yAtStart + 4 * yAtCpx - yAtEnd) / 2;
+
+      shape.moveTo( start, yAtStart ).quadraticCurveTo( cpx, cpy, end, yAtEnd );
+      return shape
+    },
+
+    /**
+     * Add a linear segment shape between x position start and x position end
+     * @param {Shape} shape
+     * @param {number} start
+     * @param {number} end
+     * @returns {Shape}
+     */
+    addLinear: function( shape, start, end ) {
+
+      var yStart = this.getYValueAt( start );
+      var yEnd = this.getYValueAt( end );
+      shape.moveTo( start, yStart ).lineTo( end, yEnd );
+      return shape
+    },
     /**
      * Updates chi^2 and r^2 deviation.
      *
@@ -377,5 +457,7 @@ define( function( require ) {
         this.chiSquaredProperty.set( 0 );
       }
     }
-  } );
-} );
+  } )
+    ;
+} )
+;
