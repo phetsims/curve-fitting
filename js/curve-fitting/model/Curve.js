@@ -305,8 +305,7 @@ define( function( require ) {
         }
       }
       return curveShape;
-    }
-    ,
+    },
 
     /**
      * Add a cubic segment shape between x position start and x position end
@@ -337,7 +336,7 @@ define( function( require ) {
       var cp2y = (+2 * yAtStart - 9 * yAtCp1x + 18 * yAtCp2x - 5 * yAtEnd) / 6;
 
       shape.moveTo( start, yAtStart ).cubicCurveTo( cp1x, cp1y, cp2x, cp2y, end, yAtEnd );
-      return shape
+      return shape;
     },
 
 
@@ -367,7 +366,7 @@ define( function( require ) {
       var cpy = (-yAtStart + 4 * yAtCpx - yAtEnd) / 2;
 
       shape.moveTo( start, yAtStart ).quadraticCurveTo( cpx, cpy, end, yAtEnd );
-      return shape
+      return shape;
     },
 
     /**
@@ -382,7 +381,7 @@ define( function( require ) {
       var yStart = this.getYValueAt( start );
       var yEnd = this.getYValueAt( end );
       shape.moveTo( start, yStart ).lineTo( end, yEnd );
-      return shape
+      return shape;
     },
     /**
      * Updates chi^2 and r^2 deviation.
@@ -457,7 +456,5 @@ define( function( require ) {
         this.chiSquaredProperty.set( 0 );
       }
     }
-  } )
-    ;
-} )
-;
+  } );
+} );
