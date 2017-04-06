@@ -25,7 +25,7 @@ define( function( require ) {
    * @param {ModelViewTransform2} modelViewTransform
    * @constructor
    */
-  function CurveNode(  curve, curveVisibleProperty, modelViewTransform ) {
+  function CurveNode( curve, curveVisibleProperty, modelViewTransform ) {
 
     Node.call( this );
 

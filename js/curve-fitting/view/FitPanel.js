@@ -59,7 +59,7 @@ define( function( require ) {
         bestFitButton,
         adjustableFitButton
       ]
-    });
+    } );
 
     // equation that corresponds to the curve
     var equationFitNode = new EquationFitNode( orderProperty );
@@ -71,19 +71,19 @@ define( function( require ) {
     var dSliderEnabledProperty = new Property( true );
 
     // create slider for parameters
-    var aSliderBox = new SliderParameterNode( sliderPropertyArray[3], {
+    var aSliderBox = new SliderParameterNode( sliderPropertyArray[ 3 ], {
       min: -1,
       max: 1
     }, symbolAString, { enabledProperty: aSliderEnabledProperty } );
-    var bSliderBox = new SliderParameterNode( sliderPropertyArray[2], {
+    var bSliderBox = new SliderParameterNode( sliderPropertyArray[ 2 ], {
       min: -2,
       max: 2
     }, symbolBString, { enabledProperty: bSliderEnabledProperty } );
-    var cSliderBox = new SliderParameterNode( sliderPropertyArray[1], {
+    var cSliderBox = new SliderParameterNode( sliderPropertyArray[ 1 ], {
       min: -10,
       max: 10
     }, symbolCString, { enabledProperty: cSliderEnabledProperty } );
-    var dSliderBox = new SliderParameterNode( sliderPropertyArray[0], {
+    var dSliderBox = new SliderParameterNode( sliderPropertyArray[ 0 ], {
       min: -10,
       max: 10
     }, symbolDString, { enabledProperty: dSliderEnabledProperty } );
