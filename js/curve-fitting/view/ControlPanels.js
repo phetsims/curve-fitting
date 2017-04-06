@@ -29,7 +29,7 @@ define( function( require ) {
   };
 
   /**
-   * @param {Curve} curve
+   * @param {Property.<number>[]} sliderPropertyArray
    * @param {Property.<number>} orderProperty
    * @param {Property.<string>} fitProperty
    * @param {Property.<boolean>} curveVisibleProperty
@@ -38,7 +38,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function ControlPanels( curve, orderProperty, fitProperty, curveVisibleProperty, residualsVisibleProperty, valuesProperty, options ) {
+  function ControlPanels( sliderPropertyArray, orderProperty, fitProperty, curveVisibleProperty, residualsVisibleProperty, valuesProperty, options ) {
 
     options = _.extend( {
       align: 'left',
@@ -52,7 +52,7 @@ define( function( require ) {
     var orderPanel = new CurveOrderPanel( orderProperty, PANEL_OPTIONS );
 
     // fit type
-    var fitPanel = new FitPanel( curve, fitProperty, orderProperty, PANEL_OPTIONS );
+    var fitPanel = new FitPanel( sliderPropertyArray, fitProperty, orderProperty, PANEL_OPTIONS );
 
     assert && assert( !options.children, 'decoration not supported' );
     options.children = [ viewOptionsPanel, orderPanel, fitPanel ];

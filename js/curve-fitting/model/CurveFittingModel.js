@@ -25,27 +25,38 @@ define( function( require ) {
   function CurveFittingModel() {
 
     var self = this;
+
     // @public {Property.<number>} order of the polynomial that describes the curve, valid values are 1, 2, 3
     this.orderProperty = new NumberProperty( 1 );
 
     // @public {Property.<string>}, the method of fitting the curve to data points, see VALID_FIT_VALUES
     this.fitProperty = new Property( 'best' );
 
-    // validate Property values
-    this.orderProperty.link( function( order ) {
-      // ensure the order is 1, 2 or 3: linear, quadratic or cubic
-      assert && assert( order === 1 || order === 2 || order === 3, 'invalid order: ' + order );
-    } );
-    this.fitProperty.link( function( fit ) {
-      assert && assert( _.includes( VALID_FIT_VALUES, fit ), 'invalid fit: ' + fit );
-    } );
+    // @public {Property.<number>[]}, user input values for coefficients of the polynomial, starting from lowest order x^0 to x^3
+    this.sliderPropertyArray = [ new NumberProperty( 2.7 ), new NumberProperty( 0 ), new NumberProperty( 0 ), new NumberProperty( 0 ) ];
 
     // @public - Points for plotting curve. This includes points that are outside the bounds of the graph, so
     // be careful to call getPointsOnGraph when using points in calculations. Order of the points doesn't matter.
     this.points = new Points();
 
-    // @public
-    this.curve = new Curve( this.points, this.orderProperty, this.fitProperty );
+    // @public - the model of the curve
+    this.curve = new Curve( this.points, this.sliderPropertyArray, this.orderProperty, this.fitProperty );
+
+    // validate Property values and update curve fit
+    this.orderProperty.link( function( order ) {
+      // ensure the order is 1, 2 or 3: linear, quadratic or cubic
+      assert && assert( order === 1 || order === 2 || order === 3, 'invalid order: ' + order );
+      self.curve.updateFit();
+    } );
+    this.fitProperty.link( function( fit ) {
+      assert && assert( _.includes( VALID_FIT_VALUES, fit ), 'invalid fit: ' + fit );
+      self.curve.updateFit();
+    } );
+
+    // a change of any of the value sliders force an update of the curve model
+    this.sliderPropertyArray.forEach( function( sliderProperty ) {
+      sliderProperty.link( function() {self.curve.updateFit();} );
+    } );
 
     // Add internal listeners for adding and removing points
     this.points.addItemAddedListener( function( point ) {
@@ -61,9 +72,13 @@ define( function( require ) {
   return inherit( Object, CurveFittingModel, {
 
     /**
-     * @public Resets the model
+     * Resets the model
+     * @public
      */
     reset: function() {
+      this.sliderPropertyArray.forEach( function( sliderProperty ) {
+        sliderProperty.reset();
+      } );
       this.orderProperty.reset();
       this.fitProperty.reset();
       this.points.reset();
@@ -79,9 +94,9 @@ define( function( require ) {
       var self = this;
 
       // These are unlinked in removePoint
-      point.positionProperty.link( this.curve.updateFitBinded );
-      point.isInsideGraphProperty.link( this.curve.updateFitBinded );
-      point.deltaProperty.link( this.curve.updateFitBinded );
+      point.positionProperty.link( function() {self.curve.updateFit();} );
+      point.isInsideGraphProperty.link( function() {self.curve.updateFit();} );
+      point.deltaProperty.link( function() {self.curve.updateFit();} );
 
       // remove points when they have returned to the bucket
       point.returnToOriginEmitter.addListener( function removePointListener() {
@@ -89,7 +104,6 @@ define( function( require ) {
         point.returnToOriginEmitter.removeListener( removePointListener );
       } );
     },
-
     /**
      * Removes a point
      *
@@ -97,10 +111,11 @@ define( function( require ) {
      * @private
      */
     removePoint: function( point ) {
+      var self = this;
 
-      point.positionProperty.unlink( this.curve.updateFitBinded );
-      point.isInsideGraphProperty.unlink( this.curve.updateFitBinded );
-      point.deltaProperty.unlink( this.curve.updateFitBinded );
+      point.positionProperty.unlink( function() {self.curve.updateFit();} );
+      point.isInsideGraphProperty.unlink( function() {self.curve.updateFit();} );
+      point.deltaProperty.unlink( function() {self.curve.updateFit();} );
       this.curve.updateFit();
     }
   } );

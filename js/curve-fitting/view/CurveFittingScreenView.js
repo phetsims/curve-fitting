@@ -62,7 +62,7 @@ define( function( require ) {
 
     // All other controls, at right of screen
     var controlPanels = new ControlPanels(
-      model.curve,
+      model.sliderPropertyArray,
       model.orderProperty,
       model.fitProperty,
       curveVisibleProperty,
@@ -88,7 +88,8 @@ define( function( require ) {
 
     // create the equation node (accordion box) in the upper left corner of the graph
     var equationGraphPanelNode = new EquationGraphPanelNode(
-      model.curve,
+      model.curve.getCoefficientArray.bind( model.curve ),
+      model.curve.updateCurveEmitter,
       model.orderProperty,
       equationPanelExpandedProperty,
       curveVisibleProperty );
@@ -97,14 +98,14 @@ define( function( require ) {
     var curveNode = new CurveNode(
       model.curve,
       curveVisibleProperty,
-      modelViewTransform);
+      modelViewTransform );
 
     // create the residual lines
     var residualsNode = new ResidualsNode(
       model.points,
       model.curve,
       residualsVisibleProperty,
-      modelViewTransform);
+      modelViewTransform );
 
     // layout of equation inset on graph
     equationGraphPanelNode.left = graphAreaNode.left + 10;

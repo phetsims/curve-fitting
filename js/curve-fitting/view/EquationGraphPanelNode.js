@@ -47,14 +47,20 @@ define( function( require ) {
   var TEXT_OPTIONS = { font: new PhetFont( 12 ) };
 
   /**
-   * @param {Curve} curve - model of curve
+   * @param {Function} getCoefficientArray - returns an array of coefficient of the polynomial curve sorted in ascending order {<number>[]}
+   * @param {Emitter} updateCurveEmitter
    * @param {Property.<number>} orderProperty - order of the polynomial:(1,2,3)
    * @param {Property.<boolean>} equationPanelExpandedProperty
    * @param {Property.<boolean>} curveVisibleProperty
    * @param {Object} [options] for slider node.
    * @constructor
    */
-  function EquationGraphPanelNode( curve, orderProperty, equationPanelExpandedProperty, curveVisibleProperty, options ) {
+  function EquationGraphPanelNode( getCoefficientArray,
+                                   updateCurveEmitter,
+                                   orderProperty,
+                                   equationPanelExpandedProperty,
+                                   curveVisibleProperty,
+                                   options ) {
     var boxNode = new HBox( { align: 'bottom' } );
     var titleNode = new Text( equationString, TEXT_OPTIONS );
 
@@ -131,42 +137,47 @@ define( function( require ) {
 
     var updateAParameter = function() {
       if ( equationPanelExpandedProperty.value && curveVisibleProperty.value ) {
-        var numberInfo = roundNumber( curve.aProperty.value, 3 );
+        var numberInfo = roundNumber( getCoefficientArray()[ 3 ], 3 );
         aParameterNode.setText( numberInfo.signToString + numberInfo.absoluteNumberToString );
       }
     };
-    curve.aProperty.lazyLink( updateAParameter );
+
     curveVisibleProperty.lazyLink( updateAParameter );
     equationPanelExpandedProperty.link( updateAParameter );
 
     var updateBParameter = function() {
       if ( equationPanelExpandedProperty.value && curveVisibleProperty.value ) {
-        var numberInfo = roundNumber( curve.bProperty.value, 3 );
+        var numberInfo = roundNumber( getCoefficientArray()[ 2 ], 3 );
         bParameterNode.setText( numberInfo.signToString + numberInfo.absoluteNumberToString );
       }
     };
-    curve.bProperty.lazyLink( updateBParameter );
+
     curveVisibleProperty.lazyLink( updateBParameter );
     equationPanelExpandedProperty.link( updateBParameter );
 
     var updateCParameter = function() {
       if ( equationPanelExpandedProperty.value && curveVisibleProperty.value ) {
-        var numberInfo = roundNumber( curve.cProperty.value, 2 );
+        var numberInfo = roundNumber( getCoefficientArray()[ 1 ], 2 );
         cParameterNode.setText( numberInfo.signToString + numberInfo.absoluteNumberToString );
       }
     };
-    curve.cProperty.lazyLink( updateCParameter );
+
     curveVisibleProperty.lazyLink( updateCParameter );
     equationPanelExpandedProperty.link( updateCParameter );
 
     var updateDParameter = function() {
-      var numberInfo = roundNumber( curve.dProperty.value, 1 );
+      var numberInfo = roundNumber( getCoefficientArray()[ 0 ], 1 );
       dParameterNode.setText( numberInfo.signToString + numberInfo.absoluteNumberToString );
+
     };
-    curve.dProperty.lazyLink( updateDParameter );
+
     curveVisibleProperty.lazyLink( updateDParameter );
     equationPanelExpandedProperty.link( updateDParameter );
 
+    updateCurveEmitter.addListener( updateAParameter );
+    updateCurveEmitter.addListener( updateBParameter );
+    updateCurveEmitter.addListener( updateCParameter );
+    updateCurveEmitter.addListener( updateDParameter );
     /**
      * Function that returns (for numbers smaller than ten) a number (as a string)  with a fixed number of decimal places
      * whereas for numbers larger than ten, the number/string is returned a fixed number of significant figures

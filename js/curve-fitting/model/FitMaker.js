@@ -21,7 +21,7 @@ define( function( require ) {
    * @constructor
    */
   function FitMaker() {
-
+  //TODO: fold into Curve ?
   }
 
   curveFitting.register( 'FitMaker', FitMaker );

@@ -31,13 +31,13 @@ define( function( require ) {
   var symbolDString = require( 'string!CURVE_FITTING/symbol.d' );
 
   /**
-   * @param {Curve} curve
+   * @param {Property.<number>[]} sliderPropertyArray - stored in ascending order of the polynomial fit, starting with order zero.
    * @param {Property.<string>} fitProperty
    * @param {Property.<number>} orderProperty
    * @param {Object} [options]
    * @constructor
    */
-  function FitPanel( curve, fitProperty, orderProperty, options ) {
+  function FitPanel( sliderPropertyArray, fitProperty, orderProperty, options ) {
 
     options = _.extend( {
       cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
@@ -71,19 +71,19 @@ define( function( require ) {
     var dSliderEnabledProperty = new Property( true );
 
     // create slider for parameters
-    var aSliderBox = new SliderParameterNode( curve.aProperty, {
+    var aSliderBox = new SliderParameterNode( sliderPropertyArray[3], {
       min: -1,
       max: 1
     }, symbolAString, { enabledProperty: aSliderEnabledProperty } );
-    var bSliderBox = new SliderParameterNode( curve.bProperty, {
+    var bSliderBox = new SliderParameterNode( sliderPropertyArray[2], {
       min: -2,
       max: 2
     }, symbolBString, { enabledProperty: bSliderEnabledProperty } );
-    var cSliderBox = new SliderParameterNode( curve.cProperty, {
+    var cSliderBox = new SliderParameterNode( sliderPropertyArray[1], {
       min: -10,
       max: 10
     }, symbolCString, { enabledProperty: cSliderEnabledProperty } );
-    var dSliderBox = new SliderParameterNode( curve.dProperty, {
+    var dSliderBox = new SliderParameterNode( sliderPropertyArray[0], {
       min: -10,
       max: 10
     }, symbolDString, { enabledProperty: dSliderEnabledProperty } );

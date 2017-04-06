@@ -22,24 +22,25 @@ define( function( require ) {
 
   /**
    * @param {Points} points - array of points
+   * @param {Property.<number>[]} sliderPropertyArray - an array of property starting from dProperty up to aProperty
    * @param {Property.<number>} orderProperty - order of the polynomial that describes the curve
    * @param {Property.<string>} fitProperty - the method of fitting the curve to data points
    * @constructor
    */
-  function Curve( points, orderProperty, fitProperty ) {
-    var self = this;
-
-    // @public
-    this.aProperty = new NumberProperty( 0 ); // coefficient for x^3 term
-    this.bProperty = new NumberProperty( 0 );// coefficient for x^2 term
-    this.cProperty = new NumberProperty( 0 );// coefficient for x^1 term
-    this.dProperty = new NumberProperty( 2.7 );// coefficient for x^0 term (constant term)
+  function Curve( points, sliderPropertyArray, orderProperty, fitProperty ) {
 
     // @public {Property.<number>}  X^2 deviation value, a number ranging from 0 to + $\infty$
     this.chiSquaredProperty = new NumberProperty( 0 );
 
     // @public {Property.<number>}  r^2 deviation value, a number ranging from 0 to 1
     this.rSquaredProperty = new NumberProperty( 0 );
+
+    // @public (read-only) {Array.<number>} array of coefficients of the polynomial curve stored in ascending polynomial order.
+    // eg. y = a_0 +a_1 x + a_2 x^2 + a_3 x^3  yields [a_0, a_1, a_2, a_3]
+    this.coefficientArray = [];
+
+    // @private {Property.<number>[]} array of slider property stored in ascending polynomial order
+    this.sliderPropertyArray = sliderPropertyArray;
 
     // @private
     this.orderProperty = orderProperty;
@@ -48,71 +49,12 @@ define( function( require ) {
     // @private creates a fit for points
     this.fitMaker = new FitMaker();
 
-    // @public (read-only)
+    // @public
     this.updateCurveEmitter = new Emitter();
 
-    this.updateFitBinded = this.updateFit.bind( this ); // @private
-
+    // @private
     this.points = points;
 
-    orderProperty.lazyLink( function( order, oldOrder ) {
-
-      assert && assert( order >= 1 && order <= 3, 'invalid order: ' + order );
-
-      // save and restore coefficient values
-      if ( order === 3 ) {
-        self.aProperty.value = self._storage.a;
-      }
-      else if ( order === 2 ) {
-        if ( oldOrder === 3 ) {
-          self._storage.a = self.aProperty.value;
-          self.aProperty.value = 0;
-        }
-        else {
-          self.bProperty.value = self._storage.b;
-        }
-      }
-      else if ( order === 1 ) {
-        if ( oldOrder === 3 ) {
-          self._storage.a = self.aProperty.value;
-          self.aProperty.value = 0;
-        }
-        if ( oldOrder >= 2 ) {
-          self._storage.b = self.bProperty.value;
-          self.bProperty.value = 0;
-        }
-      }
-
-      self.updateFit();
-    } );
-
-    // Storage necessary to store and restore user's adjustable values on call.
-    // Values are putting into storage when user switches to "Best fit".
-    // If after that user switch back "Adjustable fit" (without turn on/off "Curve" between operations)
-    // adjustable values will be restored from storage. If "Curve" is turn off then storage values is flush.
-    this._storage = {}; // @private
-    this.setDefaultAdjustableValues( this._storage );
-
-    this.aProperty.link( this.updateFitBinded );
-    this.bProperty.link( this.updateFitBinded );
-    this.cProperty.link( this.updateFitBinded );
-    this.dProperty.link( this.updateFitBinded );
-
-    fitProperty.link( function( fit, oldFit ) {
-      if ( fit === 'best' ) {
-        if ( oldFit === 'adjustable' ) {
-          // save adjustable values in storage
-          self.saveValuesToStorage();
-        }
-
-        self.updateFit();
-
-      }
-      else if ( fit === 'adjustable' ) {
-        // restore adjustable values from storage
-        self.restoreValuesFromStorage();
-      }
-    } );
   }
 
   curveFitting.register( 'Curve', Curve );
@@ -124,49 +66,17 @@ define( function( require ) {
      * @public
      */
     reset: function() {
-      this.aProperty.reset();
-      this.bProperty.reset();
-      this.cProperty.reset();
-      this.dProperty.reset();
+
       this.rSquaredProperty.reset();
       this.chiSquaredProperty.reset();
-      this.setDefaultAdjustableValues( this._storage );
     },
 
     /**
-     * set default adjustable values
-     * @param {Object} storage
-     * @private
+     * get coefficient array
+     * @public
      */
-    setDefaultAdjustableValues: function( storage ) {
-      storage.a = this.aProperty.initialValue;
-      storage.b = this.bProperty.initialValue;
-      storage.c = this.cProperty.initialValue;
-      storage.d = this.dProperty.initialValue;
-    },
-
-    /**
-     * Save values to storage. Necessary when switching to adjustable mode.
-     *
-     * @private
-     */
-    saveValuesToStorage: function() {
-      this._storage.a = this.aProperty.value;
-      this._storage.b = this.bProperty.value;
-      this._storage.c = this.cProperty.value;
-      this._storage.d = this.dProperty.value;
-    },
-
-    /**
-     * Restores values from storage. Necessary when switching back from adjustable mode.
-     *
-     * @private
-     */
-    restoreValuesFromStorage: function() {
-      this.aProperty.set( this._storage.a );
-      this.bProperty.set( this._storage.b );
-      this.cProperty.set( this._storage.c );
-      this.dProperty.set( this._storage.d );
+    getCoefficientArray: function() {
+      return this.coefficientArray;
     },
 
     /**
@@ -175,20 +85,33 @@ define( function( require ) {
      * @public
      */
     updateFit: function() {
-
+      var self = this;
       if ( this.fitProperty.value === 'best' ) {
-        var fit = this.fitMaker.getFit( this.points.getPointsOnGraph(), this.orderProperty.value );
+        this.coefficientArray = this.fitMaker.getFit( this.points.getPointsOnGraph(), this.orderProperty.value );
 
-        assert && assert( isFinite( fit[ 0 ] ) && isFinite( fit[ 1 ] )
-        && isFinite( fit[ 2 ] ) && isFinite( fit[ 3 ] ), 'fit parameters are not finite' );
+        this.coefficientArray.forEach( function( value, index ) {
+          if ( self.orderProperty.value >= index ) {
+            assert && assert( isFinite( value ), 'fit parameter: ' + index + ' is not finite: ' + value );
+          }
+        } );
+      }
+      else {
+        // must be  (this.fitProperty.value === 'adjustable')
+        // clear up the coefficient array
+        this.coefficientArray = [];
 
-        this.dProperty.value = fit[ 0 ];
-        this.cProperty.value = fit[ 1 ];
-        this.bProperty.value = fit[ 2 ];
-        this.aProperty.value = fit[ 3 ];
+        // assign the slider values to the coefficients in the array
+        this.sliderPropertyArray.forEach( function( sliderProperty, index ) {
+          if ( self.orderProperty.value >= index ) {
+            self.coefficientArray.push( sliderProperty.value );
+          }
+        } );
       }
 
+      // update the property values of r squared and chi squared
       this.updateRAndChiSquared();
+
+      // send a message to the view to update the curve and the residuals
       this.updateCurveEmitter.emit();
     },
 
@@ -200,42 +123,37 @@ define( function( require ) {
      * @public (read-only)
      */
     getYValueAt: function( x ) {
-      var yValue = this.dProperty.value;
-      if ( this.orderProperty.value >= 1 ) {
-        yValue += this.cProperty.value * x;
-        if ( this.orderProperty.value >= 2 ) {
-          yValue += this.bProperty.value * Math.pow( x, 2 );
-          if ( this.orderProperty.value >= 3 ) {
-            yValue += this.aProperty.value * Math.pow( x, 3 );
-          }
+      var self = this;
+      var yValue = 0;
+      this.coefficientArray.forEach( function( value, index ) {
+        if ( self.orderProperty.value >= index ) {
+          yValue += value * Math.pow( x, index );
         }
-      }
+      } );
 
       return yValue;
     },
 
     /**
      * is the fit valid
-     * @returns (boolean}
+     * @returns {boolean}
      * @public (read-only)
      */
     isValidFit: function() {
-      var isValidFit = isFinite( this.dProperty.value );
-      if ( this.orderProperty.value >= 1 ) {
-        isValidFit = isValidFit && isFinite( this.cProperty.value );
-        if ( this.orderProperty.value >= 2 ) {
-          isValidFit = isValidFit && isFinite( this.bProperty.value );
-          if ( this.orderProperty.value >= 3 ) {
-            isValidFit = isValidFit && isFinite( this.aProperty.value );
-          }
+      var self = this;
+      var isValidFit = true;
+      this.coefficientArray.forEach( function( value, index ) {
+        if ( self.orderProperty.value >= index ) {
+          isValidFit = isValidFit && isFinite( value );
         }
-      }
+      } );
+
       return isValidFit;
     },
 
     /**
      * is curve present
-     * curve fitting must have at least one point on graph (or set to ajustable fit)
+     * curve fitting must have at least one point on graph (or be set to adjustable fit)
      * @returns {boolean}
      * @public (read-only)
      */
@@ -319,13 +237,6 @@ define( function( require ) {
       var cp1x = (2 * start + end) / 3; // one third of the way between start and end
       var cp2x = (start + 2 * end) / 3; // two third of the way between start and end
 
-      // var a = this.aProperty.value;
-      // var b = this.bProperty.value;
-      // var c = this.cProperty.value;
-      // var d = this.dProperty.value;
-      // var cp1y = a * end * start * start + b * (start + 2 * end) * start / 3 + c * (2 * start + end) / 3 + d;
-      // var cp2y = a * start * end * end + b * (end + 2 * start) * end / 3 + c * (2 * end + start) / 3 + d;
-
       var yAtStart = this.getYValueAt( start );
       var yAtEnd = this.getYValueAt( end );
       var yAtCp1x = this.getYValueAt( cp1x );
@@ -339,7 +250,6 @@ define( function( require ) {
       return shape;
     },
 
-
     /**
      * Add a quadratic segment shape between x position start and x position end
      * @param {Shape} shape
@@ -351,17 +261,10 @@ define( function( require ) {
 
       var cpx = (start + end) / 2; // point halfway between start and end
 
-      // var a = this.aProperty.value;
-      // var b = this.bProperty.value;
-      // var c = this.cProperty.value;
-      // var d = this.dProperty.value;
-      // var cpy = b * start * end + c * (start + end) / 2 + d;
-
       var yAtStart = this.getYValueAt( start );
       var yAtEnd = this.getYValueAt( end );
       var yAtCpx = this.getYValueAt( cpx );
 
-      // curveShape.quadraticCurveTo( cpx, cpy, end, yAtEnd );
       // the control points cpy is not the value of yAtCpx but is related to it by the equation
       var cpy = (-yAtStart + 4 * yAtCpx - yAtEnd) / 2;
 
