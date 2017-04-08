@@ -81,7 +81,7 @@ define( function( require ) {
      * @public (read-only)
      */
     isCurvePresent: function() {
-      return  ( this.points.getNumberPointsOnGraph() >= 2 || this.fitProperty.value === 'adjustable' );
+      return ( this.points.getNumberPointsOnGraph() >= 2 || this.fitProperty.value === 'adjustable' );
     },
 
     /**
@@ -230,7 +230,7 @@ define( function( require ) {
       var order = this.orderProperty.value;
       var degreesOfFreedom = numberOfPoints - order - 1;
 
-      if ( numberOfPoints > order + 1 ) {
+      if ( degreesOfFreedom > 0 ) {
         var chiSquared = (yySum - 2 * yAtySum + yAtyAtSum) / degreesOfFreedom;
         this.chiSquaredProperty.set( chiSquared );
       }
