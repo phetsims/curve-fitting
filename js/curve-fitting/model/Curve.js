@@ -161,8 +161,6 @@ define( function( require ) {
      * curve fit.
      *
      * chi squared ranges from 0 to infinity
-     * the chi squared value is undefined when the number of points on the graph is less than the order of the polynomial +1, in which case
-     * a value of zero is returned
      *
      * r squared ranges from 0 to 1 for 'best fit'
      * it is possible for 'adjustable fit' to get such a bad fit that the standard r squared calculation would yield a negative value.
