@@ -10,15 +10,14 @@ define( function( require ) {
 
   // modules
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  var CurveShape = require( 'CURVE_FITTING/curve-fitting/model/CurveShape' );
   var Emitter = require( 'AXON/Emitter' );
-  var FitMaker = require( 'CURVE_FITTING/curve-fitting/model/FitMaker' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var Matrix = require( 'DOT/Matrix' );
   var NumberProperty = require( 'AXON/NumberProperty' );
-  var Shape = require( 'KITE/Shape' );
 
   // constants
-  var DEBUG = false;
+  var EPSILON = 1E-30;
 
   /**
    * @param {Points} points - array of points
@@ -37,6 +36,7 @@ define( function( require ) {
 
     // @public (read-only) {Array.<number>} array of coefficients of the polynomial curve stored in ascending polynomial order.
     // eg. y = a_0 +a_1 x + a_2 x^2 + a_3 x^3  yields [a_0, a_1, a_2, a_3]
+    // the length of the array is equal to the order of the polynomial + 1
     this.coefficientArray = [];
 
     // @private {Property.<number>[]} array of slider property stored in ascending polynomial order
@@ -46,15 +46,11 @@ define( function( require ) {
     this.orderProperty = orderProperty;
     this.fitProperty = fitProperty;
 
-    // @private creates a fit for points
-    this.fitMaker = new FitMaker();
-
     // @public
     this.updateCurveEmitter = new Emitter();
 
     // @private
     this.points = points;
-
   }
 
   curveFitting.register( 'Curve', Curve );
@@ -62,76 +58,21 @@ define( function( require ) {
   return inherit( Object, Curve, {
 
     /**
-     * Reset
+     * resets
      * @public
      */
     reset: function() {
-
       this.rSquaredProperty.reset();
       this.chiSquaredProperty.reset();
     },
 
     /**
-     * get coefficient array
-     * @public
+     * gets coefficient array
+     * @returns {number[]}
+     * @public (read-only)
      */
     getCoefficientArray: function() {
       return this.coefficientArray;
-    },
-
-    /**
-     * Updates fit for current points.
-     *
-     * @public
-     */
-    updateFit: function() {
-      var self = this;
-      if ( this.fitProperty.value === 'best' ) {
-        this.coefficientArray = this.fitMaker.getFit( this.points.getPointsOnGraph(), this.orderProperty.value );
-
-        this.coefficientArray.forEach( function( value, index ) {
-          if ( self.orderProperty.value >= index ) {
-            assert && assert( isFinite( value ), 'fit parameter: ' + index + ' is not finite: ' + value );
-          }
-        } );
-      }
-      else {
-        // must be  (this.fitProperty.value === 'adjustable')
-        // clear up the coefficient array
-        this.coefficientArray = [];
-
-        // assign the slider values to the coefficients in the array
-        this.sliderPropertyArray.forEach( function( sliderProperty, index ) {
-          if ( self.orderProperty.value >= index ) {
-            self.coefficientArray.push( sliderProperty.value );
-          }
-        } );
-      }
-
-      // update the property values of r squared and chi squared
-      this.updateRAndChiSquared();
-
-      // send a message to the view to update the curve and the residuals
-      this.updateCurveEmitter.emit();
-    },
-
-    /**
-     * Gets the y value of the curve associated with the x coordinate
-     *
-     * @param {number} x
-     * @returns {number}
-     * @public (read-only)
-     */
-    getYValueAt: function( x ) {
-      var self = this;
-      var yValue = 0;
-      this.coefficientArray.forEach( function( value, index ) {
-        if ( self.orderProperty.value >= index ) {
-          yValue += value * Math.pow( x, index );
-        }
-      } );
-
-      return yValue;
     },
 
     /**
@@ -140,13 +81,11 @@ define( function( require ) {
      * @public (read-only)
      */
     isValidFit: function() {
-      var self = this;
       var isValidFit = true;
-      this.coefficientArray.forEach( function( value, index ) {
-        if ( self.orderProperty.value >= index ) {
-          isValidFit = isValidFit && isFinite( value );
-        }
+      this.coefficientArray.forEach( function( value ) {
+        isValidFit = isValidFit && isFinite( value );
       } );
+      isValidFit = isValidFit && ( this.coefficientArray.length === this.orderProperty.value + 1);
 
       return isValidFit;
     },
@@ -163,132 +102,76 @@ define( function( require ) {
     },
 
     /**
-     * gets the shape of the curve
-     * @returns {Shape}
+     * gets the y value of the curve associated with the x coordinate
+     * @param {number} x
+     * @returns {number}
      * @public (read-only)
      */
+    getYValueAt: function( x ) {
+      assert && assert( this.coefficientArray.length === this.orderProperty.value + 1, 'the coefficient array should be ' + this.orderProperty.value + 1 + ' long but is ' + this.coefficientArray.length );
+
+      var yValue = 0;
+      this.coefficientArray.forEach( function( value, index ) {
+        yValue += value * Math.pow( x, index );
+      } );
+
+      return yValue;
+    },
+
+    /**
+     * gets the shape of the curve
+     * @returns {Shape}
+     * @public
+     */
     getShape: function() {
+      return new CurveShape( this.getYValueAt.bind( this ), this.orderProperty.value );
+    },
 
-      var graphBounds = CurveFittingConstants.GRAPH_MODEL_BOUNDS;
+    /**
+     * updates fit
+     * updates coefficientArray of the polynomial and recalculate the chi squared and r squared values
+     * sends a message to the view to update itself
+     * @public
+     */
+    updateFit: function() {
 
-      // convenience variables
-      var xMin = graphBounds.minX; // minimum value of the x range
-      var xMax = graphBounds.maxX; // maximum value of the x range
-
-      // create a new shape
-      var curveShape = new Shape();
-
-      var i = 0;
-      var xStart;
-      var xEnd;
-
-      // curve is a line, quadratic or cubic depending on the order of the fit.
-      switch( this.orderProperty.value ) {
-        case 3: //cubic
-
-          var cubicSteps = 10;
-          var cubicInterval = (xMax - xMin) / cubicSteps;
-
-          for ( i = 0; i < cubicSteps; i++ ) {
-            xStart = xMin + i * cubicInterval;
-            xEnd = xStart + cubicInterval;
-            curveShape = this.addCubic( curveShape, xStart, xEnd );
-          }
-          break;
-        case 2 : // quadratic
-          var quadraticSteps = 10;
-          var quadraticInterval = (xMax - xMin) / quadraticSteps;
-
-          for ( i = 0; i < quadraticSteps; i++ ) {
-            xStart = xMin + i * quadraticInterval;
-            xEnd = xStart + quadraticInterval;
-            curveShape = this.addQuadratic( curveShape, xStart, xEnd );
-          }
-          break;
-        default: // linear
-
-          curveShape = this.addLinear( curveShape, xMin, xMax );
-          break;
-      } // end of switch statement
-
-      if ( DEBUG ) {
-        var steps = 1000;
-        var interval = (xMax - xMin) / steps;
-        i = 0;
-        var xValue;
-        curveShape.moveTo( xMin, this.getYValueAt( xMin ) );
-        for ( i; i < steps; i++ ) {
-          xValue = xMin + i * interval;
-          curveShape.lineTo( xValue, this.getYValueAt( xValue ) );
-        }
+      if ( this.fitProperty.value === 'best' ) {
+        this.coefficientArray = this.getBestFitCoefficients();
       }
-      return curveShape;
-    },
+      else { // must be (this.fitProperty.value === 'adjustable')
+        this.coefficientArray= this.getAdjustableFitCoefficients();
+      }
 
+      assert && assert( this.coefficientArray.length === this.orderProperty.value + 1, 'the coefficient array should be ' + this.orderProperty.value + 1 + ' long but is ' + this.coefficientArray.length );
+      this.coefficientArray.forEach( function( value, index ) {
+        assert && assert( isFinite( value ), 'fit parameter: ' + index + ' is not finite: ' + value );
+      } );
+
+      // update the property values of r squared and chi squared
+      this.updateRAndChiSquared();
+
+      // send a message to the view to update the curve and the residuals
+      this.updateCurveEmitter.emit();
+    },
     /**
-     * Add a cubic segment shape between x position start and x position end
-     * @param {Shape} shape
-     * @param {number} start
-     * @param {number} end
-     * @returns {Shape}
+     * gets adjustable fit coefficients
+     * @returns {number[]} solution an array containing the coefficients of the polynomial for adjustable values
+     * @private
      */
-    addCubic: function( shape, start, end ) {
-
-      var cp1x = (2 * start + end) / 3; // one third of the way between start and end
-      var cp2x = (start + 2 * end) / 3; // two third of the way between start and end
-
-      var yAtStart = this.getYValueAt( start );
-      var yAtEnd = this.getYValueAt( end );
-      var yAtCp1x = this.getYValueAt( cp1x );
-      var yAtCp2x = this.getYValueAt( cp2x );
-
-      // the control points cp1y and cp2y are not given by the values at yAtCp1x and yAtCp2x, but are related tp them through the equations
-      var cp1y = (-5 * yAtStart + 18 * yAtCp1x - 9 * yAtCp2x + 2 * yAtEnd) / 6;
-      var cp2y = (+2 * yAtStart - 9 * yAtCp1x + 18 * yAtCp2x - 5 * yAtEnd) / 6;
-
-      shape.moveTo( start, yAtStart ).cubicCurveTo( cp1x, cp1y, cp2x, cp2y, end, yAtEnd );
-      return shape;
-    },
-
-    /**
-     * Add a quadratic segment shape between x position start and x position end
-     * @param {Shape} shape
-     * @param {number} start
-     * @param {number} end
-     * @returns {Shape}
-     */
-    addQuadratic: function( shape, start, end ) {
-
-      var cpx = (start + end) / 2; // point halfway between start and end
-
-      var yAtStart = this.getYValueAt( start );
-      var yAtEnd = this.getYValueAt( end );
-      var yAtCpx = this.getYValueAt( cpx );
-
-      // the control points cpy is not the value of yAtCpx but is related to it by the equation
-      var cpy = (-yAtStart + 4 * yAtCpx - yAtEnd) / 2;
-
-      shape.moveTo( start, yAtStart ).quadraticCurveTo( cpx, cpy, end, yAtEnd );
-      return shape;
-    },
-
-    /**
-     * Add a linear segment shape between x position start and x position end
-     * @param {Shape} shape
-     * @param {number} start
-     * @param {number} end
-     * @returns {Shape}
-     */
-    addLinear: function( shape, start, end ) {
-
-      var yStart = this.getYValueAt( start );
-      var yEnd = this.getYValueAt( end );
-      shape.moveTo( start, yStart ).lineTo( end, yEnd );
-      return shape;
+    getAdjustableFitCoefficients: function(){
+      var self = this;
+      // clear up the coefficient array
+      this.coefficientArray = [];
+      // assign the slider values to the coefficients in the array
+      this.sliderPropertyArray.forEach( function( sliderProperty, index ) {
+        // ensure that the coefficient arrays is of length order + 1
+        if ( index <= self.orderProperty.value ) {
+          self.coefficientArray.push( sliderProperty.value );
+        }
+      } );
     },
     /**
-     * Updates chi^2 and r^2 deviation.
-     *
+     * updates chi^2 and r^2 deviation
      * @private
      */
     updateRAndChiSquared: function() {
@@ -358,6 +241,69 @@ define( function( require ) {
       else {
         this.chiSquaredProperty.set( 0 );
       }
+    },
+    /**
+     * returns a solution an array containing the coefficients of the polynomial for best fit
+
+     * The solution is found by solving the matrix equation, Y = X A
+     * where X is a square matrix, and Y is a column matrix.
+     *
+     * The number of rows of the solution matrix, A,  is given by the number of points, or
+     * the order +1, whichever is smaller.
+     *
+     * The length of the solution array is equal to the order + 1
+     *
+     * see http://mathworld.wolfram.com/LeastSquaresFittingPolynomial.html
+     *
+     * @returns {number[]} solution an array containing the coefficients of the polynomial
+     * @private
+     */
+    getBestFitCoefficients: function() {
+
+      var pointsOnGraph = this.points.getPointsOnGraph();
+
+      var solutionArrayLength = this.orderProperty.value + 1;
+
+      // the rank of the matrix cannot be larger than the number of points
+      var m = Math.min( solutionArrayLength, pointsOnGraph.length );
+
+      var squareMatrix = new Matrix( m, m ); // matrix X
+      var columnMatrix = new Matrix( m, 1 ); // matrix Y
+
+      // fill out the elements of the matrices Y and X
+      pointsOnGraph.forEach( function( point ) {
+        var deltaSquared = point.deltaProperty.value * point.deltaProperty.value;
+        var x = point.positionProperty.value.x;
+        var y = point.positionProperty.value.y;
+
+        for ( var j = 0; j < m; ++j ) {
+          for ( var k = 0; k < m; ++k ) {
+            squareMatrix.set( j, k, squareMatrix.get( j, k ) + Math.pow( x, j + k ) / deltaSquared );
+          }
+          columnMatrix.set( j, 0, columnMatrix.get( j, 0 ) + Math.pow( x, j ) * y / deltaSquared );
+        }
+      } );
+
+      // the coefficients are ordered in order of polynomial, eg. a_0, a_1, a_2, etc,
+      var solutionArray = [];
+
+      // filled the solutions with zeros
+      var n;
+      for ( n = 0; n < solutionArrayLength; n++ ) {
+        solutionArray.push( 0 );
+      }
+
+      // the square matrix is not singular
+      if ( Math.abs( squareMatrix.det() ) > EPSILON ) {
+        // the solution matrix, A, is X^-1 * Y
+        var solutionMatrix = squareMatrix.solve( columnMatrix );
+        // unpack the solution matrix into an array
+        for ( n = 0; n < m; n++ ) {
+          solutionArray[ n ] = solutionMatrix.get( n, 0 );
+        }
+      }
+
+      return solutionArray;
     }
   } );
 } );
