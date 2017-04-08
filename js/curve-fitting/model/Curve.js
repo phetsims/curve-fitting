@@ -230,13 +230,9 @@ define( function( require ) {
       var order = this.orderProperty.value;
       var degreesOfFreedom = numberOfPoints - order - 1;
 
-      if ( degreesOfFreedom > 0 ) {
-        var chiSquared = (yySum - 2 * yAtySum + yAtyAtSum) / degreesOfFreedom;
-        this.chiSquaredProperty.set( chiSquared );
-      }
-      else {
-        this.chiSquaredProperty.set( 0 );
-      }
+      var chiSquared = (yySum - 2 * yAtySum + yAtyAtSum) / Math.max( degreesOfFreedom, 1 );
+      this.chiSquaredProperty.set( chiSquared );
+
     },
     /**
      * returns a solution an array containing the coefficients of the polynomial for best fit
