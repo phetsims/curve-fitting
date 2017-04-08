@@ -262,6 +262,7 @@ define( function( require ) {
       var solutionArrayLength = this.orderProperty.value + 1;
 
       // the rank of the matrix cannot be larger than the number of points
+      // TODO it should not be pointsOnGraph.length but the number of pointsOnGraph with unique x values.
       var m = Math.min( solutionArrayLength, pointsOnGraph.length );
 
       var squareMatrix = new Matrix( m, m ); // matrix X
