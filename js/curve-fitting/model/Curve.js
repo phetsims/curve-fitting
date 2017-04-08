@@ -66,7 +66,7 @@ define( function( require ) {
 
     /**
      * gets coefficient array of the polynomial, sorted in ascending order
-     * e.g. y= 5+3 x+4 x^2 yields [5,3,4]
+     * e.g. y = 5 + 3 x + 4 x^2 yields [5,3,4]
      * @returns {number[]}
      * @public (read-only)
      */
@@ -75,29 +75,13 @@ define( function( require ) {
     },
 
     /**
-     * is the fit valid
-     * @returns {boolean}
-     * @public (read-only)
-     */
-    isValidFit: function() {
-      var isValidFit = true;
-      this.coefficients.forEach( function( value ) {
-        isValidFit = isValidFit && isFinite( value );
-      } );
-      isValidFit = isValidFit && ( this.coefficients.length === this.orderProperty.value + 1);
-
-      return isValidFit;
-    },
-
-    /**
-     * is curve present
-     * curve fitting must have at least one point on graph (or be set to adjustable fit)
+     * does a curve exist
+     * curve fitting must have at least two points on graph (or be set to adjustable fit)
      * @returns {boolean}
      * @public (read-only)
      */
     isCurvePresent: function() {
-      return this.isValidFit() &&
-             ( this.points.getNumberPointsOnGraph() > 1 || this.fitProperty.value === 'adjustable' );
+      return  ( this.points.getNumberPointsOnGraph() >= 2 || this.fitProperty.value === 'adjustable' );
     },
 
     /**
@@ -141,7 +125,7 @@ define( function( require ) {
         this.coefficients = this.getAdjustableFitCoefficients();
       }
 
-      assert && assert( this.coefficients.length === this.orderProperty.value + 1, 'the coefficient array should be ' + this.orderProperty.value + 1 + ' long but is ' + this.coefficients.length);
+      assert && assert( this.coefficients.length === this.orderProperty.value + 1, 'the coefficient array should be ' + this.orderProperty.value + 1 + ' long but is ' + this.coefficients.length );
 
       this.coefficients.forEach( function( value, index ) {
         assert && assert( isFinite( value ), 'fit parameter: ' + index + ' is not finite: ' + value );
@@ -160,20 +144,30 @@ define( function( require ) {
      * @private
      */
     getAdjustableFitCoefficients: function() {
-      var self = this;
-      //  up the coefficient array
+      var order = this.orderProperty.value;
       var adjustableFitCoefficients = [];
       // assign the slider values to the coefficients in the array
       this.sliderPropertyArray.forEach( function( sliderProperty, index ) {
-        // ensure that the coefficient arrays is of length order + 1
-        if ( index <= self.orderProperty.value ) {
+        // ensure that only the relevant coefficients are passed on to the array
+        if ( index <= order ) {
           adjustableFitCoefficients.push( sliderProperty.value );
         }
       } );
       return adjustableFitCoefficients;
     },
     /**
-     * updates chi^2 and r^2 deviation
+     * updates chi^2 and r^2 deviations
+     * the chi squared and r squared calculations depend solely on the point's positions, their deltas and the
+     * curve fit.
+     *
+     * chi squared ranges from 0 to infinity
+     * the chi squared value is undefined when the number of points on the graph is less than the order of the polynomial +1, in which case
+     * a value of zero is returned
+     *
+     * r squared ranges from 0 to 1 for 'best fit'
+     * it is possible for 'adjustable fit' to get such a bad fit that the standard r squared calculation would yield a negative value.
+     * For those cases, the r squared value to zero is set to zero.
+     *
      * @private
      */
     updateRAndChiSquared: function() {
@@ -252,7 +246,8 @@ define( function( require ) {
      *
      * The number of rows of the solution matrix, A,  is given by the number of points, or
      * the order +1, whichever is smaller.
-     *
+     * If the square matrix is singular, an array filled with zero is returned
+     * otherwise, the solution matrix is unpacked into an array
      * The length of the solution array is equal to the order + 1
      *
      * see http://mathworld.wolfram.com/LeastSquaresFittingPolynomial.html
@@ -289,7 +284,7 @@ define( function( require ) {
       // the coefficients are ordered in order of polynomial, eg. a_0, a_1, a_2, etc,
       var bestFitCoefficients = [];
 
-      // filled the solutions with zeros
+      // filled the bestFitCoefficients array with zeros, the default solution
       var n;
       for ( n = 0; n < solutionArrayLength; n++ ) {
         bestFitCoefficients.push( 0 );
@@ -299,7 +294,7 @@ define( function( require ) {
       if ( Math.abs( squareMatrix.det() ) > EPSILON ) {
         // the solution matrix, A, is X^-1 * Y
         var solutionMatrix = squareMatrix.solve( columnMatrix );
-        // unpack the solution matrix into an array
+        // unpack the column solution matrix into an array
         for ( n = 0; n < m; n++ ) {
           bestFitCoefficients[ n ] = solutionMatrix.get( n, 0 );
         }
