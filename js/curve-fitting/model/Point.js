@@ -99,6 +99,11 @@ define( function( require ) {
 
         animationTween.start( phet.joist.elapsedTime );
       }
+      else {
+        // for cases where the distance is zero
+        self.animated = false;
+        self.returnToOriginEmitter.emit();
+      }
     }
   } );
 } );
