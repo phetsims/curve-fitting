@@ -51,10 +51,11 @@ define( function( require ) {
    * @param {Points} points
    * @param {Property.<number>} chiSquaredProperty
    * @param {Property.<number>} rSquaredProperty
+   * @param {Property.<boolean>} curveVisibleProperty
    * @param {Object} [options]
    * @constructor
    */
-  function DeviationsAccordionBox( expandedProperty, points, chiSquaredProperty, rSquaredProperty, options ) {
+  function DeviationsAccordionBox( expandedProperty, points, chiSquaredProperty, rSquaredProperty, curveVisibleProperty, options ) {
 
     options = _.extend( {
       cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
@@ -73,10 +74,10 @@ define( function( require ) {
     }, options );
 
     // X^2 barometer
-    var barometerX2 = new BarometerX2Node( chiSquaredProperty, points );
+    var barometerX2 = new BarometerX2Node( points, chiSquaredProperty, curveVisibleProperty );
 
     // r^2 barometer
-    var barometerR2 = new BarometerR2Node( rSquaredProperty );
+    var barometerR2 = new BarometerR2Node( rSquaredProperty, curveVisibleProperty );
 
     // help dialog, created on demand
     var helpDialog = null;
@@ -157,6 +158,9 @@ define( function( require ) {
       // rSquared can only be between 0 and 1 so it will always need 2 decimal points.
       rSquaredValueNode.setText( formatNumber( rSquared, 2 ) );
     } );
+
+    curveVisibleProperty.linkAttribute(rSquaredValueNode, 'visible');
+    curveVisibleProperty.linkAttribute(chiSquaredValueNode, 'visible');
 
     AccordionBox.call( this, content, options );
   }

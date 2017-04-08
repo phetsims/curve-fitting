@@ -55,7 +55,7 @@ define( function( require ) {
 
     // Deviations accordion box, at left of screen
     var deviationsAccordionBox = new DeviationsAccordionBox( deviationsAccordionBoxExpandedProperty,
-      model.points, model.curve.chiSquaredProperty, model.curve.rSquaredProperty, {
+      model.points, model.curve.chiSquaredProperty, model.curve.rSquaredProperty, curveVisibleProperty, {
         left: 10,
         top: 10
       } );

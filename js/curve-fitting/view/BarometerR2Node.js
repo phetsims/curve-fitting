@@ -29,10 +29,11 @@ define( function( require ) {
 
   /**
    * @param {Property.<number>} rSquaredProperty - Property that represents r-deviation.
+   * @param {Property.<boolean>} curveVisibleProperty
    * @param {Object} [options] for graph node.
    * @constructor
    */
-  function BarometerR2Node( rSquaredProperty, options ) {
+  function BarometerR2Node( rSquaredProperty, curveVisibleProperty,  options ) {
 
     // value shown on the barometer
     var valueRectNode = new Rectangle(
@@ -54,6 +55,7 @@ define( function( require ) {
     rSquaredProperty.link( function( rSquared ) {
       valueRectNode.setRectHeight( ( RANGE.min + rSquared / RANGE.max ) * CurveFittingConstants.BAROMETER_HEIGHT );
     } );
+    curveVisibleProperty.linkAttribute( valueRectNode, 'visible');
   }
 
   curveFitting.register( 'BarometerR2Node', BarometerR2Node );
