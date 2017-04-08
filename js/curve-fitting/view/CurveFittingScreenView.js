@@ -88,7 +88,7 @@ define( function( require ) {
 
     // create the equation node (accordion box) in the upper left corner of the graph
     var equationGraphPanelNode = new EquationGraphPanelNode(
-      model.curve.getCoefficientArray.bind( model.curve ),
+      model.curve.getCoefficients.bind( model.curve ),
       model.curve.updateCurveEmitter,
       model.orderProperty,
       equationPanelExpandedProperty,

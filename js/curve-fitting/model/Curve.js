@@ -37,7 +37,10 @@ define( function( require ) {
     // @public (read-only) {Array.<number>} array of coefficients of the polynomial curve stored in ascending polynomial order.
     // eg. y = a_0 +a_1 x + a_2 x^2 + a_3 x^3  yields [a_0, a_1, a_2, a_3]
     // the length of the array is equal to the order of the polynomial + 1
-    this.coefficientArray = [];
+    this.coefficients = [];
+
+    // @public
+    this.updateCurveEmitter = new Emitter();
 
     // @private {Property.<number>[]} array of slider property stored in ascending polynomial order
     this.sliderPropertyArray = sliderPropertyArray;
@@ -45,11 +48,6 @@ define( function( require ) {
     // @private
     this.orderProperty = orderProperty;
     this.fitProperty = fitProperty;
-
-    // @public
-    this.updateCurveEmitter = new Emitter();
-
-    // @private
     this.points = points;
   }
 
@@ -67,12 +65,13 @@ define( function( require ) {
     },
 
     /**
-     * gets coefficient array
+     * gets coefficient array of the polynomial, sorted in ascending order
+     * e.g. y= 5+3 x+4 x^2 yields [5,3,4]
      * @returns {number[]}
      * @public (read-only)
      */
-    getCoefficientArray: function() {
-      return this.coefficientArray;
+    getCoefficients: function() {
+      return this.coefficients;
     },
 
     /**
@@ -82,10 +81,10 @@ define( function( require ) {
      */
     isValidFit: function() {
       var isValidFit = true;
-      this.coefficientArray.forEach( function( value ) {
+      this.coefficients.forEach( function( value ) {
         isValidFit = isValidFit && isFinite( value );
       } );
-      isValidFit = isValidFit && ( this.coefficientArray.length === this.orderProperty.value + 1);
+      isValidFit = isValidFit && ( this.coefficients.length === this.orderProperty.value + 1);
 
       return isValidFit;
     },
@@ -108,10 +107,10 @@ define( function( require ) {
      * @public (read-only)
      */
     getYValueAt: function( x ) {
-      assert && assert( this.coefficientArray.length === this.orderProperty.value + 1, 'the coefficient array should be ' + this.orderProperty.value + 1 + ' long but is ' + this.coefficientArray.length );
+      assert && assert( this.coefficients.length === this.orderProperty.value + 1, 'the coefficient array should be ' + this.orderProperty.value + 1 + ' long but is ' + this.coefficients.length );
 
       var yValue = 0;
-      this.coefficientArray.forEach( function( value, index ) {
+      this.coefficients.forEach( function( value, index ) {
         yValue += value * Math.pow( x, index );
       } );
 
@@ -129,21 +128,22 @@ define( function( require ) {
 
     /**
      * updates fit
-     * updates coefficientArray of the polynomial and recalculate the chi squared and r squared values
+     * updates coefficients of the polynomial and recalculate the chi squared and r squared values
      * sends a message to the view to update itself
      * @public
      */
     updateFit: function() {
 
       if ( this.fitProperty.value === 'best' ) {
-        this.coefficientArray = this.getBestFitCoefficients();
+        this.coefficients = this.getBestFitCoefficients();
       }
       else { // must be (this.fitProperty.value === 'adjustable')
-        this.coefficientArray= this.getAdjustableFitCoefficients();
+        this.coefficients = this.getAdjustableFitCoefficients();
       }
 
-      assert && assert( this.coefficientArray.length === this.orderProperty.value + 1, 'the coefficient array should be ' + this.orderProperty.value + 1 + ' long but is ' + this.coefficientArray.length );
-      this.coefficientArray.forEach( function( value, index ) {
+      assert && assert( this.coefficients.length === this.orderProperty.value + 1, 'the coefficient array should be ' + this.orderProperty.value + 1 + ' long but is ' + this.coefficients.length);
+
+      this.coefficients.forEach( function( value, index ) {
         assert && assert( isFinite( value ), 'fit parameter: ' + index + ' is not finite: ' + value );
       } );
 
@@ -154,21 +154,23 @@ define( function( require ) {
       this.updateCurveEmitter.emit();
     },
     /**
-     * gets adjustable fit coefficients
+     * gets adjustable fit coefficients sorted in ascending order
+     * the number of coefficients is equal to 1 + order
      * @returns {number[]} solution an array containing the coefficients of the polynomial for adjustable values
      * @private
      */
-    getAdjustableFitCoefficients: function(){
+    getAdjustableFitCoefficients: function() {
       var self = this;
-      // clear up the coefficient array
-      this.coefficientArray = [];
+      //  up the coefficient array
+      var adjustableFitCoefficients = [];
       // assign the slider values to the coefficients in the array
       this.sliderPropertyArray.forEach( function( sliderProperty, index ) {
         // ensure that the coefficient arrays is of length order + 1
         if ( index <= self.orderProperty.value ) {
-          self.coefficientArray.push( sliderProperty.value );
+          adjustableFitCoefficients.push( sliderProperty.value );
         }
       } );
+      return adjustableFitCoefficients;
     },
     /**
      * updates chi^2 and r^2 deviation
@@ -255,7 +257,7 @@ define( function( require ) {
      *
      * see http://mathworld.wolfram.com/LeastSquaresFittingPolynomial.html
      *
-     * @returns {number[]} solution an array containing the coefficients of the polynomial
+     * @returns {number[]} solution an array containing the best fit coefficients of the polynomial
      * @private
      */
     getBestFitCoefficients: function() {
@@ -285,12 +287,12 @@ define( function( require ) {
       } );
 
       // the coefficients are ordered in order of polynomial, eg. a_0, a_1, a_2, etc,
-      var solutionArray = [];
+      var bestFitCoefficients = [];
 
       // filled the solutions with zeros
       var n;
       for ( n = 0; n < solutionArrayLength; n++ ) {
-        solutionArray.push( 0 );
+        bestFitCoefficients.push( 0 );
       }
 
       // the square matrix is not singular
@@ -299,11 +301,11 @@ define( function( require ) {
         var solutionMatrix = squareMatrix.solve( columnMatrix );
         // unpack the solution matrix into an array
         for ( n = 0; n < m; n++ ) {
-          solutionArray[ n ] = solutionMatrix.get( n, 0 );
+          bestFitCoefficients[ n ] = solutionMatrix.get( n, 0 );
         }
       }
 
-      return solutionArray;
+      return bestFitCoefficients;
     }
   } );
 } );
