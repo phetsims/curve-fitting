@@ -93,11 +93,9 @@ define( function( require ) {
     getYValueAt: function( x ) {
       assert && assert( this.coefficients.length === this.orderProperty.value + 1, 'the coefficient array should be ' + this.orderProperty.value + 1 + ' long but is ' + this.coefficients.length );
 
-      var yValue = this.coefficients.reduce( function( previousValue, currentValue, index ) {
-        return previousValue + currentValue * Math.pow( x, index );
-      } );
-
-      return yValue;
+      return this.coefficients.reduce( function( accumulator, value, index ) {
+        return accumulator + value * Math.pow( x, index );
+      }, 0 );
     },
 
     /**
@@ -125,10 +123,6 @@ define( function( require ) {
       }
 
       assert && assert( this.coefficients.length === this.orderProperty.value + 1, 'the coefficient array should be ' + this.orderProperty.value + 1 + ' long but is ' + this.coefficients.length );
-
-      this.coefficients.forEach( function( value, index ) {
-        assert && assert( isFinite( value ), 'fit parameter: ' + index + ' is not finite: ' + value );
-      } );
 
       // update the property values of r squared and chi squared
       this.updateRAndChiSquared();
@@ -261,21 +255,34 @@ define( function( require ) {
       var squareMatrix = new Matrix( m, m ); // matrix X
       var columnMatrix = new Matrix( m, 1 ); // matrix Y
 
-      // fill out the elements of the matrices Y and X
-      pointsOnGraph.forEach( function( point ) {
-        var deltaSquared = point.deltaProperty.value * point.deltaProperty.value;
-        var x = point.positionProperty.value.x;
-        var y = point.positionProperty.value.y;
+      var i;
+      var j;
 
-        for ( var j = 0; j < m; ++j ) {
-          for ( var k = 0; k < m; ++k ) {
-            squareMatrix.set( j, k, squareMatrix.get( j, k ) + Math.pow( x, j + k ) / deltaSquared );
-          }
-          columnMatrix.set( j, 0, columnMatrix.get( j, 0 ) + Math.pow( x, j ) * y / deltaSquared );
+      // fill out the elements of the column Matrix
+      for ( i = 0; i < m; ++i ) {
+        columnMatrix.set( i, 0, pointsOnGraph.reduce( function( accumulator, point ) {
+            var deltaSquared = Math.pow( point.deltaProperty.value, 2 );
+            var x = point.positionProperty.value.x;
+            var y = point.positionProperty.value.y;
+            return accumulator + Math.pow( x, i ) * y / deltaSquared;
+          }, 0  // initial value of accumulator
+        ) );
+      }
+
+      // fill out the elements of the square Matrix
+      for ( i = 0; i < m; ++i ) {
+        for ( j = 0; j < m; ++j ) {
+          squareMatrix.set( i, j, pointsOnGraph.reduce( function( accumulator, point ) {
+              var deltaSquared = Math.pow( point.deltaProperty.value, 2 );
+              var x = point.positionProperty.value.x;
+              return accumulator + Math.pow( x, i + j ) / deltaSquared;
+            }, 0 // initial value of accumulator
+          ) );
         }
-      } );
+      }
 
       // the coefficients are ordered in order of polynomial, eg. a_0, a_1, a_2, etc,
+      // bestCoefficients must have a length of solutionArrayLength that may be longer than the rank of the matrices
       var bestFitCoefficients = [];
 
       // filled the bestFitCoefficients array with zeros, the default solution
@@ -284,15 +291,19 @@ define( function( require ) {
         bestFitCoefficients.push( 0 );
       }
 
-      // the square matrix is not singular
+      // if the square matrix is not singular, it implies that a solution exists
       if ( Math.abs( squareMatrix.det() ) > EPSILON ) {
         // the solution matrix, A, is X^-1 * Y
         var solutionMatrix = squareMatrix.solve( columnMatrix );
-        // unpack the column solution matrix into an array
+        // unpack the column solution Matrix into a javascript array
         for ( n = 0; n < m; n++ ) {
           bestFitCoefficients[ n ] = solutionMatrix.get( n, 0 );
         }
       }
+
+      assert && assert( bestFitCoefficients.forEach( function( value, index ) {
+        assert && assert( isFinite( value ), 'fit parameter: ' + index + ' is not finite: ' + value );
+      } ) );
 
       return bestFitCoefficients;
     }
