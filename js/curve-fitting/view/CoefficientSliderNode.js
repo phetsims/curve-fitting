@@ -1,6 +1,5 @@
 // Copyright 2015-2016, University of Colorado Boulder
 
-//TODO rename, this name is very vague
 /**
  * Node with single parameter slider in 'Curve Fitting' simulation.
  *
@@ -33,7 +32,7 @@ define( function( require ) {
    * @param {Object} [options] for slider node.
    * @constructor
    */
-  function SliderParameterNode( property, range, label, options ) {
+  function CoefficientSliderNode( property, range, label, options ) {
 
     options = _.extend( {
         trackFill: 'black',
@@ -55,19 +54,13 @@ define( function( require ) {
     VBox.call( this, _.extend( {
       resize: false,
       children: [
-        // necessary to prevent expanding box by thumb
-        new VStrut( options.thumbSize.width / 2 ),
-
         sliderNode,
-
-        // necessary to prevent expanding box by thumb
-        new VStrut( options.thumbSize.width / 2 ),
         new Text( label, { font: FONT, fill: CurveFittingConstants.BLUE_COLOR } )
       ]
     }, options ) );
   }
 
-  curveFitting.register( 'SliderParameterNode', SliderParameterNode );
+  curveFitting.register( 'CoefficientSliderNode', CoefficientSliderNode );
 
-  return inherit( VBox, SliderParameterNode );
+  return inherit( VBox, CoefficientSliderNode );
 } );
