@@ -20,10 +20,14 @@ define( function( require ) {
   var VStrut = require( 'SCENERY/nodes/VStrut' );
 
   // constants
-  var FONT = new PhetFont( {
-    weight: 'bold',
-    size: 13
-  } );
+  var LABEL_OPTIONS = {
+    font: new PhetFont( {
+      weight: 'bold',
+      size: 13
+    } ),
+    fill: CurveFittingConstants.BLUE_COLOR
+  };
+
 
   /**
    * @param {Property.<number>} property parameter to track.
@@ -39,7 +43,7 @@ define( function( require ) {
         trackSize: new Dimension2( 120, 1 ),
         thumbSize: new Dimension2( 15, 24 ),
         minorTickLineWidth: 2,
-        thumbTouchAreaYDilation: 1   // value so touch areas don't overlap
+        thumbTouchAreaYDilation: 1   // small such that touch areas of adjacent sliders don't overlap. It is YDilation since we rotate by 90
       },
       options );
 
@@ -52,10 +56,9 @@ define( function( require ) {
     sliderNode.addMinorTick( 0, '' );
 
     VBox.call( this, _.extend( {
-      resize: false,
       children: [
         sliderNode,
-        new Text( label, { font: FONT, fill: CurveFittingConstants.BLUE_COLOR } )
+        new Text( label, LABEL_OPTIONS )
       ]
     }, options ) );
   }
