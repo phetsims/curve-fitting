@@ -73,19 +73,13 @@ define( function( require ) {
 
     this.addTicks( [ 0, 0.5, 1, 2, 3, 10, 30, 100 ] );
 
-    var updateChiFill = function() {
-      valueRectNode.setFill( getChiFillFromChiValue( chiSquaredProperty.value, points.getNumberPointsOnGraph() ) );
-    };
-
     // no need to unlink, present for the lifetime of the sim
     chiSquaredProperty.link( function( chiSquared ) {
       valueRectNode.setRectHeight( valueToYPosition( chiSquared ) );
-      updateChiFill();
+      valueRectNode.setFill( getChiFillFromChiValue( chiSquaredProperty.value, points.getNumberPointsOnGraph() ) );
     } );
 
     curveVisibleProperty.linkAttribute( valueRectNode, 'visible');
-    points.addItemAddedListener( updateChiFill );
-    points.addItemRemovedListener( updateChiFill );
   }
 
   curveFitting.register( 'BarometerX2Node', BarometerX2Node );
