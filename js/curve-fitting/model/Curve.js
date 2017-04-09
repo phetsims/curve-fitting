@@ -108,6 +108,15 @@ define( function( require ) {
     },
 
     /**
+     * gets the shape of the debug curve
+     * @returns {Shape}
+     * @public
+     */
+    getDebugShape: function() {
+      return new CurveShape( this.getYValueAt.bind( this ), this.orderProperty.value, { debug: true } );
+    },
+
+    /**
      * updates fit
      * updates coefficients of the polynomial and recalculate the chi squared and r squared values
      * sends a message to the view to update itself
@@ -209,7 +218,7 @@ define( function( require ) {
                         (yyAverage - yAverage * yAverage));
       }
 
-      // rSquared can be negative if the curve fitting is done by the user.
+      // rSquared can be negative if the curve fitting is done by the client i.e. 'adjustable fit'
       if ( rSquared < 0 || isNaN( rSquared ) ) {
         this.rSquaredProperty.set( 0 );
       }
@@ -301,9 +310,9 @@ define( function( require ) {
         }
       }
 
-      assert && assert( bestFitCoefficients.forEach( function( value, index ) {
+      bestFitCoefficients.forEach( function( value, index ) {
         assert && assert( isFinite( value ), 'fit parameter: ' + index + ' is not finite: ' + value );
-      } ) );
+      } );
 
       return bestFitCoefficients;
     }
