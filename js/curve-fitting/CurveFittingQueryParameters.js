@@ -21,6 +21,11 @@ define( function( require ) {
     animatedPoints: {
       type: 'boolean',
       defaultValue: false
+    },
+
+    debugLine: {
+      type: 'boolean',
+      defaultValue: true
     }
   } );
 

@@ -14,15 +14,17 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Shape = require( 'KITE/Shape' );
 
-  // constants
-  var DEBUG = false;
-
   /**
    * @param {Function} getYValueAt - get the Y value at the x coordinate
    * @param {number} order - order of the polynomial that describes the curve
+   * @param {Object} [options]
    * @constructor
    */
-  function CurveShape( getYValueAt, order ) {
+  function CurveShape( getYValueAt, order, options ) {
+
+    options = _.extend( {
+      debug: false
+    }, options );
 
     Shape.call( this );
 
@@ -40,32 +42,34 @@ define( function( require ) {
     var xStart;
     var xEnd;
 
-    // curve is a line, quadratic or cubic depending on the order of the fit.
-    switch( order ) {
-      case 3: //cubic
-        var cubicSteps = 10;
-        var cubicInterval = (xMax - xMin) / cubicSteps;
-        for ( i = 0; i < cubicSteps; i++ ) {
-          xStart = xMin + i * cubicInterval;
-          xEnd = xStart + cubicInterval;
-          this.addCubic( xStart, xEnd );
-        }
-        break;
-      case 2 : // quadratic
-        var quadraticSteps = 10;
-        var quadraticInterval = (xMax - xMin) / quadraticSteps;
-        for ( i = 0; i < quadraticSteps; i++ ) {
-          xStart = xMin + i * quadraticInterval;
-          xEnd = xStart + quadraticInterval;
-          this.addQuadratic( xStart, xEnd );
-        }
-        break;
-      default: // linear
-        this.addLinear( xMin, xMax );
-        break;
-    } // end of switch statement
-
-    if ( DEBUG ) {
+    if ( !options.debug ) {
+      // curve is a line, quadratic or cubic depending on the order of the fit.
+      switch( order ) {
+        case 3: //cubic
+          var cubicSteps = 1;
+          var cubicInterval = (xMax - xMin) / cubicSteps;
+          for ( i = 0; i < cubicSteps; i++ ) {
+            xStart = xMin + i * cubicInterval;
+            xEnd = xStart + cubicInterval;
+            this.addCubic( xStart, xEnd );
+          }
+          break;
+        case 2 : // quadratic
+          var quadraticSteps = 1;
+          var quadraticInterval = (xMax - xMin) / quadraticSteps;
+          for ( i = 0; i < quadraticSteps; i++ ) {
+            xStart = xMin + i * quadraticInterval;
+            xEnd = xStart + quadraticInterval;
+            this.addQuadratic( xStart, xEnd );
+          }
+          break;
+        default: // linear
+          this.addLinear( xMin, xMax );
+          break;
+      } // end of switch statement
+    }
+    else {
+      this.shape = {};
       var steps = 1000;
       var interval = (xMax - xMin) / steps;
       var l = 0;

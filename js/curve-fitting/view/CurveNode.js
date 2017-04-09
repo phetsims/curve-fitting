@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  var CurveFittingQueryParameters = require( 'CURVE_FITTING/curve-fitting/CurveFittingQueryParameters' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
@@ -53,6 +54,31 @@ define( function( require ) {
     curveVisibleProperty.link( updateCurve );
     curve.orderProperty.link( updateCurve );
     curve.updateCurveEmitter.addListener( updateCurve );
+
+    // for debugging purposes.
+    if ( CurveFittingQueryParameters.debugLine ) {
+      // create and add curve
+      var curveDebugPath = new Path( null, { stroke: 'red', lineWidth: 2 } );
+      this.addChild( curveDebugPath );
+
+      /**
+       * updates the debug curve
+       */
+      var updateDebugCurve = function() {
+
+        if ( curveVisibleProperty.value && curve.isCurvePresent() ) {
+          curveDebugPath.setShape( modelViewTransform.modelToViewShape( curve.getDebugShape() ) );
+        }
+        else {
+          // reset the curve shape to null
+          curveDebugPath.setShape( null );
+        }
+      };
+
+      curveVisibleProperty.link( updateDebugCurve );
+      curve.orderProperty.link( updateDebugCurve );
+      curve.updateCurveEmitter.addListener( updateDebugCurve );
+    }
   }
 
   curveFitting.register( 'CurveNode', CurveNode );
