@@ -41,7 +41,7 @@ define( function( require ) {
 
   // arrays necessary for calculating chi value bounds while getting barometer color
   var LOWER_LIMIT_ARRAY = [ 0.004, 0.052, 0.118, 0.178, 0.23, 0.273, 0.31, 0.342, 0.369, 0.394, 0.545, 0.695, 0.779, 0.927 ];
-
+  var UPPER_LIMIT_ARRAY = [ 3.8, 3, 2.6, 2.37, 2.21, 2.1, 2.01, 1.94, 1.88, 1.83, 1.57, 1.35, 1.24, 1.07 ];
   /**
    * @param {Points} points
    * @param {Property.<number>} chiSquaredProperty - Property that represents x squared deviation.
@@ -49,7 +49,6 @@ define( function( require ) {
    * @param {Object} [options] for graph node.
    * @constructor
    */
-  var UPPER_LIMIT_ARRAY = [ 3.8, 3, 2.6, 2.37, 2.21, 2.1, 2.01, 1.94, 1.88, 1.83, 1.57, 1.35, 1.24, 1.07 ];
   function BarometerX2Node( points, chiSquaredProperty, curveVisibleProperty,  options ) {
     var valueRectNode = new Rectangle( -2 * CurveFittingConstants.BAROMETER_TICK_WIDTH / 3 - 0.5, 0, 2 * CurveFittingConstants.BAROMETER_TICK_WIDTH / 3, 0, { fill: CurveFittingConstants.BLUE_COLOR } );
     valueRectNode.rotation = Math.PI;
