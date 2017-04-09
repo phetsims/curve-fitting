@@ -59,7 +59,7 @@ define( function( require ) {
      */
     getNumberUniquePositionX: function() {
       return _.chain( this.getPointsOnGraph() ).map( function( point ) {
-        return point.positionProperty.value.x
+        return point.positionProperty.value.x;
       } ).uniq().value().length;
     }
   } );
