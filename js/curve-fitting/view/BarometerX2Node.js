@@ -75,7 +75,7 @@ define( function( require ) {
     this.addTicks( [ 0, 0.5, 1, 2, 3, 10, 30, 100 ] );
 
     var updateChiFill = function() {
-      valueRectNode.setFill( getChiFillFromChiValue( chiSquaredProperty.value, points.getPointsOnGraph().length ) );
+      valueRectNode.setFill( getChiFillFromChiValue( chiSquaredProperty.value, points.getNumberPointsOnGraph() ) );
     };
 
     // no need to unlink, present for the lifetime of the sim

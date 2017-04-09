@@ -93,9 +93,8 @@ define( function( require ) {
     getYValueAt: function( x ) {
       assert && assert( this.coefficients.length === this.orderProperty.value + 1, 'the coefficient array should be ' + this.orderProperty.value + 1 + ' long but is ' + this.coefficients.length );
 
-      var yValue = 0;
-      this.coefficients.forEach( function( value, index ) {
-        yValue += value * Math.pow( x, index );
+      var yValue = this.coefficients.reduce( function( previousValue, currentValue, index ) {
+        return previousValue + currentValue * Math.pow( x, index );
       } );
 
       return yValue;
@@ -255,9 +254,9 @@ define( function( require ) {
 
       var solutionArrayLength = this.orderProperty.value + 1;
 
-      // the rank of the matrix cannot be larger than the number of points
-      // TODO it should not be pointsOnGraph.length but the number of pointsOnGraph with unique x values.
-      var m = Math.min( solutionArrayLength, pointsOnGraph.length );
+      // the rank of the matrix cannot be larger than the number of points with unique x value
+      // the rank of the matrix, m, is the order +1, or the number of points with unique x value, whichever is less.
+      var m = Math.min( solutionArrayLength, this.points.getNumberUniquePositionX() );
 
       var squareMatrix = new Matrix( m, m ); // matrix X
       var columnMatrix = new Matrix( m, 1 ); // matrix Y

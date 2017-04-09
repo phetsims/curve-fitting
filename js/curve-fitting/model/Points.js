@@ -50,7 +50,17 @@ define( function( require ) {
      */
     getNumberPointsOnGraph: function() {
       return this.getPointsOnGraph().length;
+    },
 
+    /**
+     * Returns the number of points on graph that have a unique x position.
+     * @returns (number)
+     * @public
+     */
+    getNumberUniquePositionX: function() {
+      return _.chain( this.getPointsOnGraph() ).map( function( point ) {
+        return point.positionProperty.value.x
+      } ).uniq().value().length;
     }
   } );
 } );
