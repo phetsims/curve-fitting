@@ -25,7 +25,7 @@ define( function( require ) {
 
     debugLine: {
       type: 'boolean',
-      defaultValue: true
+      defaultValue: false
     }
   } );
 
