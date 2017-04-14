@@ -54,6 +54,7 @@ define( function( require ) {
 
     /**
      * Returns the number of points on graph that have a unique x position.
+     * eg. if the x positions are [8,9,9,9,9,10], it would yield 3
      * @returns (number)
      * @public
      */
