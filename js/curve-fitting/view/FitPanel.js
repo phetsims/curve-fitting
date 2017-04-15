@@ -71,49 +71,37 @@ define( function( require ) {
     var dSliderEnabledProperty = new Property( true );
 
     // create slider for parameters
-    var aSliderBox = new CoefficientSliderNode( sliderPropertyArray[ 3 ], {
+    var aSlider = new CoefficientSliderNode( sliderPropertyArray[ 3 ], {
       min: -1,
       max: 1
     }, symbolAString, { enabledProperty: aSliderEnabledProperty } );
-    var bSliderBox = new CoefficientSliderNode( sliderPropertyArray[ 2 ], {
+    var bSlider = new CoefficientSliderNode( sliderPropertyArray[ 2 ], {
       min: -2,
       max: 2
     }, symbolBString, { enabledProperty: bSliderEnabledProperty } );
-    var cSliderBox = new CoefficientSliderNode( sliderPropertyArray[ 1 ], {
+    var cSlider = new CoefficientSliderNode( sliderPropertyArray[ 1 ], {
       min: -10,
       max: 10
     }, symbolCString, { enabledProperty: cSliderEnabledProperty } );
-    var dSliderBox = new CoefficientSliderNode( sliderPropertyArray[ 0 ], {
+    var dSlider = new CoefficientSliderNode( sliderPropertyArray[ 0 ], {
       min: -10,
       max: 10
     }, symbolDString, { enabledProperty: dSliderEnabledProperty } );
 
+    var sliders = [ aSlider, bSlider, cSlider, dSlider ];
+
     // create slider box
-    var slidersBox = new HBox( {
-      spacing: 5,
-      children: [ aSliderBox, bSliderBox, cSliderBox, dSliderBox ]
-    } );
+    var slidersBox = new HBox( { spacing: 5, children: sliders } );
 
     // add slider number observer
     orderProperty.link( function( order ) {
       // if the sliders are not disabled they will be able to change
       // and behave as described in #15 and #37
-
       aSliderEnabledProperty.set( order >= 3 );
       bSliderEnabledProperty.set( order >= 2 );
 
-      if ( order === 1 ) {
-        slidersBox.children = [ cSliderBox, dSliderBox ];
-      }
-      else if ( order === 2 ) {
-        slidersBox.children = [ bSliderBox, cSliderBox, dSliderBox ];
-      }
-      else if ( order === 3 ) {
-        slidersBox.children = [ aSliderBox, bSliderBox, cSliderBox, dSliderBox ];
-      }
-      else {
-        throw new Error( 'unsupported curve order: ' + order );
-      }
+      // set the content of the slidersBox
+      slidersBox.children = sliders.slice( sliders.length - order - 1, sliders.length );
     } );
 
     // vertical layout
