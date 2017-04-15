@@ -291,7 +291,8 @@ define( function( require ) {
       }
 
       // the coefficients are ordered in order of polynomial, eg. a_0, a_1, a_2, etc,
-      // bestCoefficients must have a length of solutionArrayLength that may be longer than the rank of the matrices
+      // bestCoefficients must have a length of solutionArrayLength.
+      // solutionArrayLength may be longer than the rank of the square matrix
       var bestFitCoefficients = [];
 
       // filled the bestFitCoefficients array with zeros, the default solution
