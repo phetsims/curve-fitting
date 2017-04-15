@@ -45,6 +45,8 @@ define( function( require ) {
     fill: CurveFittingConstants.BLUE_COLOR
   };
   var TEXT_OPTIONS = { font: new PhetFont( 12 ) };
+  //  max number precision decimal places for ascending order of coefficient of polynomials
+  var MAX_DECIMALS = [ 1, 2, 3, 3 ];
 
   /**
    * @param {Function} getCoefficientArray - returns an array of coefficient of the polynomial curve sorted in ascending order {<number>[]}
@@ -61,8 +63,13 @@ define( function( require ) {
                                    equationPanelExpandedProperty,
                                    curveVisibleProperty,
                                    options ) {
-    var boxNode = new HBox( { align: 'bottom' } );
+    var self = this;
+
+    //  visible text node when panel is not expanded
     var titleNode = new Text( equationString, TEXT_OPTIONS );
+
+    //  visible node when panel is expanded
+    var boxNode = new HBox( { align: 'bottom' } );
 
     // create expand button
     var expandCollapseButton = new ExpandCollapseButton( equationPanelExpandedProperty, {
@@ -71,38 +78,6 @@ define( function( require ) {
     expandCollapseButton.touchArea = expandCollapseButton.localBounds.dilated( BUTTON_LENGTH / 3 );
     expandCollapseButton.mouseArea = expandCollapseButton.localBounds.dilated( BUTTON_LENGTH / 3 );
 
-    // create parameters node
-    var yNode = new Text( symbolYString + ' =', TEXT_OPTIONS );
-    var aParameterNode = new Text( symbolAString, PARAMETER_TEXT_OPTIONS );
-    var aBlockNode = new HBox( {
-      align: 'bottom',
-      spacing: 2,
-      children: [
-        aParameterNode,
-        new SubSupText( symbolXString + '<sup>3</sup>', TEXT_OPTIONS )
-      ]
-    } );
-    var bParameterNode = new Text( symbolBString, PARAMETER_TEXT_OPTIONS );
-    var bBlockNode = new HBox( {
-      align: 'bottom',
-      spacing: 2,
-      children: [
-        bParameterNode,
-        new SubSupText( symbolXString + '<sup>2</sup>', TEXT_OPTIONS )
-      ]
-    } );
-    var cParameterNode = new Text( symbolCString, PARAMETER_TEXT_OPTIONS );
-    var dParameterNode = new Text( symbolDString, PARAMETER_TEXT_OPTIONS );
-    var cdBlockNode = new HBox( {
-      align: 'bottom',
-      spacing: 2,
-      children: [
-        cParameterNode,
-        new Text( symbolXString, TEXT_OPTIONS ),
-        dParameterNode
-      ]
-    } );
-
     var content = new HBox( {
       spacing: 5,
       children: [ expandCollapseButton, titleNode ]
@@ -110,19 +85,30 @@ define( function( require ) {
 
     Panel.call( this, content, _.extend( PANEL_OPTIONS, options ) );
 
-    // add observers
-    orderProperty.link( function( order ) {
-      if ( order === 1 ) {
-        boxNode.children = [ yNode, cdBlockNode ];
-      }
-      else if ( order === 2 ) {
-        boxNode.children = [ yNode, bBlockNode, cdBlockNode ];
-      }
-      else if ( order === 3 ) {
-        boxNode.children = [ yNode, aBlockNode, bBlockNode, cdBlockNode ];
-      }
+    // convenience array, strings are sorted in ascending order of coefficient of polynomials
+    var symbolStrings = [ symbolDString, symbolCString, symbolBString, symbolAString ];
+
+    // text nodes that contain the numerical value of the polynomial coefficients
+    // strings are place holders that will be updated by numerical value
+    var textNodes = symbolStrings.map( function( symbolString ) {
+      return new Text( symbolString, PARAMETER_TEXT_OPTIONS );
     } );
 
+    // blockNode stores all elements of the right hand side of the equation
+    var blockNodes = textNodes.map( function( textNode, index ) {
+      return self.blockCreatorNode( textNode, index );
+    } );
+
+    // create the left hand side of equation ( with equal sign)
+    var yNode = new Text( symbolYString + ' =', TEXT_OPTIONS );
+
+    //  update the relevant blocks on the right hand side of equation.
+    orderProperty.link( function( order ) {
+      // only the relevant orders are shown
+      boxNode.children = [ yNode ].concat( blockNodes.slice( 0, order + 1 ).reverse() );
+    } );
+
+    // toggle the content of the panel, based on the expansion status
     equationPanelExpandedProperty.link( function( isEquationPanelExpanded ) {
       if ( isEquationPanelExpanded ) {
         content.children = [ expandCollapseButton, boxNode ];
@@ -132,52 +118,32 @@ define( function( require ) {
       }
     } );
 
-    // present of the lifetime of the simulation
+    // add observer, present of the lifetime of the simulation
     curveVisibleProperty.linkAttribute( this, 'visible' );
+    curveVisibleProperty.link( updateCoefficients );
+    equationPanelExpandedProperty.link( updateCoefficients );
+    updateCurveEmitter.addListener( updateCoefficients );
 
-    var updateAParameter = function() {
-      if ( equationPanelExpandedProperty.value && curveVisibleProperty.value ) {
-        var numberInfo = roundNumber( getCoefficientArray()[ 3 ], 3 );
-        aParameterNode.setText( numberInfo.signToString + numberInfo.absoluteNumberToString );
-      }
-    };
+    /**
+     * update the numerical coefficient of a node
+     * @param {number} order
+     * @param {number} maxDecimalPlaces
+     * @param {Text} textNode
+     */
+    function updateCoefficient( order, maxDecimalPlaces, textNode ) {
+      var numberInfo = roundNumber( getCoefficientArray()[ order ], maxDecimalPlaces );
+      textNode.setText( numberInfo.signToString + numberInfo.absoluteNumberToString );
+    }
 
-    curveVisibleProperty.lazyLink( updateAParameter );
-    equationPanelExpandedProperty.link( updateAParameter );
+    /**
+     * update all the coefficients
+     */
+    function updateCoefficients() {
+      textNodes.forEach( function( textNode, index ) {
+        updateCoefficient( index, MAX_DECIMALS[ index ], textNode );
+      } );
+    }
 
-    var updateBParameter = function() {
-      if ( equationPanelExpandedProperty.value && curveVisibleProperty.value ) {
-        var numberInfo = roundNumber( getCoefficientArray()[ 2 ], 3 );
-        bParameterNode.setText( numberInfo.signToString + numberInfo.absoluteNumberToString );
-      }
-    };
-
-    curveVisibleProperty.lazyLink( updateBParameter );
-    equationPanelExpandedProperty.link( updateBParameter );
-
-    var updateCParameter = function() {
-      if ( equationPanelExpandedProperty.value && curveVisibleProperty.value ) {
-        var numberInfo = roundNumber( getCoefficientArray()[ 1 ], 2 );
-        cParameterNode.setText( numberInfo.signToString + numberInfo.absoluteNumberToString );
-      }
-    };
-
-    curveVisibleProperty.lazyLink( updateCParameter );
-    equationPanelExpandedProperty.link( updateCParameter );
-
-    var updateDParameter = function() {
-      var numberInfo = roundNumber( getCoefficientArray()[ 0 ], 1 );
-      dParameterNode.setText( numberInfo.signToString + numberInfo.absoluteNumberToString );
-
-    };
-
-    curveVisibleProperty.lazyLink( updateDParameter );
-    equationPanelExpandedProperty.link( updateDParameter );
-
-    updateCurveEmitter.addListener( updateAParameter );
-    updateCurveEmitter.addListener( updateBParameter );
-    updateCurveEmitter.addListener( updateCParameter );
-    updateCurveEmitter.addListener( updateDParameter );
     /**
      * Function that returns (for numbers smaller than ten) a number (as a string)  with a fixed number of decimal places
      * whereas for numbers larger than ten, the number/string is returned a fixed number of significant figures
@@ -232,5 +198,31 @@ define( function( require ) {
 
   curveFitting.register( 'EquationGraphPanelNode', EquationGraphPanelNode );
 
-  return inherit( Panel, EquationGraphPanelNode );
+  return inherit( Panel, EquationGraphPanelNode, {
+    /**
+     * returns a hBox containing a numerical value and a polynomial to the power 'order'
+     * eg. -4.0 x^3
+     * @param {Text} numberText
+     * @param {number} order - order of the specific polynomial
+     * @returns {HBox}
+     * @private
+     */
+    blockCreatorNode: function( numberText, order ) {
+      var polynomialText;
+      if ( order === 0 ) {
+        polynomialText = new Text( '', TEXT_OPTIONS );
+      }
+      else if ( order === 1 ) {
+        polynomialText = new Text( symbolXString, TEXT_OPTIONS );
+      }
+      else {
+        polynomialText = new SubSupText( symbolXString + '<sup>' + order + '</sup>', TEXT_OPTIONS );
+      }
+      return new HBox( {
+        align: 'bottom',
+        spacing: 2,
+        children: [ numberText, polynomialText ]
+      } );
+    }
+  } );
 } );
