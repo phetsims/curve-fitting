@@ -104,7 +104,7 @@ define( function( require ) {
      * @public
      */
     getShape: function() {
-      return new CurveShape( this.getYValueAt.bind( this ), this.orderProperty.value );
+      return new CurveShape( this.getYValueAt.bind( this ), this.coefficients, this.orderProperty.value );
     },
 
     /**
@@ -113,7 +113,7 @@ define( function( require ) {
      * @public
      */
     getDebugShape: function() {
-      return new CurveShape( this.getYValueAt.bind( this ), this.orderProperty.value, { debug: true } );
+      return new CurveShape( this.getYValueAt.bind( this ), this.coefficients, this.orderProperty.value, { debug: true } );
     },
 
     /**
