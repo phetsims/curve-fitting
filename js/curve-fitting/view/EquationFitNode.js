@@ -17,7 +17,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var SubSupText = require( 'SCENERY_PHET/SubSupText' );
+  var RichText = require( 'SCENERY_PHET/RichText' );
   var Text = require( 'SCENERY/nodes/Text' );
 
   // constants
@@ -63,13 +63,13 @@ define( function( require ) {
         // second order of fit
         if ( i > 1 ) {
           boxNode.insertChild( 1, new Text( symbolPlusString + ' ', TEXT_OPTIONS ) );
-          boxNode.insertChild( 1, new SubSupText( symbolXString + '<sup>2</sup>', TEXT_OPTIONS ) );
+          boxNode.insertChild( 1, new RichText( symbolXString + '<sup>2</sup>', TEXT_OPTIONS ) );
           boxNode.insertChild( 1, new Text( symbolBString, PARAMETER_TEXT_OPTIONS ) );
 
           // third order of fit
           if ( i > 2 ) {
             boxNode.insertChild( 1, new Text( symbolPlusString + ' ', TEXT_OPTIONS ) );
-            boxNode.insertChild( 1, new SubSupText( symbolXString + '<sup>3</sup>', TEXT_OPTIONS ) );
+            boxNode.insertChild( 1, new RichText( symbolXString + '<sup>3</sup>', TEXT_OPTIONS ) );
             boxNode.insertChild( 1, new Text( symbolAString, PARAMETER_TEXT_OPTIONS ) );
           }
         }

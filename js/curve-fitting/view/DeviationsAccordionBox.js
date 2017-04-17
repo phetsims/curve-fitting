@@ -20,7 +20,7 @@ define( function( require ) {
   var Panel = require( 'SUN/Panel' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var ReducedChiSquaredStatisticDialog = require( 'CURVE_FITTING/curve-fitting/view/ReducedChiSquaredStatisticDialog' );
-  var SubSupText = require( 'SCENERY_PHET/SubSupText' );
+  var RichText = require( 'SCENERY_PHET/RichText' );
   var Text = require( 'SCENERY/nodes/Text' );
   var TextPushButton = require( 'SUN/buttons/TextPushButton' );
   var VBox = require( 'SCENERY/nodes/VBox' );
@@ -117,11 +117,11 @@ define( function( require ) {
       children: [
 
         //TODO 'X' does not match equation font, not italic
-        new SubSupText( symbolChiString + '<sup>2</sup>=', { font: TEXT_FONT } ),
+        new RichText( symbolChiString + '<sup>2</sup>=', { font: TEXT_FONT } ),
         new Panel( chiSquaredValueNode, VALUE_PANEL_OPTIONS ),
 
         //TODO 'r' does not match equation font, not italic
-        new SubSupText( symbolRString + '<sup>2</sup>=', { font: TEXT_FONT } ),
+        new RichText( symbolRString + '<sup>2</sup>=', { font: TEXT_FONT } ),
         new Panel( rSquaredValueNode, VALUE_PANEL_OPTIONS )
       ]
     } );

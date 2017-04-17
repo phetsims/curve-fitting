@@ -19,7 +19,7 @@ define( function( require ) {
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Panel = require( 'SUN/Panel' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var SubSupText = require( 'SCENERY_PHET/SubSupText' );
+  var RichText = require( 'SCENERY_PHET/RichText' );
   var Util = require( 'DOT/Util' );
 
   // strings
@@ -216,7 +216,7 @@ define( function( require ) {
         polynomialText = new Text( symbolXString, TEXT_OPTIONS );
       }
       else {
-        polynomialText = new SubSupText( symbolXString + '<sup>' + order + '</sup>', TEXT_OPTIONS );
+        polynomialText = new RichText( symbolXString + '<sup>' + order + '</sup>', TEXT_OPTIONS );
       }
       return new HBox( {
         align: 'bottom',
