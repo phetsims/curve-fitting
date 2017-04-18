@@ -174,6 +174,7 @@ define( function( require ) {
 
     // add drag handler for point
     circleView.addInputListener( new SimpleDragHandler( {
+      allowTouchSnag: true,
       start: function() {
         point.draggingProperty.set( true );
       },
