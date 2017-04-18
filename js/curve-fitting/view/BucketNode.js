@@ -105,7 +105,7 @@ define( function( require ) {
 
     pointsNode.center = bucketHoleNode.center.plusXY( 0, -6 ); // tuned by hand, slightly above bucket
 
-    // add children
+    // add children, the z-order is critical here.
     this.addChild( bucketHoleNode );
     this.addChild( pointsNode );
     this.addChild( bucketFrontNode );
