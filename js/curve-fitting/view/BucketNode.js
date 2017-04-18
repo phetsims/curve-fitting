@@ -91,14 +91,16 @@ define( function( require ) {
     // points in the bucket
     var pointsNode = new Node();
     POINT_POSITIONS.forEach( function( position ) {
-      pointsNode.addChild( new Circle( {
+      var circle = new Circle( {
         fill: CurveFittingConstants.POINT_FILL,
         radius: CurveFittingConstants.POINT_RADIUS,
         stroke: CurveFittingConstants.POINT_STROKE,
         lineWidth: CurveFittingConstants.POINT_LINE_WIDTH,
         x: position.x,
         y: position.y
-      } ) );
+      } );
+      circle.addInputListener( createDragHandler() );
+      pointsNode.addChild( circle );
     } );
 
     pointsNode.center = bucketHoleNode.center.plusXY( 0, -6 ); // tuned by hand, slightly above bucket
@@ -108,42 +110,6 @@ define( function( require ) {
     this.addChild( pointsNode );
     this.addChild( bucketFrontNode );
 
-    // add drag handler to the points
-    var point = null;
-    pointsNode.addInputListener( new SimpleDragHandler( {
-
-      allowTouchSnag: true,
-
-      start: function( event ) {
-
-        // create a model point
-        var viewPosition = self.globalToLocalPoint( event.pointer.point );
-        var modelPosition = modelViewTransform.viewToModelPosition( viewPosition );
-        point = new Point( {
-          position: modelPosition,
-          dragging: true
-        } );
-
-        // add the model point to the observable array in model curve
-        points.add( point );
-      },
-
-      translate: function( translationParams ) {
-        point.positionProperty.value = point.positionProperty.value.plus( modelViewTransform.viewToModelDelta( translationParams.delta ) );
-      },
-
-      end: function() {
-        if ( CurveFittingQueryParameters.snapToGrid ) {
-          point.positionProperty.set( new Vector2(
-            Util.toFixedNumber( point.positionProperty.value.x, 1 ),
-            Util.toFixedNumber( point.positionProperty.value.y, 1 )
-          ) );
-        }
-        point.draggingProperty.set( false );
-        point = null;
-
-      }
-    } ) );
 
     // handle the coming and going of points
     points.addItemAddedListener( function( addedPoint ) {
@@ -158,6 +124,51 @@ define( function( require ) {
         }
       } );
     } );
+
+
+    /**
+     * create a drag handler that adds a point to the model
+     * @returns {SimpleDragHandler}
+     */
+    function createDragHandler() {
+      var point = null;
+      var dragHandler = new SimpleDragHandler( {
+
+        allowTouchSnag: true,
+
+        start: function( event ) {
+
+          // create a model point
+          var viewPosition = self.globalToLocalPoint( event.pointer.point );
+          var modelPosition = modelViewTransform.viewToModelPosition( viewPosition );
+          point = new Point( {
+            position: modelPosition,
+            dragging: true
+          } );
+
+          // add the model point to the observable array in model curve
+          points.add( point );
+        },
+
+        translate: function( translationParams ) {
+          point.positionProperty.value = point.positionProperty.value.plus( modelViewTransform.viewToModelDelta( translationParams.delta ) );
+        },
+
+        end: function() {
+          if ( CurveFittingQueryParameters.snapToGrid ) {
+            point.positionProperty.set( new Vector2(
+              Util.toFixedNumber( point.positionProperty.value.x, 1 ),
+              Util.toFixedNumber( point.positionProperty.value.y, 1 )
+            ) );
+          }
+          point.draggingProperty.set( false );
+          point = null;
+        }
+      } );
+
+      return dragHandler;
+    }
+
   }
 
   curveFitting.register( 'BucketNode', BucketNode );
