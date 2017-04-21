@@ -17,7 +17,8 @@ define( function( require ) {
   var NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
-  var EPSILON = 1E-30;
+  var EPSILON = 1.0E-10;
+  var DETERMINANT_EPSILON = 1.0E-30;
 
   /**
    * @param {Points} points - array of points
@@ -174,24 +175,28 @@ define( function( require ) {
 
       var self = this;
       var points = this.points.getPointsOnGraph();
-      var weightSum = 0;
-      var ySum = 0;
-      var yySum = 0;
-      var yAtSum = 0;
-      var yAtySum = 0;
-      var yAtyAtSum = 0;
-      var x;
-      var y;
-      var yAt;
-      var weight;
       var numberOfPoints = points.length; //  number of points in the array
-      var rSquared;
 
       if ( numberOfPoints < 2 ) {
-        // rSquared does not have any meaning, set to zero
-        rSquared = 0;
+        // rSquared and chiSquared do not have any meaning, set them to zero and bail out
+        this.chiSquaredProperty.set( 0 );
+        this.rSquaredProperty.set( 0 );
       }
       else {
+        // calculation of rSquared and chiSquared
+        var weightSum = 0;
+        var ySum = 0;
+        var yySum = 0;
+        var yAtSum = 0;
+        var yAtySum = 0;
+        var yAtyAtSum = 0;
+        var x;
+        var y;
+        var yAt;
+        var weight;
+        var rSquared;
+        var chiSquared;
+
         points.forEach( function( point ) {
           x = point.positionProperty.value.x; // x value of this point
           y = point.positionProperty.value.y; // y value of this point
@@ -210,29 +215,39 @@ define( function( require ) {
         var denominator = (weightAverage * numberOfPoints); // convenience variable
         var yAverage = ySum / denominator; // weighted average of the y values
         var yyAverage = yySum / denominator; // weighted average of the <y_i y_i> correlation
-        var yAtyAtAverage = yAtyAtSum / denominator; // weighted average of the <y_i yat_i> correlation
-        var yAtyAverage = yAtySum / denominator; // weighted average of the <yat_i yat_i> correlation
 
-        // weighted value of r square
-        rSquared = 1 - ((yyAverage - 2 * yAtyAverage + yAtyAtAverage) /
-                        (yyAverage - yAverage * yAverage));
-      }
+        var residualSumOfSquares = (yySum - 2 * yAtySum + yAtyAtSum);
+        // average of weighted squares of residuals, a.k.a average of residual squares
+        var averageOfResidualSquares = residualSumOfSquares / denominator;
+        //  average of weighted squares
+        var averageOfSquares = yyAverage - yAverage * yAverage;
+        // sum of of the weighted squares of residuals
 
-      // rSquared can be negative if the curve fitting is done by the client i.e. 'adjustable fit'
-      if ( rSquared < 0 || isNaN( rSquared ) ) {
-        this.rSquaredProperty.set( 0 );
-      }
-      else {
+
+        // calculation of chiSquared
+        var order = this.orderProperty.value;
+        var degreesOfFreedom = numberOfPoints - order - 1;
+        chiSquared = residualSumOfSquares / Math.max( degreesOfFreedom, 1 );
+        this.chiSquaredProperty.set( chiSquared );
+
+        // calculation of rSquared  = 1 - averageOfResidualSquares / averageOfSquares;
+        // handling for exceptions
+        if ( Math.abs( averageOfResidualSquares ) < EPSILON || Math.abs( averageOfSquares ) < EPSILON ) {
+          // avoid explicit division of zero by zero by setting rSquared to 1
+          rSquared = 1;
+        }
+        else if ( averageOfResidualSquares / averageOfSquares > 1 ) {
+          // rSquared can be negative if the curve fitting done by the client i.e. 'adjustable fit' is very poor
+          // set it to zero for those cases.
+          rSquared = 0;
+        }
+        else {
+          // weighted value of r square
+          rSquared = 1 - averageOfResidualSquares / averageOfSquares;
+        }
+        assert && assert( rSquared >= 0 && rSquared <= 1, 'rSquared should range from 0 to 1 ');
         this.rSquaredProperty.set( rSquared );
       }
-
-      // calculation of chiSquared
-      var order = this.orderProperty.value;
-      var degreesOfFreedom = numberOfPoints - order - 1;
-
-      var chiSquared = (yySum - 2 * yAtySum + yAtyAtSum) / Math.max( degreesOfFreedom, 1 );
-      this.chiSquaredProperty.set( chiSquared );
-
     },
     /**
      * returns a solution an array containing the coefficients of the polynomial for best fit
@@ -302,7 +317,7 @@ define( function( require ) {
       }
 
       // if the square matrix is not singular, it implies that a solution exists
-      if ( Math.abs( squareMatrix.det() ) > EPSILON ) {
+      if ( Math.abs( squareMatrix.det() ) > DETERMINANT_EPSILON ) {
         // the solution matrix, A, is X^-1 * Y
         var solutionMatrix = squareMatrix.solve( columnMatrix );
         // unpack the column solution Matrix into a javascript array
@@ -318,4 +333,5 @@ define( function( require ) {
       return bestFitCoefficients;
     }
   } );
-} );
+} )
+;

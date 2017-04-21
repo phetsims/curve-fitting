@@ -152,9 +152,6 @@ define( function( require ) {
     // unlink unnecessary, present for the lifetime of the sim
     rSquaredProperty.link( function( rSquared ) {
 
-      //TODO this assertion fails with alarming regularity, it should be investigated
-      // assert && assert( rSquared >= 0 && rSquared <= 1, 'rSquared out of range: ' + rSquared );
-
       // rSquared can only be between 0 and 1 so it will always need 2 decimal points.
       rSquaredValueNode.setText( formatNumber( rSquared, 2 ) );
     } );
