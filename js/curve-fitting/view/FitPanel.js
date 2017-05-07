@@ -11,6 +11,7 @@ define( function( require ) {
 
   // modules
   var AquaRadioButton = require( 'SUN/AquaRadioButton' );
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
   var CoefficientSliderNode = require( 'CURVE_FITTING/curve-fitting/view/CoefficientSliderNode' );
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
@@ -18,7 +19,6 @@ define( function( require ) {
   var HBox = require( 'SCENERY/nodes/HBox' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Panel = require( 'SUN/Panel' );
-  var Property = require( 'AXON/Property' );
   var Text = require( 'SCENERY/nodes/Text' );
   var VBox = require( 'SCENERY/nodes/VBox' );
 
@@ -64,44 +64,56 @@ define( function( require ) {
     // equation that corresponds to the curve
     var equationFitNode = new EquationFitNode( orderProperty );
 
-    // it's necessary to be able to enable and disable sliders
-    var aSliderEnabledProperty = new Property( true );
-    var bSliderEnabledProperty = new Property( true );
-    var cSliderEnabledProperty = new Property( true );
-    var dSliderEnabledProperty = new Property( true );
+    // attributes for four sliders in ASCENDING order of polynomial
+    var slidersAttributes = [
+      {
+        string: symbolDString,
+        range: CurveFittingConstants.CONSTANT_RANGE,
+        enabledProperty: new BooleanProperty( true )
+      },
+      {
+        string: symbolCString,
+        range: CurveFittingConstants.LINEAR_RANGE,
+        enabledProperty: new BooleanProperty( true )
+      },
+      {
+        string: symbolBString,
+        range: CurveFittingConstants.QUADRATIC_RANGE,
+        enabledProperty: new BooleanProperty( true )
+      },
+      {
+        string: symbolAString,
+        range: CurveFittingConstants.CUBIC_RANGE,
+        enabledProperty: new BooleanProperty( true )
+      }
+    ];
 
-    // create slider for parameters
-    var aSlider = new CoefficientSliderNode( sliderPropertyArray[ 3 ], {
-      min: -1,
-      max: 1
-    }, symbolAString, { enabledProperty: aSliderEnabledProperty } );
-    var bSlider = new CoefficientSliderNode( sliderPropertyArray[ 2 ], {
-      min: -2,
-      max: 2
-    }, symbolBString, { enabledProperty: bSliderEnabledProperty } );
-    var cSlider = new CoefficientSliderNode( sliderPropertyArray[ 1 ], {
-      min: -10,
-      max: 10
-    }, symbolCString, { enabledProperty: cSliderEnabledProperty } );
-    var dSlider = new CoefficientSliderNode( sliderPropertyArray[ 0 ], {
-      min: -10,
-      max: 10
-    }, symbolDString, { enabledProperty: dSliderEnabledProperty } );
+    // create array in ASCENDING order of polynomial
+    var ascendingSliders = slidersAttributes.map( function( sliderObject, index ) {
+        return new CoefficientSliderNode( sliderPropertyArray[ index ],
+          sliderObject.range,
+          sliderObject.string,
+          { enabledProperty: sliderObject.enabledProperty } );
+      }
+    );
 
-    var sliders = [ aSlider, bSlider, cSlider, dSlider ];
+    // we want sliders in DESCENDING order of polynomial
+    var sliders = ascendingSliders.reverse();
 
     // create slider box
-    var slidersBox = new HBox( { spacing: 5, children: sliders } );
+    var slidersBox = new HBox( { spacing: 6, children: sliders } );
 
     // add slider number observer
     orderProperty.link( function( order ) {
-      // if the sliders are not disabled they will be able to change
-      // and behave as described in #15 and #37
-      aSliderEnabledProperty.set( order >= 3 );
-      bSliderEnabledProperty.set( order >= 2 );
 
       // set the content of the slidersBox
       slidersBox.children = sliders.slice( sliders.length - order - 1, sliders.length );
+
+      // if the sliders are not disabled they will be able to change
+      // and behave as described in #15 and #37
+      slidersAttributes.forEach( function( sliderObject, index ) {
+        sliderObject.enabledProperty.set( order >= index )
+      } );
     } );
 
     // vertical layout
@@ -142,6 +154,12 @@ define( function( require ) {
       new Text( label, CurveFittingConstants.CONTROL_TEXT_OPTIONS ),
       CurveFittingConstants.RADIO_BUTTON_OPTIONS );
   };
+
+
+  /**
+   * Create sliders
+   * @returns {CoefficientSliderNode}
+   */
 
   return inherit( Panel, FitPanel );
 } );

@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var Curve = require( 'CURVE_FITTING/curve-fitting/model/Curve' );
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var NumberProperty = require( 'AXON/NumberProperty' );
   var Points = require( 'CURVE_FITTING/curve-fitting/model/Points' );
@@ -33,7 +34,12 @@ define( function( require ) {
     this.fitProperty = new Property( 'best' );
 
     // @public {Property.<number>[]}, user input values for coefficients of the polynomial, starting from lowest order x^0 to x^3
-    this.sliderPropertyArray = [ new NumberProperty( 2.7 ), new NumberProperty( 0 ), new NumberProperty( 0 ), new NumberProperty( 0 ) ];
+    this.sliderPropertyArray = [
+      new NumberProperty( CurveFittingConstants.CONSTANT_RANGE.defaultValue ),
+      new NumberProperty( CurveFittingConstants.LINEAR_RANGE.defaultValue ),
+      new NumberProperty( CurveFittingConstants.QUADRATIC_RANGE.defaultValue ),
+      new NumberProperty( CurveFittingConstants.CUBIC_RANGE.defaultValue )
+    ];
 
     // @public - Points for plotting curve. This includes points that are outside the bounds of the graph, so
     // be careful to call getPointsOnGraph when using points in calculations. Order of the points doesn't matter.
