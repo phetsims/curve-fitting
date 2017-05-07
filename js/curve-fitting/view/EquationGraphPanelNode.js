@@ -184,7 +184,7 @@ define( function( require ) {
       var roundedNumber = Util.toFixedNumber( number, decimalPlaces );
       var numberToString = Util.toFixed( number, decimalPlaces );
       var signToString = (roundedNumber >= 0) ? plusString : minusString; // N.B.
-      var absoluteNumberToString = Util.toFixedNumber( Math.abs( number ), decimalPlaces ); // N.B.
+      var absoluteNumberToString = Util.toFixed( Math.abs( number ), decimalPlaces ); // N.B.
       var isStringZero = (numberToString === Util.toFixed( 0, decimalPlaces ));
 
       return {
