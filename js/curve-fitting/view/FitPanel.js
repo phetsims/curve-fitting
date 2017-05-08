@@ -112,7 +112,7 @@ define( function( require ) {
       // if the sliders are not disabled they will be able to change
       // and behave as described in #15 and #37
       slidersAttributes.forEach( function( sliderObject, index ) {
-        sliderObject.enabledProperty.set( order >= index )
+        sliderObject.enabledProperty.set( order >= index );
       } );
     } );
 
