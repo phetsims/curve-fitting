@@ -79,16 +79,10 @@ define( function( require ) {
     // r^2 barometer
     var barometerR2 = new BarometerR2Node( rSquaredProperty, curveVisibleProperty );
 
-    // help dialog, created on demand
-    var helpDialog = null;
-
     // help button
     var helpButton = new TextPushButton( symbolQuestionMarkString, {
       listener: function() {
-        if ( !helpDialog ) {
-          helpDialog = new ReducedChiSquaredStatisticDialog();
-        }
-        helpDialog.show();
+        new ReducedChiSquaredStatisticDialog().show();
       },
       font: TEXT_FONT,
       baseColor: 'rgb( 204, 204, 204 )',
@@ -156,8 +150,8 @@ define( function( require ) {
       rSquaredValueNode.setText( formatNumber( rSquared, 2 ) );
     } );
 
-    curveVisibleProperty.linkAttribute(rSquaredValueNode, 'visible');
-    curveVisibleProperty.linkAttribute(chiSquaredValueNode, 'visible');
+    curveVisibleProperty.linkAttribute( rSquaredValueNode, 'visible' );
+    curveVisibleProperty.linkAttribute( chiSquaredValueNode, 'visible' );
 
     AccordionBox.call( this, content, options );
   }
