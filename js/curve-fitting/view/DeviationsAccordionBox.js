@@ -79,10 +79,16 @@ define( function( require ) {
     // r^2 barometer
     var barometerR2 = new BarometerR2Node( rSquaredProperty, curveVisibleProperty );
 
+    // informational dialog, created lazily because Dialog requires sim bounds during construction
+    var dialog = null;
+
     // help button
     var helpButton = new TextPushButton( symbolQuestionMarkString, {
       listener: function() {
-        new ReducedChiSquaredStatisticDialog().show();
+        if ( !dialog ) {
+          dialog = new ReducedChiSquaredStatisticDialog();
+        }
+        dialog.show();
       },
       font: TEXT_FONT,
       baseColor: 'rgb( 204, 204, 204 )',
