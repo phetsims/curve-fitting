@@ -20,7 +20,7 @@ define( function( require ) {
   var Panel = require( 'SUN/Panel' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var ReducedChiSquaredStatisticDialog = require( 'CURVE_FITTING/curve-fitting/view/ReducedChiSquaredStatisticDialog' );
-  var RichText = require( 'SCENERY_PHET/RichText' );
+  var RichText = require( 'SCENERY/nodes/RichText' );
   var Text = require( 'SCENERY/nodes/Text' );
   var TextPushButton = require( 'SUN/buttons/TextPushButton' );
   var VBox = require( 'SCENERY/nodes/VBox' );

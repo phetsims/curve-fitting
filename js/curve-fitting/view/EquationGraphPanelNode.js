@@ -19,7 +19,7 @@ define( function( require ) {
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Panel = require( 'SUN/Panel' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var RichText = require( 'SCENERY_PHET/RichText' );
+  var RichText = require( 'SCENERY/nodes/RichText' );
   var Util = require( 'DOT/Util' );
 
   // strings
