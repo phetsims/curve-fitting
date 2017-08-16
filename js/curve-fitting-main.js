@@ -24,7 +24,7 @@ define( function( require ) {
       team: 'Trish Loeblein, Ariel Paul, Kathy Perkins',
       qualityAssurance: '',
       graphicArts: '',
-      thanks: 'Thanks to Mobile Learner Labs for working with the PhET development team\nto convert this simulation to HTML5.'
+      thanks: 'Thanks to Mobile Learner Labs for working with the PhET development team to convert this simulation to HTML5.'
     }
   };
 
