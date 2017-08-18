@@ -71,6 +71,9 @@ define( function( require ) {
     this.points.addItemRemovedListener( function( point ) {
       self.removePoint( point );
     } );
+
+    // @private
+    this.updateFitBound = this.curve.updateFit.bind( this.curve );
   }
 
   curveFitting.register( 'CurveFittingModel', CurveFittingModel );
@@ -90,6 +93,7 @@ define( function( require ) {
       this.points.reset();
       this.curve.reset();
     },
+    
     /**
      * Adds a point
      *
@@ -100,9 +104,9 @@ define( function( require ) {
       var self = this;
 
       // These are unlinked in removePoint
-      point.positionProperty.link( function() {self.curve.updateFit();} );
-      point.isInsideGraphProperty.link( function() {self.curve.updateFit();} );
-      point.deltaProperty.link( function() {self.curve.updateFit();} );
+      point.positionProperty.link( this.updateFitBound );
+      point.isInsideGraphProperty.link( this.updateFitBound );
+      point.deltaProperty.link( this.updateFitBound );
 
       // remove points when they have returned to the bucket
       point.returnToOriginEmitter.addListener( function removePointListener() {
@@ -110,6 +114,7 @@ define( function( require ) {
         point.returnToOriginEmitter.removeListener( removePointListener );
       } );
     },
+
     /**
      * Removes a point
      *
@@ -117,11 +122,12 @@ define( function( require ) {
      * @private
      */
     removePoint: function( point ) {
-      var self = this;
 
-      point.positionProperty.unlink( function() {self.curve.updateFit();} );
-      point.isInsideGraphProperty.unlink( function() {self.curve.updateFit();} );
-      point.deltaProperty.unlink( function() {self.curve.updateFit();} );
+      // These were linked in addPoint
+      point.positionProperty.unlink( this.updateFitBound );
+      point.isInsideGraphProperty.unlink( this.updateFitBound );
+      point.deltaProperty.unlink( this.updateFitBound );
+
       this.curve.updateFit();
     }
   } );
