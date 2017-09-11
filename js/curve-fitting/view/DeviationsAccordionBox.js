@@ -15,16 +15,16 @@ define( function( require ) {
   var BarometerX2Node = require( 'CURVE_FITTING/curve-fitting/view/BarometerX2Node' );
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var inherit = require( 'PHET_CORE/inherit' );
   var HBox = require( 'SCENERY/nodes/HBox' );
+  var inherit = require( 'PHET_CORE/inherit' );
   var Panel = require( 'SUN/Panel' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var ReducedChiSquaredStatisticDialog = require( 'CURVE_FITTING/curve-fitting/view/ReducedChiSquaredStatisticDialog' );
   var RichText = require( 'SCENERY/nodes/RichText' );
   var Text = require( 'SCENERY/nodes/Text' );
   var TextPushButton = require( 'SUN/buttons/TextPushButton' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
   var Util = require( 'DOT/Util' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
 
   // strings
   var deviationsString = require( 'string!CURVE_FITTING/deviations' );
@@ -42,9 +42,9 @@ define( function( require ) {
   };
 
   // strings
-  var symbolRString = require( 'string!CURVE_FITTING/symbol.r' );
   var symbolChiString = require( 'string!CURVE_FITTING/symbol.chi' );
   var symbolQuestionMarkString = require( 'string!CURVE_FITTING/symbol.questionMark' );
+  var symbolRString = require( 'string!CURVE_FITTING/symbol.r' );
 
   /**
    * @param {Property.<boolean>} expandedProperty - is this panel expanded?

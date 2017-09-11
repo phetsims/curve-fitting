@@ -27,9 +27,9 @@ define( function( require ) {
   var numberOfDataPointsString = require( 'string!CURVE_FITTING/numberOfDataPoints' );
   var numberOfParameters1String = require( 'string!CURVE_FITTING/numberOfParameters1' );
   var numberOfParameters2String = require( 'string!CURVE_FITTING/numberOfParameters2' );
-  var theReducedChiSquaredStatisticIsString = require( 'string!CURVE_FITTING/theReducedChiSquaredStatisticIs' );
   var symbolFString = require( 'string!CURVE_FITTING/symbol.f' );
   var symbolNString = require( 'string!CURVE_FITTING/symbol.N' );
+  var theReducedChiSquaredStatisticIsString = require( 'string!CURVE_FITTING/theReducedChiSquaredStatisticIs' );
 
   // constants
   var DIALOG_FONT_SIZE = 14;

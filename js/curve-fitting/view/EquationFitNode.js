@@ -15,8 +15,8 @@ define( function( require ) {
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var RichText = require( 'SCENERY/nodes/RichText' );
   var Text = require( 'SCENERY/nodes/Text' );
 
@@ -31,13 +31,13 @@ define( function( require ) {
   };
 
   // strings
-  var symbolPlusString = require( 'string!CURVE_FITTING/symbol.plus' );
-  var symbolYString = require( 'string!CURVE_FITTING/symbol.y' );
-  var symbolXString = require( 'string!CURVE_FITTING/symbol.x' );
   var symbolAString = require( 'string!CURVE_FITTING/symbol.a' );
   var symbolBString = require( 'string!CURVE_FITTING/symbol.b' );
   var symbolCString = require( 'string!CURVE_FITTING/symbol.c' );
   var symbolDString = require( 'string!CURVE_FITTING/symbol.d' );
+  var symbolPlusString = require( 'string!CURVE_FITTING/symbol.plus' );
+  var symbolXString = require( 'string!CURVE_FITTING/symbol.x' );
+  var symbolYString = require( 'string!CURVE_FITTING/symbol.y' );
 
   /**
    * @param {Property.<number>} orderFitProperty parameter to track.

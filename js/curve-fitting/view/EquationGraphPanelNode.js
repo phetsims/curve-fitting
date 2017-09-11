@@ -16,20 +16,20 @@ define( function( require ) {
   var ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Panel = require( 'SUN/Panel' );
-  var Text = require( 'SCENERY/nodes/Text' );
+  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var RichText = require( 'SCENERY/nodes/RichText' );
+  var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
 
   // strings
   var equationString = require( 'string!CURVE_FITTING/equation' );
-  var symbolYString = require( 'string!CURVE_FITTING/symbol.y' );
-  var symbolXString = require( 'string!CURVE_FITTING/symbol.x' );
   var symbolAString = require( 'string!CURVE_FITTING/symbol.a' );
   var symbolBString = require( 'string!CURVE_FITTING/symbol.b' );
   var symbolCString = require( 'string!CURVE_FITTING/symbol.c' );
   var symbolDString = require( 'string!CURVE_FITTING/symbol.d' );
+  var symbolXString = require( 'string!CURVE_FITTING/symbol.x' );
+  var symbolYString = require( 'string!CURVE_FITTING/symbol.y' );
 
   // constants
   var BUTTON_LENGTH = 16;

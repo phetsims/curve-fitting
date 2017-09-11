@@ -13,8 +13,8 @@ define( function( require ) {
   var CurveFittingModel = require( 'CURVE_FITTING/curve-fitting/model/CurveFittingModel' );
   var CurveFittingScreenView = require( 'CURVE_FITTING/curve-fitting/view/CurveFittingScreenView' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Screen = require( 'JOIST/Screen' );
   var Property = require( 'AXON/Property' );
+  var Screen = require( 'JOIST/Screen' );
 
   /**
    * @constructor
