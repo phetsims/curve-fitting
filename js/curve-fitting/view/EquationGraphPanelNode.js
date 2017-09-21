@@ -1,4 +1,4 @@
-// Copyright 2015-2016, University of Colorado Boulder
+// Copyright 2015-2017, University of Colorado Boulder
 
 //TODO rename, this is an accordion box, not a panel
 //TODO this type combines things that should be separate

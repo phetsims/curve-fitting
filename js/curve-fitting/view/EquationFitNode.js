@@ -1,4 +1,4 @@
-// Copyright 2015-2016, University of Colorado Boulder
+// Copyright 2015-2017, University of Colorado Boulder
 
 //TODO rename, this is the controls for adjustable fit
 //TODO spacing of equation looks awful
