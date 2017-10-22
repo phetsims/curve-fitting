@@ -246,7 +246,12 @@ define( function( require ) {
       }
     };
     var valueTextLabelHandle = valuesVisibleProperty.linkAttribute( valueTextLabel, 'visible' );
-    var updateValueTextHandle = valuesVisibleProperty.onValue( true, updateValueText );
+    var updateValueTextWhenVisible = function( valuesVisible ) {
+      if ( valuesVisible ) {
+        updateValueText();
+      }
+    };
+    valuesVisibleProperty.link( updateValueTextWhenVisible );
     point.positionProperty.link( updateValueText );
 
     /**
@@ -312,7 +317,7 @@ define( function( require ) {
       residualsVisibleProperty.unlink( updateResiduals );
       valuesVisibleProperty.unlinkAttribute( deltaTextLabelHandle );
       valuesVisibleProperty.unlinkAttribute( valueTextLabelHandle );
-      valuesVisibleProperty.unlink( updateValueTextHandle );
+      valuesVisibleProperty.unlink( updateValueTextWhenVisible );
       valuesVisibleProperty.unlink( updateDeltaTextHandle );
     };
   }
