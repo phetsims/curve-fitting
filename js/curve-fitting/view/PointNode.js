@@ -262,7 +262,12 @@ define( function( require ) {
         deltaTextLabel.setText( StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( point.deltaProperty.value, 1 ) ) );
       }
     };
-    var updateDeltaTextHandle = valuesVisibleProperty.onValue( true, updateDeltaText );
+    var updateDeltaTextIfVisible = function( valuesVisible ) {
+      if ( valuesVisible ) {
+        updateDeltaText();
+      }
+    };
+    valuesVisibleProperty.link( updateDeltaTextIfVisible );
     var deltaTextLabelHandle = valuesVisibleProperty.linkAttribute( deltaTextLabel, 'visible' );
     point.deltaProperty.lazyLink( updateDeltaText );
 
@@ -318,7 +323,7 @@ define( function( require ) {
       valuesVisibleProperty.unlinkAttribute( deltaTextLabelHandle );
       valuesVisibleProperty.unlinkAttribute( valueTextLabelHandle );
       valuesVisibleProperty.unlink( updateValueTextWhenVisible );
-      valuesVisibleProperty.unlink( updateDeltaTextHandle );
+      valuesVisibleProperty.unlink( updateDeltaTextIfVisible );
     };
   }
 
