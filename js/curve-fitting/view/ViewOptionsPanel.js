@@ -31,7 +31,7 @@ define( function( require ) {
    */
   function ViewOptionsPanel( curveVisibleProperty, residualsVisibleProperty, valuesVisibleProperty, options ) {
 
-    // check boxes
+    // checkboxes
     var curveCheckbox = createCheckbox( curveVisibleProperty, curveString );
     var residualsCheckbox = createCheckbox( residualsVisibleProperty, residualsString );
     var valuesCheckbox = createCheckbox( valuesVisibleProperty, valuesString );
@@ -48,13 +48,13 @@ define( function( require ) {
 
     Panel.call( this, contentNode, options );
 
-    // Saves state of residualsVisibleProperty while the residuals check box is disabled.
+    // Saves state of residualsVisibleProperty while the residuals checkbox is disabled.
     var wereResidualsVisible = residualsVisibleProperty.get();
 
     // Visibility of the curve affects other controls.
     curveVisibleProperty.link( function( isCurveVisible ) {
 
-      // Enable residuals check box when curve is checked.
+      // Enable residuals checkbox when curve is checked.
       residualsCheckbox.enabled = isCurveVisible;
 
       if ( isCurveVisible ) {
@@ -74,7 +74,7 @@ define( function( require ) {
   curveFitting.register( 'ViewOptionsPanel', ViewOptionsPanel );
 
   /**
-   * Creates a check box for this panel.
+   * Creates a checkbox for this panel.
    *
    * @param {Property} property
    * @param {string} label
