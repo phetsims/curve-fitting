@@ -9,7 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CheckBox = require( 'SUN/CheckBox' );
+  var Checkbox = require( 'SUN/Checkbox' );
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -32,18 +32,18 @@ define( function( require ) {
   function ViewOptionsPanel( curveVisibleProperty, residualsVisibleProperty, valuesVisibleProperty, options ) {
 
     // check boxes
-    var curveCheckBox = createCheckBox( curveVisibleProperty, curveString );
-    var residualsCheckBox = createCheckBox( residualsVisibleProperty, residualsString );
-    var valuesCheckBox = createCheckBox( valuesVisibleProperty, valuesString );
+    var curveCheckbox = createCheckbox( curveVisibleProperty, curveString );
+    var residualsCheckbox = createCheckbox( residualsVisibleProperty, residualsString );
+    var valuesCheckbox = createCheckbox( valuesVisibleProperty, valuesString );
 
     // vertical layout
     var contentNode = new VBox( {
       spacing: 5,
       align: 'left',
       children: [
-        curveCheckBox,
-        residualsCheckBox,
-        valuesCheckBox ]
+        curveCheckbox,
+        residualsCheckbox,
+        valuesCheckbox ]
     } );
 
     Panel.call( this, contentNode, options );
@@ -55,7 +55,7 @@ define( function( require ) {
     curveVisibleProperty.link( function( isCurveVisible ) {
 
       // Enable residuals check box when curve is checked.
-      residualsCheckBox.enabled = isCurveVisible;
+      residualsCheckbox.enabled = isCurveVisible;
 
       if ( isCurveVisible ) {
 
@@ -78,10 +78,10 @@ define( function( require ) {
    *
    * @param {Property} property
    * @param {string} label
-   * @returns {CheckBox}
+   * @returns {Checkbox}
    */
-  var createCheckBox = function( property, label ) {
-    return new CheckBox( new Text( label, CurveFittingConstants.CONTROL_TEXT_OPTIONS ), property,
+  var createCheckbox = function( property, label ) {
+    return new Checkbox( new Text( label, CurveFittingConstants.CONTROL_TEXT_OPTIONS ), property,
       CurveFittingConstants.CHECK_BOX_OPTIONS );
   };
 
