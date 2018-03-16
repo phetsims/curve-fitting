@@ -15,6 +15,7 @@ define( function( require ) {
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var MathSymbols = require( 'SCENERY_PHET/MathSymbols' );
   var Node = require( 'SCENERY/nodes/Node' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var RichText = require( 'SCENERY/nodes/RichText' );
@@ -35,7 +36,6 @@ define( function( require ) {
   var symbolBString = require( 'string!CURVE_FITTING/symbol.b' );
   var symbolCString = require( 'string!CURVE_FITTING/symbol.c' );
   var symbolDString = require( 'string!CURVE_FITTING/symbol.d' );
-  var symbolPlusString = require( 'string!CURVE_FITTING/symbol.plus' );
   var symbolXString = require( 'string!CURVE_FITTING/symbol.x' );
   var symbolYString = require( 'string!CURVE_FITTING/symbol.y' );
 
@@ -51,24 +51,24 @@ define( function( require ) {
 
     for ( var i = 1; i < CurveFittingConstants.MAX_ORDER_OF_FIT + 1; i++ ) {
       boxNode = new HBox( { align: 'bottom' } );
-      var yNode = new Text( symbolYString + ' =', TEXT_OPTIONS );
+      var yNode = new Text( symbolYString + ' ' + MathSymbols.EQUAL_TO, TEXT_OPTIONS );
       boxNode.addChild( yNode );
 
       // first order of fit
       if ( i > 0 ) {
-        boxNode.insertChild( 1, new Text( symbolPlusString + ' ', TEXT_OPTIONS ) );
+        boxNode.insertChild( 1, new Text( MathSymbols.PLUS + ' ', TEXT_OPTIONS ) );
         boxNode.insertChild( 1, new Text( symbolXString, TEXT_OPTIONS ) );
         boxNode.insertChild( 1, new Text( symbolCString, PARAMETER_TEXT_OPTIONS ) );
 
         // second order of fit
         if ( i > 1 ) {
-          boxNode.insertChild( 1, new Text( symbolPlusString + ' ', TEXT_OPTIONS ) );
+          boxNode.insertChild( 1, new Text( MathSymbols.PLUS + ' ', TEXT_OPTIONS ) );
           boxNode.insertChild( 1, new RichText( symbolXString + '<sup>2</sup>', TEXT_OPTIONS ) );
           boxNode.insertChild( 1, new Text( symbolBString, PARAMETER_TEXT_OPTIONS ) );
 
           // third order of fit
           if ( i > 2 ) {
-            boxNode.insertChild( 1, new Text( symbolPlusString + ' ', TEXT_OPTIONS ) );
+            boxNode.insertChild( 1, new Text( MathSymbols.PLUS + ' ', TEXT_OPTIONS ) );
             boxNode.insertChild( 1, new RichText( symbolXString + '<sup>3</sup>', TEXT_OPTIONS ) );
             boxNode.insertChild( 1, new Text( symbolAString, PARAMETER_TEXT_OPTIONS ) );
           }

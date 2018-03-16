@@ -16,6 +16,7 @@ define( function( require ) {
   var ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var MathSymbols = require( 'SCENERY_PHET/MathSymbols' );
   var Panel = require( 'SUN/Panel' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var RichText = require( 'SCENERY/nodes/RichText' );
@@ -165,9 +166,6 @@ define( function( require ) {
       // 0.00111 -> 0.001
       // 0.00011 -> 0.000
 
-      var plusString = '\u002B'; // we want a large + sign
-      var minusString = '\u2212';
-
       // number = mantissa times 10^(exponent) where the mantissa is between 1 and 10 (or -1 to -10)
       var exponent = Math.floor( Util.log10( Math.abs( number ) ) );
 
@@ -183,7 +181,7 @@ define( function( require ) {
       }
       var roundedNumber = Util.toFixedNumber( number, decimalPlaces );
       var numberToString = Util.toFixed( number, decimalPlaces );
-      var signToString = (roundedNumber >= 0) ? plusString : minusString; // N.B.
+      var signToString = (roundedNumber >= 0) ? MathSymbols.PLUS : MathSymbols.MINUS; // N.B.
       var absoluteNumberToString = Util.toFixed( Math.abs( number ), decimalPlaces ); // N.B.
       var isStringZero = (numberToString === Util.toFixed( 0, decimalPlaces ));
 
