@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  var Dialog = require( 'JOIST/Dialog' );
+  var Dialog = require( 'SUN/Dialog' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var HStrut = require( 'SCENERY/nodes/HStrut' );
   var Image = require( 'SCENERY/nodes/Image' );
