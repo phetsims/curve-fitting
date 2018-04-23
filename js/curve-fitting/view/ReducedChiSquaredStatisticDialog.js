@@ -78,6 +78,7 @@ define( function( require ) {
 
     Dialog.call( this, contentNode, {
       modal: true,
+      hasCloseButton: true
     } );
   }
 
