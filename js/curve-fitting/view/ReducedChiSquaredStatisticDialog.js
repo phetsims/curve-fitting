@@ -76,10 +76,7 @@ define( function( require ) {
       ]
     } );
 
-    Dialog.call( this, contentNode, {
-      modal: true,
-      hasCloseButton: true
-    } );
+    Dialog.call( this, contentNode );
   }
 
   curveFitting.register( 'ReducedChiSquaredStatisticDialog', ReducedChiSquaredStatisticDialog );
