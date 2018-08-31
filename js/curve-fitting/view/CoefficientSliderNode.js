@@ -1,4 +1,4 @@
-// Copyright 2015-2017, University of Colorado Boulder
+// Copyright 2018, University of Colorado Boulder
 
 /**
  * Node with single parameter slider in 'Curve Fitting' simulation.
@@ -12,11 +12,11 @@ define( function( require ) {
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var Dimension2 = require( 'DOT/Dimension2' );
-  var HSlider = require( 'SUN/HSlider' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Text = require( 'SCENERY/nodes/Text' );
   var VBox = require( 'SCENERY/nodes/VBox' );
+  var VSlider = require( 'SUN/VSlider' );
 
   // constants
   var LABEL_OPTIONS = {
@@ -46,10 +46,7 @@ define( function( require ) {
       },
       options );
 
-    var sliderNode = new HSlider( property, range, options );
-
-    // make vertical slider
-    sliderNode.rotate( -Math.PI / 2 );
+    var sliderNode = new VSlider( property, range, options );
 
     // add central tick
     sliderNode.addMinorTick( 0, '' );
