@@ -15,12 +15,12 @@ define( function( require ) {
   var Line = require( 'SCENERY/nodes/Line' );
   var Node = require( 'SCENERY/nodes/Node' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var RangeWithValue = require( 'DOT/RangeWithValue' );
+  var Range = require( 'DOT/Range' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
 
   // constants
-  var RANGE = new RangeWithValue( 0, 1 );
+  var RANGE = new Range( 0, 1 );
   var LINE_OPTIONS = {
     lineWidth: 1.5,
     stroke: 'black'
