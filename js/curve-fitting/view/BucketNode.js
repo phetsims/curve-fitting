@@ -1,5 +1,6 @@
 // Copyright 2015-2017, University of Colorado Boulder
 
+//TODO #121 determine if this can be replaced with SCENERY_PHET/BucketFront and SCENERY_PHET/BucketHole
 /**
  * Bucket node with points in 'Curve Fitting' simulation.
  *
