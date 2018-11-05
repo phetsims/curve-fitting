@@ -24,7 +24,8 @@ define( function( require ) {
     MAX_ORDER_OF_FIT: 3,
 
     // barometer
-    BAROMETER_HEIGHT: 270,
+    BAROMETER_BAR_WIDTH: 12,
+    BAROMETER_AXIS_HEIGHT: 270,
     BAROMETER_TICK_WIDTH: 15,
 
     // colors

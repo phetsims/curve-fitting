@@ -1,14 +1,16 @@
 // Copyright 2015-2017, University of Colorado Boulder
 
 /**
- * Barometer for r^2 deviation.
+ * Barometer for r^2 deviation. Origin is at the origin of the y axis.
  *
  * @author Andrey Zelenkov (Mlearner)
+ * @author Chris Malley (PixelZoom, Inc.)
  */
 define( function( require ) {
   'use strict';
 
   // modules
+  var Circle = require( 'SCENERY/nodes/Circle' );
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -36,14 +38,12 @@ define( function( require ) {
   function BarometerR2Node( rSquaredProperty, curveVisibleProperty,  options ) {
 
     // value shown on the barometer
-    var valueRectNode = new Rectangle(
-      -2 * CurveFittingConstants.BAROMETER_TICK_WIDTH / 3 - 0.5, 0,
-      2 * CurveFittingConstants.BAROMETER_TICK_WIDTH / 3, 0, {
-        fill: CurveFittingConstants.BLUE_COLOR
-      } );
+    var valueRectNode = new Rectangle( 0, 0, CurveFittingConstants.BAROMETER_BAR_WIDTH, 0, {
+      fill: CurveFittingConstants.BLUE_COLOR
+    } );
     valueRectNode.rotation = Math.PI;
 
-    var axis = new Line( 0, 0, 0, -CurveFittingConstants.BAROMETER_HEIGHT, LINE_OPTIONS );
+    var axis = new Line( 0, 0, 0, -CurveFittingConstants.BAROMETER_AXIS_HEIGHT, LINE_OPTIONS );
 
     Node.call( this, _.extend( {}, options, {
       children: [ valueRectNode, axis ]
@@ -51,9 +51,14 @@ define( function( require ) {
 
     this.addTicks( [ 0, 0.25, 0.5, 0.75, 1 ] );
 
+    // put a red dot at the origin
+    if ( phet.chipper.queryParameters.dev ) {
+      this.addChild( new Circle( 3, { fill: 'red' } ) );
+    }
+
     // no need to unlink, present for the lifetime of the sim
     rSquaredProperty.link( function( rSquared ) {
-      valueRectNode.setRectHeight( ( RANGE.min + rSquared / RANGE.max ) * CurveFittingConstants.BAROMETER_HEIGHT );
+      valueRectNode.setRectHeight( ( RANGE.min + rSquared / RANGE.max ) * CurveFittingConstants.BAROMETER_AXIS_HEIGHT );
     } );
     curveVisibleProperty.linkAttribute( valueRectNode, 'visible');
   }
@@ -62,29 +67,36 @@ define( function( require ) {
 
   return inherit( Node, BarometerR2Node, {
 
+    //TODO very similar to BarometerX2Node
     /**
      * Adds a tick.
-     *
      * @param {number} value
+     * @private
      */
     addTick: function( value ) {
 
-      // expression "0.5 + ( CurveFittingConstants.BAROMETER_HEIGHT - 1 )" need to prevent bad graph view in corners
-      var y = 0.5 + ( CurveFittingConstants.BAROMETER_HEIGHT - 1 ) * ( value - RANGE.min ) / ( RANGE.max - RANGE.min );
+      //TODO document this better, it's not clear why this is needed, duplicated in BarometerX2Node
+      // expression "0.5 + ( CurveFittingConstants.BAROMETER_AXIS_HEIGHT - 1 )" need to prevent bad graph view in corners
+      var y = 0.5 + ( CurveFittingConstants.BAROMETER_AXIS_HEIGHT - 1 ) * ( value - RANGE.min ) / ( RANGE.max - RANGE.min );
 
-      // label
-      var label = new Text( value.toString(), { font: TICK_FONT, centerY: -y } );
-      label.centerX = -label.width / 2 - 3;
+      // tick line
+      var line = new Line( -CurveFittingConstants.BAROMETER_TICK_WIDTH, -y, 0, -y, LINE_OPTIONS );
+      this.addChild( line );
+
+      // tick label
+      var label = new Text( value.toString(), {
+        font: TICK_FONT,
+        right: line.left - 2,
+        centerY: line.centerY
+      } );
       this.addChild( label );
-
-      // tick
-      this.addChild( new Line( -0.5, -y, CurveFittingConstants.BAROMETER_TICK_WIDTH, -y, LINE_OPTIONS ) );
     },
 
+    //TODO entirely duplicated in BarometerX2Node
     /**
      * Adds multiple ticks.
-     *
      * @param {number[]} values
+     * @private
      */
     addTicks: function( values ) {
       var self = this;

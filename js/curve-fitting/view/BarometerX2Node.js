@@ -33,7 +33,7 @@ define( function( require ) {
   var MIN_VALUE = RANGE.min;
   var MAX_VALUE = 1 + Math.log( RANGE.max );
   var HEAD_HEIGHT = 12;
-  var HEIGHT = CurveFittingConstants.BAROMETER_HEIGHT - HEAD_HEIGHT - OFFSET;
+  var BAR_HEIGHT = CurveFittingConstants.BAROMETER_AXIS_HEIGHT - HEAD_HEIGHT - OFFSET;
   var LINE_OPTIONS = {
     lineWidth: 1.5,
     stroke: 'black'
@@ -42,6 +42,7 @@ define( function( require ) {
   // arrays necessary for calculating chi value bounds while getting barometer color
   var LOWER_LIMIT_ARRAY = [ 0.004, 0.052, 0.118, 0.178, 0.23, 0.273, 0.31, 0.342, 0.369, 0.394, 0.545, 0.695, 0.779, 0.927 ];
   var UPPER_LIMIT_ARRAY = [ 3.8, 3, 2.6, 2.37, 2.21, 2.1, 2.01, 1.94, 1.88, 1.83, 1.57, 1.35, 1.24, 1.07 ];
+
   /**
    * @param {Points} points
    * @param {Property.<number>} chiSquaredProperty - Property that represents x squared deviation.
@@ -50,13 +51,17 @@ define( function( require ) {
    * @constructor
    */
   function BarometerX2Node( points, chiSquaredProperty, curveVisibleProperty,  options ) {
-    var valueRectNode = new Rectangle( -2 * CurveFittingConstants.BAROMETER_TICK_WIDTH / 3 - 0.5, 0, 2 * CurveFittingConstants.BAROMETER_TICK_WIDTH / 3, 0, { fill: CurveFittingConstants.BLUE_COLOR } );
+
+    var valueRectNode = new Rectangle( 0, 0, CurveFittingConstants.BAROMETER_BAR_WIDTH, 0, {
+      fill: 'black' // to be computed by getChiFillFromChiValue
+    } );
     valueRectNode.rotation = Math.PI;
 
+    //TODO why are this._contentNode, OFFSET, and VStrut needed? This smells like a workaround for something.
     this._content = new Node( {
       children: [
         valueRectNode,
-        new ArrowNode( 0, 0, 0, -HEIGHT - HEAD_HEIGHT * 1.5, {
+        new ArrowNode( 0, 0, 0, -BAR_HEIGHT - HEAD_HEIGHT * 1.5, {
           headHeight: HEAD_HEIGHT,
           headWidth: 8,
           tailWidth: 0.5
@@ -172,16 +177,18 @@ define( function( require ) {
    */
   function valueToYPosition( value ) {
     if ( value <= 1 ) {
-      // expression "0.5 + ( HEIGHT - 1 )" need to prevent bad graph view in corners
-      return 0.5 + ( HEIGHT - 1 ) * ( MIN_VALUE + ( value - MIN_VALUE ) / ( MAX_VALUE - MIN_VALUE ));
+      //TODO document this better, it's not clear why this is needed, duplicated in BarometerR2Node
+      // expression "0.5 + ( BAR_HEIGHT - 1 )" need to prevent bad graph view in corners
+      return 0.5 + ( BAR_HEIGHT - 1 ) * ( MIN_VALUE + ( value - MIN_VALUE ) / ( MAX_VALUE - MIN_VALUE ));
     }
     else {
-      return Math.min( HEIGHT, HEIGHT * ( MIN_VALUE + 1 + Math.log( value - MIN_VALUE )) / ( MAX_VALUE - MIN_VALUE ) );
+      return Math.min( BAR_HEIGHT, BAR_HEIGHT * ( MIN_VALUE + 1 + Math.log( value - MIN_VALUE )) / ( MAX_VALUE - MIN_VALUE ) );
     }
   }
 
   return inherit( VBox, BarometerX2Node, {
 
+    //TODO very similar to BarometerR2Node, but adds children to this._content
     /**
      * Adds a tick.
      *
@@ -191,22 +198,20 @@ define( function( require ) {
 
       var y = valueToYPosition( value );
 
-      // label
-      var label = new Text( value.toString(), { font: TICK_FONT, centerY: -y } );
-      label.centerX = -label.width / 2 - 3;
-      this._content.addChild( label );
+      // tick line
+      var line = new Line( -CurveFittingConstants.BAROMETER_TICK_WIDTH, -y, 0, -y, LINE_OPTIONS );
+      this._content.addChild( line );
 
-      // tick
-      var tickWidth;
-      if ( value === 0 ) {
-        tickWidth = CurveFittingConstants.BAROMETER_TICK_WIDTH;
-      }
-      else {
-        tickWidth = CurveFittingConstants.BAROMETER_TICK_WIDTH / 2;
-      }
-      this._content.addChild( new Line( -0.5, -y, tickWidth, -y, LINE_OPTIONS ) );
+      // tick label
+      var label = new Text( value.toString(), {
+        font: TICK_FONT,
+        right: line.left - 2,
+        centerY: line.centerY
+      } );
+      this._content.addChild( label );
     },
 
+    //TODO entirely duplicated in BarometerR2Node
     /**
      * Adds multiple ticks.
      *
