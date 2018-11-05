@@ -155,11 +155,5 @@ define( function( require ) {
       CurveFittingConstants.RADIO_BUTTON_OPTIONS );
   };
 
-
-  /**
-   * Create sliders
-   * @returns {CoefficientSliderNode}
-   */
-
   return inherit( Panel, FitPanel );
 } );
