@@ -16,13 +16,13 @@ define( function( require ) {
   var curveFitting = require( 'CURVE_FITTING/curveFitting' );
   var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   var HBox = require( 'SCENERY/nodes/HBox' );
+  var InfoButton = require( 'SCENERY_PHET/buttons/InfoButton' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Panel = require( 'SUN/Panel' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var ReducedChiSquaredStatisticDialog = require( 'CURVE_FITTING/curve-fitting/view/ReducedChiSquaredStatisticDialog' );
   var RichText = require( 'SCENERY/nodes/RichText' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var TextPushButton = require( 'SUN/buttons/TextPushButton' );
   var Util = require( 'DOT/Util' );
   var VBox = require( 'SCENERY/nodes/VBox' );
 
@@ -43,7 +43,6 @@ define( function( require ) {
 
   // strings
   var symbolChiString = require( 'string!CURVE_FITTING/symbol.chi' );
-  var symbolQuestionMarkString = require( 'string!CURVE_FITTING/symbol.questionMark' );
   var symbolRString = require( 'string!CURVE_FITTING/symbol.r' );
 
   /**
@@ -83,16 +82,15 @@ define( function( require ) {
     var dialog = null;
 
     // help button
-    var helpButton = new TextPushButton( symbolQuestionMarkString, {
+    var helpButton = new InfoButton( {
       listener: function() {
         if ( !dialog ) {
           dialog = new ReducedChiSquaredStatisticDialog();
         }
         dialog.show();
       },
-      font: TEXT_FONT,
       baseColor: 'rgb( 204, 204, 204 )',
-      maxWidth: 40,
+      maxWidth: 30,
       touchAreaXDilation: 8,
       touchAreaYDilation: 8
     } );
