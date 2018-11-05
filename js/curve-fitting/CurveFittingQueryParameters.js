@@ -13,16 +13,19 @@ define( function( require ) {
 
   var CurveFittingQueryParameters = window.QueryStringMachine.getAll( {
 
+    //TODO document
     snapToGrid: {
       type: 'boolean',
       defaultValue: false
     },
 
+    //TODO document
     animatedPoints: {
       type: 'boolean',
       defaultValue: false
     },
 
+    //TODO document
     debugLine: {
       type: 'boolean',
       defaultValue: false
