@@ -25,7 +25,6 @@ define( function( require ) {
   var ScreenView = require( 'JOIST/ScreenView' );
   var Vector2 = require( 'DOT/Vector2' );
 
-
   // constants
   var GRAPH_PADDING_LEFT_RIGHT = 15;
 
@@ -117,8 +116,7 @@ define( function( require ) {
       residualsVisibleProperty,
       valuesVisibleProperty,
       modelViewTransform
-      )
-    ;
+    );
 
     // create reset all button
     var resetAllButton = new ResetAllButton( {
