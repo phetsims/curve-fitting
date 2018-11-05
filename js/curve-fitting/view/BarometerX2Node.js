@@ -57,7 +57,7 @@ define( function( require ) {
     } );
     valueRectNode.rotation = Math.PI;
 
-    //TODO why are this._contentNode, OFFSET, and VStrut needed? This smells like a workaround for something.
+    //TODO #120 why are this._contentNode, OFFSET, and VStrut needed? This smells like a workaround for something.
     this._content = new Node( {
       children: [
         valueRectNode,
@@ -177,7 +177,7 @@ define( function( require ) {
    */
   function valueToYPosition( value ) {
     if ( value <= 1 ) {
-      //TODO document this better, it's not clear why this is needed, duplicated in BarometerR2Node
+      //TODO #120 document this better, it's not clear why this is needed, duplicated in BarometerR2Node
       // expression "0.5 + ( BAR_HEIGHT - 1 )" need to prevent bad graph view in corners
       return 0.5 + ( BAR_HEIGHT - 1 ) * ( MIN_VALUE + ( value - MIN_VALUE ) / ( MAX_VALUE - MIN_VALUE ));
     }
@@ -188,7 +188,7 @@ define( function( require ) {
 
   return inherit( VBox, BarometerX2Node, {
 
-    //TODO very similar to BarometerR2Node, but adds children to this._content
+    //TODO #120 very similar to BarometerR2Node, but adds children to this._content
     /**
      * Adds a tick.
      *
@@ -211,7 +211,7 @@ define( function( require ) {
       this._content.addChild( label );
     },
 
-    //TODO entirely duplicated in BarometerR2Node
+    //TODO #120 entirely duplicated in BarometerR2Node
     /**
      * Adds multiple ticks.
      *

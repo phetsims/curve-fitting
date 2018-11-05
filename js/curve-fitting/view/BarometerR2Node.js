@@ -67,7 +67,7 @@ define( function( require ) {
 
   return inherit( Node, BarometerR2Node, {
 
-    //TODO very similar to BarometerX2Node
+    //TODO #120 very similar to BarometerX2Node
     /**
      * Adds a tick.
      * @param {number} value
@@ -75,7 +75,7 @@ define( function( require ) {
      */
     addTick: function( value ) {
 
-      //TODO document this better, it's not clear why this is needed, duplicated in BarometerX2Node
+      //TODO #120 document this better, it's not clear why this is needed, duplicated in BarometerX2Node
       // expression "0.5 + ( CurveFittingConstants.BAROMETER_AXIS_HEIGHT - 1 )" need to prevent bad graph view in corners
       var y = 0.5 + ( CurveFittingConstants.BAROMETER_AXIS_HEIGHT - 1 ) * ( value - RANGE.min ) / ( RANGE.max - RANGE.min );
 
@@ -92,7 +92,7 @@ define( function( require ) {
       this.addChild( label );
     },
 
-    //TODO entirely duplicated in BarometerX2Node
+    //TODO #120 entirely duplicated in BarometerX2Node
     /**
      * Adds multiple ticks.
      * @param {number[]} values
