@@ -27,7 +27,6 @@ define( function( require ) {
     fill: CurveFittingConstants.BLUE_COLOR
   };
 
-
   /**
    * @param {Property.<number>} property parameter to track.
    * @param {Range} range - Possible range for property.
