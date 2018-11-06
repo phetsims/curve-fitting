@@ -10,29 +10,29 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var AccordionBox = require( 'SUN/AccordionBox' );
-  var BarometerR2Node = require( 'CURVE_FITTING/curve-fitting/view/BarometerR2Node' );
-  var BarometerX2Node = require( 'CURVE_FITTING/curve-fitting/view/BarometerX2Node' );
-  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
-  var InfoButton = require( 'SCENERY_PHET/buttons/InfoButton' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Panel = require( 'SUN/Panel' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var ReducedChiSquaredStatisticDialog = require( 'CURVE_FITTING/curve-fitting/view/ReducedChiSquaredStatisticDialog' );
-  var RichText = require( 'SCENERY/nodes/RichText' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var Util = require( 'DOT/Util' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
+  let AccordionBox = require( 'SUN/AccordionBox' );
+  let BarometerR2Node = require( 'CURVE_FITTING/curve-fitting/view/BarometerR2Node' );
+  let BarometerX2Node = require( 'CURVE_FITTING/curve-fitting/view/BarometerX2Node' );
+  let curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  let CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  let HBox = require( 'SCENERY/nodes/HBox' );
+  let InfoButton = require( 'SCENERY_PHET/buttons/InfoButton' );
+  let inherit = require( 'PHET_CORE/inherit' );
+  let Panel = require( 'SUN/Panel' );
+  let PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  let ReducedChiSquaredStatisticDialog = require( 'CURVE_FITTING/curve-fitting/view/ReducedChiSquaredStatisticDialog' );
+  let RichText = require( 'SCENERY/nodes/RichText' );
+  let Text = require( 'SCENERY/nodes/Text' );
+  let Util = require( 'DOT/Util' );
+  let VBox = require( 'SCENERY/nodes/VBox' );
 
   // strings
-  var deviationsString = require( 'string!CURVE_FITTING/deviations' );
+  let deviationsString = require( 'string!CURVE_FITTING/deviations' );
 
   // constants
-  var TEXT_FONT = new PhetFont( 12 ); //TODO use CurveFittingConstants
-  var TEXT_PANEL_FONT = new PhetFont( 10 ); //TODO use CurveFittingConstants
-  var VALUE_PANEL_OPTIONS = {
+  let TEXT_FONT = new PhetFont( 12 ); //TODO use CurveFittingConstants
+  let TEXT_PANEL_FONT = new PhetFont( 10 ); //TODO use CurveFittingConstants
+  let VALUE_PANEL_OPTIONS = {
     fill: 'white',
     cornerRadius: 4,
     xMargin: 4,
@@ -42,8 +42,8 @@ define( function( require ) {
   };
 
   // strings
-  var symbolChiString = require( 'string!CURVE_FITTING/symbol.chi' );
-  var symbolRString = require( 'string!CURVE_FITTING/symbol.r' );
+  let symbolChiString = require( 'string!CURVE_FITTING/symbol.chi' );
+  let symbolRString = require( 'string!CURVE_FITTING/symbol.r' );
 
   /**
    * @param {Property.<boolean>} expandedProperty - is this panel expanded?
@@ -73,17 +73,17 @@ define( function( require ) {
     }, options );
 
     // X^2 barometer
-    var barometerX2 = new BarometerX2Node( points, chiSquaredProperty, curveVisibleProperty );
+    let barometerX2 = new BarometerX2Node( points, chiSquaredProperty, curveVisibleProperty );
 
     // r^2 barometer
-    var barometerR2 = new BarometerR2Node( rSquaredProperty, curveVisibleProperty );
+    let barometerR2 = new BarometerR2Node( rSquaredProperty, curveVisibleProperty );
 
     // informational dialog, created lazily because Dialog requires sim bounds during construction
-    var dialog = null;
+    let dialog = null;
 
     // help button
-    var helpButton = new InfoButton( {
-      listener: function() {
+    let helpButton = new InfoButton( {
+      listener: () => {
         if ( !dialog ) {
           dialog = new ReducedChiSquaredStatisticDialog();
         }
@@ -96,20 +96,20 @@ define( function( require ) {
     } );
 
     // X^2 value
-    var chiSquaredValueNode = new Text( '0.00', {
+    let chiSquaredValueNode = new Text( '0.00', {
       font: TEXT_PANEL_FONT,
       textAlign: 'left',
       maxWidth: 22
     } );
 
     // r^2 value
-    var rSquaredValueNode = new Text( '0.00', {
+    let rSquaredValueNode = new Text( '0.00', {
       font: TEXT_PANEL_FONT,
       textAlign: 'left',
       maxWidth: 22
     } );
 
-    var valuesBox = new HBox( {
+    let valuesBox = new HBox( {
       spacing: 5,
       resize: false,
       children: [
@@ -124,12 +124,12 @@ define( function( require ) {
       ]
     } );
 
-    var barometersBox = new HBox( {
+    let barometersBox = new HBox( {
       children: [ barometerX2, barometerR2 ],
       spacing: 10
     } );
 
-    var content = new VBox( {
+    let content = new VBox( {
       align: 'left',
       spacing: 10,
       children: [
@@ -140,7 +140,7 @@ define( function( require ) {
     } );
 
     // unlink unnecessary, present for the lifetime of the sim
-    chiSquaredProperty.link( function( chiSquared ) {
+    chiSquaredProperty.link( chiSquared => {
 
       // If chiSquared is greater than 10 we have a bad fit so less precision is needed.
       // If chiSquared if greater than 100 we have a really bad fit and decimals are inconsequential.
@@ -148,7 +148,7 @@ define( function( require ) {
     } );
 
     // unlink unnecessary, present for the lifetime of the sim
-    rSquaredProperty.link( function( rSquared ) {
+    rSquaredProperty.link( rSquared => {
 
       // rSquared can only be between 0 and 1 so it will always need 2 decimal points.
       rSquaredValueNode.setText( formatNumber( rSquared, 2 ) );
