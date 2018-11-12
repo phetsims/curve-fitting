@@ -12,36 +12,36 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
-  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Line = require( 'SCENERY/nodes/Line' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var Range = require( 'DOT/Range' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
-  var VStrut = require( 'SCENERY/nodes/VStrut' );
+  let ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
+  let curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  let CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  let inherit = require( 'PHET_CORE/inherit' );
+  let Line = require( 'SCENERY/nodes/Line' );
+  let Node = require( 'SCENERY/nodes/Node' );
+  let PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  let Range = require( 'DOT/Range' );
+  let Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  let Text = require( 'SCENERY/nodes/Text' );
+  let VBox = require( 'SCENERY/nodes/VBox' );
+  let VStrut = require( 'SCENERY/nodes/VStrut' );
 
   // constants
-  var FONT_SIZE = 12;
-  var TICK_FONT = new PhetFont( FONT_SIZE );
-  var OFFSET = FONT_SIZE / 2;
-  var RANGE = new Range( 0, 100 );
-  var MIN_VALUE = RANGE.min;
-  var MAX_VALUE = 1 + Math.log( RANGE.max );
-  var HEAD_HEIGHT = 12;
-  var BAR_HEIGHT = CurveFittingConstants.BAROMETER_AXIS_HEIGHT - HEAD_HEIGHT - OFFSET;
-  var LINE_OPTIONS = {
+  let FONT_SIZE = 12;
+  let TICK_FONT = new PhetFont( FONT_SIZE );
+  let OFFSET = FONT_SIZE / 2;
+  let RANGE = new Range( 0, 100 );
+  let MIN_VALUE = RANGE.min;
+  let MAX_VALUE = 1 + Math.log( RANGE.max );
+  let HEAD_HEIGHT = 12;
+  let BAR_HEIGHT = CurveFittingConstants.BAROMETER_AXIS_HEIGHT - HEAD_HEIGHT - OFFSET;
+  let LINE_OPTIONS = {
     lineWidth: 1.5,
     stroke: 'black'
   };
 
   // arrays necessary for calculating chi value bounds while getting barometer color
-  var LOWER_LIMIT_ARRAY = [ 0.004, 0.052, 0.118, 0.178, 0.23, 0.273, 0.31, 0.342, 0.369, 0.394, 0.545, 0.695, 0.779, 0.927 ];
-  var UPPER_LIMIT_ARRAY = [ 3.8, 3, 2.6, 2.37, 2.21, 2.1, 2.01, 1.94, 1.88, 1.83, 1.57, 1.35, 1.24, 1.07 ];
+  let LOWER_LIMIT_ARRAY = [ 0.004, 0.052, 0.118, 0.178, 0.23, 0.273, 0.31, 0.342, 0.369, 0.394, 0.545, 0.695, 0.779, 0.927 ];
+  let UPPER_LIMIT_ARRAY = [ 3.8, 3, 2.6, 2.37, 2.21, 2.1, 2.01, 1.94, 1.88, 1.83, 1.57, 1.35, 1.24, 1.07 ];
 
   /**
    * @param {Points} points
@@ -52,7 +52,7 @@ define( function( require ) {
    */
   function BarometerX2Node( points, chiSquaredProperty, curveVisibleProperty,  options ) {
 
-    var valueRectNode = new Rectangle( 0, 0, CurveFittingConstants.BAROMETER_BAR_WIDTH, 0, {
+    let valueRectNode = new Rectangle( 0, 0, CurveFittingConstants.BAROMETER_BAR_WIDTH, 0, {
       fill: 'black' // to be computed by getChiFillFromChiValue
     } );
     valueRectNode.rotation = Math.PI;
@@ -79,7 +79,7 @@ define( function( require ) {
     this.addTicks( [ 0, 0.5, 1, 2, 3, 10, 30, 100 ] );
 
     // no need to unlink, present for the lifetime of the sim
-    chiSquaredProperty.link( function( chiSquared ) {
+    chiSquaredProperty.link( chiSquared => {
       valueRectNode.setRectHeight( valueToYPosition( chiSquared ) );
       valueRectNode.setFill( getChiFillFromChiValue( chiSquaredProperty.value, points.getNumberPointsOnGraph() ) );
     } );
@@ -98,15 +98,15 @@ define( function( require ) {
    */
   function getChiFillFromChiValue( chiValue, numberOfPoints ) {
 
-    var red;
-    var green;
-    var blue;
-    var lowerBound;
-    var upperBound;
-    var step1;
-    var step2;
-    var step3;
-    var step4;
+    let red;
+    let green;
+    let blue;
+    let lowerBound;
+    let upperBound;
+    let step1;
+    let step2;
+    let step3;
+    let step4;
 
     if ( numberOfPoints >= 1 && numberOfPoints < 11 ) {
       lowerBound = LOWER_LIMIT_ARRAY[ numberOfPoints - 1 ];
@@ -196,14 +196,14 @@ define( function( require ) {
      */
     addTick: function( value ) {
 
-      var y = valueToYPosition( value );
+      let y = valueToYPosition( value );
 
       // tick line
-      var line = new Line( -CurveFittingConstants.BAROMETER_TICK_WIDTH, -y, 0, -y, LINE_OPTIONS );
+      let line = new Line( -CurveFittingConstants.BAROMETER_TICK_WIDTH, -y, 0, -y, LINE_OPTIONS );
       this._content.addChild( line );
 
       // tick label
-      var label = new Text( value.toString(), {
+      let label = new Text( value.toString(), {
         font: TICK_FONT,
         right: line.left - 2,
         centerY: line.centerY
@@ -218,7 +218,7 @@ define( function( require ) {
      * @param {number[]} values
      */
     addTicks: function( values ) {
-      var self = this;
+      let self = this;
       values.forEach( function( value ) {
         self.addTick( value );
       } );
