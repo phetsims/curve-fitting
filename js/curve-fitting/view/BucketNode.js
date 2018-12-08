@@ -10,30 +10,30 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Bucket = require( 'PHETCOMMON/model/Bucket' );
-  var BucketFront = require( 'SCENERY_PHET/bucket/BucketFront' );
-  var BucketHole = require( 'SCENERY_PHET/bucket/BucketHole' );
-  var Circle = require( 'SCENERY/nodes/Circle' );
-  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var CurveFittingQueryParameters = require( 'CURVE_FITTING/curve-fitting/CurveFittingQueryParameters' );
-  var Dimension2 = require( 'DOT/Dimension2' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Point = require( 'CURVE_FITTING/curve-fitting/model/Point' );
-  var PointNode = require( 'CURVE_FITTING/curve-fitting/view/PointNode' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
-  var Util = require( 'DOT/Util' );
-  var Vector2 = require( 'DOT/Vector2' );
+  let Bucket = require( 'PHETCOMMON/model/Bucket' );
+  let BucketFront = require( 'SCENERY_PHET/bucket/BucketFront' );
+  let BucketHole = require( 'SCENERY_PHET/bucket/BucketHole' );
+  let Circle = require( 'SCENERY/nodes/Circle' );
+  let curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  let CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  let CurveFittingQueryParameters = require( 'CURVE_FITTING/curve-fitting/CurveFittingQueryParameters' );
+  let Dimension2 = require( 'DOT/Dimension2' );
+  let inherit = require( 'PHET_CORE/inherit' );
+  let Node = require( 'SCENERY/nodes/Node' );
+  let Point = require( 'CURVE_FITTING/curve-fitting/model/Point' );
+  let PointNode = require( 'CURVE_FITTING/curve-fitting/view/PointNode' );
+  let SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  let Util = require( 'DOT/Util' );
+  let Vector2 = require( 'DOT/Vector2' );
 
   // constants
-  var BUCKET_WIDTH = 5; // in model coordinates
-  var BUCKET_HEIGHT = BUCKET_WIDTH * 0.50;
+  let BUCKET_WIDTH = 5; // in model coordinates
+  let BUCKET_HEIGHT = BUCKET_WIDTH * 0.50;
   // bucket position is to the left and up from the bottom left corner of graph, in model coordinates
-  var BUCKET_POSITION_X = CurveFittingConstants.GRAPH_MODEL_BOUNDS.minX - 3;
-  var BUCKET_POSITION_Y = CurveFittingConstants.GRAPH_MODEL_BOUNDS.minY;
+  let BUCKET_POSITION_X = CurveFittingConstants.GRAPH_MODEL_BOUNDS.minX - 3;
+  let BUCKET_POSITION_Y = CurveFittingConstants.GRAPH_MODEL_BOUNDS.minY;
   // position of points
-  var POINT_POSITIONS = [
+  let POINT_POSITIONS = [
     { x: -33, y: 8 },
     { x: -25, y: 10 },
     { x: -25, y: -1 },
@@ -74,25 +74,67 @@ define( function( require ) {
   function BucketNode( points, residualsVisibleProperty, valuesVisibleProperty, modelViewTransform ) {
 
     Node.call( this );
-    var self = this;
 
     // model of the bucket
-    var bucket = new Bucket( {
+    let bucket = new Bucket( {
       position: new Vector2( BUCKET_POSITION_X, BUCKET_POSITION_Y ),
       size: new Dimension2( BUCKET_WIDTH, BUCKET_HEIGHT ),
       baseColor: 'rgb( 65, 63, 117 )'
     } );
 
     // front of the bucket
-    var bucketFrontNode = new BucketFront( bucket, modelViewTransform );
+    let bucketFrontNode = new BucketFront( bucket, modelViewTransform );
 
     // back of the bucket
-    var bucketHoleNode = new BucketHole( bucket, modelViewTransform );
+    let bucketHoleNode = new BucketHole( bucket, modelViewTransform );
+
+    /**
+     * create a drag handler that adds a point to the model
+     * @returns {SimpleDragHandler}
+     */
+    let createDragHandler = () => {
+      let point = null;
+      let dragHandler = new SimpleDragHandler( {
+
+        allowTouchSnag: true,
+
+        start: event => {
+
+          // create a model point
+          let viewPosition = this.globalToLocalPoint( event.pointer.point );
+          let modelPosition = modelViewTransform.viewToModelPosition( viewPosition );
+          point = new Point( {
+            position: modelPosition,
+            dragging: true
+          } );
+
+          // add the model point to the observable array in model curve
+          points.add( point );
+        },
+
+        translate: translationParams => {
+          point.positionProperty.value = point.positionProperty.value.plus( modelViewTransform.viewToModelDelta( translationParams.delta ) );
+        },
+
+        end: () => {
+          if ( CurveFittingQueryParameters.snapToGrid ) {
+            point.positionProperty.set( new Vector2(
+              Util.toFixedNumber( point.positionProperty.value.x, 1 ),
+              Util.toFixedNumber( point.positionProperty.value.y, 1 )
+            ) );
+          }
+          point.draggingProperty.set( false );
+          point = null;
+        }
+      } );
+
+      return dragHandler;
+    };
 
     // points in the bucket
-    var pointsNode = new Node();
-    POINT_POSITIONS.forEach( function( position ) {
-      var circle = new Circle( {
+    let pointsNode = new Node();
+    POINT_POSITIONS.forEach( position => {
+      let circle = new Circle( {
         fill: CurveFittingConstants.POINT_FILL,
         radius: CurveFittingConstants.POINT_RADIUS,
         stroke: CurveFittingConstants.POINT_STROKE,
@@ -113,62 +155,19 @@ define( function( require ) {
 
 
     // handle the coming and going of points
-    points.addItemAddedListener( function( addedPoint ) {
-      var pointNode = new PointNode( addedPoint, residualsVisibleProperty, valuesVisibleProperty, modelViewTransform );
-      self.addChild( pointNode );
+    points.addItemAddedListener( addedPoint => {
+      let pointNode = new PointNode( addedPoint, residualsVisibleProperty, valuesVisibleProperty, modelViewTransform );
+      this.addChild( pointNode );
 
-      points.addItemRemovedListener( function removalListener( removedPoint ) {
+      let removalListener = removedPoint => {
         if ( removedPoint === addedPoint ) {
-          self.removeChild( pointNode );
+          this.removeChild( pointNode );
           pointNode.dispose();
           points.removeItemRemovedListener( removalListener );
         }
-      } );
+      };
+      points.addItemRemovedListener( removalListener );
     } );
-
-
-    /**
-     * create a drag handler that adds a point to the model
-     * @returns {SimpleDragHandler}
-     */
-    function createDragHandler() {
-      var point = null;
-      var dragHandler = new SimpleDragHandler( {
-
-        allowTouchSnag: true,
-
-        start: function( event ) {
-
-          // create a model point
-          var viewPosition = self.globalToLocalPoint( event.pointer.point );
-          var modelPosition = modelViewTransform.viewToModelPosition( viewPosition );
-          point = new Point( {
-            position: modelPosition,
-            dragging: true
-          } );
-
-          // add the model point to the observable array in model curve
-          points.add( point );
-        },
-
-        translate: function( translationParams ) {
-          point.positionProperty.value = point.positionProperty.value.plus( modelViewTransform.viewToModelDelta( translationParams.delta ) );
-        },
-
-        end: function() {
-          if ( CurveFittingQueryParameters.snapToGrid ) {
-            point.positionProperty.set( new Vector2(
-              Util.toFixedNumber( point.positionProperty.value.x, 1 ),
-              Util.toFixedNumber( point.positionProperty.value.y, 1 )
-            ) );
-          }
-          point.draggingProperty.set( false );
-          point = null;
-        }
-      } );
-
-      return dragHandler;
-    }
 
   }
 
