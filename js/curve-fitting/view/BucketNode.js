@@ -10,30 +10,30 @@ define( function( require ) {
   'use strict';
 
   // modules
-  let Bucket = require( 'PHETCOMMON/model/Bucket' );
-  let BucketFront = require( 'SCENERY_PHET/bucket/BucketFront' );
-  let BucketHole = require( 'SCENERY_PHET/bucket/BucketHole' );
-  let Circle = require( 'SCENERY/nodes/Circle' );
-  let curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  let CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  let CurveFittingQueryParameters = require( 'CURVE_FITTING/curve-fitting/CurveFittingQueryParameters' );
-  let Dimension2 = require( 'DOT/Dimension2' );
-  let inherit = require( 'PHET_CORE/inherit' );
-  let Node = require( 'SCENERY/nodes/Node' );
-  let Point = require( 'CURVE_FITTING/curve-fitting/model/Point' );
-  let PointNode = require( 'CURVE_FITTING/curve-fitting/view/PointNode' );
-  let SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
-  let Util = require( 'DOT/Util' );
-  let Vector2 = require( 'DOT/Vector2' );
+  const Bucket = require( 'PHETCOMMON/model/Bucket' );
+  const BucketFront = require( 'SCENERY_PHET/bucket/BucketFront' );
+  const BucketHole = require( 'SCENERY_PHET/bucket/BucketHole' );
+  const Circle = require( 'SCENERY/nodes/Circle' );
+  const curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  const CurveFittingQueryParameters = require( 'CURVE_FITTING/curve-fitting/CurveFittingQueryParameters' );
+  const Dimension2 = require( 'DOT/Dimension2' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const Point = require( 'CURVE_FITTING/curve-fitting/model/Point' );
+  const PointNode = require( 'CURVE_FITTING/curve-fitting/view/PointNode' );
+  const SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  const Util = require( 'DOT/Util' );
+  const Vector2 = require( 'DOT/Vector2' );
 
   // constants
-  let BUCKET_WIDTH = 5; // in model coordinates
-  let BUCKET_HEIGHT = BUCKET_WIDTH * 0.50;
+  const BUCKET_WIDTH = 5; // in model coordinates
+  const BUCKET_HEIGHT = BUCKET_WIDTH * 0.50;
   // bucket position is to the left and up from the bottom left corner of graph, in model coordinates
-  let BUCKET_POSITION_X = CurveFittingConstants.GRAPH_MODEL_BOUNDS.minX - 3;
-  let BUCKET_POSITION_Y = CurveFittingConstants.GRAPH_MODEL_BOUNDS.minY;
+  const BUCKET_POSITION_X = CurveFittingConstants.GRAPH_MODEL_BOUNDS.minX - 3;
+  const BUCKET_POSITION_Y = CurveFittingConstants.GRAPH_MODEL_BOUNDS.minY;
   // position of points
-  let POINT_POSITIONS = [
+  const POINT_POSITIONS = [
     { x: -33, y: 8 },
     { x: -25, y: 10 },
     { x: -25, y: -1 },
@@ -76,33 +76,33 @@ define( function( require ) {
     Node.call( this );
 
     // model of the bucket
-    let bucket = new Bucket( {
+    const bucket = new Bucket( {
       position: new Vector2( BUCKET_POSITION_X, BUCKET_POSITION_Y ),
       size: new Dimension2( BUCKET_WIDTH, BUCKET_HEIGHT ),
       baseColor: 'rgb( 65, 63, 117 )'
     } );
 
     // front of the bucket
-    let bucketFrontNode = new BucketFront( bucket, modelViewTransform );
+    const bucketFrontNode = new BucketFront( bucket, modelViewTransform );
 
     // back of the bucket
-    let bucketHoleNode = new BucketHole( bucket, modelViewTransform );
+    const bucketHoleNode = new BucketHole( bucket, modelViewTransform );
 
     /**
      * create a drag handler that adds a point to the model
      * @returns {SimpleDragHandler}
      */
-    let createDragHandler = () => {
+    const createDragHandler = () => {
       let point = null;
-      let dragHandler = new SimpleDragHandler( {
+      const dragHandler = new SimpleDragHandler( {
 
         allowTouchSnag: true,
 
         start: event => {
 
           // create a model point
-          let viewPosition = this.globalToLocalPoint( event.pointer.point );
-          let modelPosition = modelViewTransform.viewToModelPosition( viewPosition );
+          const viewPosition = this.globalToLocalPoint( event.pointer.point );
+          const modelPosition = modelViewTransform.viewToModelPosition( viewPosition );
           point = new Point( {
             position: modelPosition,
             dragging: true
@@ -132,9 +132,9 @@ define( function( require ) {
     };
 
     // points in the bucket
-    let pointsNode = new Node();
+    const pointsNode = new Node();
     POINT_POSITIONS.forEach( position => {
-      let circle = new Circle( {
+      const circle = new Circle( {
         fill: CurveFittingConstants.POINT_FILL,
         radius: CurveFittingConstants.POINT_RADIUS,
         stroke: CurveFittingConstants.POINT_STROKE,
@@ -156,10 +156,10 @@ define( function( require ) {
 
     // handle the coming and going of points
     points.addItemAddedListener( addedPoint => {
-      let pointNode = new PointNode( addedPoint, residualsVisibleProperty, valuesVisibleProperty, modelViewTransform );
+      const pointNode = new PointNode( addedPoint, residualsVisibleProperty, valuesVisibleProperty, modelViewTransform );
       this.addChild( pointNode );
 
-      let removalListener = removedPoint => {
+      const removalListener = removedPoint => {
         if ( removedPoint === addedPoint ) {
           this.removeChild( pointNode );
           pointNode.dispose();

@@ -10,29 +10,29 @@ define( function( require ) {
   'use strict';
 
   // modules
-  let AccordionBox = require( 'SUN/AccordionBox' );
-  let BarometerR2Node = require( 'CURVE_FITTING/curve-fitting/view/BarometerR2Node' );
-  let BarometerX2Node = require( 'CURVE_FITTING/curve-fitting/view/BarometerX2Node' );
-  let curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  let CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  let HBox = require( 'SCENERY/nodes/HBox' );
-  let InfoButton = require( 'SCENERY_PHET/buttons/InfoButton' );
-  let inherit = require( 'PHET_CORE/inherit' );
-  let Panel = require( 'SUN/Panel' );
-  let PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  let ReducedChiSquaredStatisticDialog = require( 'CURVE_FITTING/curve-fitting/view/ReducedChiSquaredStatisticDialog' );
-  let RichText = require( 'SCENERY/nodes/RichText' );
-  let Text = require( 'SCENERY/nodes/Text' );
-  let Util = require( 'DOT/Util' );
-  let VBox = require( 'SCENERY/nodes/VBox' );
+  const AccordionBox = require( 'SUN/AccordionBox' );
+  const BarometerR2Node = require( 'CURVE_FITTING/curve-fitting/view/BarometerR2Node' );
+  const BarometerX2Node = require( 'CURVE_FITTING/curve-fitting/view/BarometerX2Node' );
+  const curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  const HBox = require( 'SCENERY/nodes/HBox' );
+  const InfoButton = require( 'SCENERY_PHET/buttons/InfoButton' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Panel = require( 'SUN/Panel' );
+  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const ReducedChiSquaredStatisticDialog = require( 'CURVE_FITTING/curve-fitting/view/ReducedChiSquaredStatisticDialog' );
+  const RichText = require( 'SCENERY/nodes/RichText' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const Util = require( 'DOT/Util' );
+  const VBox = require( 'SCENERY/nodes/VBox' );
 
   // strings
-  let deviationsString = require( 'string!CURVE_FITTING/deviations' );
+  const deviationsString = require( 'string!CURVE_FITTING/deviations' );
 
   // constants
-  let TEXT_FONT = new PhetFont( 12 ); //TODO use CurveFittingConstants
-  let TEXT_PANEL_FONT = new PhetFont( 10 ); //TODO use CurveFittingConstants
-  let VALUE_PANEL_OPTIONS = {
+  const TEXT_FONT = new PhetFont( 12 ); //TODO use CurveFittingConstants
+  const TEXT_PANEL_FONT = new PhetFont( 10 ); //TODO use CurveFittingConstants
+  const VALUE_PANEL_OPTIONS = {
     fill: 'white',
     cornerRadius: 4,
     xMargin: 4,
@@ -42,8 +42,8 @@ define( function( require ) {
   };
 
   // strings
-  let symbolChiString = require( 'string!CURVE_FITTING/symbol.chi' );
-  let symbolRString = require( 'string!CURVE_FITTING/symbol.r' );
+  const symbolChiString = require( 'string!CURVE_FITTING/symbol.chi' );
+  const symbolRString = require( 'string!CURVE_FITTING/symbol.r' );
 
   /**
    * @param {Property.<boolean>} expandedProperty - is this panel expanded?
@@ -73,16 +73,16 @@ define( function( require ) {
     }, options );
 
     // X^2 barometer
-    let barometerX2 = new BarometerX2Node( points, chiSquaredProperty, curveVisibleProperty );
+    const barometerX2 = new BarometerX2Node( points, chiSquaredProperty, curveVisibleProperty );
 
     // r^2 barometer
-    let barometerR2 = new BarometerR2Node( rSquaredProperty, curveVisibleProperty );
+    const barometerR2 = new BarometerR2Node( rSquaredProperty, curveVisibleProperty );
 
     // informational dialog, created lazily because Dialog requires sim bounds during construction
     let dialog = null;
 
     // help button
-    let helpButton = new InfoButton( {
+    const helpButton = new InfoButton( {
       listener: () => {
         if ( !dialog ) {
           dialog = new ReducedChiSquaredStatisticDialog();
@@ -96,20 +96,20 @@ define( function( require ) {
     } );
 
     // X^2 value
-    let chiSquaredValueNode = new Text( '0.00', {
+    const chiSquaredValueNode = new Text( '0.00', {
       font: TEXT_PANEL_FONT,
       textAlign: 'left',
       maxWidth: 22
     } );
 
     // r^2 value
-    let rSquaredValueNode = new Text( '0.00', {
+    const rSquaredValueNode = new Text( '0.00', {
       font: TEXT_PANEL_FONT,
       textAlign: 'left',
       maxWidth: 22
     } );
 
-    let valuesBox = new HBox( {
+    const valuesBox = new HBox( {
       spacing: 5,
       resize: false,
       children: [
@@ -124,12 +124,12 @@ define( function( require ) {
       ]
     } );
 
-    let barometersBox = new HBox( {
+    const barometersBox = new HBox( {
       children: [ barometerX2, barometerR2 ],
       spacing: 10
     } );
 
-    let content = new VBox( {
+    const content = new VBox( {
       align: 'left',
       spacing: 10,
       children: [

@@ -10,24 +10,24 @@ define( function( require ) {
   'use strict';
 
   // modules
-  let Circle = require( 'SCENERY/nodes/Circle' );
-  let curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  let CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  let inherit = require( 'PHET_CORE/inherit' );
-  let Line = require( 'SCENERY/nodes/Line' );
-  let Node = require( 'SCENERY/nodes/Node' );
-  let PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  let Range = require( 'DOT/Range' );
-  let Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  let Text = require( 'SCENERY/nodes/Text' );
+  const Circle = require( 'SCENERY/nodes/Circle' );
+  const curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Line = require( 'SCENERY/nodes/Line' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const Range = require( 'DOT/Range' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const Text = require( 'SCENERY/nodes/Text' );
 
   // constants
-  let RANGE = new Range( 0, 1 );
-  let LINE_OPTIONS = {
+  const RANGE = new Range( 0, 1 );
+  const LINE_OPTIONS = {
     lineWidth: 1.5,
     stroke: 'black'
   };
-  let TICK_FONT = new PhetFont( 12 );
+  const TICK_FONT = new PhetFont( 12 );
 
   /**
    * @param {Property.<number>} rSquaredProperty - Property that represents r-deviation.
@@ -38,12 +38,12 @@ define( function( require ) {
   function BarometerR2Node( rSquaredProperty, curveVisibleProperty,  options ) {
 
     // value shown on the barometer
-    let valueRectNode = new Rectangle( 0, 0, CurveFittingConstants.BAROMETER_BAR_WIDTH, 0, {
+    const valueRectNode = new Rectangle( 0, 0, CurveFittingConstants.BAROMETER_BAR_WIDTH, 0, {
       fill: CurveFittingConstants.BLUE_COLOR
     } );
     valueRectNode.rotation = Math.PI;
 
-    let axis = new Line( 0, 0, 0, -CurveFittingConstants.BAROMETER_AXIS_HEIGHT, LINE_OPTIONS );
+    const axis = new Line( 0, 0, 0, -CurveFittingConstants.BAROMETER_AXIS_HEIGHT, LINE_OPTIONS );
 
     Node.call( this, _.extend( {}, options, {
       children: [ valueRectNode, axis ]
@@ -77,14 +77,14 @@ define( function( require ) {
 
       //TODO #120 document this better, it's not clear why this is needed, duplicated in BarometerX2Node
       // expression "0.5 + ( CurveFittingConstants.BAROMETER_AXIS_HEIGHT - 1 )" need to prevent bad graph view in corners
-      let y = 0.5 + ( CurveFittingConstants.BAROMETER_AXIS_HEIGHT - 1 ) * ( value - RANGE.min ) / ( RANGE.max - RANGE.min );
+      const y = 0.5 + ( CurveFittingConstants.BAROMETER_AXIS_HEIGHT - 1 ) * ( value - RANGE.min ) / ( RANGE.max - RANGE.min );
 
       // tick line
-      let line = new Line( -CurveFittingConstants.BAROMETER_TICK_WIDTH, -y, 0, -y, LINE_OPTIONS );
+      const line = new Line( -CurveFittingConstants.BAROMETER_TICK_WIDTH, -y, 0, -y, LINE_OPTIONS );
       this.addChild( line );
 
       // tick label
-      let label = new Text( value.toString(), {
+      const label = new Text( value.toString(), {
         font: TICK_FONT,
         right: line.left - 2,
         centerY: line.centerY
@@ -99,7 +99,7 @@ define( function( require ) {
      * @private
      */
     addTicks: function( values ) {
-      let self = this;
+      const self = this;
       values.forEach( function( value ) {
         self.addTick( value );
       } );

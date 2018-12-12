@@ -12,36 +12,36 @@ define( function( require ) {
   'use strict';
 
   // modules
-  let ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
-  let curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  let CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  let inherit = require( 'PHET_CORE/inherit' );
-  let Line = require( 'SCENERY/nodes/Line' );
-  let Node = require( 'SCENERY/nodes/Node' );
-  let PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  let Range = require( 'DOT/Range' );
-  let Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  let Text = require( 'SCENERY/nodes/Text' );
-  let VBox = require( 'SCENERY/nodes/VBox' );
-  let VStrut = require( 'SCENERY/nodes/VStrut' );
+  const ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
+  const curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Line = require( 'SCENERY/nodes/Line' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const Range = require( 'DOT/Range' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const VBox = require( 'SCENERY/nodes/VBox' );
+  const VStrut = require( 'SCENERY/nodes/VStrut' );
 
   // constants
-  let FONT_SIZE = 12;
-  let TICK_FONT = new PhetFont( FONT_SIZE );
-  let OFFSET = FONT_SIZE / 2;
-  let RANGE = new Range( 0, 100 );
-  let MIN_VALUE = RANGE.min;
-  let MAX_VALUE = 1 + Math.log( RANGE.max );
-  let HEAD_HEIGHT = 12;
-  let BAR_HEIGHT = CurveFittingConstants.BAROMETER_AXIS_HEIGHT - HEAD_HEIGHT - OFFSET;
-  let LINE_OPTIONS = {
+  const FONT_SIZE = 12;
+  const TICK_FONT = new PhetFont( FONT_SIZE );
+  const OFFSET = FONT_SIZE / 2;
+  const RANGE = new Range( 0, 100 );
+  const MIN_VALUE = RANGE.min;
+  const MAX_VALUE = 1 + Math.log( RANGE.max );
+  const HEAD_HEIGHT = 12;
+  const BAR_HEIGHT = CurveFittingConstants.BAROMETER_AXIS_HEIGHT - HEAD_HEIGHT - OFFSET;
+  const LINE_OPTIONS = {
     lineWidth: 1.5,
     stroke: 'black'
   };
 
   // arrays necessary for calculating chi value bounds while getting barometer color
-  let LOWER_LIMIT_ARRAY = [ 0.004, 0.052, 0.118, 0.178, 0.23, 0.273, 0.31, 0.342, 0.369, 0.394, 0.545, 0.695, 0.779, 0.927 ];
-  let UPPER_LIMIT_ARRAY = [ 3.8, 3, 2.6, 2.37, 2.21, 2.1, 2.01, 1.94, 1.88, 1.83, 1.57, 1.35, 1.24, 1.07 ];
+  const LOWER_LIMIT_ARRAY = [ 0.004, 0.052, 0.118, 0.178, 0.23, 0.273, 0.31, 0.342, 0.369, 0.394, 0.545, 0.695, 0.779, 0.927 ];
+  const UPPER_LIMIT_ARRAY = [ 3.8, 3, 2.6, 2.37, 2.21, 2.1, 2.01, 1.94, 1.88, 1.83, 1.57, 1.35, 1.24, 1.07 ];
 
   /**
    * @param {Points} points
@@ -52,7 +52,7 @@ define( function( require ) {
    */
   function BarometerX2Node( points, chiSquaredProperty, curveVisibleProperty,  options ) {
 
-    let valueRectNode = new Rectangle( 0, 0, CurveFittingConstants.BAROMETER_BAR_WIDTH, 0, {
+    const valueRectNode = new Rectangle( 0, 0, CurveFittingConstants.BAROMETER_BAR_WIDTH, 0, {
       fill: 'black' // to be computed by getChiFillFromChiValue
     } );
     valueRectNode.rotation = Math.PI;
@@ -103,10 +103,10 @@ define( function( require ) {
     let blue;
     let lowerBound;
     let upperBound;
-    let step1;
-    let step2;
-    let step3;
-    let step4;
+    let step1 = null;
+    let step2 = null;
+    let step3 = null;
+    let step4 = null;
 
     if ( numberOfPoints >= 1 && numberOfPoints < 11 ) {
       lowerBound = LOWER_LIMIT_ARRAY[ numberOfPoints - 1 ];
@@ -196,14 +196,14 @@ define( function( require ) {
      */
     addTick: function( value ) {
 
-      let y = valueToYPosition( value );
+      const y = valueToYPosition( value );
 
       // tick line
-      let line = new Line( -CurveFittingConstants.BAROMETER_TICK_WIDTH, -y, 0, -y, LINE_OPTIONS );
+      const line = new Line( -CurveFittingConstants.BAROMETER_TICK_WIDTH, -y, 0, -y, LINE_OPTIONS );
       this._content.addChild( line );
 
       // tick label
-      let label = new Text( value.toString(), {
+      const label = new Text( value.toString(), {
         font: TICK_FONT,
         right: line.left - 2,
         centerY: line.centerY
@@ -218,7 +218,7 @@ define( function( require ) {
      * @param {number[]} values
      */
     addTicks: function( values ) {
-      let self = this;
+      const self = this;
       values.forEach( function( value ) {
         self.addTick( value );
       } );
