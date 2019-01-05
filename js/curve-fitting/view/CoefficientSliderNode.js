@@ -9,17 +9,17 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var Dimension2 = require( 'DOT/Dimension2' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
-  var VSlider = require( 'SUN/VSlider' );
+  const curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  const Dimension2 = require( 'DOT/Dimension2' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const VBox = require( 'SCENERY/nodes/VBox' );
+  const VSlider = require( 'SUN/VSlider' );
 
   // constants
-  var LABEL_OPTIONS = {
+  const LABEL_OPTIONS = {
     font: new PhetFont( {
       weight: 'bold',
       size: 13
@@ -42,10 +42,9 @@ define( function( require ) {
         thumbSize: new Dimension2( 15, 24 ),
         minorTickLineWidth: 2,
         thumbTouchAreaYDilation: 1   // small such that touch areas of adjacent sliders don't overlap. It is YDilation since we rotate by 90
-      },
-      options );
+      }, options );
 
-    var sliderNode = new VSlider( property, range, options );
+    const sliderNode = new VSlider( property, range, options );
 
     // add central tick
     sliderNode.addMinorTick( 0, '' );
