@@ -10,16 +10,16 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var CurveOrderPanel = require( 'CURVE_FITTING/curve-fitting/view/CurveOrderPanel' );
-  var FitPanel = require( 'CURVE_FITTING/curve-fitting/view/FitPanel' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
-  var ViewOptionsPanel = require( 'CURVE_FITTING/curve-fitting/view/ViewOptionsPanel' );
+  const curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  const CurveOrderPanel = require( 'CURVE_FITTING/curve-fitting/view/CurveOrderPanel' );
+  const FitPanel = require( 'CURVE_FITTING/curve-fitting/view/FitPanel' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const VBox = require( 'SCENERY/nodes/VBox' );
+  const ViewOptionsPanel = require( 'CURVE_FITTING/curve-fitting/view/ViewOptionsPanel' );
 
   // constants
-  var PANEL_OPTIONS = {
+  const PANEL_OPTIONS = {
     cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
     fill: CurveFittingConstants.PANEL_BACKGROUND_COLOR,
     xMargin: CurveFittingConstants.PANEL_MARGIN,
@@ -46,13 +46,13 @@ define( function( require ) {
     }, options );
 
     // view options
-    var viewOptionsPanel = new ViewOptionsPanel( curveVisibleProperty, residualsVisibleProperty, valuesProperty, PANEL_OPTIONS );
+    const viewOptionsPanel = new ViewOptionsPanel( curveVisibleProperty, residualsVisibleProperty, valuesProperty, PANEL_OPTIONS );
 
     // order of curve
-    var orderPanel = new CurveOrderPanel( orderProperty, PANEL_OPTIONS );
+    const orderPanel = new CurveOrderPanel( orderProperty, PANEL_OPTIONS );
 
     // fit type
-    var fitPanel = new FitPanel( sliderPropertyArray, fitProperty, orderProperty, PANEL_OPTIONS );
+    const fitPanel = new FitPanel( sliderPropertyArray, fitProperty, orderProperty, PANEL_OPTIONS );
 
     assert && assert( !options.children, 'decoration not supported' );
     options.children = [ viewOptionsPanel, orderPanel, fitPanel ];
@@ -60,8 +60,9 @@ define( function( require ) {
     VBox.call( this, options );
 
     // hide panels when curve is not visible
-    curveVisibleProperty.link( function( curveVisible ) {
-      orderPanel.visible = fitPanel.visible = curveVisible;
+    curveVisibleProperty.link( curveVisible => {
+      orderPanel.visible = curveVisible;
+      fitPanel.visible = curveVisible;
     } );
   }
 
