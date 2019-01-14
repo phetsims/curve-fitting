@@ -9,24 +9,24 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var BucketNode = require( 'CURVE_FITTING/curve-fitting/view/BucketNode' );
-  var ControlPanels = require( 'CURVE_FITTING/curve-fitting/view/ControlPanels' );
-  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var CurveNode = require( 'CURVE_FITTING/curve-fitting/view/CurveNode' );
-  var DeviationsAccordionBox = require( 'CURVE_FITTING/curve-fitting/view/DeviationsAccordionBox' );
-  var EquationGraphPanelNode = require( 'CURVE_FITTING/curve-fitting/view/EquationGraphPanelNode' );
-  var GraphAreaNode = require( 'CURVE_FITTING/curve-fitting/view/GraphAreaNode' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
-  var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
-  var ResidualsNode = require( 'CURVE_FITTING/curve-fitting/view/ResidualsNode' );
-  var ScreenView = require( 'JOIST/ScreenView' );
-  var Vector2 = require( 'DOT/Vector2' );
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
+  const BucketNode = require( 'CURVE_FITTING/curve-fitting/view/BucketNode' );
+  const ControlPanels = require( 'CURVE_FITTING/curve-fitting/view/ControlPanels' );
+  const curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  const CurveNode = require( 'CURVE_FITTING/curve-fitting/view/CurveNode' );
+  const DeviationsAccordionBox = require( 'CURVE_FITTING/curve-fitting/view/DeviationsAccordionBox' );
+  const EquationGraphPanelNode = require( 'CURVE_FITTING/curve-fitting/view/EquationGraphPanelNode' );
+  const GraphAreaNode = require( 'CURVE_FITTING/curve-fitting/view/GraphAreaNode' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
+  const ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
+  const ResidualsNode = require( 'CURVE_FITTING/curve-fitting/view/ResidualsNode' );
+  const ScreenView = require( 'JOIST/ScreenView' );
+  const Vector2 = require( 'DOT/Vector2' );
 
   // constants
-  var GRAPH_PADDING_LEFT_RIGHT = 15;
+  const GRAPH_PADDING_LEFT_RIGHT = 15;
 
   /**
    * @param {CurveFittingModel} model
@@ -38,29 +38,29 @@ define( function( require ) {
 
     // view-specific Properties
     // @public {Property.<boolean>} determines visibility of the "Deviations" accordion box (upper left hand side panel)
-    var deviationsAccordionBoxExpandedProperty = new BooleanProperty( true );
+    const deviationsAccordionBoxExpandedProperty = new BooleanProperty( true );
 
     // @public {Property.<boolean>} determines expansion status of the equation node on graph
-    var equationPanelExpandedProperty = new BooleanProperty( true );
+    const equationPanelExpandedProperty = new BooleanProperty( true );
 
     // @public {Property.<boolean>} determines visibility of residuals
-    var residualsVisibleProperty = new BooleanProperty( false );
+    const residualsVisibleProperty = new BooleanProperty( false );
 
     // @public {Property.<boolean>} determines visibility of values
-    var valuesVisibleProperty = new BooleanProperty( false );
+    const valuesVisibleProperty = new BooleanProperty( false );
 
     // @public {Property.<boolean>} determines visibility of the curve fit
-    var curveVisibleProperty = new BooleanProperty( false );
+    const curveVisibleProperty = new BooleanProperty( false );
 
     // Deviations accordion box, at left of screen
-    var deviationsAccordionBox = new DeviationsAccordionBox( deviationsAccordionBoxExpandedProperty,
+    const deviationsAccordionBox = new DeviationsAccordionBox( deviationsAccordionBoxExpandedProperty,
       model.points, model.curve.chiSquaredProperty, model.curve.rSquaredProperty, curveVisibleProperty, {
         left: 10,
         top: 10
       } );
 
     // All other controls, at right of screen
-    var controlPanels = new ControlPanels(
+    const controlPanels = new ControlPanels(
       model.sliderPropertyArray,
       model.orderProperty,
       model.fitProperty,
@@ -73,20 +73,20 @@ define( function( require ) {
       } );
 
     // create a model view transform
-    var graphAreaWidth = controlPanels.left - deviationsAccordionBox.right - GRAPH_PADDING_LEFT_RIGHT * 2;
-    var graphCenterX = 0.5 * (controlPanels.left + deviationsAccordionBox.right);
-    var graphCenterY = graphAreaWidth / 2 + deviationsAccordionBox.top;
-    var scale = graphAreaWidth / CurveFittingConstants.GRAPH_MODEL_BOUNDS.width;
-    var modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping(
+    const graphAreaWidth = controlPanels.left - deviationsAccordionBox.right - GRAPH_PADDING_LEFT_RIGHT * 2;
+    const graphCenterX = 0.5 * (controlPanels.left + deviationsAccordionBox.right);
+    const graphCenterY = graphAreaWidth / 2 + deviationsAccordionBox.top;
+    const scale = graphAreaWidth / CurveFittingConstants.GRAPH_MODEL_BOUNDS.width;
+    const modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping(
       new Vector2( 0, 0 ),
       new Vector2( graphCenterX, graphCenterY ),
       scale );
 
     // create the graph area node - responsible for the rendering of the axes, ticks and background.
-    var graphAreaNode = new GraphAreaNode( modelViewTransform );
+    const graphAreaNode = new GraphAreaNode( modelViewTransform );
 
     // create the equation node (accordion box) in the upper left corner of the graph
-    var equationGraphPanelNode = new EquationGraphPanelNode(
+    const equationGraphPanelNode = new EquationGraphPanelNode(
       model.curve.getCoefficients.bind( model.curve ),
       model.curve.updateCurveEmitter,
       model.orderProperty,
@@ -94,13 +94,13 @@ define( function( require ) {
       curveVisibleProperty );
 
     // create the curve and the residual lines
-    var curveNode = new CurveNode(
+    const curveNode = new CurveNode(
       model.curve,
       curveVisibleProperty,
       modelViewTransform );
 
     // create the residual lines
-    var residualsNode = new ResidualsNode(
+    const residualsNode = new ResidualsNode(
       model.points,
       model.curve,
       residualsVisibleProperty,
@@ -111,7 +111,7 @@ define( function( require ) {
     equationGraphPanelNode.top = graphAreaNode.top + 10;
 
     // create bucket (and handle responsibilities associated with points)
-    var bucketNode = new BucketNode(
+    const bucketNode = new BucketNode(
       model.points,
       residualsVisibleProperty,
       valuesVisibleProperty,
@@ -119,8 +119,8 @@ define( function( require ) {
     );
 
     // create reset all button
-    var resetAllButton = new ResetAllButton( {
-      listener: function() {
+    const resetAllButton = new ResetAllButton( {
+      listener: () => {
         model.reset();
         deviationsAccordionBoxExpandedProperty.reset();
         equationPanelExpandedProperty.reset();
