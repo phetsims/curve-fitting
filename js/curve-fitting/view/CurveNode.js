@@ -9,16 +9,16 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var CurveFittingQueryParameters = require( 'CURVE_FITTING/curve-fitting/CurveFittingQueryParameters' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var Shape = require( 'KITE/Shape' );
+  const curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  const CurveFittingQueryParameters = require( 'CURVE_FITTING/curve-fitting/CurveFittingQueryParameters' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const Path = require( 'SCENERY/nodes/Path' );
+  const Shape = require( 'KITE/Shape' );
 
   // constants
-  var CURVE_OPTIONS = { stroke: 'black', lineWidth: 2 };
+  const CURVE_OPTIONS = { stroke: 'black', lineWidth: 2 };
 
   /**
    * @param {Curve} curve - curve model.
@@ -34,14 +34,13 @@ define( function( require ) {
     this.clipArea = Shape.bounds( modelViewTransform.modelToViewBounds( CurveFittingConstants.GRAPH_MODEL_BOUNDS ) );
 
     // create and add curve
-    var curvePath = new Path( null, CURVE_OPTIONS );
+    const curvePath = new Path( null, CURVE_OPTIONS );
     this.addChild( curvePath );
 
     /**
      * updates the curve
      */
-    var updateCurve = function() {
-
+    const updateCurve = () => {
       if ( curveVisibleProperty.value && curve.isCurvePresent() ) {
         curvePath.setShape( modelViewTransform.modelToViewShape( curve.getShape() ) );
       }
@@ -58,14 +57,13 @@ define( function( require ) {
     // for debugging purposes.
     if ( CurveFittingQueryParameters.debugLine ) {
       // create and add curve
-      var curveDebugPath = new Path( null, { stroke: 'red', lineWidth: 2 } );
+      const curveDebugPath = new Path( null, { stroke: 'red', lineWidth: 2 } );
       this.addChild( curveDebugPath );
 
       /**
        * updates the debug curve
        */
-      var updateDebugCurve = function() {
-
+      const updateDebugCurve = () => {
         if ( curveVisibleProperty.value && curve.isCurvePresent() ) {
           curveDebugPath.setShape( modelViewTransform.modelToViewShape( curve.getDebugShape() ) );
         }
