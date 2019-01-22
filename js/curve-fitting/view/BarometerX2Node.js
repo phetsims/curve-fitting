@@ -22,6 +22,7 @@ define( function( require ) {
   const Range = require( 'DOT/Range' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const Text = require( 'SCENERY/nodes/Text' );
+  const Util = require( 'DOT/Util' );
   const VBox = require( 'SCENERY/nodes/VBox' );
   const VStrut = require( 'SCENERY/nodes/VStrut' );
 
@@ -166,7 +167,7 @@ define( function( require ) {
       blue = 0;
     }
 
-    return 'rgb(' + Math.round( red ) + ', ' + Math.round( green ) + ', ' + Math.round( blue ) + ')';
+    return 'rgb(' + Util.roundSymmetric( red ) + ', ' + Util.roundSymmetric( green ) + ', ' + Util.roundSymmetric( blue ) + ')';
   }
 
   /**
