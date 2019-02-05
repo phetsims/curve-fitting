@@ -327,7 +327,7 @@ define( function( require ) {
       }
 
       bestFitCoefficients.forEach( function( value, index ) {
-        assert && assert( isFinite( value ), 'fit parameter: ' + index + ' is not finite: ' + value );
+        assert && assert( typeof value === 'number' && isFinite( value ), 'fit parameter: ' + index + ' is not finite: ' + value );
       } );
 
       return bestFitCoefficients;
