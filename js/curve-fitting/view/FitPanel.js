@@ -10,25 +10,25 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var AquaRadioButton = require( 'SUN/AquaRadioButton' );
-  var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var CoefficientSliderNode = require( 'CURVE_FITTING/curve-fitting/view/CoefficientSliderNode' );
-  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var EquationFitNode = require( 'CURVE_FITTING/curve-fitting/view/EquationFitNode' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Panel = require( 'SUN/Panel' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
+  const AquaRadioButton = require( 'SUN/AquaRadioButton' );
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
+  const CoefficientSliderNode = require( 'CURVE_FITTING/curve-fitting/view/CoefficientSliderNode' );
+  const curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  const EquationFitNode = require( 'CURVE_FITTING/curve-fitting/view/EquationFitNode' );
+  const HBox = require( 'SCENERY/nodes/HBox' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Panel = require( 'SUN/Panel' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const VBox = require( 'SCENERY/nodes/VBox' );
 
   // strings
-  var adjustableFitString = require( 'string!CURVE_FITTING/adjustableFit' );
-  var bestFitString = require( 'string!CURVE_FITTING/bestFit' );
-  var symbolAString = require( 'string!CURVE_FITTING/symbol.a' );
-  var symbolBString = require( 'string!CURVE_FITTING/symbol.b' );
-  var symbolCString = require( 'string!CURVE_FITTING/symbol.c' );
-  var symbolDString = require( 'string!CURVE_FITTING/symbol.d' );
+  const adjustableFitString = require( 'string!CURVE_FITTING/adjustableFit' );
+  const bestFitString = require( 'string!CURVE_FITTING/bestFit' );
+  const symbolAString = require( 'string!CURVE_FITTING/symbol.a' );
+  const symbolBString = require( 'string!CURVE_FITTING/symbol.b' );
+  const symbolCString = require( 'string!CURVE_FITTING/symbol.c' );
+  const symbolDString = require( 'string!CURVE_FITTING/symbol.d' );
 
   /**
    * @param {Property.<number>[]} sliderPropertyArray - stored in ascending order of the polynomial fit, starting with order zero.
@@ -48,11 +48,11 @@ define( function( require ) {
     }, options );
 
     // radio buttons
-    var bestFitButton = createRadioButton( fitProperty, 'best', bestFitString );
-    var adjustableFitButton = createRadioButton( fitProperty, 'adjustable', adjustableFitString );
+    const bestFitButton = createRadioButton( fitProperty, 'best', bestFitString );
+    const adjustableFitButton = createRadioButton( fitProperty, 'adjustable', adjustableFitString );
 
     // vertical layout
-    var radioButtonsBox = new VBox( {
+    const radioButtonsBox = new VBox( {
       align: 'left',
       spacing: 5,
       children: [
@@ -62,10 +62,10 @@ define( function( require ) {
     } );
 
     // equation that corresponds to the curve
-    var equationFitNode = new EquationFitNode( orderProperty );
+    const equationFitNode = new EquationFitNode( orderProperty );
 
     // attributes for four sliders in ASCENDING order of polynomial
-    var slidersAttributes = [
+    const slidersAttributes = [
       {
         string: symbolDString,
         range: CurveFittingConstants.CONSTANT_RANGE,
@@ -89,7 +89,7 @@ define( function( require ) {
     ];
 
     // create array in ASCENDING order of polynomial
-    var ascendingSliders = slidersAttributes.map( function( sliderObject, index ) {
+    const ascendingSliders = slidersAttributes.map( function( sliderObject, index ) {
         return new CoefficientSliderNode( sliderPropertyArray[ index ],
           sliderObject.range,
           sliderObject.string,
@@ -98,10 +98,10 @@ define( function( require ) {
     );
 
     // we want sliders in DESCENDING order of polynomial
-    var sliders = ascendingSliders.reverse();
+    const sliders = ascendingSliders.reverse();
 
     // create slider box
-    var slidersBox = new HBox( { spacing: 6, children: sliders } );
+    const slidersBox = new HBox( { spacing: 6, children: sliders } );
 
     // add slider number observer
     orderProperty.link( function( order ) {
@@ -111,13 +111,11 @@ define( function( require ) {
 
       // if the sliders are not disabled they will be able to change
       // and behave as described in #15 and #37
-      slidersAttributes.forEach( function( sliderObject, index ) {
-        sliderObject.enabledProperty.set( order >= index );
-      } );
+      slidersAttributes.forEach( ( sliderObject, index ) => sliderObject.enabledProperty.set( order >= index ) );
     } );
 
     // vertical layout
-    var contentNode = new VBox( {
+    const contentNode = new VBox( {
       align: 'left',
       spacing: 5,
       children: [
@@ -149,7 +147,7 @@ define( function( require ) {
    * @param {string} label
    * @returns {AquaRadioButton}
    */
-  var createRadioButton = function( property, value, label ) {
+  const createRadioButton = function( property, value, label ) {
     return new AquaRadioButton( property, value,
       new Text( label, CurveFittingConstants.CONTROL_TEXT_OPTIONS ),
       CurveFittingConstants.RADIO_BUTTON_OPTIONS );
