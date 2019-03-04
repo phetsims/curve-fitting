@@ -9,40 +9,40 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  var Dialog = require( 'SUN/Dialog' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
-  var HStrut = require( 'SCENERY/nodes/HStrut' );
-  var Image = require( 'SCENERY/nodes/Image' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var MathSymbolFont = require( 'SCENERY_PHET/MathSymbolFont' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
+  const curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  const Dialog = require( 'SUN/Dialog' );
+  const HBox = require( 'SCENERY/nodes/HBox' );
+  const HStrut = require( 'SCENERY/nodes/HStrut' );
+  const Image = require( 'SCENERY/nodes/Image' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const MathSymbolFont = require( 'SCENERY_PHET/MathSymbolFont' );
+  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const VBox = require( 'SCENERY/nodes/VBox' );
 
   // images
-  var equationHelpImage = require( 'image!CURVE_FITTING/equation-help.png' );
+  const equationHelpImage = require( 'image!CURVE_FITTING/equation-help.png' );
 
   // strings
-  var numberOfDataPointsString = require( 'string!CURVE_FITTING/numberOfDataPoints' );
-  var numberOfParameters1String = require( 'string!CURVE_FITTING/numberOfParameters1' );
-  var numberOfParameters2String = require( 'string!CURVE_FITTING/numberOfParameters2' );
-  var symbolFString = require( 'string!CURVE_FITTING/symbol.f' );
-  var symbolNString = require( 'string!CURVE_FITTING/symbol.N' );
-  var theReducedChiSquaredStatisticIsString = require( 'string!CURVE_FITTING/theReducedChiSquaredStatisticIs' );
+  const numberOfDataPointsString = require( 'string!CURVE_FITTING/numberOfDataPoints' );
+  const numberOfParameters1String = require( 'string!CURVE_FITTING/numberOfParameters1' );
+  const numberOfParameters2String = require( 'string!CURVE_FITTING/numberOfParameters2' );
+  const symbolFString = require( 'string!CURVE_FITTING/symbol.f' );
+  const symbolNString = require( 'string!CURVE_FITTING/symbol.N' );
+  const theReducedChiSquaredStatisticIsString = require( 'string!CURVE_FITTING/theReducedChiSquaredStatisticIs' );
 
   // constants
-  var DIALOG_FONT_SIZE = 14;
-  var DIALOG_PLAIN_FONT = new PhetFont( DIALOG_FONT_SIZE );
-  var DIALOG_MATH_FONT = new MathSymbolFont( DIALOG_FONT_SIZE );
-  var TEXT_SPACING = 6;
+  const DIALOG_FONT_SIZE = 14;
+  const DIALOG_PLAIN_FONT = new PhetFont( DIALOG_FONT_SIZE );
+  const DIALOG_MATH_FONT = new MathSymbolFont( DIALOG_FONT_SIZE );
+  const TEXT_SPACING = 6;
 
   /**
    * @constructor
    */
   function ReducedChiSquaredStatisticDialog() {
 
-    var numberOfDataPointsNode = new HBox( {
+    const numberOfDataPointsNode = new HBox( {
       spacing: TEXT_SPACING,
       children: [
         new Text( symbolNString, { font: DIALOG_MATH_FONT } ),
@@ -50,7 +50,7 @@ define( function( require ) {
       ]
     } );
 
-    var numberOfParametersNode = new HBox( {
+    const numberOfParametersNode = new HBox( {
       spacing: TEXT_SPACING,
       children: [
         new Text( symbolFString, { font: DIALOG_MATH_FONT } ),
@@ -60,7 +60,7 @@ define( function( require ) {
       ]
     } );
 
-    var contentNode = new VBox( {
+    const contentNode = new VBox( {
       align: 'left',
       spacing: 10,
       children: [

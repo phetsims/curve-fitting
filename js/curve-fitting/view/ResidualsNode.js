@@ -9,15 +9,15 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var Shape = require( 'KITE/Shape' );
+  const curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const Path = require( 'SCENERY/nodes/Path' );
+  const Shape = require( 'KITE/Shape' );
 
   // constants
-  var RESIDUAL_OPTIONS = { stroke: CurveFittingConstants.GRAY_COLOR, lineWidth: 2 };
+  const RESIDUAL_OPTIONS = { stroke: CurveFittingConstants.GRAY_COLOR, lineWidth: 2 };
 
   /**
    * @param {Points} points
@@ -34,24 +34,24 @@ define( function( require ) {
     this.clipArea = Shape.bounds( modelViewTransform.modelToViewBounds( CurveFittingConstants.GRAPH_MODEL_BOUNDS ) );
 
     // create and add path for all residual lines
-    var residualsPath = new Path( null, RESIDUAL_OPTIONS );
+    const residualsPath = new Path( null, RESIDUAL_OPTIONS );
     this.addChild( residualsPath );
 
     /**
-     * updates residuals
+     * Updates the paths for all the residuals from all the points
      */
-    var updateResiduals = function() {
-      var pointsOnGraph = points.getPointsOnGraph();
-
+    const updateResiduals = () => {
       if ( residualsVisibleProperty.value && curve.isCurvePresent() ) {
 
-        var residualsShape = new Shape();
-        // update path residuals, i.e. vertical lines connecting data points to curve
-        pointsOnGraph.forEach( function( point ) {
+        const pointsOnGraph = points.getPointsOnGraph();
+        const residualsShape = new Shape();
+        // updates the path residuals which are the vertical lines connecting data points to curve
+        pointsOnGraph.forEach( point => {
           residualsShape.moveToPoint( point.positionProperty.value );
           residualsShape.verticalLineTo( curve.getYValueAt( point.positionProperty.value.x ) );
         } );
         residualsPath.setShape( modelViewTransform.modelToViewShape( residualsShape ) );
+
       }
       else {
         residualsPath.setShape( null );
@@ -66,5 +66,4 @@ define( function( require ) {
   curveFitting.register( 'ResidualsNode', ResidualsNode );
 
   return inherit( Node, ResidualsNode );
-} )
-;
+} );
