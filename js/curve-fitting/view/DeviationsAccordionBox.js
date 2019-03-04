@@ -68,8 +68,10 @@ define( function( require ) {
       buttonYMargin: 5,
       contentXMargin: 10,
       contentYMargin: 5,
-      buttonTouchAreaXDilation: 8,
-      buttonTouchAreaYDilation: 8
+      expandCollapseButtonOptions: {
+        touchAreaXDilation: 8,
+        touchAreaYDilation: 8
+      }
     }, options );
 
     // X^2 barometer
