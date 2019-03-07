@@ -15,8 +15,8 @@ define( function( require ) {
   var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
   var NumberProperty = require( 'AXON/NumberProperty' );
-  var Property = require( 'AXON/Property' );
   var Vector2 = require( 'DOT/Vector2' );
+  var Vector2Property = require( 'DOT/Vector2Property' );
 
   /**
    * @param {Object} [options]
@@ -30,8 +30,9 @@ define( function( require ) {
     }, options );
 
     var self = this;
+
     // @public {Property.<Vector2>} position of point
-    this.positionProperty = new Property( options.position );
+    this.positionProperty = new Vector2Property( options.position );
 
     // @public (read-only) {Property.<boolean>}  is the point inside the graph? (points outside the graph ares are not used for curve fitting purposes)
     this.isInsideGraphProperty = new BooleanProperty( false );
