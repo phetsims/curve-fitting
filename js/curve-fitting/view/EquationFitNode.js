@@ -11,19 +11,19 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var MathSymbols = require( 'SCENERY_PHET/MathSymbols' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var RichText = require( 'SCENERY/nodes/RichText' );
-  var Text = require( 'SCENERY/nodes/Text' );
+  const curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  const HBox = require( 'SCENERY/nodes/HBox' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const MathSymbols = require( 'SCENERY_PHET/MathSymbols' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const RichText = require( 'SCENERY/nodes/RichText' );
+  const Text = require( 'SCENERY/nodes/Text' );
 
   // constants
-  var TEXT_OPTIONS = { font: new PhetFont( 12 ) };
-  var PARAMETER_TEXT_OPTIONS = {
+  const TEXT_OPTIONS = { font: new PhetFont( 12 ) };
+  const PARAMETER_TEXT_OPTIONS = {
     font: new PhetFont( {
       weight: 'bold',
       size: 12
@@ -32,12 +32,12 @@ define( function( require ) {
   };
 
   // strings
-  var symbolAString = require( 'string!CURVE_FITTING/symbol.a' );
-  var symbolBString = require( 'string!CURVE_FITTING/symbol.b' );
-  var symbolCString = require( 'string!CURVE_FITTING/symbol.c' );
-  var symbolDString = require( 'string!CURVE_FITTING/symbol.d' );
-  var symbolXString = require( 'string!CURVE_FITTING/symbol.x' );
-  var symbolYString = require( 'string!CURVE_FITTING/symbol.y' );
+  const symbolAString = require( 'string!CURVE_FITTING/symbol.a' );
+  const symbolBString = require( 'string!CURVE_FITTING/symbol.b' );
+  const symbolCString = require( 'string!CURVE_FITTING/symbol.c' );
+  const symbolDString = require( 'string!CURVE_FITTING/symbol.d' );
+  const symbolXString = require( 'string!CURVE_FITTING/symbol.x' );
+  const symbolYString = require( 'string!CURVE_FITTING/symbol.y' );
 
   /**
    * @param {Property.<number>} orderFitProperty parameter to track.
@@ -45,13 +45,12 @@ define( function( require ) {
    * @constructor
    */
   function EquationFitNode( orderFitProperty, options ) {
-    var self = this;
-    var equationTextArray = [];
-    var boxNode;
+    const equationTextArray = [];
+    let boxNode;
 
-    for ( var i = 1; i < CurveFittingConstants.MAX_ORDER_OF_FIT + 1; i++ ) {
+    for ( let i = 1; i < CurveFittingConstants.MAX_ORDER_OF_FIT + 1; i++ ) {
       boxNode = new HBox( { align: 'bottom' } );
-      var yNode = new Text( symbolYString + ' ' + MathSymbols.EQUAL_TO, TEXT_OPTIONS );
+      const yNode = new Text( symbolYString + ' ' + MathSymbols.EQUAL_TO, TEXT_OPTIONS );
       boxNode.addChild( yNode );
 
       // first order of fit
@@ -82,8 +81,8 @@ define( function( require ) {
     Node.call( this, options );
 
     // add observer
-    orderFitProperty.link( function( orderFit ) {
-      self.children = [ equationTextArray[ orderFit - 1 ] ];
+    orderFitProperty.link( orderFit => {
+      this.children = [ equationTextArray[ orderFit - 1 ] ];
     } );
   }
 
