@@ -93,7 +93,7 @@ define( function( require ) {
     const textNodes = symbolStrings.map( symbolString => new Text( symbolString, PARAMETER_TEXT_OPTIONS ) );
 
     // blockNode stores all elements of the right hand side of the equation
-    const blockNodes = textNodes.map( ( textNode, index ) => this.blockCreatorNode( textNode, index ) );
+    const blockNodes = textNodes.map( ( textNode, index ) => this.createPolynomialHBox( textNode, index ) );
 
     // create the left hand side of equation ( with equal sign)
     const yNode = new Text( symbolYString + ' =', TEXT_OPTIONS );
@@ -193,14 +193,14 @@ define( function( require ) {
 
   return inherit( Panel, EquationGraphPanelNode, {
     /**
-     * returns a hBox containing a numerical value and a polynomial to the power 'order'
+     * returns a hBox containing a numerical coefficient and a polynomial to the power 'order'
      * eg. -4.0 x^3
-     * @param {Text} numberText
+     * @param {Text} coefficientText
      * @param {number} order - order of the specific polynomial
      * @returns {HBox}
      * @private
      */
-    blockCreatorNode: function( numberText, order ) {
+    createPolynomialHBox: function( coefficientText, order ) {
       let polynomialText;
       if ( order === 0 ) {
         polynomialText = new Text( '', TEXT_OPTIONS );
@@ -214,7 +214,7 @@ define( function( require ) {
       return new HBox( {
         align: 'bottom',
         spacing: 2,
-        children: [ numberText, polynomialText ]
+        children: [ coefficientText, polynomialText ]
       } );
     }
   } );
