@@ -11,43 +11,43 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var MathSymbols = require( 'SCENERY_PHET/MathSymbols' );
-  var Panel = require( 'SUN/Panel' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var RichText = require( 'SCENERY/nodes/RichText' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var Util = require( 'DOT/Util' );
+  const curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  const ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
+  const HBox = require( 'SCENERY/nodes/HBox' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const MathSymbols = require( 'SCENERY_PHET/MathSymbols' );
+  const Panel = require( 'SUN/Panel' );
+  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const RichText = require( 'SCENERY/nodes/RichText' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const Util = require( 'DOT/Util' );
 
   // strings
-  var equationString = require( 'string!CURVE_FITTING/equation' );
-  var symbolAString = require( 'string!CURVE_FITTING/symbol.a' );
-  var symbolBString = require( 'string!CURVE_FITTING/symbol.b' );
-  var symbolCString = require( 'string!CURVE_FITTING/symbol.c' );
-  var symbolDString = require( 'string!CURVE_FITTING/symbol.d' );
-  var symbolXString = require( 'string!CURVE_FITTING/symbol.x' );
-  var symbolYString = require( 'string!CURVE_FITTING/symbol.y' );
+  const equationString = require( 'string!CURVE_FITTING/equation' );
+  const symbolAString = require( 'string!CURVE_FITTING/symbol.a' );
+  const symbolBString = require( 'string!CURVE_FITTING/symbol.b' );
+  const symbolCString = require( 'string!CURVE_FITTING/symbol.c' );
+  const symbolDString = require( 'string!CURVE_FITTING/symbol.d' );
+  const symbolXString = require( 'string!CURVE_FITTING/symbol.x' );
+  const symbolYString = require( 'string!CURVE_FITTING/symbol.y' );
 
   // constants
-  var BUTTON_LENGTH = 16;
-  var PANEL_OPTIONS = {
+  const BUTTON_LENGTH = 16;
+  const PANEL_OPTIONS = {
     cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
     fill: 'white'
   };
-  var PARAMETER_TEXT_OPTIONS = {
+  const PARAMETER_TEXT_OPTIONS = {
     font: new PhetFont( {
       weight: 'bold',
       size: 12
     } ),
     fill: CurveFittingConstants.BLUE_COLOR
   };
-  var TEXT_OPTIONS = { font: new PhetFont( 12 ) };
+  const TEXT_OPTIONS = { font: new PhetFont( 12 ) };
   //  max number precision decimal places for ascending order of coefficient of polynomials
-  var MAX_DECIMALS = [ 1, 2, 3, 3 ];
+  const MAX_DECIMALS = [ 1, 2, 3, 3 ];
 
   /**
    * @param {Function} getCoefficientArray - returns an array of coefficient of the polynomial curve sorted in ascending order {<number>[]}
@@ -64,22 +64,21 @@ define( function( require ) {
                                    equationPanelExpandedProperty,
                                    curveVisibleProperty,
                                    options ) {
-    var self = this;
 
     //  visible text node when panel is not expanded
-    var titleNode = new Text( equationString, TEXT_OPTIONS );
+    const titleNode = new Text( equationString, TEXT_OPTIONS );
 
     //  visible node when panel is expanded
-    var boxNode = new HBox( { align: 'bottom' } );
+    const boxNode = new HBox( { align: 'bottom' } );
 
     // create expand button
-    var expandCollapseButton = new ExpandCollapseButton( equationPanelExpandedProperty, {
+    const expandCollapseButton = new ExpandCollapseButton( equationPanelExpandedProperty, {
       sideLength: BUTTON_LENGTH
     } );
     expandCollapseButton.touchArea = expandCollapseButton.localBounds.dilated( BUTTON_LENGTH / 3 );
     expandCollapseButton.mouseArea = expandCollapseButton.localBounds.dilated( BUTTON_LENGTH / 3 );
 
-    var content = new HBox( {
+    const content = new HBox( {
       spacing: 5,
       children: [ expandCollapseButton, titleNode ]
     } );
@@ -87,21 +86,17 @@ define( function( require ) {
     Panel.call( this, content, _.extend( PANEL_OPTIONS, options ) );
 
     // convenience array, strings are sorted in ascending order of coefficient of polynomials
-    var symbolStrings = [ symbolDString, symbolCString, symbolBString, symbolAString ];
+    const symbolStrings = [ symbolDString, symbolCString, symbolBString, symbolAString ];
 
     // text nodes that contain the numerical value of the polynomial coefficients
     // strings are place holders that will be updated by numerical value
-    var textNodes = symbolStrings.map( function( symbolString ) {
-      return new Text( symbolString, PARAMETER_TEXT_OPTIONS );
-    } );
+    const textNodes = symbolStrings.map( symbolString => new Text( symbolString, PARAMETER_TEXT_OPTIONS ) );
 
     // blockNode stores all elements of the right hand side of the equation
-    var blockNodes = textNodes.map( function( textNode, index ) {
-      return self.blockCreatorNode( textNode, index );
-    } );
+    const blockNodes = textNodes.map( ( textNode, index ) => this.blockCreatorNode( textNode, index ) );
 
     // create the left hand side of equation ( with equal sign)
-    var yNode = new Text( symbolYString + ' =', TEXT_OPTIONS );
+    const yNode = new Text( symbolYString + ' =', TEXT_OPTIONS );
 
     //  update the relevant blocks on the right hand side of equation.
     orderProperty.link( function( order ) {
@@ -119,32 +114,6 @@ define( function( require ) {
       }
     } );
 
-    // add observer, present of the lifetime of the simulation
-    curveVisibleProperty.linkAttribute( this, 'visible' );
-    curveVisibleProperty.link( updateCoefficients );
-    equationPanelExpandedProperty.link( updateCoefficients );
-    updateCurveEmitter.addListener( updateCoefficients );
-
-    /**
-     * update the numerical coefficient of a node
-     * @param {number} order
-     * @param {number} maxDecimalPlaces
-     * @param {Text} textNode
-     */
-    function updateCoefficient( order, maxDecimalPlaces, textNode ) {
-      var numberInfo = roundNumber( getCoefficientArray()[ order ], maxDecimalPlaces );
-      textNode.setText( numberInfo.signToString + numberInfo.absoluteNumberToString );
-    }
-
-    /**
-     * update all the coefficients
-     */
-    function updateCoefficients() {
-      textNodes.forEach( function( textNode, index ) {
-        updateCoefficient( index, MAX_DECIMALS[ index ], textNode );
-      } );
-    }
-
     /**
      * Function that returns (for numbers smaller than ten) a number (as a string)  with a fixed number of decimal places
      * whereas for numbers larger than ten, the number/string is returned a fixed number of significant figures
@@ -153,7 +122,7 @@ define( function( require ) {
      * @param {number} maxDecimalPlaces
      * @returns {Object}
      */
-    function roundNumber( number, maxDecimalPlaces ) {
+    const roundNumber = ( number, maxDecimalPlaces ) => {
 
       // eg. if maxDecimalPlaces = 3
       // 9999.11 -> 9999  (number larger than 10^3) are rounded to unity
@@ -167,9 +136,9 @@ define( function( require ) {
       // 0.00011 -> 0.000
 
       // number = mantissa times 10^(exponent) where the mantissa is between 1 and 10 (or -1 to -10)
-      var exponent = Math.floor( Util.log10( Math.abs( number ) ) );
+      const exponent = Math.floor( Util.log10( Math.abs( number ) ) );
 
-      var decimalPlaces;
+      let decimalPlaces;
       if ( exponent >= maxDecimalPlaces ) {
         decimalPlaces = 0;
       }
@@ -179,11 +148,11 @@ define( function( require ) {
       else {
         decimalPlaces = maxDecimalPlaces;
       }
-      var roundedNumber = Util.toFixedNumber( number, decimalPlaces );
-      var numberToString = Util.toFixed( number, decimalPlaces );
-      var signToString = (roundedNumber >= 0) ? MathSymbols.PLUS : MathSymbols.MINUS; // N.B.
-      var absoluteNumberToString = Util.toFixed( Math.abs( number ), decimalPlaces ); // N.B.
-      var isStringZero = (numberToString === Util.toFixed( 0, decimalPlaces ));
+      const roundedNumber = Util.toFixedNumber( number, decimalPlaces );
+      const numberToString = Util.toFixed( number, decimalPlaces );
+      const signToString = (roundedNumber >= 0) ? MathSymbols.PLUS : MathSymbols.MINUS; // N.B.
+      const absoluteNumberToString = Util.toFixed( Math.abs( number ), decimalPlaces ); // N.B.
+      const isStringZero = (numberToString === Util.toFixed( 0, decimalPlaces ));
 
       return {
         numberToString: numberToString, // {string}
@@ -191,7 +160,33 @@ define( function( require ) {
         absoluteNumberToString: absoluteNumberToString, // {string}
         isStringZero: isStringZero  // {boolean}
       };
-    }
+    };
+
+    /**
+     * update the numerical coefficient of a node
+     * @param {number} order
+     * @param {number} maxDecimalPlaces
+     * @param {Text} textNode
+     */
+    const updateCoefficient = ( order, maxDecimalPlaces, textNode ) => {
+      const numberInfo = roundNumber( getCoefficientArray()[ order ], maxDecimalPlaces );
+      textNode.setText( numberInfo.signToString + numberInfo.absoluteNumberToString );
+    };
+
+    /**
+     * update all the coefficients
+     */
+    const updateCoefficients = () => {
+      textNodes.forEach( ( textNode, index ) => {
+        updateCoefficient( index, MAX_DECIMALS[ index ], textNode );
+      } );
+    };
+
+    // add observer, present of the lifetime of the simulation
+    curveVisibleProperty.linkAttribute( this, 'visible' );
+    curveVisibleProperty.link( updateCoefficients );
+    equationPanelExpandedProperty.link( updateCoefficients );
+    updateCurveEmitter.addListener( updateCoefficients );
   }
 
   curveFitting.register( 'EquationGraphPanelNode', EquationGraphPanelNode );
@@ -206,7 +201,7 @@ define( function( require ) {
      * @private
      */
     blockCreatorNode: function( numberText, order ) {
-      var polynomialText;
+      let polynomialText;
       if ( order === 0 ) {
         polynomialText = new Text( '', TEXT_OPTIONS );
       }
