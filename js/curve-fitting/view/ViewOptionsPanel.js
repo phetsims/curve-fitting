@@ -9,18 +9,18 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Checkbox = require( 'SUN/Checkbox' );
-  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Panel = require( 'SUN/Panel' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
+  const Checkbox = require( 'SUN/Checkbox' );
+  const curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Panel = require( 'SUN/Panel' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const VBox = require( 'SCENERY/nodes/VBox' );
 
   // strings
-  var curveString = require( 'string!CURVE_FITTING/curve' );
-  var residualsString = require( 'string!CURVE_FITTING/residuals' );
-  var valuesString = require( 'string!CURVE_FITTING/values' );
+  const curveString = require( 'string!CURVE_FITTING/curve' );
+  const residualsString = require( 'string!CURVE_FITTING/residuals' );
+  const valuesString = require( 'string!CURVE_FITTING/values' );
 
   /**
    * @param {Property.<boolean>} curveVisibleProperty
@@ -31,13 +31,26 @@ define( function( require ) {
    */
   function ViewOptionsPanel( curveVisibleProperty, residualsVisibleProperty, valuesVisibleProperty, options ) {
 
+    /**
+     * Creates a checkbox for this panel.
+     *
+     * @param {Property} property
+     * @param {string} label
+     * @returns {Checkbox}
+     */
+    const createCheckbox = ( property, label ) => new Checkbox(
+        new Text( label, CurveFittingConstants.CONTROL_TEXT_OPTIONS ),
+        property,
+        CurveFittingConstants.CHECK_BOX_OPTIONS
+    );
+
     // checkboxes
-    var curveCheckbox = createCheckbox( curveVisibleProperty, curveString );
-    var residualsCheckbox = createCheckbox( residualsVisibleProperty, residualsString );
-    var valuesCheckbox = createCheckbox( valuesVisibleProperty, valuesString );
+    const curveCheckbox = createCheckbox( curveVisibleProperty, curveString );
+    const residualsCheckbox = createCheckbox( residualsVisibleProperty, residualsString );
+    const valuesCheckbox = createCheckbox( valuesVisibleProperty, valuesString );
 
     // vertical layout
-    var contentNode = new VBox( {
+    const contentNode = new VBox( {
       spacing: 5,
       align: 'left',
       children: [
@@ -49,10 +62,10 @@ define( function( require ) {
     Panel.call( this, contentNode, options );
 
     // Saves state of residualsVisibleProperty while the residuals checkbox is disabled.
-    var wereResidualsVisible = residualsVisibleProperty.get();
+    let wereResidualsVisible = residualsVisibleProperty.get();
 
     // Visibility of the curve affects other controls.
-    curveVisibleProperty.link( function( isCurveVisible ) {
+    curveVisibleProperty.link( isCurveVisible => {
 
       // Enable residuals checkbox when curve is checked.
       residualsCheckbox.enabled = isCurveVisible;
@@ -72,18 +85,6 @@ define( function( require ) {
   }
 
   curveFitting.register( 'ViewOptionsPanel', ViewOptionsPanel );
-
-  /**
-   * Creates a checkbox for this panel.
-   *
-   * @param {Property} property
-   * @param {string} label
-   * @returns {Checkbox}
-   */
-  var createCheckbox = function( property, label ) {
-    return new Checkbox( new Text( label, CurveFittingConstants.CONTROL_TEXT_OPTIONS ), property,
-      CurveFittingConstants.CHECK_BOX_OPTIONS );
-  };
 
   return inherit( Panel, ViewOptionsPanel );
 } );
