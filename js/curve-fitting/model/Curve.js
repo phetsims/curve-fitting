@@ -5,65 +5,60 @@
  *
  * @author Andrey Zelenkov (Mlearner)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  var CurveShape = require( 'CURVE_FITTING/curve-fitting/model/CurveShape' );
-  var Emitter = require( 'AXON/Emitter' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Matrix = require( 'DOT/Matrix' );
-  var NumberProperty = require( 'AXON/NumberProperty' );
+  const curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  const CurveShape = require( 'CURVE_FITTING/curve-fitting/model/CurveShape' );
+  const Emitter = require( 'AXON/Emitter' );
+  const Matrix = require( 'DOT/Matrix' );
+  const NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
-  var EPSILON = 1.0E-10;
-  var DETERMINANT_EPSILON = 1.0E-30;
+  const EPSILON = 1.0E-10;
+  const DETERMINANT_EPSILON = 1.0E-30;
 
-  /**
-   * @param {Points} points - array of points
-   * @param {Property.<number>[]} sliderPropertyArray - an array of property starting from dProperty up to aProperty
-   * @param {Property.<number>} orderProperty - order of the polynomial that describes the curve
-   * @param {Property.<string>} fitProperty - the method of fitting the curve to data points
-   * @constructor
-   */
-  function Curve( points, sliderPropertyArray, orderProperty, fitProperty ) {
+  class Curve {
 
-    // @public {Property.<number>}  X^2 deviation value, a number ranging from 0 to + $\infty$
-    this.chiSquaredProperty = new NumberProperty( 0 );
+    /**
+     * @param {Points} points - array of points
+     * @param {Property.<number>[]} sliderPropertyArray - an array of property starting from dProperty up to aProperty
+     * @param {Property.<number>} orderProperty - order of the polynomial that describes the curve
+     * @param {Property.<string>} fitProperty - the method of fitting the curve to data points
+     */
+    constructor( points, sliderPropertyArray, orderProperty, fitProperty ) {
+      // @public {Property.<number>}  X^2 deviation value, a number ranging from 0 to + $\infty$
+      this.chiSquaredProperty = new NumberProperty( 0 );
 
-    // @public {Property.<number>}  r^2 deviation value, a number ranging from 0 to 1
-    this.rSquaredProperty = new NumberProperty( 0 );
+      // @public {Property.<number>}  r^2 deviation value, a number ranging from 0 to 1
+      this.rSquaredProperty = new NumberProperty( 0 );
 
-    // @public (read-only) {Array.<number>} array of coefficients of the polynomial curve stored in ascending polynomial order.
-    // eg. y = a_0 +a_1 x + a_2 x^2 + a_3 x^3  yields [a_0, a_1, a_2, a_3]
-    // the length of the array is equal to the order of the polynomial + 1
-    this.coefficients = [];
+      // @public (read-only) {Array.<number>} array of coefficients of the polynomial curve stored in ascending polynomial order.
+      // eg. y = a_0 +a_1 x + a_2 x^2 + a_3 x^3  yields [a_0, a_1, a_2, a_3]
+      // the length of the array is equal to the order of the polynomial + 1
+      this.coefficients = [];
 
-    // @public
-    this.updateCurveEmitter = new Emitter();
+      // @public
+      this.updateCurveEmitter = new Emitter();
 
-    // @private {Property.<number>[]} array of slider property stored in ascending polynomial order
-    this.sliderPropertyArray = sliderPropertyArray;
+      // @private {Property.<number>[]} array of slider property stored in ascending polynomial order
+      this.sliderPropertyArray = sliderPropertyArray;
 
-    // @private
-    this.orderProperty = orderProperty;
-    this.fitProperty = fitProperty;
-    this.points = points;
-  }
-
-  curveFitting.register( 'Curve', Curve );
-
-  return inherit( Object, Curve, {
+      // @private
+      this.orderProperty = orderProperty;
+      this.fitProperty = fitProperty;
+      this.points = points;
+    }
 
     /**
      * resets
      * @public
      */
-    reset: function() {
+    reset() {
       this.rSquaredProperty.reset();
       this.chiSquaredProperty.reset();
-    },
+    }
 
     /**
      * gets coefficient array of the polynomial, sorted in ascending order
@@ -71,9 +66,9 @@ define( function( require ) {
      * @returns {number[]}
      * @public (read-only)
      */
-    getCoefficients: function() {
+    getCoefficients() {
       return this.coefficients;
-    },
+    }
 
     /**
      * does a curve exist
@@ -81,9 +76,9 @@ define( function( require ) {
      * @returns {boolean}
      * @public (read-only)
      */
-    isCurvePresent: function() {
+    isCurvePresent() {
       return ( this.points.getNumberPointsOnGraph() >= 2 || this.fitProperty.value === 'adjustable' );
-    },
+    }
 
     /**
      * gets the y value of the curve associated with the x coordinate
@@ -91,31 +86,31 @@ define( function( require ) {
      * @returns {number}
      * @public (read-only)
      */
-    getYValueAt: function( x ) {
+    getYValueAt( x ) {
       assert && assert( this.coefficients.length === this.orderProperty.value + 1, 'the coefficient array should be ' + this.orderProperty.value + 1 + ' long but is ' + this.coefficients.length );
 
       return this.coefficients.reduce( function( accumulator, value, index ) {
         return accumulator + value * Math.pow( x, index );
       }, 0 );
-    },
+    }
 
     /**
      * gets the shape of the curve
      * @returns {Shape}
      * @public
      */
-    getShape: function() {
+    getShape() {
       return new CurveShape( this.getYValueAt.bind( this ), this.coefficients, this.orderProperty.value );
-    },
+    }
 
     /**
      * gets the shape of the debug curve
      * @returns {Shape}
      * @public
      */
-    getDebugShape: function() {
+    getDebugShape() {
       return new CurveShape( this.getYValueAt.bind( this ), this.coefficients, this.orderProperty.value, { debug: true } );
-    },
+    }
 
     /**
      * updates fit
@@ -123,7 +118,7 @@ define( function( require ) {
      * sends a message to the view to update itself
      * @public
      */
-    updateFit: function() {
+    updateFit() {
 
       if ( this.fitProperty.value === 'best' ) {
         this.coefficients = this.getBestFitCoefficients();
@@ -139,16 +134,17 @@ define( function( require ) {
 
       // send a message to the view to update the curve and the residuals
       this.updateCurveEmitter.emit();
-    },
+    }
+
     /**
      * gets adjustable fit coefficients sorted in ascending order
      * the number of coefficients is equal to 1 + order
      * @returns {number[]} solution an array containing the coefficients of the polynomial for adjustable values
      * @private
      */
-    getAdjustableFitCoefficients: function() {
-      var order = this.orderProperty.value;
-      var adjustableFitCoefficients = [];
+    getAdjustableFitCoefficients() {
+      const order = this.orderProperty.value;
+      const adjustableFitCoefficients = [];
       // assign the slider values to the coefficients in the array
       this.sliderPropertyArray.forEach( function( sliderProperty, index ) {
         // ensure that only the relevant coefficients are passed on to the array
@@ -157,7 +153,8 @@ define( function( require ) {
         }
       } );
       return adjustableFitCoefficients;
-    },
+    }
+
     /**
      * updates chi^2 and r^2 deviations
      * the chi squared and r squared calculations depend solely on the point's positions, their deltas and the
@@ -169,9 +166,11 @@ define( function( require ) {
      * it is possible for 'adjustable fit' to get such a bad fit that the standard r squared calculation would yield a negative value.
      * For those cases, the r squared value to zero is set to zero.
      *
+     * TODO: rework this to use ES6 (eg. let, const)
+     *
      * @private
      */
-    updateRAndChiSquared: function() {
+    updateRAndChiSquared() {
 
       var self = this;
       var points = this.points.getPointsOnGraph();
@@ -248,7 +247,8 @@ define( function( require ) {
         assert && assert( rSquared >= 0 && rSquared <= 1, 'rSquared should range from 0 to 1 ');
         this.rSquaredProperty.set( rSquared );
       }
-    },
+    }
+
     /**
      * returns a solution an array containing the coefficients of the polynomial for best fit
 
@@ -263,10 +263,12 @@ define( function( require ) {
      *
      * see http://mathworld.wolfram.com/LeastSquaresFittingPolynomial.html
      *
+     * TODO: rework this to use ES6
+     *
      * @returns {number[]} solution an array containing the best fit coefficients of the polynomial
      * @private
      */
-    getBestFitCoefficients: function() {
+    getBestFitCoefficients() {
 
       var pointsOnGraph = this.points.getPointsOnGraph();
 
@@ -285,11 +287,11 @@ define( function( require ) {
       // fill out the elements of the column Matrix
       for ( i = 0; i < m; ++i ) {
         columnMatrix.set( i, 0, pointsOnGraph.reduce( function( accumulator, point ) {
-            var deltaSquared = Math.pow( point.deltaProperty.value, 2 );
-            var x = point.positionProperty.value.x;
-            var y = point.positionProperty.value.y;
-            return accumulator + Math.pow( x, i ) * y / deltaSquared;
-          }, 0  // initial value of accumulator
+              var deltaSquared = Math.pow( point.deltaProperty.value, 2 );
+              var x = point.positionProperty.value.x;
+              var y = point.positionProperty.value.y;
+              return accumulator + Math.pow( x, i ) * y / deltaSquared;
+            }, 0  // initial value of accumulator
         ) );
       }
 
@@ -297,10 +299,10 @@ define( function( require ) {
       for ( i = 0; i < m; ++i ) {
         for ( j = 0; j < m; ++j ) {
           squareMatrix.set( i, j, pointsOnGraph.reduce( function( accumulator, point ) {
-              var deltaSquared = Math.pow( point.deltaProperty.value, 2 );
-              var x = point.positionProperty.value.x;
-              return accumulator + Math.pow( x, i + j ) / deltaSquared;
-            }, 0 // initial value of accumulator
+                var deltaSquared = Math.pow( point.deltaProperty.value, 2 );
+                var x = point.positionProperty.value.x;
+                return accumulator + Math.pow( x, i + j ) / deltaSquared;
+              }, 0 // initial value of accumulator
           ) );
         }
       }
@@ -332,6 +334,10 @@ define( function( require ) {
 
       return bestFitCoefficients;
     }
-  } );
-} )
-;
+
+  }
+
+  curveFitting.register( 'Curve', Curve );
+
+  return Curve;
+} );
