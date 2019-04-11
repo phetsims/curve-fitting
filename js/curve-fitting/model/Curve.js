@@ -166,15 +166,12 @@ define( require => {
      * it is possible for 'adjustable fit' to get such a bad fit that the standard r squared calculation would yield a negative value.
      * For those cases, the r squared value to zero is set to zero.
      *
-     * TODO: rework this to use ES6 (eg. let, const)
-     *
      * @private
      */
     updateRAndChiSquared() {
 
-      var self = this;
-      var points = this.points.getPointsOnGraph();
-      var numberOfPoints = points.length; //  number of points in the array
+      const points = this.points.getPointsOnGraph();
+      const numberOfPoints = points.length; //  number of points in the array
 
       if ( numberOfPoints < 2 ) {
         // rSquared and chiSquared do not have any meaning, set them to zero and bail out
@@ -183,23 +180,22 @@ define( require => {
       }
       else {
         // calculation of rSquared and chiSquared
-        var weightSum = 0;
-        var ySum = 0;
-        var yySum = 0;
-        var yAtSum = 0;
-        var yAtySum = 0;
-        var yAtyAtSum = 0;
-        var x;
-        var y;
-        var yAt;
-        var weight;
-        var rSquared;
-        var chiSquared;
+        let weightSum = 0;
+        let ySum = 0;
+        let yySum = 0;
+        let yAtSum = 0;
+        let yAtySum = 0;
+        let yAtyAtSum = 0;
+        let x;
+        let y;
+        let yAt;
+        let weight;
+        let rSquared;
 
-        points.forEach( function( point ) {
+        points.forEach( point => {
           x = point.positionProperty.value.x; // x value of this point
           y = point.positionProperty.value.y; // y value of this point
-          yAt = self.getYValueAt( x ); // y value of the curve
+          yAt = this.getYValueAt( x ); // y value of the curve
           weight = 1 / (point.deltaProperty.value * point.deltaProperty.value); // weight of this point
 
           weightSum = weightSum + weight; // sum of weights
@@ -210,23 +206,23 @@ define( require => {
           yAtyAtSum = yAtyAtSum + weight * yAt * yAt; // weighted sum of the squared of the approximated y value
         } );
 
-        var weightAverage = weightSum / numberOfPoints; // average of the weights
-        var denominator = (weightAverage * numberOfPoints); // convenience variable
-        var yAverage = ySum / denominator; // weighted average of the y values
-        var yyAverage = yySum / denominator; // weighted average of the <y_i y_i> correlation
+        const weightAverage = weightSum / numberOfPoints; // average of the weights
+        const denominator = (weightAverage * numberOfPoints); // convenience variable
+        const yAverage = ySum / denominator; // weighted average of the y values
+        const yyAverage = yySum / denominator; // weighted average of the <y_i y_i> correlation
 
-        var residualSumOfSquares = (yySum - 2 * yAtySum + yAtyAtSum);
+        const residualSumOfSquares = (yySum - 2 * yAtySum + yAtyAtSum);
         // average of weighted squares of residuals, a.k.a average of residual squares
-        var averageOfResidualSquares = residualSumOfSquares / denominator;
+        const averageOfResidualSquares = residualSumOfSquares / denominator;
         //  average of weighted squares
-        var averageOfSquares = yyAverage - yAverage * yAverage;
+        const averageOfSquares = yyAverage - yAverage * yAverage;
         // sum of of the weighted squares of residuals
 
 
         // calculation of chiSquared
-        var order = this.orderProperty.value;
-        var degreesOfFreedom = numberOfPoints - order - 1;
-        chiSquared = residualSumOfSquares / Math.max( degreesOfFreedom, 1 );
+        const order = this.orderProperty.value;
+        const degreesOfFreedom = numberOfPoints - order - 1;
+        const chiSquared = residualSumOfSquares / Math.max( degreesOfFreedom, 1 );
         this.chiSquaredProperty.set( chiSquared );
 
         // calculation of rSquared  = 1 - averageOfResidualSquares / averageOfSquares;
@@ -263,33 +259,31 @@ define( require => {
      *
      * see http://mathworld.wolfram.com/LeastSquaresFittingPolynomial.html
      *
-     * TODO: rework this to use ES6
-     *
      * @returns {number[]} solution an array containing the best fit coefficients of the polynomial
      * @private
      */
     getBestFitCoefficients() {
 
-      var pointsOnGraph = this.points.getPointsOnGraph();
+      const pointsOnGraph = this.points.getPointsOnGraph();
 
-      var solutionArrayLength = this.orderProperty.value + 1;
+      const solutionArrayLength = this.orderProperty.value + 1;
 
       // the rank of the matrix cannot be larger than the number of points with unique x value
       // the rank of the matrix, m, is the order +1, or the number of points with unique x value, whichever is less.
-      var m = Math.min( solutionArrayLength, this.points.getNumberUniquePositionX() );
+      const m = Math.min( solutionArrayLength, this.points.getNumberUniquePositionX() );
 
-      var squareMatrix = new Matrix( m, m ); // matrix X
-      var columnMatrix = new Matrix( m, 1 ); // matrix Y
+      const squareMatrix = new Matrix( m, m ); // matrix X
+      const columnMatrix = new Matrix( m, 1 ); // matrix Y
 
-      var i;
-      var j;
+      let i;
+      let j;
 
       // fill out the elements of the column Matrix
       for ( i = 0; i < m; ++i ) {
-        columnMatrix.set( i, 0, pointsOnGraph.reduce( function( accumulator, point ) {
-              var deltaSquared = Math.pow( point.deltaProperty.value, 2 );
-              var x = point.positionProperty.value.x;
-              var y = point.positionProperty.value.y;
+        columnMatrix.set( i, 0, pointsOnGraph.reduce( ( accumulator, point ) => {
+              const deltaSquared = Math.pow( point.deltaProperty.value, 2 );
+              const x = point.positionProperty.value.x;
+              const y = point.positionProperty.value.y;
               return accumulator + Math.pow( x, i ) * y / deltaSquared;
             }, 0  // initial value of accumulator
         ) );
@@ -298,9 +292,9 @@ define( require => {
       // fill out the elements of the square Matrix
       for ( i = 0; i < m; ++i ) {
         for ( j = 0; j < m; ++j ) {
-          squareMatrix.set( i, j, pointsOnGraph.reduce( function( accumulator, point ) {
-                var deltaSquared = Math.pow( point.deltaProperty.value, 2 );
-                var x = point.positionProperty.value.x;
+          squareMatrix.set( i, j, pointsOnGraph.reduce( ( accumulator, point ) => {
+                const deltaSquared = Math.pow( point.deltaProperty.value, 2 );
+                const x = point.positionProperty.value.x;
                 return accumulator + Math.pow( x, i + j ) / deltaSquared;
               }, 0 // initial value of accumulator
           ) );
@@ -310,10 +304,10 @@ define( require => {
       // the coefficients are ordered in order of polynomial, eg. a_0, a_1, a_2, etc,
       // bestCoefficients must have a length of solutionArrayLength.
       // solutionArrayLength may be longer than the rank of the square matrix
-      var bestFitCoefficients = [];
+      const bestFitCoefficients = [];
 
       // filled the bestFitCoefficients array with zeros, the default solution
-      var n;
+      let n;
       for ( n = 0; n < solutionArrayLength; n++ ) {
         bestFitCoefficients.push( 0 );
       }
@@ -321,14 +315,14 @@ define( require => {
       // if the square matrix is not singular, it implies that a solution exists
       if ( Math.abs( squareMatrix.det() ) > DETERMINANT_EPSILON ) {
         // the solution matrix, A, is X^-1 * Y
-        var solutionMatrix = squareMatrix.solve( columnMatrix );
+        const solutionMatrix = squareMatrix.solve( columnMatrix );
         // unpack the column solution Matrix into a javascript array
         for ( n = 0; n < m; n++ ) {
           bestFitCoefficients[ n ] = solutionMatrix.get( n, 0 );
         }
       }
 
-      bestFitCoefficients.forEach( function( value, index ) {
+      bestFitCoefficients.forEach( ( value, index ) => {
         assert && assert( typeof value === 'number' && isFinite( value ), 'fit parameter: ' + index + ' is not finite: ' + value );
       } );
 
