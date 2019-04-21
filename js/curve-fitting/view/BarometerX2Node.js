@@ -8,14 +8,13 @@
  * @author Andrey Zelenkov (Mlearner)
  */
 
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
   const ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const Line = require( 'SCENERY/nodes/Line' );
   const Node = require( 'SCENERY/nodes/Node' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
@@ -44,48 +43,89 @@ define( function( require ) {
   const LOWER_LIMIT_ARRAY = [ 0.004, 0.052, 0.118, 0.178, 0.23, 0.273, 0.31, 0.342, 0.369, 0.394, 0.545, 0.695, 0.779, 0.927 ];
   const UPPER_LIMIT_ARRAY = [ 3.8, 3, 2.6, 2.37, 2.21, 2.1, 2.01, 1.94, 1.88, 1.83, 1.57, 1.35, 1.24, 1.07 ];
 
-  /**
-   * @param {Points} points
-   * @param {Property.<number>} chiSquaredProperty - Property that represents x squared deviation.
-   * @param {Property.<boolean>} curveVisibleProperty
-   * @param {Object} [options] for graph node.
-   * @constructor
-   */
-  function BarometerX2Node( points, chiSquaredProperty, curveVisibleProperty,  options ) {
+  class BarometerX2Node extends VBox {
 
-    const valueRectNode = new Rectangle( 0, 0, CurveFittingConstants.BAROMETER_BAR_WIDTH, 0, {
-      fill: 'black' // to be computed by getChiFillFromChiValue
-    } );
-    valueRectNode.rotation = Math.PI;
+    /**
+     * @param {Points} points
+     * @param {Property.<number>} chiSquaredProperty - Property that represents x squared deviation.
+     * @param {Property.<boolean>} curveVisibleProperty
+     * @param {Object} [options] for graph node.
+     */
+    constructor( points, chiSquaredProperty, curveVisibleProperty,  options ) {
 
-    //TODO #120 why are this._contentNode, OFFSET, and VStrut needed? This smells like a workaround for something.
-    this._content = new Node( {
-      children: [
-        valueRectNode,
-        new ArrowNode( 0, 0, 0, -BAR_HEIGHT - HEAD_HEIGHT * 1.5, {
-          headHeight: HEAD_HEIGHT,
-          headWidth: 8,
-          tailWidth: 0.5
-        } )
-      ]
-    } );
+      const valueRectNode = new Rectangle( 0, 0, CurveFittingConstants.BAROMETER_BAR_WIDTH, 0, {
+        fill: 'black' // to be computed by getChiFillFromChiValue
+      } );
+      valueRectNode.rotation = Math.PI;
 
-    VBox.call( this, _.extend( {
-      children: [
-        new VStrut( OFFSET ),
-        this._content
-      ]
-    }, options ) );
+      //TODO #120 why are this._contentNode, OFFSET, and VStrut needed? This smells like a workaround for something.
+      const content = new Node( {
+        children: [
+          valueRectNode,
+          new ArrowNode( 0, 0, 0, -BAR_HEIGHT - HEAD_HEIGHT * 1.5, {
+            headHeight: HEAD_HEIGHT,
+            headWidth: 8,
+            tailWidth: 0.5
+          } )
+        ]
+      } );
 
-    this.addTicks( [ 0, 0.5, 1, 2, 3, 10, 30, 100 ] );
+      super( _.extend( {
+        children: [
+          new VStrut( OFFSET ),
+          content
+        ]
+      }, options ) );
 
-    // no need to unlink, present for the lifetime of the sim
-    chiSquaredProperty.link( chiSquared => {
-      valueRectNode.setRectHeight( valueToYPosition( chiSquared ) );
-      valueRectNode.setFill( getChiFillFromChiValue( chiSquaredProperty.value, points.getNumberPointsOnGraph() ) );
-    } );
+      this._content = content;
 
-    curveVisibleProperty.linkAttribute( valueRectNode, 'visible');
+      this.addTicks( [ 0, 0.5, 1, 2, 3, 10, 30, 100 ] );
+
+      // no need to unlink, present for the lifetime of the sim
+      chiSquaredProperty.link( chiSquared => {
+        valueRectNode.setRectHeight( valueToYPosition( chiSquared ) );
+        valueRectNode.setFill( getChiFillFromChiValue( chiSquaredProperty.value, points.getNumberPointsOnGraph() ) );
+      } );
+
+      curveVisibleProperty.linkAttribute( valueRectNode, 'visible');
+    }
+
+    //TODO #120 very similar to BarometerR2Node, but adds children to this._content
+    /**
+     * Adds a tick.
+     *
+     * @param {number} value
+     */
+    addTick( value ) {
+
+      const y = valueToYPosition( value );
+
+      // tick line
+      const line = new Line( -CurveFittingConstants.BAROMETER_TICK_WIDTH, -y, 0, -y, LINE_OPTIONS );
+      this._content.addChild( line );
+
+      // tick label
+      const label = new Text( value.toString(), {
+        font: TICK_FONT,
+        right: line.left - 2,
+        centerY: line.centerY
+      } );
+      this._content.addChild( label );
+    }
+
+    //TODO #120 entirely duplicated in BarometerR2Node
+    /**
+     * Adds multiple ticks.
+     *
+     * @param {number[]} values
+     */
+    addTicks( values ) {
+      const self = this;
+      values.forEach( function( value ) {
+        self.addTick( value );
+      } );
+    }
+
   }
 
   curveFitting.register( 'BarometerX2Node', BarometerX2Node );
@@ -93,6 +133,7 @@ define( function( require ) {
   /**
    * Convert chi values into barometer color depending on number of points.
    * This algorithm was copied directly from Flash simulation.
+   * TODO: maybe make this a private method of BarometerX2Node
    *
    * @param {number} chiValue - Chi value.
    * @param {number} numberOfPoints - Number of points on Graph.
@@ -104,10 +145,6 @@ define( function( require ) {
     let blue;
     let lowerBound;
     let upperBound;
-    let step1 = null;
-    let step2 = null;
-    let step3 = null;
-    let step4 = null;
 
     if ( numberOfPoints >= 1 && numberOfPoints < 11 ) {
       lowerBound = LOWER_LIMIT_ARRAY[ numberOfPoints - 1 ];
@@ -126,10 +163,10 @@ define( function( require ) {
       upperBound = UPPER_LIMIT_ARRAY[ 12 ];
     }
 
-    step1 = ( 1 + upperBound ) / 2;
-    step2 = ( lowerBound + 1 ) / 2;
-    step3 = ( upperBound + step1 ) / 2;
-    step4 = ( lowerBound + step2 ) / 2;
+    const step1 = ( 1 + upperBound ) / 2;
+    const step2 = ( lowerBound + 1 ) / 2;
+    const step3 = ( upperBound + step1 ) / 2;
+    const step4 = ( lowerBound + step2 ) / 2;
 
     if ( chiValue < lowerBound ) {
       red = 0;
@@ -172,6 +209,7 @@ define( function( require ) {
 
   /**
    * Convert X^2 value to corresponding y coordinate.
+   * TODO: maybe make this a private method of BarometerX2Node
    *
    * @param {number} value - Barometer's X^2 value.
    * @returns {number}
@@ -187,42 +225,5 @@ define( function( require ) {
     }
   }
 
-  return inherit( VBox, BarometerX2Node, {
-
-    //TODO #120 very similar to BarometerR2Node, but adds children to this._content
-    /**
-     * Adds a tick.
-     *
-     * @param {number} value
-     */
-    addTick: function( value ) {
-
-      const y = valueToYPosition( value );
-
-      // tick line
-      const line = new Line( -CurveFittingConstants.BAROMETER_TICK_WIDTH, -y, 0, -y, LINE_OPTIONS );
-      this._content.addChild( line );
-
-      // tick label
-      const label = new Text( value.toString(), {
-        font: TICK_FONT,
-        right: line.left - 2,
-        centerY: line.centerY
-      } );
-      this._content.addChild( label );
-    },
-
-    //TODO #120 entirely duplicated in BarometerR2Node
-    /**
-     * Adds multiple ticks.
-     *
-     * @param {number[]} values
-     */
-    addTicks: function( values ) {
-      const self = this;
-      values.forEach( function( value ) {
-        self.addTick( value );
-      } );
-    }
-  } );
+  return BarometerX2Node;
 } );
