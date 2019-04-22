@@ -6,7 +6,7 @@
  *
  * @author Andrey Zelenkov (Mlearner)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -18,7 +18,6 @@ define( function( require ) {
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const CurveFittingQueryParameters = require( 'CURVE_FITTING/curve-fitting/CurveFittingQueryParameters' );
   const Dimension2 = require( 'DOT/Dimension2' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Point = require( 'CURVE_FITTING/curve-fitting/model/Point' );
   const PointNode = require( 'CURVE_FITTING/curve-fitting/view/PointNode' );
@@ -64,114 +63,115 @@ define( function( require ) {
     { x: 33, y: 4 }
   ];
 
-  /**
-   * @param {Points} points
-   * @param {Property.<boolean>} residualsVisibleProperty
-   * @param {Property.<boolean>} valuesVisibleProperty
-   * @param {ModelViewTransform2} modelViewTransform
-   * @constructor
-   */
-  function BucketNode( points, residualsVisibleProperty, valuesVisibleProperty, modelViewTransform ) {
-
-    Node.call( this );
-
-    // model of the bucket
-    const bucket = new Bucket( {
-      position: new Vector2( BUCKET_POSITION_X, BUCKET_POSITION_Y ),
-      size: new Dimension2( BUCKET_WIDTH, BUCKET_HEIGHT ),
-      baseColor: 'rgb( 65, 63, 117 )'
-    } );
-
-    // front of the bucket
-    const bucketFrontNode = new BucketFront( bucket, modelViewTransform );
-
-    // back of the bucket
-    const bucketHoleNode = new BucketHole( bucket, modelViewTransform );
+  class BucketNode extends Node {
 
     /**
-     * create a drag handler that adds a point to the model
-     * @returns {SimpleDragHandler}
+     * @param {Points} points
+     * @param {Property.<boolean>} residualsVisibleProperty
+     * @param {Property.<boolean>} valuesVisibleProperty
+     * @param {ModelViewTransform2} modelViewTransform
      */
-    const createDragHandler = () => {
-      let point = null;
-      const dragHandler = new SimpleDragHandler( {
+    constructor( points, residualsVisibleProperty, valuesVisibleProperty, modelViewTransform ) {
+      super();
 
-        allowTouchSnag: true,
+      // model of the bucket
+      const bucket = new Bucket( {
+        position: new Vector2( BUCKET_POSITION_X, BUCKET_POSITION_Y ),
+        size: new Dimension2( BUCKET_WIDTH, BUCKET_HEIGHT ),
+        baseColor: 'rgb( 65, 63, 117 )'
+      } );
 
-        start: event => {
+      // front of the bucket
+      const bucketFrontNode = new BucketFront( bucket, modelViewTransform );
 
-          // create a model point
-          const viewPosition = this.globalToLocalPoint( event.pointer.point );
-          const modelPosition = modelViewTransform.viewToModelPosition( viewPosition );
-          point = new Point( {
-            position: modelPosition,
-            dragging: true
-          } );
+      // back of the bucket
+      const bucketHoleNode = new BucketHole( bucket, modelViewTransform );
 
-          // add the model point to the observable array in model curve
-          points.add( point );
-        },
+      /**
+       * create a drag handler that adds a point to the model
+       * @returns {SimpleDragHandler}
+       */
+      const createDragHandler = () => {
+        let point = null;
+        const dragHandler = new SimpleDragHandler( {
 
-        translate: translationParams => {
-          point.positionProperty.value = point.positionProperty.value.plus( modelViewTransform.viewToModelDelta( translationParams.delta ) );
-        },
+          allowTouchSnag: true,
 
-        end: () => {
-          if ( CurveFittingQueryParameters.snapToGrid ) {
-            point.positionProperty.set( new Vector2(
-              Util.toFixedNumber( point.positionProperty.value.x, 1 ),
-              Util.toFixedNumber( point.positionProperty.value.y, 1 )
-            ) );
+          start: event => {
+
+            // create a model point
+            const viewPosition = this.globalToLocalPoint( event.pointer.point );
+            const modelPosition = modelViewTransform.viewToModelPosition( viewPosition );
+            point = new Point( {
+              position: modelPosition,
+              dragging: true
+            } );
+
+            // add the model point to the observable array in model curve
+            points.add( point );
+          },
+
+          translate: translationParams => {
+            point.positionProperty.value = point.positionProperty.value.plus( modelViewTransform.viewToModelDelta( translationParams.delta ) );
+          },
+
+          end: () => {
+            if ( CurveFittingQueryParameters.snapToGrid ) {
+              point.positionProperty.set( new Vector2(
+                  Util.toFixedNumber( point.positionProperty.value.x, 1 ),
+                  Util.toFixedNumber( point.positionProperty.value.y, 1 )
+              ) );
+            }
+            point.draggingProperty.set( false );
+            point = null;
           }
-          point.draggingProperty.set( false );
-          point = null;
-        }
-      } );
+        } );
 
-      return dragHandler;
-    };
-
-    // points in the bucket
-    const pointsNode = new Node();
-    POINT_POSITIONS.forEach( position => {
-      const circle = new Circle( {
-        fill: CurveFittingConstants.POINT_FILL,
-        radius: CurveFittingConstants.POINT_RADIUS,
-        stroke: CurveFittingConstants.POINT_STROKE,
-        lineWidth: CurveFittingConstants.POINT_LINE_WIDTH,
-        x: position.x,
-        y: position.y
-      } );
-      circle.addInputListener( createDragHandler() );
-      pointsNode.addChild( circle );
-    } );
-
-    pointsNode.center = bucketHoleNode.center.plusXY( 0, -6 ); // tuned by hand, slightly above bucket
-
-    // add children, the z-order is critical here.
-    this.addChild( bucketHoleNode );
-    this.addChild( pointsNode );
-    this.addChild( bucketFrontNode );
-
-
-    // handle the coming and going of points
-    points.addItemAddedListener( addedPoint => {
-      const pointNode = new PointNode( addedPoint, residualsVisibleProperty, valuesVisibleProperty, modelViewTransform );
-      this.addChild( pointNode );
-
-      const removalListener = removedPoint => {
-        if ( removedPoint === addedPoint ) {
-          this.removeChild( pointNode );
-          pointNode.dispose();
-          points.removeItemRemovedListener( removalListener );
-        }
+        return dragHandler;
       };
-      points.addItemRemovedListener( removalListener );
-    } );
+
+      // points in the bucket
+      const pointsNode = new Node();
+      POINT_POSITIONS.forEach( position => {
+        const circle = new Circle( {
+          fill: CurveFittingConstants.POINT_FILL,
+          radius: CurveFittingConstants.POINT_RADIUS,
+          stroke: CurveFittingConstants.POINT_STROKE,
+          lineWidth: CurveFittingConstants.POINT_LINE_WIDTH,
+          x: position.x,
+          y: position.y
+        } );
+        circle.addInputListener( createDragHandler() );
+        pointsNode.addChild( circle );
+      } );
+
+      pointsNode.center = bucketHoleNode.center.plusXY( 0, -6 ); // tuned by hand, slightly above bucket
+
+      // add children, the z-order is critical here.
+      this.addChild( bucketHoleNode );
+      this.addChild( pointsNode );
+      this.addChild( bucketFrontNode );
+
+
+      // handle the coming and going of points
+      points.addItemAddedListener( addedPoint => {
+        const pointNode = new PointNode( addedPoint, residualsVisibleProperty, valuesVisibleProperty, modelViewTransform );
+        this.addChild( pointNode );
+
+        const removalListener = removedPoint => {
+          if ( removedPoint === addedPoint ) {
+            this.removeChild( pointNode );
+            pointNode.dispose();
+            points.removeItemRemovedListener( removalListener );
+          }
+        };
+        points.addItemRemovedListener( removalListener );
+      } );
+    }
 
   }
 
   curveFitting.register( 'BucketNode', BucketNode );
 
-  return inherit( Node, BucketNode );
+  return BucketNode;
 } );
