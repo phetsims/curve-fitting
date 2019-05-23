@@ -5,14 +5,13 @@
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
   const AquaRadioButton = require( 'SUN/AquaRadioButton' );
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const Panel = require( 'SUN/Panel' );
   const Text = require( 'SCENERY/nodes/Text' );
   const VBox = require( 'SCENERY/nodes/VBox' );
@@ -22,43 +21,46 @@ define( function( require ) {
   const linearString = require( 'string!CURVE_FITTING/linear' );
   const quadraticString = require( 'string!CURVE_FITTING/quadratic' );
 
-  /**
-   * @param {Property.<number>} orderProperty - order of the polynomial that describes the curve
-   * @param {Object} [options]
-   * @constructor
-   */
-  function CurveOrderPanel( orderProperty, options ) {
+  class CurveOrderPanel extends Panel {
 
     /**
-     * Creates a uniform radio button for this panel.
-     *
-     * @param {number} value
-     * @param {string} label
-     * @returns {AquaRadioButton}
+     * @param {Property.<number>} orderProperty - order of the polynomial that describes the curve
+     * @param {Object} [options]
      */
-    const createRadioButton = ( value, label ) => new AquaRadioButton( orderProperty, value,
-      new Text( label, CurveFittingConstants.CONTROL_TEXT_OPTIONS ), CurveFittingConstants.RADIO_BUTTON_OPTIONS );
+    constructor( orderProperty, options ) {
 
-    // radio buttons
-    const linearButton = createRadioButton( 1, linearString );
-    const quadraticButton = createRadioButton( 2, quadraticString );
-    const cubicButton = createRadioButton( 3, cubicString );
+      /**
+       * Creates a uniform radio button for this panel.
+       *
+       * @param {number} value
+       * @param {string} label
+       * @returns {AquaRadioButton}
+       */
+      const createRadioButton = ( value, label ) => new AquaRadioButton( orderProperty, value,
+          new Text( label, CurveFittingConstants.CONTROL_TEXT_OPTIONS ), CurveFittingConstants.RADIO_BUTTON_OPTIONS );
 
-    // vertical layout
-    const contentNode = new VBox( {
-      align: 'left',
-      spacing: 5,
-      children: [
-        linearButton,
-        quadraticButton,
-        cubicButton
-      ]
-    } );
+      // radio buttons
+      const linearButton = createRadioButton( 1, linearString );
+      const quadraticButton = createRadioButton( 2, quadraticString );
+      const cubicButton = createRadioButton( 3, cubicString );
 
-    Panel.call( this, contentNode, options );
+      // vertical layout
+      const contentNode = new VBox( {
+        align: 'left',
+        spacing: 5,
+        children: [
+          linearButton,
+          quadraticButton,
+          cubicButton
+        ]
+      } );
+
+      super( contentNode, options );
+    }
+
   }
 
   curveFitting.register( 'CurveOrderPanel', CurveOrderPanel );
 
-  return inherit( Panel, CurveOrderPanel );
+  return CurveOrderPanel;
 } );
