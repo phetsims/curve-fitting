@@ -64,7 +64,7 @@ define( function( require ) {
       // add many segments
       var steps = 1000;
       // separation between adjacent x coordinates
-      var interval = (xMax - xMin) / steps;
+      var interval = ( xMax - xMin ) / steps;
       // array of x coordinates
       var xCoordinates = _.range( xMin, xMax, interval );
       // add linear segments
@@ -107,14 +107,14 @@ define( function( require ) {
     addQuadratic: function( start, end ) {
 
       // x coordinate of the control point
-      var cpx = (start + end) / 2; // point halfway between start and end
+      var cpx = ( start + end ) / 2; // point halfway between start and end
 
       var yAtStart = this.getYValueAt( start );
       var yAtEnd = this.getYValueAt( end );
       var yAtCpx = this.getYValueAt( cpx );
 
       // the value of cpy, the y value of the control point, is not the value of yAtCpx but is related to it by the equation
-      var cpy = (-yAtStart + 4 * yAtCpx - yAtEnd) / 2;
+      var cpy = ( -yAtStart + 4 * yAtCpx - yAtEnd ) / 2;
 
       this.moveTo( start, yAtStart ).quadraticCurveTo( cpx, cpy, end, yAtEnd );
       return this;  // for chaining
@@ -129,8 +129,8 @@ define( function( require ) {
     addCubic: function( start, end ) {
 
       // x coordinate of the control points
-      var cp1x = (2 * start + end) / 3; // one third of the way between start and end
-      var cp2x = (start + 2 * end) / 3; // two third of the way between start and end
+      var cp1x = ( 2 * start + end ) / 3; // one third of the way between start and end
+      var cp2x = ( start + 2 * end ) / 3; // two third of the way between start and end
 
       var yAtStart = this.getYValueAt( start );
       var yAtEnd = this.getYValueAt( end );
@@ -138,8 +138,8 @@ define( function( require ) {
       var yAtCp2x = this.getYValueAt( cp2x );
 
       // the control points cp1y and cp2y are not given by the values at yAtCp1x and yAtCp2x, but are related tp them through the equations
-      var cp1y = (-5 * yAtStart + 18 * yAtCp1x - 9 * yAtCp2x + 2 * yAtEnd) / 6;
-      var cp2y = (+2 * yAtStart - 9 * yAtCp1x + 18 * yAtCp2x - 5 * yAtEnd) / 6;
+      var cp1y = ( -5 * yAtStart + 18 * yAtCp1x - 9 * yAtCp2x + 2 * yAtEnd ) / 6;
+      var cp2y = ( +2 * yAtStart - 9 * yAtCp1x + 18 * yAtCp2x - 5 * yAtEnd ) / 6;
 
       this.moveTo( start, yAtStart ).cubicCurveTo( cp1x, cp1y, cp2x, cp2y, end, yAtEnd );
       return this; // for chaining
@@ -211,6 +211,9 @@ define( function( require ) {
 
         xCoordinates = xCoordinates.concat( zeroXQuadraticSolutions, bottomXQuadraticSolutions, topXQuadraticSolutions );
       }
+
+      // removing null values if present (see https://github.com/phetsims/curve-fitting/issues/113)
+      xCoordinates = xCoordinates.filter( x => x !== null );
 
       // filter the xCoordinates to include only coordinates between xMin and xMax
       xCoordinates = xCoordinates.filter( function isWithinRange( xValue ) {
