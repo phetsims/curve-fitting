@@ -5,19 +5,19 @@
  *
  * @author Andrey Zelenkov (Mlearner)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var CurveFittingScreen = require( 'CURVE_FITTING/curve-fitting/CurveFittingScreen' );
-  var Sim = require( 'JOIST/Sim' );
-  var SimLauncher = require( 'JOIST/SimLauncher' );
+  const CurveFittingScreen = require( 'CURVE_FITTING/curve-fitting/CurveFittingScreen' );
+  const Sim = require( 'JOIST/Sim' );
+  const SimLauncher = require( 'JOIST/SimLauncher' );
 
   // strings
-  var curveFittingTitleString = require( 'string!CURVE_FITTING/curve-fitting.title' );
+  const curveFittingTitleString = require( 'string!CURVE_FITTING/curve-fitting.title' );
 
   //TODO finalize credits with team leader, see https://github.com/phetsims/curve-fitting/issues/34
-  var simOptions = {
+  const simOptions = {
     credits: {
       leadDesign: 'Michael Dubson, Amanda McGarry',
       softwareDevelopment: 'Michael Dubson, Chris Malley, Jonathan Olson, Martin Veillette',
@@ -28,8 +28,8 @@ define( function( require ) {
     }
   };
 
-  SimLauncher.launch( function() {
-    var sim = new Sim( curveFittingTitleString, [ new CurveFittingScreen() ], simOptions );
+  SimLauncher.launch( () => {
+    const sim = new Sim( curveFittingTitleString, [ new CurveFittingScreen() ], simOptions );
     sim.start();
   } );
 } );
