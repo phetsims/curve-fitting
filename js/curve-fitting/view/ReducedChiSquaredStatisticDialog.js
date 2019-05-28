@@ -5,7 +5,7 @@
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -14,7 +14,6 @@ define( function( require ) {
   const HBox = require( 'SCENERY/nodes/HBox' );
   const HStrut = require( 'SCENERY/nodes/HStrut' );
   const Image = require( 'SCENERY/nodes/Image' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const MathSymbolFont = require( 'SCENERY_PHET/MathSymbolFont' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Text = require( 'SCENERY/nodes/Text' );
@@ -37,49 +36,53 @@ define( function( require ) {
   const DIALOG_MATH_FONT = new MathSymbolFont( DIALOG_FONT_SIZE );
   const TEXT_SPACING = 6;
 
-  /**
-   * @constructor
-   */
-  function ReducedChiSquaredStatisticDialog() {
+  class ReducedChiSquaredStatisticDialog extends Dialog {
 
-    const numberOfDataPointsNode = new HBox( {
-      spacing: TEXT_SPACING,
-      children: [
-        new Text( symbolNString, { font: DIALOG_MATH_FONT } ),
-        new Text( numberOfDataPointsString, { font: DIALOG_PLAIN_FONT } )
-      ]
-    } );
+    /**
+     * @constructor
+     */
+    constructor() {
 
-    const numberOfParametersNode = new HBox( {
-      spacing: TEXT_SPACING,
-      children: [
-        new Text( symbolFString, { font: DIALOG_MATH_FONT } ),
-        new Text( numberOfParameters1String, { font: DIALOG_PLAIN_FONT } ),
-        new Text( symbolFString, { font: DIALOG_MATH_FONT } ),
-        new Text( numberOfParameters2String, { font: DIALOG_PLAIN_FONT } )
-      ]
-    } );
+      const numberOfDataPointsNode = new HBox( {
+        spacing: TEXT_SPACING,
+        children: [
+          new Text( symbolNString, { font: DIALOG_MATH_FONT } ),
+          new Text( numberOfDataPointsString, { font: DIALOG_PLAIN_FONT } )
+        ]
+      } );
 
-    const contentNode = new VBox( {
-      align: 'left',
-      spacing: 10,
-      children: [
-        new Text( theReducedChiSquaredStatisticIsString, { font: DIALOG_PLAIN_FONT } ),
-        new HBox( {
-          children: [
-            new HStrut( 20 ),
-            new Image( equationHelpImage, { scale: 0.23 } )
-          ]
-        } ),
-        numberOfDataPointsNode,
-        numberOfParametersNode
-      ]
-    } );
+      const numberOfParametersNode = new HBox( {
+        spacing: TEXT_SPACING,
+        children: [
+          new Text( symbolFString, { font: DIALOG_MATH_FONT } ),
+          new Text( numberOfParameters1String, { font: DIALOG_PLAIN_FONT } ),
+          new Text( symbolFString, { font: DIALOG_MATH_FONT } ),
+          new Text( numberOfParameters2String, { font: DIALOG_PLAIN_FONT } )
+        ]
+      } );
 
-    Dialog.call( this, contentNode );
+      const contentNode = new VBox( {
+        align: 'left',
+        spacing: 10,
+        children: [
+          new Text( theReducedChiSquaredStatisticIsString, { font: DIALOG_PLAIN_FONT } ),
+          new HBox( {
+            children: [
+              new HStrut( 20 ),
+              new Image( equationHelpImage, { scale: 0.23 } )
+            ]
+          } ),
+          numberOfDataPointsNode,
+          numberOfParametersNode
+        ]
+      } );
+
+      super( contentNode );
+    }
+
   }
 
   curveFitting.register( 'ReducedChiSquaredStatisticDialog', ReducedChiSquaredStatisticDialog );
 
-  return inherit( Dialog, ReducedChiSquaredStatisticDialog );
+  return ReducedChiSquaredStatisticDialog;
 } );
