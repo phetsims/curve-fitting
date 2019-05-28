@@ -53,12 +53,16 @@ define( require => {
       this.addChild( valueRectangle );
       this.addChild( axisLine );
 
-      //TODO: unlink below links in a dispose method
       // links the valueRectangle's properties to the relevant listeners
-      fillProportionProperty.link( fillProportion => {
+      const valueRectangleHeightSetter = fillProportion => {
         valueRectangle.setRectHeight( fillProportion * CurveFittingConstants.BAROMETER_AXIS_HEIGHT );
-      } );
-      fillVisibleProperty.linkAttribute( valueRectangle, 'visible' );
+      };
+      fillProportionProperty.link( valueRectangleHeightSetter );
+      const fillVisiblePropertyLinkHandle = fillVisibleProperty.linkAttribute( valueRectangle, 'visible' );
+      this.disposeListeners = () => {
+        fillProportionProperty.unlink( valueRectangleHeightSetter );
+        fillVisibleProperty.unlinkAttribute( fillVisiblePropertyLinkHandle );
+      };
 
       // adds ticks for each tick location key in the tickLocationToLabels parameter
       Object.keys( tickLocationToLabels ).forEach( tickLocation => {
@@ -79,6 +83,15 @@ define( require => {
         this.addChild( tickLabel );
       } );
 
+    }
+
+    /**
+     * @override
+     * @public
+     */
+    dispose() {
+      this.disposeListeners();
+      super.dispose();
     }
 
   }
