@@ -1,7 +1,7 @@
 // Copyright 2015-2019, University of Colorado Boulder
 
 /**
- * A barometer superclass that is extended by BarometerR2Node and BarometerX2
+ * A barometer superclass that is extended by BarometerR2Node and BarometerX2Node
  * Provides most of the base functionality for what a barometer node does
  *
  * @author Saurabh Totey
@@ -53,6 +53,7 @@ define( require => {
       this.addChild( valueRectangle );
       this.addChild( axisLine );
 
+      //TODO: unlink below links in a dispose method
       // links the valueRectangle's properties to the relevant listeners
       fillProportionProperty.link( fillProportion => {
         valueRectangle.setRectHeight( fillProportion * CurveFittingConstants.BAROMETER_AXIS_HEIGHT );
@@ -63,9 +64,9 @@ define( require => {
       Object.keys( tickLocationToLabels ).forEach( tickLocation => {
         const tickLine = new Line(
           -CurveFittingConstants.BAROMETER_TICK_WIDTH,
-          -tickLocation,
+          -tickLocation * CurveFittingConstants.BAROMETER_AXIS_HEIGHT,
           0,
-          -tickLocation,
+          -tickLocation * CurveFittingConstants.BAROMETER_AXIS_HEIGHT,
           LINE_OPTIONS
         );
         this.addChild( tickLine );
