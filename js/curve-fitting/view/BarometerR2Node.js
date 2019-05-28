@@ -59,7 +59,7 @@ define( require => {
       rSquaredProperty.link( rSquared => {
         valueRectNode.setRectHeight( ( RANGE.min + rSquared / RANGE.max ) * CurveFittingConstants.BAROMETER_AXIS_HEIGHT );
       } );
-      curveVisibleProperty.linkAttribute( valueRectNode, 'visible');
+      curveVisibleProperty.linkAttribute( valueRectNode, 'visible' );
     }
 
     /**
@@ -94,9 +94,8 @@ define( require => {
      * @private
      */
     addTicks( values ) {
-      const self = this;
-      values.forEach( function( value ) {
-        self.addTick( value );
+      values.forEach( value => {
+        this.addTick( value );
       } );
     }
 

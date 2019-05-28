@@ -7,7 +7,6 @@
  *
  * @author Andrey Zelenkov (Mlearner)
  */
-
 define( require => {
   'use strict';
 
@@ -23,7 +22,6 @@ define( require => {
   const Text = require( 'SCENERY/nodes/Text' );
   const Util = require( 'DOT/Util' );
   const VBox = require( 'SCENERY/nodes/VBox' );
-  const VStrut = require( 'SCENERY/nodes/VStrut' );
 
   // constants
   const FONT_SIZE = 12;
@@ -72,7 +70,6 @@ define( require => {
 
       super( _.extend( {
         children: [
-          new VStrut( OFFSET ),
           content
         ]
       }, options ) );
@@ -87,7 +84,7 @@ define( require => {
         valueRectNode.setFill( getChiFillFromChiValue( chiSquaredProperty.value, points.getNumberPointsOnGraph() ) );
       } );
 
-      curveVisibleProperty.linkAttribute( valueRectNode, 'visible');
+      curveVisibleProperty.linkAttribute( valueRectNode, 'visible' );
     }
 
     //TODO #120 very similar to BarometerR2Node, but adds children to this._content
@@ -120,9 +117,8 @@ define( require => {
      * @param {number[]} values
      */
     addTicks( values ) {
-      const self = this;
-      values.forEach( function( value ) {
-        self.addTick( value );
+      values.forEach( value => {
+        this.addTick( value );
       } );
     }
 
@@ -133,7 +129,6 @@ define( require => {
   /**
    * Convert chi values into barometer color depending on number of points.
    * This algorithm was copied directly from Flash simulation.
-   * TODO: maybe make this a private method of BarometerX2Node
    *
    * @param {number} chiValue - Chi value.
    * @param {number} numberOfPoints - Number of points on Graph.
@@ -209,7 +204,6 @@ define( require => {
 
   /**
    * Convert X^2 value to corresponding y coordinate.
-   * TODO: maybe make this a private method of BarometerX2Node
    *
    * @param {number} value - Barometer's X^2 value.
    * @returns {number}
