@@ -6,7 +6,7 @@
  *
  * @author Andrey Zelenkov (Mlearner)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -17,7 +17,6 @@ define( function( require ) {
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const InfoButton = require( 'SCENERY_PHET/buttons/InfoButton' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const Panel = require( 'SUN/Panel' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const ReducedChiSquaredStatisticDialog = require( 'CURVE_FITTING/curve-fitting/view/ReducedChiSquaredStatisticDialog' );
@@ -45,121 +44,124 @@ define( function( require ) {
   const symbolChiString = require( 'string!CURVE_FITTING/symbol.chi' );
   const symbolRString = require( 'string!CURVE_FITTING/symbol.r' );
 
-  /**
-   * @param {Property.<boolean>} expandedProperty - is this panel expanded?
-   * @param {Points} points
-   * @param {Property.<number>} chiSquaredProperty
-   * @param {Property.<number>} rSquaredProperty
-   * @param {Property.<boolean>} curveVisibleProperty
-   * @param {Object} [options]
-   * @constructor
-   */
-  function DeviationsAccordionBox( expandedProperty, points, chiSquaredProperty, rSquaredProperty, curveVisibleProperty, options ) {
+  class DeviationsAccordionBox extends AccordionBox {
 
-    options = _.extend( {
-      cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
-      fill: CurveFittingConstants.PANEL_BACKGROUND_COLOR,
-      maxWidth: CurveFittingConstants.PANEL_MAX_WIDTH,
-      expandedProperty: expandedProperty,
-      titleNode: new Text( deviationsString, { font: TEXT_FONT } ),
-      titleAlignX: 'left',
-      showTitleWhenExpanded: true,
-      buttonXMargin: 5,
-      buttonYMargin: 5,
-      contentXMargin: 10,
-      contentYMargin: 5,
-      expandCollapseButtonOptions: {
+    /**
+     * @param {Property.<boolean>} expandedProperty - is this panel expanded?
+     * @param {Points} points
+     * @param {Property.<number>} chiSquaredProperty
+     * @param {Property.<number>} rSquaredProperty
+     * @param {Property.<boolean>} curveVisibleProperty
+     * @param {Object} [options]
+     */
+    constructor( expandedProperty, points, chiSquaredProperty, rSquaredProperty, curveVisibleProperty, options ) {
+
+      options = _.extend( {
+        cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
+        fill: CurveFittingConstants.PANEL_BACKGROUND_COLOR,
+        maxWidth: CurveFittingConstants.PANEL_MAX_WIDTH,
+        expandedProperty: expandedProperty,
+        titleNode: new Text( deviationsString, { font: TEXT_FONT } ),
+        titleAlignX: 'left',
+        showTitleWhenExpanded: true,
+        buttonXMargin: 5,
+        buttonYMargin: 5,
+        contentXMargin: 10,
+        contentYMargin: 5,
+        expandCollapseButtonOptions: {
+          touchAreaXDilation: 8,
+          touchAreaYDilation: 8
+        }
+      }, options );
+
+      // X^2 barometer
+      const barometerX2 = new BarometerX2Node( points, chiSquaredProperty, curveVisibleProperty );
+
+      // r^2 barometer
+      const barometerR2 = new BarometerR2Node( rSquaredProperty, curveVisibleProperty );
+
+      // informational dialog, created lazily because Dialog requires sim bounds during construction
+      let dialog = null;
+
+      // help button
+      const helpButton = new InfoButton( {
+        listener: () => {
+          if ( !dialog ) {
+            dialog = new ReducedChiSquaredStatisticDialog();
+          }
+          dialog.show();
+        },
+        baseColor: 'rgb( 204, 204, 204 )',
+        maxWidth: 30,
         touchAreaXDilation: 8,
         touchAreaYDilation: 8
-      }
-    }, options );
+      } );
 
-    // X^2 barometer
-    const barometerX2 = new BarometerX2Node( points, chiSquaredProperty, curveVisibleProperty );
+      // X^2 value
+      const chiSquaredValueNode = new Text( '0.00', {
+        font: TEXT_PANEL_FONT,
+        textAlign: 'left',
+        maxWidth: 22
+      } );
 
-    // r^2 barometer
-    const barometerR2 = new BarometerR2Node( rSquaredProperty, curveVisibleProperty );
+      // r^2 value
+      const rSquaredValueNode = new Text( '0.00', {
+        font: TEXT_PANEL_FONT,
+        textAlign: 'left',
+        maxWidth: 22
+      } );
 
-    // informational dialog, created lazily because Dialog requires sim bounds during construction
-    let dialog = null;
+      const valuesBox = new HBox( {
+        spacing: 5,
+        resize: false,
+        children: [
 
-    // help button
-    const helpButton = new InfoButton( {
-      listener: () => {
-        if ( !dialog ) {
-          dialog = new ReducedChiSquaredStatisticDialog();
-        }
-        dialog.show();
-      },
-      baseColor: 'rgb( 204, 204, 204 )',
-      maxWidth: 30,
-      touchAreaXDilation: 8,
-      touchAreaYDilation: 8
-    } );
+          //TODO 'X' does not match equation font, not italic
+          new RichText( symbolChiString + '<sup>2</sup>=', { font: TEXT_FONT } ),
+          new Panel( chiSquaredValueNode, VALUE_PANEL_OPTIONS ),
 
-    // X^2 value
-    const chiSquaredValueNode = new Text( '0.00', {
-      font: TEXT_PANEL_FONT,
-      textAlign: 'left',
-      maxWidth: 22
-    } );
+          //TODO 'r' does not match equation font, not italic
+          new RichText( symbolRString + '<sup>2</sup>=', { font: TEXT_FONT } ),
+          new Panel( rSquaredValueNode, VALUE_PANEL_OPTIONS )
+        ]
+      } );
 
-    // r^2 value
-    const rSquaredValueNode = new Text( '0.00', {
-      font: TEXT_PANEL_FONT,
-      textAlign: 'left',
-      maxWidth: 22
-    } );
+      const barometersBox = new HBox( {
+        children: [ barometerX2, barometerR2 ],
+        spacing: 10
+      } );
 
-    const valuesBox = new HBox( {
-      spacing: 5,
-      resize: false,
-      children: [
+      const content = new VBox( {
+        align: 'left',
+        spacing: 10,
+        children: [
+          barometersBox,
+          valuesBox,
+          helpButton
+        ]
+      } );
 
-        //TODO 'X' does not match equation font, not italic
-        new RichText( symbolChiString + '<sup>2</sup>=', { font: TEXT_FONT } ),
-        new Panel( chiSquaredValueNode, VALUE_PANEL_OPTIONS ),
+      // unlink unnecessary, present for the lifetime of the sim
+      chiSquaredProperty.link( chiSquared => {
 
-        //TODO 'r' does not match equation font, not italic
-        new RichText( symbolRString + '<sup>2</sup>=', { font: TEXT_FONT } ),
-        new Panel( rSquaredValueNode, VALUE_PANEL_OPTIONS )
-      ]
-    } );
+        // If chiSquared is greater than 10 we have a bad fit so less precision is needed.
+        // If chiSquared if greater than 100 we have a really bad fit and decimals are inconsequential.
+        chiSquaredValueNode.setText( formatNumber( chiSquared, 2 ) );
+      } );
 
-    const barometersBox = new HBox( {
-      children: [ barometerX2, barometerR2 ],
-      spacing: 10
-    } );
+      // unlink unnecessary, present for the lifetime of the sim
+      rSquaredProperty.link( rSquared => {
 
-    const content = new VBox( {
-      align: 'left',
-      spacing: 10,
-      children: [
-        barometersBox,
-        valuesBox,
-        helpButton
-      ]
-    } );
+        // rSquared can only be between 0 and 1 so it will always need 2 decimal points.
+        rSquaredValueNode.setText( formatNumber( rSquared, 2 ) );
+      } );
 
-    // unlink unnecessary, present for the lifetime of the sim
-    chiSquaredProperty.link( chiSquared => {
+      curveVisibleProperty.linkAttribute( rSquaredValueNode, 'visible' );
+      curveVisibleProperty.linkAttribute( chiSquaredValueNode, 'visible' );
 
-      // If chiSquared is greater than 10 we have a bad fit so less precision is needed.
-      // If chiSquared if greater than 100 we have a really bad fit and decimals are inconsequential.
-      chiSquaredValueNode.setText( formatNumber( chiSquared, 2 ) );
-    } );
+      super( content, options );
+    }
 
-    // unlink unnecessary, present for the lifetime of the sim
-    rSquaredProperty.link( rSquared => {
-
-      // rSquared can only be between 0 and 1 so it will always need 2 decimal points.
-      rSquaredValueNode.setText( formatNumber( rSquared, 2 ) );
-    } );
-
-    curveVisibleProperty.linkAttribute( rSquaredValueNode, 'visible' );
-    curveVisibleProperty.linkAttribute( chiSquaredValueNode, 'visible' );
-
-    AccordionBox.call( this, content, options );
   }
 
   curveFitting.register( 'DeviationsAccordionBox', DeviationsAccordionBox );
@@ -186,9 +188,9 @@ define( function( require ) {
     // 0.00011 -> 0.000
 
     // number = mantissa times 10^(exponent) where the mantissa is between 1 and 10 (or -1 and -10)
-    var exponent = Math.floor( Util.log10( Math.abs( number ) ) );
+    const exponent = Math.floor( Util.log10( Math.abs( number ) ) );
 
-    var decimalPlaces;
+    let decimalPlaces;
     if ( exponent >= digits ) {
       decimalPlaces = 0;
     }
@@ -202,5 +204,5 @@ define( function( require ) {
     return Util.toFixed( number, decimalPlaces );
   }
 
-  return inherit( AccordionBox, DeviationsAccordionBox );
+  return DeviationsAccordionBox;
 } );
