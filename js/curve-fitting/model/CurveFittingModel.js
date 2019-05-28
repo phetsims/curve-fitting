@@ -5,115 +5,111 @@
  *
  * @author Andrey Zelenkov (Mlearner)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var Curve = require( 'CURVE_FITTING/curve-fitting/model/Curve' );
-  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var NumberProperty = require( 'AXON/NumberProperty' );
-  var Points = require( 'CURVE_FITTING/curve-fitting/model/Points' );
-  var Property = require( 'AXON/Property' );
+  const Curve = require( 'CURVE_FITTING/curve-fitting/model/Curve' );
+  const curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  const NumberProperty = require( 'AXON/NumberProperty' );
+  const Points = require( 'CURVE_FITTING/curve-fitting/model/Points' );
+  const Property = require( 'AXON/Property' );
 
   // constants
-  var VALID_FIT_VALUES = [ 'best', 'adjustable' ];
+  const VALID_FIT_VALUES = [ 'best', 'adjustable' ];
 
-  /**
-   * @constructor
-   */
-  function CurveFittingModel() {
+  class CurveFittingModel {
 
-    var self = this;
+    /**
+     * @constructor
+     */
+    constructor() {
 
-    // @public {Property.<number>} order of the polynomial that describes the curve, valid values are 1, 2, 3
-    this.orderProperty = new NumberProperty( 1 );
+      // @public {Property.<number>} order of the polynomial that describes the curve, valid values are 1, 2, 3
+      this.orderProperty = new NumberProperty( 1 );
 
-    // @public {Property.<string>}, the method of fitting the curve to data points, see VALID_FIT_VALUES
-    this.fitProperty = new Property( 'best' );
+      // @public {Property.<string>}, the method of fitting the curve to data points, see VALID_FIT_VALUES
+      this.fitProperty = new Property( 'best' );
 
-    // @public {Property.<number>[]}, user input values for coefficients of the polynomial, starting from lowest order x^0 to x^3
-    this.sliderPropertyArray = [
-      new NumberProperty( CurveFittingConstants.CONSTANT_RANGE.defaultValue ),
-      new NumberProperty( CurveFittingConstants.LINEAR_RANGE.defaultValue ),
-      new NumberProperty( CurveFittingConstants.QUADRATIC_RANGE.defaultValue ),
-      new NumberProperty( CurveFittingConstants.CUBIC_RANGE.defaultValue )
-    ];
+      // @public {Property.<number>[]}, user input values for coefficients of the polynomial, starting from lowest order x^0 to x^3
+      this.sliderPropertyArray = [
+        new NumberProperty( CurveFittingConstants.CONSTANT_RANGE.defaultValue ),
+        new NumberProperty( CurveFittingConstants.LINEAR_RANGE.defaultValue ),
+        new NumberProperty( CurveFittingConstants.QUADRATIC_RANGE.defaultValue ),
+        new NumberProperty( CurveFittingConstants.CUBIC_RANGE.defaultValue )
+      ];
 
-    // @public - Points for plotting curve. This includes points that are outside the bounds of the graph, so
-    // be careful to call getPointsOnGraph when using points in calculations. Order of the points doesn't matter.
-    this.points = new Points();
+      // @public - Points for plotting curve. This includes points that are outside the bounds of the graph, so
+      // be careful to call getPointsOnGraph when using points in calculations. Order of the points doesn't matter.
+      this.points = new Points();
 
-    // @public - the model of the curve
-    this.curve = new Curve( this.points, this.sliderPropertyArray, this.orderProperty, this.fitProperty );
+      // @public - the model of the curve
+      this.curve = new Curve( this.points, this.sliderPropertyArray, this.orderProperty, this.fitProperty );
 
-    // validate Property values and update curve fit
-    this.orderProperty.link( function( order ) {
-      // ensure the order is 1, 2 or 3: linear, quadratic or cubic
-      assert && assert( order === 1 || order === 2 || order === 3, 'invalid order: ' + order );
-      self.curve.updateFit();
-    } );
-    this.fitProperty.link( function( fit ) {
-      assert && assert( _.includes( VALID_FIT_VALUES, fit ), 'invalid fit: ' + fit );
-      self.curve.updateFit();
-    } );
+      // validate Property values and update curve fit
+      this.orderProperty.link( order => {
+        // ensure the order is 1, 2 or 3: linear, quadratic or cubic
+        assert && assert( order === 1 || order === 2 || order === 3, 'invalid order: ' + order );
+        this.curve.updateFit();
+      } );
+      this.fitProperty.link( fit => {
+        assert && assert( _.includes( VALID_FIT_VALUES, fit ), 'invalid fit: ' + fit );
+        this.curve.updateFit();
+      } );
 
-    // a change of any of the value sliders force an update of the curve model
-    this.sliderPropertyArray.forEach( function( sliderProperty ) {
-      sliderProperty.link( function() {self.curve.updateFit();} );
-    } );
+      // a change of any of the value sliders force an update of the curve model
+      this.sliderPropertyArray.forEach( sliderProperty => {
+        sliderProperty.link( () => { this.curve.updateFit(); } );
+      } );
 
-    // Add internal listeners for adding and removing points
-    this.points.addItemAddedListener( function( point ) {
-      self.addPoint( point );
-    } );
-    this.points.addItemRemovedListener( function( point ) {
-      self.removePoint( point );
-    } );
+      // Add internal listeners for adding and removing points
+      this.points.addItemAddedListener( point => {
+        this.addPoint( point );
+      } );
+      this.points.addItemRemovedListener( point => {
+        this.removePoint( point );
+      } );
 
-    // @private
-    this.updateFitBound = this.curve.updateFit.bind( this.curve );
-  }
-
-  curveFitting.register( 'CurveFittingModel', CurveFittingModel );
-
-  return inherit( Object, CurveFittingModel, {
+      // @private
+      this.updateFitBound = this.curve.updateFit.bind( this.curve );
+    }
 
     /**
      * Resets the model
      * @public
      */
-    reset: function() {
-      this.sliderPropertyArray.forEach( function( sliderProperty ) {
+    reset() {
+      this.sliderPropertyArray.forEach( sliderProperty => {
         sliderProperty.reset();
       } );
       this.orderProperty.reset();
       this.fitProperty.reset();
       this.points.reset();
       this.curve.reset();
-    },
-    
+    }
+
     /**
      * Adds a point
      *
      * @param {Point} point
      * @private
      */
-    addPoint: function( point ) {
-      var self = this;
+    addPoint( point ) {
 
       // These are unlinked in removePoint
       point.positionProperty.link( this.updateFitBound );
       point.isInsideGraphProperty.link( this.updateFitBound );
       point.deltaProperty.link( this.updateFitBound );
 
-      // remove points when they have returned to the bucket
-      point.returnToOriginEmitter.addListener( function removePointListener() {
-        self.points.remove( point );
+      const removePointListener = () => {
+        this.points.remove( point );
         point.returnToOriginEmitter.removeListener( removePointListener );
-      } );
-    },
+      };
+
+      // remove points when they have returned to the bucket
+      point.returnToOriginEmitter.addListener( removePointListener );
+    }
 
     /**
      * Removes a point
@@ -121,7 +117,7 @@ define( function( require ) {
      * @param {Point} point
      * @private
      */
-    removePoint: function( point ) {
+    removePoint( point ) {
 
       // These were linked in addPoint
       point.positionProperty.unlink( this.updateFitBound );
@@ -130,5 +126,10 @@ define( function( require ) {
 
       this.curve.updateFit();
     }
-  } );
+
+  }
+
+  curveFitting.register( 'CurveFittingModel', CurveFittingModel );
+
+  return CurveFittingModel;
 } );
