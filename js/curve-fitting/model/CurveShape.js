@@ -83,7 +83,6 @@ define( require => {
     getShape() {
       return this;
     }
-    get shape() { return this.getShape(); }
 
     /**
      * adds a linear segment shape between x position start and x position end
