@@ -14,7 +14,6 @@ define( function( require ) {
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const HBox = require( 'SCENERY/nodes/HBox' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const MathSymbols = require( 'SCENERY_PHET/MathSymbols' );
   const Node = require( 'SCENERY/nodes/Node' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
@@ -39,54 +38,58 @@ define( function( require ) {
   const symbolXString = require( 'string!CURVE_FITTING/symbol.x' );
   const symbolYString = require( 'string!CURVE_FITTING/symbol.y' );
 
-  /**
-   * @param {Property.<number>} orderFitProperty parameter to track.
-   * @param {Object} [options] for slider node.
-   * @constructor
-   */
-  function EquationFitNode( orderFitProperty, options ) {
-    const equationTextArray = [];
-    let boxNode;
+  class EquationFitNode extends Node {
 
-    for ( let i = 1; i < CurveFittingConstants.MAX_ORDER_OF_FIT + 1; i++ ) {
-      boxNode = new HBox( { align: 'bottom' } );
-      const yNode = new Text( symbolYString + ' ' + MathSymbols.EQUAL_TO, TEXT_OPTIONS );
-      boxNode.addChild( yNode );
+    /**
+     * @param {Property.<number>} orderFitProperty parameter to track.
+     * @param {Object} [options] for slider node.
+     * @constructor
+     */
+    constructor( orderFitProperty, options ) {
+      const equationTextArray = [];
+      let boxNode;
 
-      // first order of fit
-      if ( i > 0 ) {
-        boxNode.insertChild( 1, new Text( MathSymbols.PLUS + ' ', TEXT_OPTIONS ) );
-        boxNode.insertChild( 1, new Text( symbolXString, TEXT_OPTIONS ) );
-        boxNode.insertChild( 1, new Text( symbolCString, PARAMETER_TEXT_OPTIONS ) );
+      for ( let i = 1; i < CurveFittingConstants.MAX_ORDER_OF_FIT + 1; i++ ) {
+        boxNode = new HBox( { align: 'bottom' } );
+        const yNode = new Text( symbolYString + ' ' + MathSymbols.EQUAL_TO, TEXT_OPTIONS );
+        boxNode.addChild( yNode );
 
-        // second order of fit
-        if ( i > 1 ) {
+        // first order of fit
+        if ( i > 0 ) {
           boxNode.insertChild( 1, new Text( MathSymbols.PLUS + ' ', TEXT_OPTIONS ) );
-          boxNode.insertChild( 1, new RichText( symbolXString + '<sup>2</sup>', TEXT_OPTIONS ) );
-          boxNode.insertChild( 1, new Text( symbolBString, PARAMETER_TEXT_OPTIONS ) );
+          boxNode.insertChild( 1, new Text( symbolXString, TEXT_OPTIONS ) );
+          boxNode.insertChild( 1, new Text( symbolCString, PARAMETER_TEXT_OPTIONS ) );
 
-          // third order of fit
-          if ( i > 2 ) {
+          // second order of fit
+          if ( i > 1 ) {
             boxNode.insertChild( 1, new Text( MathSymbols.PLUS + ' ', TEXT_OPTIONS ) );
-            boxNode.insertChild( 1, new RichText( symbolXString + '<sup>3</sup>', TEXT_OPTIONS ) );
-            boxNode.insertChild( 1, new Text( symbolAString, PARAMETER_TEXT_OPTIONS ) );
+            boxNode.insertChild( 1, new RichText( symbolXString + '<sup>2</sup>', TEXT_OPTIONS ) );
+            boxNode.insertChild( 1, new Text( symbolBString, PARAMETER_TEXT_OPTIONS ) );
+
+            // third order of fit
+            if ( i > 2 ) {
+              boxNode.insertChild( 1, new Text( MathSymbols.PLUS + ' ', TEXT_OPTIONS ) );
+              boxNode.insertChild( 1, new RichText( symbolXString + '<sup>3</sup>', TEXT_OPTIONS ) );
+              boxNode.insertChild( 1, new Text( symbolAString, PARAMETER_TEXT_OPTIONS ) );
+            }
           }
         }
+
+        boxNode.addChild( new Text( symbolDString, PARAMETER_TEXT_OPTIONS ) );
+        equationTextArray.push( boxNode );
       }
 
-      boxNode.addChild( new Text( symbolDString, PARAMETER_TEXT_OPTIONS ) );
-      equationTextArray.push( boxNode );
+      super( options );
+
+      // add observer
+      orderFitProperty.link( orderFit => {
+        this.children = [ equationTextArray[ orderFit - 1 ] ];
+      } );
     }
 
-    Node.call( this, options );
-
-    // add observer
-    orderFitProperty.link( orderFit => {
-      this.children = [ equationTextArray[ orderFit - 1 ] ];
-    } );
   }
 
   curveFitting.register( 'EquationFitNode', EquationFitNode );
 
-  return inherit( Node, EquationFitNode );
+  return EquationFitNode;
 } );
