@@ -5,13 +5,13 @@
  *
  * @author Martin Veillette (Berea College)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  const curveFitting = require( 'CURVE_FITTING/curveFitting' );
 
-  var CurveFittingQueryParameters = window.QueryStringMachine.getAll( {
+  const CurveFittingQueryParameters = window.QueryStringMachine.getAll( {
 
     //TODO document
     snapToGrid: {

@@ -5,29 +5,32 @@
  *
  * @author Andrey Zelenkov (MLearner)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  var CurveFittingModel = require( 'CURVE_FITTING/curve-fitting/model/CurveFittingModel' );
-  var CurveFittingScreenView = require( 'CURVE_FITTING/curve-fitting/view/CurveFittingScreenView' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Property = require( 'AXON/Property' );
-  var Screen = require( 'JOIST/Screen' );
+  const curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  const CurveFittingModel = require( 'CURVE_FITTING/curve-fitting/model/CurveFittingModel' );
+  const CurveFittingScreenView = require( 'CURVE_FITTING/curve-fitting/view/CurveFittingScreenView' );
+  const Property = require( 'AXON/Property' );
+  const Screen = require( 'JOIST/Screen' );
 
-  /**
-   * @constructor
-   */
-  function CurveFittingScreen() {
-    Screen.call( this,
-      function() { return new CurveFittingModel(); },
-      function( model ) { return new CurveFittingScreenView( model ); },
-      { backgroundColorProperty: new Property( 'rgb( 187, 230, 246 )' ) }
-    );
+  class CurveFittingScreen extends Screen {
+
+    /**
+     * @constructor
+     */
+    constructor() {
+      super(
+        () => new CurveFittingModel(),
+        model => new CurveFittingScreenView( model ),
+        { backgroundColorProperty: new Property( 'rgb( 187, 230, 246 )' ) }
+      );
+    }
+
   }
 
   curveFitting.register( 'CurveFittingScreen', CurveFittingScreen );
 
-  return inherit( Screen, CurveFittingScreen );
+  return CurveFittingScreen;
 } );

@@ -5,16 +5,16 @@
  *
  * @author Andrey Zelenkov (MLearner)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var Bounds2 = require( 'DOT/Bounds2' );
-  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var RangeWithValue = require( 'DOT/RangeWithValue' );
+  const Bounds2 = require( 'DOT/Bounds2' );
+  const curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const RangeWithValue = require( 'DOT/RangeWithValue' );
 
-  var CurveFittingConstants = {
+  const CurveFittingConstants = {
 
     SCREEN_VIEW_OPTIONS: { layoutBounds: new Bounds2( 0, 0, 768, 504 ) },
 
