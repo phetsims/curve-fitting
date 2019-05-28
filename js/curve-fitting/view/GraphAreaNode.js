@@ -6,87 +6,84 @@
  *
  * @author Andrey Zelenkov (Mlearner)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var Shape = require( 'KITE/Shape' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var Util = require( 'DOT/Util' );
+  const curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const Path = require( 'SCENERY/nodes/Path' );
+  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const Shape = require( 'KITE/Shape' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const Util = require( 'DOT/Util' );
 
   // constants
-  var AXIS_OPTIONS = { lineWidth: 1, stroke: 'black' };
-  var GRAPH_BACKGROUND_OPTIONS = { fill: 'white', lineWidth: 2, stroke: 'rgb( 214, 223, 226 )' };
+  const AXIS_OPTIONS = { lineWidth: 1, stroke: 'black' };
+  const GRAPH_BACKGROUND_OPTIONS = { fill: 'white', lineWidth: 2, stroke: 'rgb( 214, 223, 226 )' };
 
   // ticks
-  var TICK_LENGTH = 0.3; // in model coordinate
-  var HORIZONTAL_TICKS = [ -10, -5, 5, 10 ];
-  var VERTICAL_TICKS = [ -10, -5, 5, 10 ];
-  var TICK_DECIMAL_PLACES = 0;
-  var TICK_FONT_OPTIONS = { font: new PhetFont( 12 ), fill: 'black' };
+  const TICK_LENGTH = 0.3; // in model coordinate
+  const HORIZONTAL_TICKS = [ -10, -5, 5, 10 ];
+  const VERTICAL_TICKS = [ -10, -5, 5, 10 ];
+  const TICK_DECIMAL_PLACES = 0;
+  const TICK_FONT_OPTIONS = { font: new PhetFont( 12 ), fill: 'black' };
 
-  /**
-   * @param {ModelViewTransform2} modelViewTransform
-   * @constructor
-   */
-  function GraphAreaNode( modelViewTransform ) {
+  class GraphAreaNode extends Node {
 
-    Node.call( this );
+    /**
+     * @param {ModelViewTransform2} modelViewTransform
+     */
+    constructor( modelViewTransform ) {
 
-    // @private
-    this.modelViewTransform = modelViewTransform;
+      super();
 
-    // convenience variable, graph bound in model coordinates.
-    var graphBounds = CurveFittingConstants.GRAPH_MODEL_BOUNDS;
+      // @private
+      this.modelViewTransform = modelViewTransform;
 
-    // create and add white background
-    this.addChild( new Rectangle.bounds( modelViewTransform.modelToViewBounds( graphBounds ), GRAPH_BACKGROUND_OPTIONS ) );
+      // convenience variable, graph bound in model coordinates.
+      const graphBounds = CurveFittingConstants.GRAPH_MODEL_BOUNDS;
 
-    var axisShape = new Shape();
+      // create and add white background
+      this.addChild( new Rectangle.bounds( modelViewTransform.modelToViewBounds( graphBounds ), GRAPH_BACKGROUND_OPTIONS ) );
 
-    // create X axis
-    axisShape.moveTo( graphBounds.minX, 0 ).horizontalLineTo( graphBounds.maxX );
+      const axisShape = new Shape();
 
-    // create Y axis
-    axisShape.moveTo( 0, graphBounds.minY ).verticalLineTo( graphBounds.maxY );
+      // create X axis
+      axisShape.moveTo( graphBounds.minX, 0 ).horizontalLineTo( graphBounds.maxX );
 
-    // add axes
-    this.addChild( new Path( modelViewTransform.modelToViewShape( axisShape ), AXIS_OPTIONS ) );
+      // create Y axis
+      axisShape.moveTo( 0, graphBounds.minY ).verticalLineTo( graphBounds.maxY );
 
-    // create and add horizontal tick lines and labels
-    this.addTicks( HORIZONTAL_TICKS );
+      // add axes
+      this.addChild( new Path( modelViewTransform.modelToViewShape( axisShape ), AXIS_OPTIONS ) );
 
-    // create and add vertical tick lines and labels
-    this.addTicks( VERTICAL_TICKS, { axis: 'vertical' } );
+      // create and add horizontal tick lines and labels
+      this.addTicks( HORIZONTAL_TICKS );
 
-    // add clip area
-    this.clipArea = Shape.bounds( modelViewTransform.modelToViewBounds( graphBounds ) );
+      // create and add vertical tick lines and labels
+      this.addTicks( VERTICAL_TICKS, { axis: 'vertical' } );
 
-  }
+      // add clip area
+      this.clipArea = Shape.bounds( modelViewTransform.modelToViewBounds( graphBounds ) );
 
-  curveFitting.register( 'GraphAreaNode', GraphAreaNode );
+    }
 
-  return inherit( Node, GraphAreaNode, {
     /***
      * create and add a tick line
      * @param {number} location
      * @param {Object} [options]
      * @private
      */
-    addTickLine: function( location, options ) {
+    addTickLine( location, options ) {
       options = _.extend(
         {
           axis: 'horizontal'
         }, options );
 
-      var tickShape = new Shape();
+      const tickShape = new Shape();
 
       if ( options.axis === 'horizontal' ) {
         tickShape.moveTo( location, -TICK_LENGTH / 2 ); // tick lines are straddling the x-axis
@@ -97,20 +94,20 @@ define( function( require ) {
         tickShape.horizontalLineToRelative( TICK_LENGTH );
       }
       this.addChild( new Path( this.modelViewTransform.modelToViewShape( tickShape ), AXIS_OPTIONS ) );
-    },
+    }
 
     /**
      * create and add a tick label
      * @param {number} value
      * @param {Object} [options]
      */
-    tickLabel: function( value, options ) {
+    tickLabel( value, options ) {
       options = _.extend(
         {
           axis: 'horizontal'
         }, options );
 
-      var tickLabel = new Text( Util.toFixed( value, TICK_DECIMAL_PLACES ), TICK_FONT_OPTIONS );
+      const tickLabel = new Text( Util.toFixed( value, TICK_DECIMAL_PLACES ), TICK_FONT_OPTIONS );
 
       if ( options.axis === 'horizontal' ) {
         tickLabel.centerX = this.modelViewTransform.modelToViewX( value );
@@ -121,7 +118,7 @@ define( function( require ) {
         tickLabel.right = this.modelViewTransform.modelToViewX( -TICK_LENGTH / 2 );
       }
       this.addChild( tickLabel );
-    },
+    }
 
     /**
      * create and add ticks and labels
@@ -129,21 +126,24 @@ define( function( require ) {
      * @param {Object} [options]
      * @private
      */
-    addTicks: function( ticksLocation, options ) {
+    addTicks( ticksLocation, options ) {
 
       options = _.extend(
         {
           withLabels: true
         }, options );
 
-      var self = this;
-
-      ticksLocation.forEach( function( location ) {
-        self.addTickLine( location, options );
+      ticksLocation.forEach( location => {
+        this.addTickLine( location, options );
         if ( options.withLabels ) {
-          self.tickLabel( location, options );
+          this.tickLabel( location, options );
         }
       } );
     }
-  } );
+
+  }
+
+  curveFitting.register( 'GraphAreaNode', GraphAreaNode );
+
+  return GraphAreaNode;
 } );
