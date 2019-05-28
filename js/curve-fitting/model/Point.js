@@ -5,106 +5,104 @@
  *
  * @author Andrey Zelenkov (Mlearner)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  var CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  var Emitter = require( 'AXON/Emitter' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var NumberProperty = require( 'AXON/NumberProperty' );
-  var Vector2 = require( 'DOT/Vector2' );
-  var Vector2Property = require( 'DOT/Vector2Property' );
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
+  const curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  const Emitter = require( 'AXON/Emitter' );
+  const NumberProperty = require( 'AXON/NumberProperty' );
+  const Vector2 = require( 'DOT/Vector2' );
+  const Vector2Property = require( 'DOT/Vector2Property' );
 
-  /**
-   * @param {Object} [options]
-   * @constructor
-   */
-  function Point( options ) {
+  class Point {
 
-    options = _.extend( {
-      position: new Vector2( 0, 0 ), // {Vector2} initial position
-      dragging: false // {boolean} is the user dragging the point?
-    }, options );
+    /**
+     * @param {Object} [options]
+     */
+    constructor( options ) {
 
-    var self = this;
+      options = _.extend( {
+        position: new Vector2( 0, 0 ), // {Vector2} initial position
+        dragging: false // {boolean} is the user dragging the point?
+      }, options );
 
-    // @public {Property.<Vector2>} position of point
-    this.positionProperty = new Vector2Property( options.position );
+      // @public {Property.<Vector2>} position of point
+      this.positionProperty = new Vector2Property( options.position );
 
-    // @public (read-only) {Property.<boolean>}  is the point inside the graph? (points outside the graph ares are not used for curve fitting purposes)
-    this.isInsideGraphProperty = new BooleanProperty( false );
+      // @public (read-only) {Property.<boolean>}  is the point inside the graph? (points outside the graph ares are not used for curve fitting purposes)
+      this.isInsideGraphProperty = new BooleanProperty( false );
 
-    // @public {Property.<boolean>}
-    this.draggingProperty = new BooleanProperty( options.dragging ); // {boolean} is the user dragging the point?
+      // @public {Property.<boolean>}
+      this.draggingProperty = new BooleanProperty( options.dragging ); // {boolean} is the user dragging the point?
 
-    // @public {Property.<number>} vertical uncertainty of the point.
-    this.deltaProperty = new NumberProperty( 0.8 );
+      // @public {Property.<number>} vertical uncertainty of the point.
+      this.deltaProperty = new NumberProperty( 0.8 );
 
-    // @private {boolean} is the point animated by external means (say TWEEN). Animated points are not used for curve fits
-    this.animated = false;
+      // @private {boolean} is the point animated by external means (say TWEEN). Animated points are not used for curve fits
+      this.animated = false;
 
-    // check and set the flag that indicates if the point is within the bounds of the graph
-    this.positionProperty.link( function( position ) {
-      // Determines if the position of a point is within the visual bounds of the graph and is not animated on its way back
-      self.isInsideGraphProperty.set( CurveFittingConstants.GRAPH_MODEL_BOUNDS.containsPoint( position ) );
-    } );
+      // check and set the flag that indicates if the point is within the bounds of the graph
+      this.positionProperty.link( position => {
+        // Determines if the position of a point is within the visual bounds of the graph and is not animated on its way back
+        this.isInsideGraphProperty.set( CurveFittingConstants.GRAPH_MODEL_BOUNDS.containsPoint( position ) );
+      } );
 
-    //if the user dropped the point outside of the graph send it back to the bucket
-    this.draggingProperty.link( function( dragging ) {
-      if ( !dragging && !self.isInsideGraphProperty.value && !self.animated ) {
-        self.animate();
-      }
-    } );
+      //if the user dropped the point outside of the graph send it back to the bucket
+      this.draggingProperty.link( dragging => {
+        if ( !dragging && !this.isInsideGraphProperty.value && !this.animated ) {
+          this.animate();
+        }
+      } );
 
-    // create emitter that will signal that the point has returned to the bucket
-    this.returnToOriginEmitter = new Emitter();
-  }
-
-  curveFitting.register( 'Point', Point );
-
-  return inherit( Object, Point, {
+      // create emitter that will signal that the point has returned to the bucket
+      this.returnToOriginEmitter = new Emitter();
+    }
 
     /**
      * Animates the point back to its original position (inside the bucket).
      *
      * @public
      */
-    animate: function() {
+    animate() {
 
-      var self = this;
       this.animated = true;
 
-      var location = {
+      const location = {
         x: this.positionProperty.value.x,
         y: this.positionProperty.value.y
       };
 
       // distance to the origin
-      var distance = this.positionProperty.initialValue.distance( this.positionProperty.value );
+      const distance = this.positionProperty.initialValue.distance( this.positionProperty.value );
 
       if ( distance > 0 ) {
-        var animationTween = new TWEEN.Tween( location )
+        const animationTween = new TWEEN.Tween( location )
           .to( { x: this.positionProperty.initialValue.x, y: this.positionProperty.initialValue.y },
             distance / CurveFittingConstants.ANIMATION_SPEED )
           .easing( TWEEN.Easing.Cubic.In )
-          .onUpdate( function() {
-            self.positionProperty.set( new Vector2( location.x, location.y ) );
+          .onUpdate( () => {
+            this.positionProperty.set( new Vector2( location.x, location.y ) );
           } )
-          .onComplete( function() {
-            self.animated = false;
-            self.returnToOriginEmitter.emit();
+          .onComplete( () => {
+            this.animated = false;
+            this.returnToOriginEmitter.emit();
           } );
 
         animationTween.start( phet.joist.elapsedTime );
       }
       else {
         // for cases where the distance is zero
-        self.animated = false;
-        self.returnToOriginEmitter.emit();
+        this.animated = false;
+        this.returnToOriginEmitter.emit();
       }
     }
-  } );
+
+  }
+
+  curveFitting.register( 'Point', Point );
+
+  return Point;
 } );
