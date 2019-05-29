@@ -128,7 +128,7 @@ define( require => {
 
       const barometersBox = new HBox( {
         children: [ barometerX2, barometerR2 ],
-        spacing: 10
+        spacing: 15
       } );
 
       const content = new VBox( {

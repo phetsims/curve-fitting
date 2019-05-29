@@ -5,6 +5,7 @@
  *
  * @author Andrey Zelenkov (Mlearner)
  * @author Chris Malley (PixelZoom, Inc.)
+ * @author Saurabh Totey
  */
 define( require => {
   'use strict';

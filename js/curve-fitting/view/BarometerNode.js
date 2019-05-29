@@ -75,7 +75,7 @@ define( require => {
         );
         this.addChild( tickLine );
 
-        const tickLabel = new Text( tickLocationToLabels[tickLocation], {
+        const tickLabel = new Text( tickLocationToLabels[ tickLocation ], {
           font: options.font,
           right: tickLine.left - 2,
           centerY: tickLine.centerY

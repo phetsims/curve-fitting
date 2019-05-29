@@ -6,42 +6,34 @@
  * Logarithmic dependence in ( 1; 100 ] interval.
  *
  * @author Andrey Zelenkov (Mlearner)
+ * @author Saurabh Totey
  */
 define( require => {
   'use strict';
 
   // modules
-  const ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
+  // const ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
+  const BarometerNode = require( 'CURVE_FITTING/curve-fitting/view/BarometerNode' );
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  const Line = require( 'SCENERY/nodes/Line' );
-  const Node = require( 'SCENERY/nodes/Node' );
-  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const DerivedProperty = require( 'AXON/DerivedProperty' );
   const Range = require( 'DOT/Range' );
-  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  const Text = require( 'SCENERY/nodes/Text' );
   const Util = require( 'DOT/Util' );
-  const VBox = require( 'SCENERY/nodes/VBox' );
 
   // constants
   const FONT_SIZE = 12;
-  const TICK_FONT = new PhetFont( FONT_SIZE );
   const OFFSET = FONT_SIZE / 2;
   const RANGE = new Range( 0, 100 );
   const MIN_VALUE = RANGE.min;
   const MAX_VALUE = 1 + Math.log( RANGE.max );
   const HEAD_HEIGHT = 12;
   const BAR_HEIGHT = CurveFittingConstants.BAROMETER_AXIS_HEIGHT - HEAD_HEIGHT - OFFSET;
-  const LINE_OPTIONS = {
-    lineWidth: 1.5,
-    stroke: 'black'
-  };
 
   // arrays necessary for calculating chi value bounds while getting barometer color
   const LOWER_LIMIT_ARRAY = [ 0.004, 0.052, 0.118, 0.178, 0.23, 0.273, 0.31, 0.342, 0.369, 0.394, 0.545, 0.695, 0.779, 0.927 ];
   const UPPER_LIMIT_ARRAY = [ 3.8, 3, 2.6, 2.37, 2.21, 2.1, 2.01, 1.94, 1.88, 1.83, 1.57, 1.35, 1.24, 1.07 ];
 
-  class BarometerX2Node extends VBox {
+  class BarometerX2Node extends BarometerNode {
 
     /**
      * @param {Points} points
@@ -51,74 +43,23 @@ define( require => {
      */
     constructor( points, chiSquaredProperty, curveVisibleProperty,  options ) {
 
-      const valueRectNode = new Rectangle( 0, 0, CurveFittingConstants.BAROMETER_BAR_WIDTH, 0, {
-        fill: 'black' // to be computed by getChiFillFromChiValue
-      } );
-      valueRectNode.rotation = Math.PI;
+      //TODO: get arrownode back
 
-      //TODO #120 why are this._contentNode, OFFSET, and VStrut needed? This smells like a workaround for something.
-      const content = new Node( {
-        children: [
-          valueRectNode,
-          new ArrowNode( 0, 0, 0, -BAR_HEIGHT - HEAD_HEIGHT * 1.5, {
-            headHeight: HEAD_HEIGHT,
-            headWidth: 8,
-            tailWidth: 0.5
-          } )
-        ]
+      const tickLocationsToLabels = {};
+      [ 0, 0.5, 1, 2, 3, 10, 30, 100 ].forEach( chiSquaredValue => {
+        const chiSquaredLocation = chiSquaredValueToRatio( chiSquaredValue );
+        tickLocationsToLabels[ chiSquaredLocation ] = chiSquaredValue;
       } );
 
-      super( _.extend( {
-        children: [
-          content
-        ]
-      }, options ) );
+      const fillProportionProperty = new DerivedProperty( [ chiSquaredProperty ], chiSquaredValueToRatio );
+      const fillColorProperty = new DerivedProperty(
+        [ chiSquaredProperty ],
+        chiSquaredValue => getFillColorFromChiSquaredValue( chiSquaredValue, points.length )
+      );
 
-      this._content = content;
-
-      this.addTicks( [ 0, 0.5, 1, 2, 3, 10, 30, 100 ] );
-
-      // no need to unlink, present for the lifetime of the sim
-      chiSquaredProperty.link( chiSquared => {
-        valueRectNode.setRectHeight( valueToYPosition( chiSquared ) );
-        valueRectNode.setFill( getChiFillFromChiValue( chiSquaredProperty.value, points.getNumberPointsOnGraph() ) );
-      } );
-
-      curveVisibleProperty.linkAttribute( valueRectNode, 'visible' );
-    }
-
-    //TODO #120 very similar to BarometerR2Node, but adds children to this._content
-    /**
-     * Adds a tick.
-     *
-     * @param {number} value
-     */
-    addTick( value ) {
-
-      const y = valueToYPosition( value );
-
-      // tick line
-      const line = new Line( -CurveFittingConstants.BAROMETER_TICK_WIDTH, -y, 0, -y, LINE_OPTIONS );
-      this._content.addChild( line );
-
-      // tick label
-      const label = new Text( value.toString(), {
-        font: TICK_FONT,
-        right: line.left - 2,
-        centerY: line.centerY
-      } );
-      this._content.addChild( label );
-    }
-
-    //TODO #120 entirely duplicated in BarometerR2Node
-    /**
-     * Adds multiple ticks.
-     *
-     * @param {number[]} values
-     */
-    addTicks( values ) {
-      values.forEach( value => {
-        this.addTick( value );
+      super( fillProportionProperty, curveVisibleProperty, tickLocationsToLabels, {
+        fill: fillColorProperty,
+        height: BAR_HEIGHT
       } );
     }
 
@@ -127,13 +68,13 @@ define( require => {
   curveFitting.register( 'BarometerX2Node', BarometerX2Node );
 
   /**
-   * Convert chi values into barometer color depending on number of points.
+   * Convert X^2 values into barometer color depending on number of points.
    * This algorithm was copied directly from Flash simulation.
    *
-   * @param {number} chiValue - Chi value.
+   * @param {number} chiSquaredValue - X^2 value.
    * @param {number} numberOfPoints - Number of points on Graph.
    */
-  function getChiFillFromChiValue( chiValue, numberOfPoints ) {
+  function getFillColorFromChiSquaredValue( chiSquaredValue, numberOfPoints ) {
 
     let red;
     let green;
@@ -163,37 +104,37 @@ define( require => {
     const step3 = ( upperBound + step1 ) / 2;
     const step4 = ( lowerBound + step2 ) / 2;
 
-    if ( chiValue < lowerBound ) {
+    if ( chiSquaredValue < lowerBound ) {
       red = 0;
       green = 0;
       blue = 255;
     }
-    else if ( chiValue >= lowerBound && chiValue < step4 ) {
+    else if ( chiSquaredValue >= lowerBound && chiSquaredValue < step4 ) {
       red = 0;
-      green = 255 * ( chiValue - lowerBound ) / ( step4 - lowerBound );
+      green = 255 * ( chiSquaredValue - lowerBound ) / ( step4 - lowerBound );
       blue = 255;
     }
-    else if ( chiValue >= step4 && chiValue < step2 ) {
-      blue = 255 * ( step2 - chiValue ) / ( step2 - step4 );
+    else if ( chiSquaredValue >= step4 && chiSquaredValue < step2 ) {
+      blue = 255 * ( step2 - chiSquaredValue ) / ( step2 - step4 );
       green = 255;
       red = 0;
     }
-    else if ( chiValue >= step2 && chiValue <= step1 ) {
+    else if ( chiSquaredValue >= step2 && chiSquaredValue <= step1 ) {
       red = 0;
       green = 255;
       blue = 0;
     }
-    else if ( chiValue > step1 && chiValue < step3 ) {
-      red = 255 * ( chiValue - step1 ) / ( step3 - step1 );
+    else if ( chiSquaredValue > step1 && chiSquaredValue < step3 ) {
+      red = 255 * ( chiSquaredValue - step1 ) / ( step3 - step1 );
       green = 255;
       blue = 0;
     }
-    else if ( chiValue >= step3 && chiValue < upperBound ) {
+    else if ( chiSquaredValue >= step3 && chiSquaredValue < upperBound ) {
       red = 255;
-      green = 255 * ( upperBound - chiValue ) / ( upperBound - step3 );
+      green = 255 * ( upperBound - chiSquaredValue ) / ( upperBound - step3 );
       blue = 0;
     }
-    else if ( chiValue >= upperBound ) {
+    else if ( chiSquaredValue >= upperBound ) {
       red = 255;
       green = 0;
       blue = 0;
@@ -203,19 +144,20 @@ define( require => {
   }
 
   /**
-   * Convert X^2 value to corresponding y coordinate.
+   * Convert X^2 value to a corresponding fill ratio
+   * TODO: understand/simplify these calculations
    *
    * @param {number} value - Barometer's X^2 value.
-   * @returns {number}
+   * @returns {number} ratio between 0 to 1 for how much the barometer should be filled
    */
-  function valueToYPosition( value ) {
+  function chiSquaredValueToRatio( value ) {
     if ( value <= 1 ) {
-      //TODO #120 document this better, it's not clear why this is needed, duplicated in BarometerR2Node
       // expression "0.5 + ( BAR_HEIGHT - 1 )" need to prevent bad graph view in corners
-      return 0.5 + ( BAR_HEIGHT - 1 ) * ( MIN_VALUE + ( value - MIN_VALUE ) / ( MAX_VALUE - MIN_VALUE ));
+      return ( 0.5 + ( BAR_HEIGHT - 1 ) * ( MIN_VALUE + ( value - MIN_VALUE ) / ( MAX_VALUE - MIN_VALUE ) ) ) / BAR_HEIGHT;
     }
     else {
-      return Math.min( BAR_HEIGHT, BAR_HEIGHT * ( MIN_VALUE + 1 + Math.log( value - MIN_VALUE )) / ( MAX_VALUE - MIN_VALUE ) );
+      // logarithmic scaling for X^2 values greater than 1, but returned ratio is capped at 1
+      return Math.min( 1, ( MIN_VALUE + 1 + Math.log( value - MIN_VALUE )) / ( MAX_VALUE - MIN_VALUE ) );
     }
   }
 
