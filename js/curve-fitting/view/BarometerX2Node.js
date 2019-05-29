@@ -19,7 +19,6 @@ define( require => {
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const Range = require( 'DOT/Range' );
   const Util = require( 'DOT/Util' );
-  const VStrut = require( 'SCENERY/nodes/VStrut' );
 
   // constants
   const OFFSET = 6;
@@ -74,9 +73,6 @@ define( require => {
         tailWidth: 0.5
       } );
       this.addChild( topArrow );
-
-      // exists to push this node down for alignment; TODO: alignment should happen in DeviationsAccordionBox, not here
-      this.addChild( new VStrut( OFFSET, { bottom: topArrow.top } ) );
     }
 
     /**
