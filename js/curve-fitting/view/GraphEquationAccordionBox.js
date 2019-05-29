@@ -5,6 +5,7 @@
  * Node with equation parameters in 'Curve Fitting' simulation.
  *
  * @author Andrey Zelenkov (Mlearner)
+ * @author Saurabh Totey
  */
 define( require => {
   'use strict';
@@ -178,7 +179,14 @@ define( require => {
        */
       const updateCoefficient = ( order, maxDecimalPlaces, signTextNode, coefficientTextNode ) => {
         const numberInfo = roundNumber( getCoefficientArray()[ order ], maxDecimalPlaces );
-        signTextNode.setText( numberInfo.signToString );
+
+        // change a '+' to a '' if the sign is for a leading coefficient (eg. +3x^3 + ... -> 3x^3 + ...)
+        let signToString = numberInfo.signToString;
+        if ( order === orderProperty.value && signToString === '+' ) {
+          signToString = '';
+        }
+
+        signTextNode.setText( signToString );
         coefficientTextNode.setText( numberInfo.absoluteNumberToString );
       };
 
