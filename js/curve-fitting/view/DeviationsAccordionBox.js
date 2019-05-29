@@ -17,20 +17,22 @@ define( require => {
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const InfoButton = require( 'SCENERY_PHET/buttons/InfoButton' );
+  const MathSymbolFont = require( 'SCENERY_PHET/MathSymbolFont' );
+  const Node = require( 'SCENERY/nodes/Node' );
   const Panel = require( 'SUN/Panel' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const ReducedChiSquaredStatisticDialog = require( 'CURVE_FITTING/curve-fitting/view/ReducedChiSquaredStatisticDialog' );
   const RichText = require( 'SCENERY/nodes/RichText' );
   const Text = require( 'SCENERY/nodes/Text' );
   const Util = require( 'DOT/Util' );
-  const VBox = require( 'SCENERY/nodes/VBox' );
 
   // strings
   const deviationsString = require( 'string!CURVE_FITTING/deviations' );
 
   // constants
-  const TEXT_FONT = new PhetFont( 12 ); //TODO use CurveFittingConstants
-  const TEXT_PANEL_FONT = new PhetFont( 10 ); //TODO use CurveFittingConstants
+  const TEXT_FONT = new PhetFont( 12 );
+  const VALUES_TEXT_FONT = new PhetFont( 10 );
+  const MATH_FONT = new MathSymbolFont( 12 );
   const VALUE_PANEL_OPTIONS = {
     fill: 'white',
     cornerRadius: 4,
@@ -74,6 +76,8 @@ define( require => {
         }
       }, options );
 
+      const panelContent = new Node( { width: options.maxWidth } );
+
       // X^2 barometer
       const barometerX2 = new BarometerX2Node( points, chiSquaredProperty, curveVisibleProperty );
 
@@ -98,47 +102,27 @@ define( require => {
       } );
 
       // X^2 value
-      const chiSquaredValueNode = new Text( '0.00', {
-        font: TEXT_PANEL_FONT,
+      const chiSquaredValueText = new Text( '0.00', {
+        font: VALUES_TEXT_FONT,
         textAlign: 'left',
         maxWidth: 22
+      } );
+      const chiSquaredValuePanel = new Panel( chiSquaredValueText, VALUE_PANEL_OPTIONS );
+      const chiSquaredLabelText = new RichText( symbolChiString + '<sup>2</sup>=', { font: MATH_FONT } );
+      const chiSquaredInformationBox = new HBox( {
+        children: [ chiSquaredLabelText, chiSquaredValuePanel ]
       } );
 
       // r^2 value
-      const rSquaredValueNode = new Text( '0.00', {
-        font: TEXT_PANEL_FONT,
+      const rSquaredValueText = new Text( '0.00', {
+        font: VALUES_TEXT_FONT,
         textAlign: 'left',
         maxWidth: 22
       } );
-
-      const valuesBox = new HBox( {
-        spacing: 5,
-        resize: false,
-        children: [
-
-          //TODO 'X' does not match equation font, not italic
-          new RichText( symbolChiString + '<sup>2</sup>=', { font: TEXT_FONT } ),
-          new Panel( chiSquaredValueNode, VALUE_PANEL_OPTIONS ),
-
-          //TODO 'r' does not match equation font, not italic
-          new RichText( symbolRString + '<sup>2</sup>=', { font: TEXT_FONT } ),
-          new Panel( rSquaredValueNode, VALUE_PANEL_OPTIONS )
-        ]
-      } );
-
-      const barometersBox = new HBox( {
-        children: [ barometerX2, barometerR2 ],
-        spacing: 15
-      } );
-
-      const content = new VBox( {
-        align: 'left',
-        spacing: 10,
-        children: [
-          barometersBox,
-          valuesBox,
-          helpButton
-        ]
+      const rSquaredValuePanel = new Panel( rSquaredValueText, VALUE_PANEL_OPTIONS );
+      const rSquaredLabelText = new RichText( symbolRString + '<sup>2</sup>=', { font: MATH_FONT } );
+      const rSquaredInformationBox = new HBox( {
+        children: [ rSquaredLabelText, rSquaredValuePanel ]
       } );
 
       // unlink unnecessary, present for the lifetime of the sim
@@ -146,20 +130,36 @@ define( require => {
 
         // If chiSquared is greater than 10 we have a bad fit so less precision is needed.
         // If chiSquared if greater than 100 we have a really bad fit and decimals are inconsequential.
-        chiSquaredValueNode.setText( formatNumber( chiSquared, 2 ) );
+        chiSquaredValueText.setText( formatNumber( chiSquared, 2 ) );
       } );
 
       // unlink unnecessary, present for the lifetime of the sim
       rSquaredProperty.link( rSquared => {
 
         // rSquared can only be between 0 and 1 so it will always need 2 decimal points.
-        rSquaredValueNode.setText( formatNumber( rSquared, 2 ) );
+        rSquaredValueText.setText( formatNumber( rSquared, 2 ) );
       } );
 
-      curveVisibleProperty.linkAttribute( rSquaredValueNode, 'visible' );
-      curveVisibleProperty.linkAttribute( chiSquaredValueNode, 'visible' );
+      curveVisibleProperty.linkAttribute( rSquaredValueText, 'visible' );
+      curveVisibleProperty.linkAttribute( chiSquaredValueText, 'visible' );
 
-      super( content, options );
+      panelContent.addChild( helpButton );
+      panelContent.addChild( chiSquaredInformationBox );
+      panelContent.addChild( rSquaredInformationBox );
+      panelContent.addChild( barometerX2 );
+      panelContent.addChild( barometerR2 );
+
+      helpButton.centerX = panelContent.width / 2;
+      chiSquaredInformationBox.left = 0;
+      chiSquaredInformationBox.bottom = helpButton.top - 5;
+      rSquaredInformationBox.right = panelContent.width;
+      rSquaredInformationBox.bottom = helpButton.top - 5;
+      barometerX2.centerX = chiSquaredInformationBox.centerX;
+      barometerR2.centerX = rSquaredInformationBox.centerX;
+      barometerX2.bottom = chiSquaredInformationBox.top - 5;
+      barometerR2.bottom = rSquaredInformationBox.top - 5;
+
+      super( panelContent, options );
     }
 
   }
