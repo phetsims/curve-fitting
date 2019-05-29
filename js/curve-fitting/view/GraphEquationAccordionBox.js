@@ -15,6 +15,7 @@ define( require => {
   const ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const MathSymbols = require( 'SCENERY_PHET/MathSymbols' );
+  const MathSymbolFont = require( 'SCENERY_PHET/MathSymbolFont' );
   const Panel = require( 'SUN/Panel' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const RichText = require( 'SCENERY/nodes/RichText' );
@@ -44,6 +45,7 @@ define( require => {
     fill: CurveFittingConstants.BLUE_COLOR
   };
   const TEXT_OPTIONS = { font: new PhetFont( 12 ) };
+  const VARIABLE_TEXT_OPTIONS = { font: new MathSymbolFont( 12 ) };
   //  max number precision decimal places for ascending order of coefficient of polynomials
   const MAX_DECIMALS = [ 1, 2, 3, 3 ];
 
@@ -87,24 +89,30 @@ define( require => {
       // convenience array, strings are sorted in ascending order of coefficient of polynomials
       const symbolStrings = [ symbolDString, symbolCString, symbolBString, symbolAString ];
 
-      // text nodes that contain the numerical value of the polynomial coefficients
+      // text nodes that contain the signs and numerical values of the polynomial coefficients
       // strings are place holders that will be updated by numerical value
-      const textNodes = symbolStrings.map( symbolString => new Text( symbolString, PARAMETER_TEXT_OPTIONS ) );
+      const textNodes = symbolStrings.map(
+        symbolString => [ new Text( '+', TEXT_OPTIONS ), new Text( symbolString, PARAMETER_TEXT_OPTIONS ) ]
+      ).flat();
 
       // blockNode stores all elements of the right hand side of the equation
-      const blockNodes = textNodes.map( ( textNode, index ) => this.createPolynomialHBox( textNode, index ) );
+      // const blockNodes = textNodes.map( ( textNode, index ) => this.createPolynomialHBox( textNode, index ) );
+      const blockNodes = [];
+      for ( let i = 0; i < 4; i++ ) {
+        blockNodes.push( this.createPolynomialHBox( textNodes[ i * 2 ], textNodes[ i * 2 + 1 ], i ) );
+      }
 
       // create the left hand side of equation ( with equal sign)
-      const yNode = new Text( symbolYString + ' =', TEXT_OPTIONS );
+      const yNode = new Text( symbolYString + ' = ', TEXT_OPTIONS );
 
       //  update the relevant blocks on the right hand side of equation.
-      orderProperty.link( function( order ) {
+      orderProperty.link( order => {
         // only the relevant orders are shown
         boxNode.children = [ yNode ].concat( blockNodes.slice( 0, order + 1 ).reverse() );
       } );
 
       // toggle the content of the panel, based on the expansion status
-      equationPanelExpandedProperty.link( function( isEquationPanelExpanded ) {
+      equationPanelExpandedProperty.link( isEquationPanelExpanded => {
         if ( isEquationPanelExpanded ) {
           content.children = [ expandCollapseButton, boxNode ];
         }
@@ -165,20 +173,22 @@ define( require => {
        * update the numerical coefficient of a node
        * @param {number} order
        * @param {number} maxDecimalPlaces
-       * @param {Text} textNode
+       * @param {Text} signTextNode
+       * @param {Text} coefficientTextNode
        */
-      const updateCoefficient = ( order, maxDecimalPlaces, textNode ) => {
+      const updateCoefficient = ( order, maxDecimalPlaces, signTextNode, coefficientTextNode ) => {
         const numberInfo = roundNumber( getCoefficientArray()[ order ], maxDecimalPlaces );
-        textNode.setText( numberInfo.signToString + numberInfo.absoluteNumberToString );
+        signTextNode.setText( numberInfo.signToString );
+        coefficientTextNode.setText( numberInfo.absoluteNumberToString );
       };
 
       /**
        * update all the coefficients
        */
       const updateCoefficients = () => {
-        textNodes.forEach( ( textNode, index ) => {
-          updateCoefficient( index, MAX_DECIMALS[ index ], textNode );
-        } );
+        for ( let i = 0; i < 4; i++ ) {
+          updateCoefficient( i, MAX_DECIMALS[ i ], textNodes[ i * 2 ], textNodes[ i * 2 + 1 ] );
+        }
       };
 
       // add observer, present of the lifetime of the simulation
@@ -191,26 +201,27 @@ define( require => {
     /**
      * returns a hBox containing a numerical coefficient and a polynomial to the power 'order'
      * eg. -4.0 x^3
+     * @param {Text} coefficientSignText
      * @param {Text} coefficientText
      * @param {number} order - order of the specific polynomial
      * @returns {HBox}
      * @private
      */
-    createPolynomialHBox( coefficientText, order ) {
+    createPolynomialHBox( coefficientSignText, coefficientText, order ) {
       let polynomialText;
       if ( order === 0 ) {
-        polynomialText = new Text( '', TEXT_OPTIONS );
+        polynomialText = new Text( '', VARIABLE_TEXT_OPTIONS );
       }
       else if ( order === 1 ) {
-        polynomialText = new Text( symbolXString, TEXT_OPTIONS );
+        polynomialText = new Text( symbolXString + ' ', VARIABLE_TEXT_OPTIONS );
       }
       else {
-        polynomialText = new RichText( symbolXString + '<sup>' + order + '</sup>', TEXT_OPTIONS );
+        polynomialText = new RichText( symbolXString + '<sup>' + order + '</sup> ', VARIABLE_TEXT_OPTIONS );
       }
       return new HBox( {
         align: 'bottom',
         spacing: 2,
-        children: [ coefficientText, polynomialText ]
+        children: [ coefficientSignText, coefficientText, polynomialText ]
       } );
     }
 
