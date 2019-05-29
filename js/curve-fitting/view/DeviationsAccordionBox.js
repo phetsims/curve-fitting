@@ -150,9 +150,9 @@ define( require => {
       panelContent.addChild( barometerR2 );
 
       helpButton.centerX = panelContent.width / 2;
-      chiSquaredInformationBox.left = 0;
+      chiSquaredInformationBox.right = helpButton.centerX - 5;
       chiSquaredInformationBox.bottom = helpButton.top - 5;
-      rSquaredInformationBox.right = panelContent.width;
+      rSquaredInformationBox.left = helpButton.centerX + 5;
       rSquaredInformationBox.bottom = helpButton.top - 5;
       barometerX2.centerX = chiSquaredInformationBox.centerX;
       barometerR2.centerX = rSquaredInformationBox.centerX;
