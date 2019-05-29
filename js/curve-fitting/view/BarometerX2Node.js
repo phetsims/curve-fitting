@@ -12,11 +12,12 @@ define( require => {
   'use strict';
 
   // modules
-  // const ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
+  const ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
   const BarometerNode = require( 'CURVE_FITTING/curve-fitting/view/BarometerNode' );
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
+  const Node = require( 'SCENERY/nodes/Node' );
   const Range = require( 'DOT/Range' );
   const Util = require( 'DOT/Util' );
 
@@ -33,7 +34,7 @@ define( require => {
   const LOWER_LIMIT_ARRAY = [ 0.004, 0.052, 0.118, 0.178, 0.23, 0.273, 0.31, 0.342, 0.369, 0.394, 0.545, 0.695, 0.779, 0.927 ];
   const UPPER_LIMIT_ARRAY = [ 3.8, 3, 2.6, 2.37, 2.21, 2.1, 2.01, 1.94, 1.88, 1.83, 1.57, 1.35, 1.24, 1.07 ];
 
-  class BarometerX2Node extends BarometerNode {
+  class BarometerX2Node extends Node {
 
     /**
      * @param {Points} points
@@ -43,7 +44,7 @@ define( require => {
      */
     constructor( points, chiSquaredProperty, curveVisibleProperty,  options ) {
 
-      //TODO: get arrownode back
+      super( options );
 
       const tickLocationsToLabels = {};
       [ 0, 0.5, 1, 2, 3, 10, 30, 100 ].forEach( chiSquaredValue => {
@@ -57,10 +58,18 @@ define( require => {
         chiSquaredValue => getFillColorFromChiSquaredValue( chiSquaredValue, points.length )
       );
 
-      super( fillProportionProperty, curveVisibleProperty, tickLocationsToLabels, {
+      const barometer = new BarometerNode( fillProportionProperty, curveVisibleProperty, tickLocationsToLabels, {
         fill: fillColorProperty,
-        height: BAR_HEIGHT
+        maxHeight: BAR_HEIGHT
       } );
+      this.addChild( barometer );
+
+      const topArrow = new ArrowNode( 0, 0, 0, -BAR_HEIGHT - HEAD_HEIGHT * 1.5, {
+        headHeight: HEAD_HEIGHT,
+        headWidth: 8,
+        tailWidth: 0.5
+      } );
+      this.addChild( topArrow );
     }
 
   }
