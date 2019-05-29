@@ -14,6 +14,7 @@ define( function( require ) {
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const HBox = require( 'SCENERY/nodes/HBox' );
+  const MathSymbolFont = require( 'SCENERY_PHET/MathSymbolFont' );
   const MathSymbols = require( 'SCENERY_PHET/MathSymbols' );
   const Node = require( 'SCENERY/nodes/Node' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
@@ -29,6 +30,7 @@ define( function( require ) {
     } ),
     fill: CurveFittingConstants.BLUE_COLOR
   };
+  const VARIABLE_TEXT_OPTIONS = { font: new MathSymbolFont( 12 ) };
 
   // strings
   const symbolAString = require( 'string!CURVE_FITTING/symbol.a' );
@@ -57,20 +59,20 @@ define( function( require ) {
         // first order of fit
         if ( i > 0 ) {
           boxNode.insertChild( 1, new Text( MathSymbols.PLUS + ' ', TEXT_OPTIONS ) );
-          boxNode.insertChild( 1, new Text( symbolXString, TEXT_OPTIONS ) );
-          boxNode.insertChild( 1, new Text( symbolCString, PARAMETER_TEXT_OPTIONS ) );
+          boxNode.insertChild( 1, new Text( symbolXString + ' ', VARIABLE_TEXT_OPTIONS ) );
+          boxNode.insertChild( 1, new Text( symbolCString + ' ', PARAMETER_TEXT_OPTIONS ) );
 
           // second order of fit
           if ( i > 1 ) {
             boxNode.insertChild( 1, new Text( MathSymbols.PLUS + ' ', TEXT_OPTIONS ) );
-            boxNode.insertChild( 1, new RichText( symbolXString + '<sup>2</sup>', TEXT_OPTIONS ) );
-            boxNode.insertChild( 1, new Text( symbolBString, PARAMETER_TEXT_OPTIONS ) );
+            boxNode.insertChild( 1, new RichText( symbolXString + '<sup>2</sup> ', VARIABLE_TEXT_OPTIONS ) );
+            boxNode.insertChild( 1, new Text( symbolBString + ' ', PARAMETER_TEXT_OPTIONS ) );
 
             // third order of fit
             if ( i > 2 ) {
               boxNode.insertChild( 1, new Text( MathSymbols.PLUS + ' ', TEXT_OPTIONS ) );
-              boxNode.insertChild( 1, new RichText( symbolXString + '<sup>3</sup>', TEXT_OPTIONS ) );
-              boxNode.insertChild( 1, new Text( symbolAString, PARAMETER_TEXT_OPTIONS ) );
+              boxNode.insertChild( 1, new RichText( symbolXString + '<sup>3</sup> ', VARIABLE_TEXT_OPTIONS ) );
+              boxNode.insertChild( 1, new Text( symbolAString + ' ', PARAMETER_TEXT_OPTIONS ) );
             }
           }
         }

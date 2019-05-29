@@ -15,8 +15,8 @@ define( require => {
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
   const HBox = require( 'SCENERY/nodes/HBox' );
-  const MathSymbols = require( 'SCENERY_PHET/MathSymbols' );
   const MathSymbolFont = require( 'SCENERY_PHET/MathSymbolFont' );
+  const MathSymbols = require( 'SCENERY_PHET/MathSymbols' );
   const Panel = require( 'SUN/Panel' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const RichText = require( 'SCENERY/nodes/RichText' );
@@ -93,7 +93,7 @@ define( require => {
       // text nodes that contain the signs and numerical values of the polynomial coefficients
       // strings are place holders that will be updated by numerical value
       const textNodes = symbolStrings.map(
-        symbolString => [ new Text( '+', TEXT_OPTIONS ), new Text( symbolString, PARAMETER_TEXT_OPTIONS ) ]
+        symbolString => [ new Text( MathSymbols.PLUS, TEXT_OPTIONS ), new Text( symbolString, PARAMETER_TEXT_OPTIONS ) ]
       ).flat();
 
       // blockNode stores all elements of the right hand side of the equation
@@ -181,7 +181,7 @@ define( require => {
 
         // change a '+' to a '' if the sign is for a leading coefficient (eg. +3x^3 + ... -> 3x^3 + ...)
         let signToString = numberInfo.signToString;
-        if ( order === orderProperty.value && signToString === '+' ) {
+        if ( order === orderProperty.value && signToString === MathSymbols.PLUS ) {
           signToString = '';
         }
 
