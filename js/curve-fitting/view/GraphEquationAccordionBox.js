@@ -1,6 +1,5 @@
 // Copyright 2015-2018, University of Colorado Boulder
 
-//TODO rename, this is an accordion box, not a panel
 //TODO this type combines things that should be separate
 /**
  * Node with equation parameters in 'Curve Fitting' simulation.
@@ -48,7 +47,7 @@ define( require => {
   //  max number precision decimal places for ascending order of coefficient of polynomials
   const MAX_DECIMALS = [ 1, 2, 3, 3 ];
 
-  class EquationGraphPanelNode extends Panel {
+  class GraphEquationAccordionBox extends Panel {
 
     /**
      * @param {Function} getCoefficientArray - returns an array of coefficient of the polynomial curve sorted in ascending order {<number>[]}
@@ -217,7 +216,7 @@ define( require => {
 
   }
 
-  curveFitting.register( 'EquationGraphPanelNode', EquationGraphPanelNode );
+  curveFitting.register( 'GraphEquationAccordionBox', GraphEquationAccordionBox );
 
-  return EquationGraphPanelNode;
+  return GraphEquationAccordionBox;
 } );

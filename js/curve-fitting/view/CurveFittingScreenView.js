@@ -16,8 +16,8 @@ define( require => {
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const CurveNode = require( 'CURVE_FITTING/curve-fitting/view/CurveNode' );
   const DeviationsAccordionBox = require( 'CURVE_FITTING/curve-fitting/view/DeviationsAccordionBox' );
-  const EquationGraphPanelNode = require( 'CURVE_FITTING/curve-fitting/view/EquationGraphPanelNode' );
   const GraphAreaNode = require( 'CURVE_FITTING/curve-fitting/view/GraphAreaNode' );
+  const GraphEquationAccordionBox = require( 'CURVE_FITTING/curve-fitting/view/GraphEquationAccordionBox' );
   const ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   const ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   const ResidualsNode = require( 'CURVE_FITTING/curve-fitting/view/ResidualsNode' );
@@ -86,7 +86,7 @@ define( require => {
       const graphAreaNode = new GraphAreaNode( modelViewTransform );
 
       // create the equation node (accordion box) in the upper left corner of the graph
-      const equationGraphPanelNode = new EquationGraphPanelNode(
+      const graphEquationAccordionBox = new GraphEquationAccordionBox(
           model.curve.getCoefficients.bind( model.curve ),
           model.curve.updateCurveEmitter,
           model.orderProperty,
@@ -107,8 +107,8 @@ define( require => {
           modelViewTransform );
 
       // layout of equation inset on graph
-      equationGraphPanelNode.left = graphAreaNode.left + 10;
-      equationGraphPanelNode.top = graphAreaNode.top + 10;
+      graphEquationAccordionBox.left = graphAreaNode.left + 10;
+      graphEquationAccordionBox.top = graphAreaNode.top + 10;
 
       // create bucket (and handle responsibilities associated with points)
       const bucketNode = new BucketNode(
@@ -137,7 +137,7 @@ define( require => {
       this.addChild( deviationsAccordionBox );
       this.addChild( controlPanels );
       this.addChild( graphAreaNode );
-      this.addChild( equationGraphPanelNode );
+      this.addChild( graphEquationAccordionBox );
       this.addChild( resetAllButton );
       this.addChild( curveNode );
       this.addChild( residualsNode );

@@ -5,6 +5,7 @@
  * Contains X^2 barometer, r^2 barometer and help button.
  *
  * @author Andrey Zelenkov (Mlearner)
+ * @author Saurabh Totey
  */
 define( require => {
   'use strict';
