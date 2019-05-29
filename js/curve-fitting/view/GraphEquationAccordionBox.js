@@ -97,7 +97,6 @@ define( require => {
       ).flat();
 
       // blockNode stores all elements of the right hand side of the equation
-      // const blockNodes = textNodes.map( ( textNode, index ) => this.createPolynomialHBox( textNode, index ) );
       const blockNodes = [];
       for ( let i = 0; i < 4; i++ ) {
         blockNodes.push( this.createPolynomialHBox( textNodes[ i * 2 ], textNodes[ i * 2 + 1 ], i ) );
@@ -186,8 +185,8 @@ define( require => {
           signToString = '';
         }
 
-        signTextNode.setText( signToString );
-        coefficientTextNode.setText( numberInfo.absoluteNumberToString );
+        signTextNode.text = signToString;
+        coefficientTextNode.text = numberInfo.absoluteNumberToString;
       };
 
       /**
