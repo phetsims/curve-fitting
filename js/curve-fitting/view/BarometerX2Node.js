@@ -17,13 +17,12 @@ define( require => {
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
-  const Node = require( 'SCENERY/nodes/Node' );
   const Range = require( 'DOT/Range' );
   const Util = require( 'DOT/Util' );
+  const VStrut = require( 'SCENERY/nodes/VStrut' );
 
   // constants
-  const FONT_SIZE = 12;
-  const OFFSET = FONT_SIZE / 2;
+  const OFFSET = 6;
   const RANGE = new Range( 0, 100 );
   const MIN_VALUE = RANGE.min;
   const MAX_VALUE = 1 + Math.log( RANGE.max );
@@ -34,7 +33,7 @@ define( require => {
   const LOWER_LIMIT_ARRAY = [ 0.004, 0.052, 0.118, 0.178, 0.23, 0.273, 0.31, 0.342, 0.369, 0.394, 0.545, 0.695, 0.779, 0.927 ];
   const UPPER_LIMIT_ARRAY = [ 3.8, 3, 2.6, 2.37, 2.21, 2.1, 2.01, 1.94, 1.88, 1.83, 1.57, 1.35, 1.24, 1.07 ];
 
-  class BarometerX2Node extends Node {
+  class BarometerX2Node extends BarometerNode {
 
     /**
      * @param {Points} points
@@ -43,8 +42,6 @@ define( require => {
      * @param {Object} [options] for graph node.
      */
     constructor( points, chiSquaredProperty, curveVisibleProperty,  options ) {
-
-      super( options );
 
       const tickLocationsToLabels = {};
       [ 0, 0.5, 1, 2, 3, 10, 30, 100 ].forEach( chiSquaredValue => {
@@ -58,11 +55,10 @@ define( require => {
         chiSquaredValue => getFillColorFromChiSquaredValue( chiSquaredValue, points.length )
       );
 
-      const barometer = new BarometerNode( fillProportionProperty, curveVisibleProperty, tickLocationsToLabels, {
+      super( fillProportionProperty, curveVisibleProperty, tickLocationsToLabels, {
         fill: fillColorProperty,
-        maxHeight: BAR_HEIGHT
+        axisHeight: BAR_HEIGHT
       } );
-      this.addChild( barometer );
 
       const topArrow = new ArrowNode( 0, 0, 0, -BAR_HEIGHT - HEAD_HEIGHT * 1.5, {
         headHeight: HEAD_HEIGHT,
@@ -70,6 +66,9 @@ define( require => {
         tailWidth: 0.5
       } );
       this.addChild( topArrow );
+
+      // exists to push this node down for alignment; TODO: alignment should happen in DeviationsAccordionBox, not here
+      this.addChild( new VStrut( OFFSET, { bottom: topArrow.top } ) );
     }
 
   }

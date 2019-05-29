@@ -39,7 +39,10 @@ define( require => {
         fill: '#fff',
 
         // {Font} the font of the tick labels
-        font: new PhetFont( 12 )
+        font: new PhetFont( 12 ),
+
+        // {number} how tall this barometer is
+        axisHeight: CurveFittingConstants.BAROMETER_AXIS_HEIGHT
       }, options );
 
       super( options );
@@ -49,13 +52,13 @@ define( require => {
         fill: options.fill
       } );
       valueRectangle.rotation = Math.PI;
-      const axisLine = new Line( 0, 0, 0, -CurveFittingConstants.BAROMETER_AXIS_HEIGHT, LINE_OPTIONS );
+      const axisLine = new Line( 0, 0, 0, -options.axisHeight, LINE_OPTIONS );
       this.addChild( valueRectangle );
       this.addChild( axisLine );
 
       // links the valueRectangle's properties to the relevant listeners
       const valueRectangleHeightSetter = fillProportion => {
-        valueRectangle.setRectHeight( fillProportion * CurveFittingConstants.BAROMETER_AXIS_HEIGHT );
+        valueRectangle.setRectHeight( fillProportion * options.axisHeight );
       };
       fillProportionProperty.link( valueRectangleHeightSetter );
       const fillVisiblePropertyLinkHandle = fillVisibleProperty.linkAttribute( valueRectangle, 'visible' );
@@ -68,9 +71,9 @@ define( require => {
       Object.keys( tickLocationToLabels ).forEach( tickLocation => {
         const tickLine = new Line(
           -CurveFittingConstants.BAROMETER_TICK_WIDTH,
-          -tickLocation * CurveFittingConstants.BAROMETER_AXIS_HEIGHT,
+          -tickLocation * options.axisHeight,
           0,
-          -tickLocation * CurveFittingConstants.BAROMETER_AXIS_HEIGHT,
+          -tickLocation * options.axisHeight,
           LINE_OPTIONS
         );
         this.addChild( tickLine );
