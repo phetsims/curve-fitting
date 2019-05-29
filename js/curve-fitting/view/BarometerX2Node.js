@@ -43,23 +43,31 @@ define( require => {
      */
     constructor( points, chiSquaredProperty, curveVisibleProperty,  options ) {
 
+      // sets up a map of location along barometer (a ratio from 0 to 1) to chi squared value (0, 0.5, 1, 2, 3, 10, 30, 100)
       const tickLocationsToLabels = {};
       [ 0, 0.5, 1, 2, 3, 10, 30, 100 ].forEach( chiSquaredValue => {
         const chiSquaredLocation = chiSquaredValueToRatio( chiSquaredValue );
         tickLocationsToLabels[ chiSquaredLocation ] = chiSquaredValue;
       } );
 
+      // links up listeners to properties that map chi squared values to fill ratios and colors
       const fillProportionProperty = new DerivedProperty( [ chiSquaredProperty ], chiSquaredValueToRatio );
-      const fillColorProperty = new DerivedProperty(
-        [ chiSquaredProperty ],
-        chiSquaredValue => getFillColorFromChiSquaredValue( chiSquaredValue, points.length )
-      );
+      const chiSquaredValueToFillColor = chiSquaredValue => getFillColorFromChiSquaredValue( chiSquaredValue, points.length );
+      const fillColorProperty = new DerivedProperty( [ chiSquaredProperty ], chiSquaredValueToFillColor );
 
+      // calls the superconstructor that initializes BarometerX2Node as a BarometerNode
       super( fillProportionProperty, curveVisibleProperty, tickLocationsToLabels, {
         fill: fillColorProperty,
         axisHeight: BAR_HEIGHT
       } );
 
+      // @private {Function}
+      this.disposeChiSquaredListeners = () => {
+        fillProportionProperty.unlink( chiSquaredValueToRatio );
+        fillColorProperty.unlink( chiSquaredValueToFillColor );
+      };
+
+      // adds the arrow to the top of this BarometerX2Node to show that the values can extend past 100
       const topArrow = new ArrowNode( 0, 0, 0, -BAR_HEIGHT - HEAD_HEIGHT * 1.5, {
         headHeight: HEAD_HEIGHT,
         headWidth: 8,
@@ -69,6 +77,15 @@ define( require => {
 
       // exists to push this node down for alignment; TODO: alignment should happen in DeviationsAccordionBox, not here
       this.addChild( new VStrut( OFFSET, { bottom: topArrow.top } ) );
+    }
+
+    /**
+     * @override
+     * @public
+     */
+    dispose() {
+      this.disposeChiSquaredListeners();
+      super.dispose();
     }
 
   }

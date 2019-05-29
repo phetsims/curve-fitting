@@ -62,6 +62,8 @@ define( require => {
       };
       fillProportionProperty.link( valueRectangleHeightSetter );
       const fillVisiblePropertyLinkHandle = fillVisibleProperty.linkAttribute( valueRectangle, 'visible' );
+
+      // @private {Function}
       this.disposeListeners = () => {
         fillProportionProperty.unlink( valueRectangleHeightSetter );
         fillVisibleProperty.unlinkAttribute( fillVisiblePropertyLinkHandle );
