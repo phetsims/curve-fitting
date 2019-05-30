@@ -70,9 +70,6 @@ define( require => {
       //  visible text node when panel is not expanded
       const titleNode = new Text( equationString, TEXT_OPTIONS );
 
-      //  visible node when panel is expanded
-      const boxNode = new HBox( { align: 'bottom' } );
-
       // create expand button
       const expandCollapseButton = new ExpandCollapseButton( equationPanelExpandedProperty, {
         sideLength: BUTTON_LENGTH
@@ -104,6 +101,9 @@ define( require => {
 
       // create the left hand side of equation ( with equal sign)
       const yNode = new Text( symbolYString + ' = ', TEXT_OPTIONS );
+
+      //  visible node when panel is expanded
+      const boxNode = new HBox( { align: 'bottom' } );
 
       //  update the relevant blocks on the right hand side of equation.
       orderProperty.link( order => {

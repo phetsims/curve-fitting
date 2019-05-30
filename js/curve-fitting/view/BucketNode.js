@@ -93,7 +93,7 @@ define( require => {
        */
       const createDragHandler = () => {
         let point = null;
-        const dragHandler = new SimpleDragHandler( {
+        return new SimpleDragHandler( {
 
           allowTouchSnag: true,
 
@@ -118,16 +118,14 @@ define( require => {
           end: () => {
             if ( CurveFittingQueryParameters.snapToGrid ) {
               point.positionProperty.set( new Vector2(
-                  Util.toFixedNumber( point.positionProperty.value.x, 1 ),
-                  Util.toFixedNumber( point.positionProperty.value.y, 1 )
+                Util.toFixedNumber( point.positionProperty.value.x, 1 ),
+                Util.toFixedNumber( point.positionProperty.value.y, 1 )
               ) );
             }
             point.draggingProperty.set( false );
             point = null;
           }
         } );
-
-        return dragHandler;
       };
 
       // points in the bucket

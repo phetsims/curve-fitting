@@ -83,9 +83,7 @@ define( require => {
           .to( { x: this.positionProperty.initialValue.x, y: this.positionProperty.initialValue.y },
             distance / CurveFittingConstants.ANIMATION_SPEED )
           .easing( TWEEN.Easing.Cubic.In )
-          .onUpdate( () => {
-            this.positionProperty.set( new Vector2( location.x, location.y ) );
-          } )
+          .onUpdate( () => { this.positionProperty.set( new Vector2( location.x, location.y ) ); } )
           .onComplete( () => {
             this.animated = false;
             this.returnToOriginEmitter.emit();
