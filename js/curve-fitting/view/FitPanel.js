@@ -64,6 +64,18 @@ define( require => {
       // equation that corresponds to the curve
       const equationFitNode = new EquationFitNode( orderProperty );
 
+      // vertical layout
+      const contentNode = new VBox( {
+        align: 'left',
+        spacing: 5,
+        children: [
+          radioButtonsBox,
+          equationFitNode
+        ]
+      } );
+
+      super( contentNode, options );
+
       // attributes for four sliders in ASCENDING order of polynomial
       const slidersAttributes = [
         {
@@ -89,7 +101,7 @@ define( require => {
       ];
 
       // create array in ASCENDING order of polynomial
-      const ascendingSliders = slidersAttributes.map( function( sliderObject, index ) {
+      const ascendingSliders = slidersAttributes.map( ( sliderObject, index ) => {
           return new CoefficientSliderNode( sliderPropertyArray[ index ],
             sliderObject.range,
             sliderObject.string,
@@ -104,7 +116,7 @@ define( require => {
       const slidersBox = new HBox( { spacing: 6, children: sliders } );
 
       // add slider number observer
-      orderProperty.link( function( order ) {
+      orderProperty.link( order => {
 
         // set the content of the slidersBox
         slidersBox.children = sliders.slice( sliders.length - order - 1, sliders.length );
@@ -114,18 +126,8 @@ define( require => {
         slidersAttributes.forEach( ( sliderObject, index ) => sliderObject.enabledProperty.set( order >= index ) );
       } );
 
-      // vertical layout
-      const contentNode = new VBox( {
-        align: 'left',
-        spacing: 5,
-        children: [
-          radioButtonsBox,
-          equationFitNode
-        ]
-      } );
-
       // show sliders when 'adjustable' fit is selected
-      fitProperty.link( function( fit ) {
+      fitProperty.link( fit => {
         if ( fit === 'best' && contentNode.hasChild( slidersBox ) ) {
           contentNode.removeChild( slidersBox );
         }
@@ -134,7 +136,6 @@ define( require => {
         }
       } );
 
-      super( contentNode, options );
     }
 
   }

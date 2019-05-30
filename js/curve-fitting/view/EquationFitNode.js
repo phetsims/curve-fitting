@@ -48,11 +48,15 @@ define( function( require ) {
      * @constructor
      */
     constructor( orderFitProperty, options ) {
-      const equationTextArray = [];
-      let boxNode;
 
+      super( options );
+
+      // an array that contains HBoxes with the equations for each order
+      const equationTextArray = [];
+
+      // initializes equationTextArray with all equations for all orders
       for ( let i = 1; i < CurveFittingConstants.MAX_ORDER_OF_FIT + 1; i++ ) {
-        boxNode = new HBox( { align: 'bottom' } );
+        const boxNode = new HBox( { align: 'bottom' } );
         const yNode = new Text( symbolYString + ' ' + MathSymbols.EQUAL_TO, TEXT_OPTIONS );
         boxNode.addChild( yNode );
 
@@ -81,9 +85,7 @@ define( function( require ) {
         equationTextArray.push( boxNode );
       }
 
-      super( options );
-
-      // add observer
+      // sets the children of this node as the correct equation from equationTextArray based on the needed order
       orderFitProperty.link( orderFit => {
         this.children = [ equationTextArray[ orderFit - 1 ] ];
       } );
