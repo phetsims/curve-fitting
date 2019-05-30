@@ -58,6 +58,11 @@ define( require => {
       const axisLine = new Line( 0, 0, 0, -options.axisHeight, LINE_OPTIONS );
       this.addChild( valueRectangle );
       this.addChild( axisLine );
+      valueRectangle.left = axisLine.right;
+
+      // makes a line at the bottom of the barometer
+      const baseLine = new Line( -5, 0, CurveFittingConstants.BAROMETER_BAR_WIDTH + 5, 0, LINE_OPTIONS );
+      this.addChild( baseLine );
 
       // links the valueRectangle's properties to the relevant listeners
       const valueRectangleHeightSetter = fillProportion => {
@@ -75,9 +80,9 @@ define( require => {
       // adds ticks for each tick location key in the tickLocationToLabels parameter
       Object.keys( tickLocationToLabels ).forEach( tickLocation => {
         const tickLine = new Line(
-          -options.tickWidth,
+          -5,
           -tickLocation * options.axisHeight,
-          0,
+          options.tickWidth - 5,
           -tickLocation * options.axisHeight,
           LINE_OPTIONS
         );

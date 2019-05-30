@@ -43,8 +43,8 @@ define( require => {
     constructor( points, chiSquaredProperty, curveVisibleProperty,  options ) {
 
       // sets up a map of location along barometer (a ratio from 0 to 1) to chi squared value (0, 0.5, 1, 2, 3, 10, 30, 100)
-      const tickLocationsToLabels = {};
-      [ 0, 0.5, 1, 2, 3, 10, 30, 100 ].forEach( chiSquaredValue => {
+      const tickLocationsToLabels = { 0: '0' };
+      [ 0.5, 1, 2, 3, 10, 30, 100 ].forEach( chiSquaredValue => {
         const chiSquaredLocation = chiSquaredValueToRatio( chiSquaredValue );
         tickLocationsToLabels[ chiSquaredLocation ] = chiSquaredValue;
       } );
@@ -57,7 +57,8 @@ define( require => {
       // calls the superconstructor that initializes BarometerX2Node as a BarometerNode
       super( fillProportionProperty, curveVisibleProperty, tickLocationsToLabels, {
         fill: fillColorProperty,
-        axisHeight: BAR_HEIGHT
+        axisHeight: BAR_HEIGHT,
+        tickWidth: 10
       } );
 
       // @private {Function}

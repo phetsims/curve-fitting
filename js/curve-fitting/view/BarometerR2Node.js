@@ -33,7 +33,8 @@ define( require => {
       };
 
       super( rSquaredProperty, curveVisibleProperty, tickLocationsToLabels, {
-        fill: 'blue'
+        fill: 'blue',
+        tickWidth: 20
       } );
 
       // put a red dot at the origin
