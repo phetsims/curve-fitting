@@ -42,7 +42,10 @@ define( require => {
         font: new PhetFont( 12 ),
 
         // {number} how tall this barometer is
-        axisHeight: CurveFittingConstants.BAROMETER_AXIS_HEIGHT
+        axisHeight: CurveFittingConstants.BAROMETER_AXIS_HEIGHT,
+
+        // {number} how wide the ticks are
+        tickWidth: CurveFittingConstants.BAROMETER_TICK_WIDTH
       }, options );
 
       super( options );
@@ -72,7 +75,7 @@ define( require => {
       // adds ticks for each tick location key in the tickLocationToLabels parameter
       Object.keys( tickLocationToLabels ).forEach( tickLocation => {
         const tickLine = new Line(
-          -CurveFittingConstants.BAROMETER_TICK_WIDTH,
+          -options.tickWidth,
           -tickLocation * options.axisHeight,
           0,
           -tickLocation * options.axisHeight,
