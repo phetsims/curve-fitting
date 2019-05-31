@@ -112,7 +112,7 @@ define( require => {
 
       // the leading coefficient's sign is visible when it is not '+'
       const leadingSignTextNode = this.signTextNodes[ this.orderProperty.value ];
-      leadingSignTextNode.visible = leadingSignTextNode.text !== MathSymbols.PLUS;
+      leadingSignTextNode.visible = leadingSignTextNode.text !== ' ' + MathSymbols.PLUS + ' ';
     }
 
     /**
@@ -124,7 +124,7 @@ define( require => {
       assert && assert( coefficientsArray.length >= 2 * ( this.orderProperty.value + 1 ), 'Not enough coefficients for each term in the equation.' );
 
       for ( let i = 0; i < coefficientsArray.length; i += 2 ) {
-        this.signTextNodes[ i / 2 ].text = coefficientsArray[ i ];
+        this.signTextNodes[ i / 2 ].text = ' ' + coefficientsArray[ i ] + ' ';
         this.coefficientTextNodes[ i / 2 ].text = coefficientsArray[ i + 1];
       }
 
