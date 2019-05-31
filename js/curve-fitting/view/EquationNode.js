@@ -44,7 +44,7 @@ define( require => {
         xTextOptions: { font: MATH_FONT }
       }, options );
 
-      super( options );
+      super( { align: 'bottom' } );
 
       // @private {Property.<number>}
       this.orderProperty = orderProperty;
@@ -111,7 +111,8 @@ define( require => {
     removeLeadingPlus() {
 
       // the leading coefficient's sign is visible when it is not '+'
-      this.signTextNodes[ this.orderProperty.value + 1 ].visible = this.signTextNodes[ this.orderProperty.value + 1 ].text !== MathSymbols.PLUS;
+      const leadingSignTextNode = this.signTextNodes[ this.orderProperty.value ];
+      leadingSignTextNode.visible = leadingSignTextNode.text !== MathSymbols.PLUS;
     }
 
     /**
@@ -123,8 +124,8 @@ define( require => {
       assert && assert( coefficientsArray.length >= 2 * ( this.orderProperty.value + 1 ), 'Not enough coefficients for each term in the equation.' );
 
       for ( let i = 0; i < coefficientsArray.length; i += 2 ) {
-        this.signTextNodes[ i / 2 ] = coefficientsArray[ i ];
-        this.coefficientTextNodes[ i / 2 ] = coefficientsArray[ i + 1];
+        this.signTextNodes[ i / 2 ].text = coefficientsArray[ i ];
+        this.coefficientTextNodes[ i / 2 ].text = coefficientsArray[ i + 1];
       }
 
       this.removeLeadingPlus();

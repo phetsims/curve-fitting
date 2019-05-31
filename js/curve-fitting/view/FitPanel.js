@@ -15,9 +15,10 @@ define( require => {
   const CoefficientSliderNode = require( 'CURVE_FITTING/curve-fitting/view/CoefficientSliderNode' );
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  const EquationFitNode = require( 'CURVE_FITTING/curve-fitting/view/EquationFitNode' );
+  const EquationNode = require( 'CURVE_FITTING/curve-fitting/view/EquationNode' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const Panel = require( 'SUN/Panel' );
+  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Text = require( 'SCENERY/nodes/Text' );
   const VBox = require( 'SCENERY/nodes/VBox' );
 
@@ -62,7 +63,15 @@ define( require => {
       } );
 
       // equation that corresponds to the curve
-      const equationFitNode = new EquationFitNode( orderProperty );
+      const equationFitNode = new EquationNode( orderProperty, {
+        coefficientTextOptions: {
+          font: new PhetFont( {
+            weight: 'bold',
+            size: 12
+          } ),
+          fill: CurveFittingConstants.BLUE_COLOR
+        }
+      } );
 
       // vertical layout
       const contentNode = new VBox( {
