@@ -1,6 +1,5 @@
 // Copyright 2015-2019, University of Colorado Boulder
 
-//TODO this type combines things that should be separate
 /**
  * Node with equation parameters in 'Curve Fitting' simulation.
  *
@@ -13,24 +12,17 @@ define( require => {
   // modules
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  const EquationNode = require( 'CURVE_FITTING/curve-fitting/view/EquationNode' );
   const ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
   const HBox = require( 'SCENERY/nodes/HBox' );
-  const MathSymbolFont = require( 'SCENERY_PHET/MathSymbolFont' );
   const MathSymbols = require( 'SCENERY_PHET/MathSymbols' );
   const Panel = require( 'SUN/Panel' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  const RichText = require( 'SCENERY/nodes/RichText' );
   const Text = require( 'SCENERY/nodes/Text' );
   const Util = require( 'DOT/Util' );
 
   // strings
   const equationString = require( 'string!CURVE_FITTING/equation' );
-  const symbolAString = require( 'string!CURVE_FITTING/symbol.a' );
-  const symbolBString = require( 'string!CURVE_FITTING/symbol.b' );
-  const symbolCString = require( 'string!CURVE_FITTING/symbol.c' );
-  const symbolDString = require( 'string!CURVE_FITTING/symbol.d' );
-  const symbolXString = require( 'string!CURVE_FITTING/symbol.x' );
-  const symbolYString = require( 'string!CURVE_FITTING/symbol.y' );
 
   // constants
   const BUTTON_LENGTH = 16;
@@ -46,7 +38,6 @@ define( require => {
     fill: CurveFittingConstants.BLUE_COLOR
   };
   const TEXT_OPTIONS = { font: new PhetFont( 12 ) };
-  const VARIABLE_TEXT_OPTIONS = { font: new MathSymbolFont( 12 ) };
   //  max number precision decimal places for ascending order of coefficient of polynomials
   const MAX_DECIMALS = [ 1, 2, 3, 3 ];
 
@@ -84,37 +75,13 @@ define( require => {
 
       super( content, _.extend( PANEL_OPTIONS, options ) );
 
-      // convenience array, strings are sorted in ascending order of coefficient of polynomials
-      const symbolStrings = [ symbolDString, symbolCString, symbolBString, symbolAString ];
-
-      // text nodes that contain the signs and numerical values of the polynomial coefficients
-      // strings are place holders that will be updated by numerical value
-      const textNodes = symbolStrings.map(
-        symbolString => [ new Text( MathSymbols.PLUS, TEXT_OPTIONS ), new Text( symbolString, PARAMETER_TEXT_OPTIONS ) ]
-      ).flat();
-
-      // blockNode stores all elements of the right hand side of the equation
-      const blockNodes = [];
-      for ( let i = 0; i < 4; i++ ) {
-        blockNodes.push( this.createPolynomialHBox( textNodes[ i * 2 ], textNodes[ i * 2 + 1 ], i ) );
-      }
-
-      // create the left hand side of equation ( with equal sign)
-      const yNode = new Text( symbolYString + ' = ', TEXT_OPTIONS );
-
       //  visible node when panel is expanded
-      const boxNode = new HBox( { align: 'bottom' } );
-
-      //  update the relevant blocks on the right hand side of equation.
-      orderProperty.link( order => {
-        // only the relevant orders are shown
-        boxNode.children = [ yNode ].concat( blockNodes.slice( 0, order + 1 ).reverse() );
-      } );
+      const equationNode = new EquationNode( orderProperty, { coefficientTextOptions: PARAMETER_TEXT_OPTIONS } );
 
       // toggle the content of the panel, based on the expansion status
       equationPanelExpandedProperty.link( isEquationPanelExpanded => {
         if ( isEquationPanelExpanded ) {
-          content.children = [ expandCollapseButton, boxNode ];
+          content.children = [ expandCollapseButton, equationNode ];
         }
         else {
           content.children = [ expandCollapseButton, titleNode ];
@@ -170,32 +137,14 @@ define( require => {
       };
 
       /**
-       * update the numerical coefficient of a node
-       * @param {number} order
-       * @param {number} maxDecimalPlaces
-       * @param {Text} signTextNode
-       * @param {Text} coefficientTextNode
-       */
-      const updateCoefficient = ( order, maxDecimalPlaces, signTextNode, coefficientTextNode ) => {
-        const numberInfo = roundNumber( getCoefficientArray()[ order ], maxDecimalPlaces );
-
-        // change a '+' to a '' if the sign is for a leading coefficient (eg. +3x^3 + ... -> 3x^3 + ...)
-        let signToString = numberInfo.signToString;
-        if ( order === orderProperty.value && signToString === MathSymbols.PLUS ) {
-          signToString = '';
-        }
-
-        signTextNode.text = signToString;
-        coefficientTextNode.text = numberInfo.absoluteNumberToString;
-      };
-
-      /**
        * update all the coefficients
        */
       const updateCoefficients = () => {
-        for ( let i = 0; i < 4; i++ ) {
-          updateCoefficient( i, MAX_DECIMALS[ i ], textNodes[ i * 2 ], textNodes[ i * 2 + 1 ] );
-        }
+        const coefficientStrings = getCoefficientArray().flatMap( ( coefficient, index ) => {
+          const numberInfo = roundNumber( coefficient, MAX_DECIMALS[ index ] );
+          return [ numberInfo.signToString, numberInfo.absoluteNumberToString ];
+        } );
+        equationNode.setCoefficients( coefficientStrings );
       };
 
       // add observer, present of the lifetime of the simulation
@@ -203,33 +152,6 @@ define( require => {
       curveVisibleProperty.link( updateCoefficients );
       equationPanelExpandedProperty.link( updateCoefficients );
       updateCurveEmitter.addListener( updateCoefficients );
-    }
-
-    /**
-     * returns a hBox containing a numerical coefficient and a polynomial to the power 'order'
-     * eg. -4.0 x^3
-     * @param {Text} coefficientSignText
-     * @param {Text} coefficientText
-     * @param {number} order - order of the specific polynomial
-     * @returns {HBox}
-     * @private
-     */
-    createPolynomialHBox( coefficientSignText, coefficientText, order ) {
-      let polynomialText;
-      if ( order === 0 ) {
-        polynomialText = new Text( '', VARIABLE_TEXT_OPTIONS );
-      }
-      else if ( order === 1 ) {
-        polynomialText = new Text( symbolXString + ' ', VARIABLE_TEXT_OPTIONS );
-      }
-      else {
-        polynomialText = new RichText( symbolXString + '<sup>' + order + '</sup> ', VARIABLE_TEXT_OPTIONS );
-      }
-      return new HBox( {
-        align: 'bottom',
-        spacing: 2,
-        children: [ coefficientSignText, coefficientText, polynomialText ]
-      } );
     }
 
   }
