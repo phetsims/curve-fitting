@@ -1,4 +1,4 @@
-// Copyright 2015-2018, University of Colorado Boulder
+// Copyright 2015-2019, University of Colorado Boulder
 
 //TODO this type combines things that should be separate
 /**
@@ -157,9 +157,9 @@ define( require => {
         }
         const roundedNumber = Util.toFixedNumber( number, decimalPlaces );
         const numberToString = Util.toFixed( number, decimalPlaces );
-        const signToString = (roundedNumber >= 0) ? MathSymbols.PLUS : MathSymbols.MINUS; // N.B.
+        const signToString = ( roundedNumber >= 0 ) ? MathSymbols.PLUS : MathSymbols.MINUS; // N.B.
         const absoluteNumberToString = Util.toFixed( Math.abs( number ), decimalPlaces ); // N.B.
-        const isStringZero = (numberToString === Util.toFixed( 0, decimalPlaces ));
+        const isStringZero = numberToString === Util.toFixed( 0, decimalPlaces );
 
         return {
           numberToString: numberToString, // {string}

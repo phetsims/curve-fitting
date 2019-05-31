@@ -1,4 +1,4 @@
-// Copyright 2015-2019, University of Colorado Boulder
+// Copyright 2019, University of Colorado Boulder
 
 /**
  * A barometer superclass that is extended by BarometerR2Node and BarometerX2Node
