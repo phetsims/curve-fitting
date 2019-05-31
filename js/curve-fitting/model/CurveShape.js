@@ -220,12 +220,10 @@ define( require => {
       xCoordinates = xCoordinates.filter( x => x !== null );
 
       // filter the xCoordinates to include only coordinates between xMin and xMax
-      xCoordinates = xCoordinates.filter( function isWithinRange( xValue ) {
-        return xValue >= xMin && xValue <= xMax;
-      } );
+      xCoordinates = xCoordinates.filter( xValue => xValue >= xMin && xValue <= xMax );
 
       // sort the coordinates in numerical order
-      xCoordinates = xCoordinates.sort( function compare( a, b ) { return a - b;} );
+      xCoordinates = xCoordinates.sort( ( a, b ) => a - b );
 
       // removing duplicates on the sorted array;
       xCoordinates = _.uniq( xCoordinates, true );

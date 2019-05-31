@@ -89,9 +89,7 @@ define( require => {
     getYValueAt( x ) {
       assert && assert( this.coefficients.length === this.orderProperty.value + 1, 'the coefficient array should be ' + this.orderProperty.value + 1 + ' long but is ' + this.coefficients.length );
 
-      return this.coefficients.reduce( function( accumulator, value, index ) {
-        return accumulator + value * Math.pow( x, index );
-      }, 0 );
+      return this.coefficients.reduce( ( accumulator, value, index ) => accumulator + value * Math.pow( x, index ), 0 );
     }
 
     /**
@@ -146,7 +144,7 @@ define( require => {
       const order = this.orderProperty.value;
       const adjustableFitCoefficients = [];
       // assign the slider values to the coefficients in the array
-      this.sliderPropertyArray.forEach( function( sliderProperty, index ) {
+      this.sliderPropertyArray.forEach( ( sliderProperty, index ) => {
         // ensure that only the relevant coefficients are passed on to the array
         if ( index <= order ) {
           adjustableFitCoefficients.push( sliderProperty.value );

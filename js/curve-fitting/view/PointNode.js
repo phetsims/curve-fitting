@@ -141,15 +141,15 @@ define( require => {
 
       // add halo bar nodes handler
       const barHaloHandler = new ButtonListener( {
-        up: function() {
+        up: () => {
           haloErrorBarTopNode.visible = false;
           haloTopBarBottomNode.visible = false;
         },
-        down: function() {
+        down: () => {
           haloErrorBarTopNode.visible = true;
           haloTopBarBottomNode.visible = true;
         },
-        over: function() {
+        over: () => {
           haloErrorBarTopNode.visible = true;
           haloTopBarBottomNode.visible = true;
         }
@@ -175,16 +175,16 @@ define( require => {
       // add drag handler for point
       circleView.addInputListener( new SimpleDragHandler( {
         allowTouchSnag: true,
-        start: function() {
+        start: () => {
           point.draggingProperty.set( true );
         },
-        translate: function( translationParams ) {
+        translate: ( translationParams ) => {
           if ( point.draggingProperty.value ) {
             // self.setTranslation( parentNode.globalToLocalPoint( e.pointer.point ) );
             point.positionProperty.value = point.positionProperty.value.plus( modelViewTransform.viewToModelDelta( translationParams.delta ) );
           }
         },
-        end: function() {
+        end: () => {
           point.draggingProperty.set( false );
           if ( CurveFittingQueryParameters.snapToGrid ) {
             point.positionProperty.set( new Vector2(
