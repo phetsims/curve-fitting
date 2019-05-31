@@ -73,13 +73,16 @@ define( require => {
         }
       }
 
-      // adds all relevent children to this node
+      // @private {Array.<Node>} all potential children of this node
+      this.allPotentialChildren = [];
+
+      // initializes this.allPotentialChildren; this.allPotentialChildren SHOULD NOT CHANGE after this
       const yNode = new Text( symbolYString + ' ' + MathSymbols.EQUAL_TO + ' ', options.yEqualsTextOptions );
-      this.addChild( yNode );
+      this.allPotentialChildren.push( yNode );
       for ( let i = CurveFittingConstants.MAX_ORDER_OF_FIT; i >= 0; i-- ) {
-        this.addChild( this.signTextNodes[ i ] );
-        this.addChild( this.coefficientTextNodes[ i ] );
-        this.addChild( this.xVariableTextNodes[ i ] );
+        this.allPotentialChildren.push( this.signTextNodes[ i ] );
+        this.allPotentialChildren.push( this.coefficientTextNodes[ i ] );
+        this.allPotentialChildren.push( this.xVariableTextNodes[ i ] );
       }
 
       // makes an array of symbols as the initial coefficients; '+' signs are inserted before each coefficient in the array
@@ -96,7 +99,7 @@ define( require => {
           this.coefficientTextNodes[ i ].visible = isVisible;
           this.xVariableTextNodes[ i ].visible = isVisible;
         }
-        this.removeLeadingPlus();
+        this.updateChildrenAndVisibilities();
       };
       this.orderProperty.link( visibilityUpdater );
       this.disposeVisibilityUpdater = () => { this.orderProperty.unlink( visibilityUpdater ); };
@@ -104,15 +107,18 @@ define( require => {
     }
 
     /**
-     * Removes a leading '+' if there is one
+     * Removes a leading '+' if there is one and removes all invisible children
      * Is in its own separate method so that it can be called when coefficients are changed or when the equation's order is changed
      * @private
      */
-    removeLeadingPlus() {
+    updateChildrenAndVisibilities() {
 
       // the leading coefficient's sign is visible when it is not '+'
       const leadingSignTextNode = this.signTextNodes[ this.orderProperty.value ];
       leadingSignTextNode.visible = leadingSignTextNode.text !== ' ' + MathSymbols.PLUS + ' ';
+
+      // sets all children of this node to all the visible potential children
+      this.children = this.allPotentialChildren.filter( child => child.visible );
     }
 
     /**
@@ -128,7 +134,7 @@ define( require => {
         this.coefficientTextNodes[ i / 2 ].text = coefficientsArray[ i + 1];
       }
 
-      this.removeLeadingPlus();
+      this.updateChildrenAndVisibilities();
 
     }
 
