@@ -138,7 +138,7 @@ define( require => {
 
       for ( let i = 0; i < coefficientsArray.length; i += 2 ) {
         this.signTextNodes[ i / 2 ].text = ' ' + coefficientsArray[ i ] + ' ';
-        this.coefficientTextNodes[ i / 2 ].text = coefficientsArray[ i + 1];
+        this.coefficientTextNodes[ i / 2 ].text = coefficientsArray[ i + 1 ];
       }
 
       this.updateChildrenAndVisibilities();
@@ -156,7 +156,7 @@ define( require => {
 
   }
 
-  curveFitting.register( 'EquationNode', EquationNode);
+  curveFitting.register( 'EquationNode', EquationNode );
 
   return EquationNode;
 } );
