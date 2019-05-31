@@ -108,14 +108,21 @@ define( require => {
 
     /**
      * Removes a leading '+' if there is one and removes all invisible children
+     * Turns a leading '-' into a unary minus for the coefficient
      * Is in its own separate method so that it can be called when coefficients are changed or when the equation's order is changed
      * @private
      */
     updateChildrenAndVisibilities() {
 
-      // the leading coefficient's sign is visible when it is not '+'
+      // removes the leading coefficient's sign
+      // if it is a +, it is gone
+      // if it is a -, it is turned into a unary - on the leading coefficient
       const leadingSignTextNode = this.signTextNodes[ this.orderProperty.value ];
-      leadingSignTextNode.visible = leadingSignTextNode.text !== ' ' + MathSymbols.PLUS + ' ';
+      leadingSignTextNode.visible = false;
+      if ( leadingSignTextNode.text === ' ' + MathSymbols.MINUS + ' ' ) {
+        const leadingCoefficient = this.coefficientTextNodes[ this.orderProperty.value ];
+        leadingCoefficient.text = MathSymbols.UNARY_MINUS + leadingCoefficient.text;
+      }
 
       // sets all children of this node to all the visible potential children
       this.children = this.allPotentialChildren.filter( child => child.visible );
