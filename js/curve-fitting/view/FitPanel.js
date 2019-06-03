@@ -31,6 +31,9 @@ define( require => {
   const symbolCString = require( 'string!CURVE_FITTING/symbol.c' );
   const symbolDString = require( 'string!CURVE_FITTING/symbol.d' );
 
+  // constants
+  const SLIDERS_HORIZONTAL_OFFSET = 3;
+
   class FitPanel extends Panel {
 
     /**
@@ -135,8 +138,8 @@ define( require => {
         // and behave as described in #15 and #37
         slidersAttributes.forEach( ( sliderObject, index ) => sliderObject.enabledProperty.set( order >= index ) );
 
-        // empirically determined to line up sliders under coefficients the best
-        slidersBox.children = [ new HStrut( 3 ) ].concat( slidersBox.children );
+        // adds a horizontal offset to the sliders so that they can line up under coefficients; see #80
+        slidersBox.children = [ new HStrut( SLIDERS_HORIZONTAL_OFFSET ) ].concat( slidersBox.children );
       } );
 
       // show sliders when 'adjustable' fit is selected
