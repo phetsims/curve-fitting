@@ -17,6 +17,7 @@ define( require => {
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const EquationNode = require( 'CURVE_FITTING/curve-fitting/view/EquationNode' );
   const HBox = require( 'SCENERY/nodes/HBox' );
+  const HStrut = require( 'SCENERY/nodes/HStrut' );
   const Panel = require( 'SUN/Panel' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Text = require( 'SCENERY/nodes/Text' );
@@ -133,6 +134,9 @@ define( require => {
         // if the sliders are not disabled they will be able to change
         // and behave as described in #15 and #37
         slidersAttributes.forEach( ( sliderObject, index ) => sliderObject.enabledProperty.set( order >= index ) );
+
+        // empirically determined to line up sliders under coefficients the best
+        slidersBox.children = [ new HStrut( 3 ) ].concat( slidersBox.children );
       } );
 
       // show sliders when 'adjustable' fit is selected
