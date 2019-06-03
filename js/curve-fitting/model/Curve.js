@@ -224,9 +224,11 @@ define( require => {
         this.chiSquaredProperty.set( chiSquared );
 
         // calculation of rSquared  = 1 - averageOfResidualSquares / averageOfSquares;
-        // handling for exceptions
-        if ( Math.abs( averageOfResidualSquares ) < EPSILON || Math.abs( averageOfSquares ) < EPSILON ) {
-          // avoid explicit division of zero by zero by setting rSquared to 1
+        // avoiding a divide by 0 situation and setting rSquared to 0 when averageOfSquares is basically 0; see #86
+        if ( Math.abs( averageOfSquares ) < EPSILON ) {
+          rSquared = 0;
+        }
+        else if ( Math.abs( averageOfResidualSquares ) < EPSILON ) {
           rSquared = 1;
         }
         else if ( averageOfResidualSquares / averageOfSquares > 1 ) {
