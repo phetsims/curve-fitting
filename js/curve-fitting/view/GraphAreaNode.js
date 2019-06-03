@@ -101,7 +101,7 @@ define( require => {
      * @param {number} value
      * @param {Object} [options]
      */
-    tickLabel( value, options ) {
+    addTickLabel( value, options ) {
       options = _.extend(
         {
           axis: 'horizontal'
@@ -136,7 +136,7 @@ define( require => {
       ticksLocation.forEach( location => {
         this.addTickLine( location, options );
         if ( options.withLabels ) {
-          this.tickLabel( location, options );
+          this.addTickLabel( location, options );
         }
       } );
     }
