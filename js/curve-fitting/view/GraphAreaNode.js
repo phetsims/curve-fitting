@@ -78,10 +78,9 @@ define( require => {
      * @private
      */
     addTickLine( location, options ) {
-      options = _.extend(
-        {
-          axis: 'horizontal'
-        }, options );
+      options = _.extend( {
+        axis: 'horizontal'
+      }, options );
 
       const tickShape = new Shape();
 
@@ -102,10 +101,9 @@ define( require => {
      * @param {Object} [options]
      */
     addTickLabel( value, options ) {
-      options = _.extend(
-        {
-          axis: 'horizontal'
-        }, options );
+      options = _.extend( {
+        axis: 'horizontal'
+      }, options );
 
       const tickLabel = new Text( Util.toFixed( value, TICK_DECIMAL_PLACES ), TICK_FONT_OPTIONS );
 
@@ -128,10 +126,9 @@ define( require => {
      */
     addTicks( ticksLocation, options ) {
 
-      options = _.extend(
-        {
-          withLabels: true
-        }, options );
+      options = _.extend( {
+        withLabels: true
+      }, options );
 
       ticksLocation.forEach( location => {
         this.addTickLine( location, options );
