@@ -44,6 +44,9 @@ define( require => {
       // @private {boolean} is the point animated by external means (say TWEEN). Animated points are not used for curve fits
       this.animated = false;
 
+      // @private {TWEEN.Tween|null} the animation of this point; is null if there is no animation
+      this.animation = null;
+
       // check and set the flag that indicates if the point is within the bounds of the graph
       this.positionProperty.link( position => {
         // Determines if the position of a point is within the visual bounds of the graph and is not animated on its way back
@@ -54,6 +57,11 @@ define( require => {
       this.draggingProperty.link( dragging => {
         if ( !dragging && !this.isInsideGraphProperty.value && !this.animated ) {
           this.animate();
+        }
+        if ( dragging && this.animated ) {
+          this.animation.stop();
+          this.animation = null;
+          this.animated = false;
         }
       } );
 
@@ -79,7 +87,7 @@ define( require => {
       const distance = this.positionProperty.initialValue.distance( this.positionProperty.value );
 
       if ( distance > 0 ) {
-        const animationTween = new TWEEN.Tween( location )
+        this.animation = new TWEEN.Tween( location )
           .to( { x: this.positionProperty.initialValue.x, y: this.positionProperty.initialValue.y },
             distance / CurveFittingConstants.ANIMATION_SPEED )
           .easing( TWEEN.Easing.Cubic.In )
@@ -89,7 +97,7 @@ define( require => {
             this.returnToOriginEmitter.emit();
           } );
 
-        animationTween.start( phet.joist.elapsedTime );
+        this.animation.start( phet.joist.elapsedTime );
       }
       else {
         // for cases where the distance is zero
