@@ -313,7 +313,6 @@ define( require => {
       // move this node as the model moves
       point.positionProperty.link( centerPositionListener );
 
-      //TODO verify that this is complete and correct
       this.disposePointNode = () => {
         point.deltaProperty.unlink( updateErrorBars );
         point.positionProperty.unlink( updateValueText );
