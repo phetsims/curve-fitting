@@ -73,13 +73,15 @@ define( require => {
         }
       } );
 
+      const equationAndSlidersNode = new Node( { children: [ equationFitNode ] } );
+
       // vertical layout
       const contentNode = new VBox( {
         align: 'left',
         spacing: 5,
         children: [
           radioButtonsBox,
-          equationFitNode
+          equationAndSlidersNode
         ]
       } );
 
@@ -148,11 +150,11 @@ define( require => {
 
       // show sliders when 'adjustable' fit is selected
       fitProperty.link( fit => {
-        if ( fit === 'best' && contentNode.hasChild( slidersBox ) ) {
-          this.removeChild( slidersBox );
+        if ( fit === 'best' && equationAndSlidersNode.hasChild( slidersBox ) ) {
+          equationAndSlidersNode.removeChild( slidersBox );
         }
         else if ( fit === 'adjustable' ) {
-          this.addChild( slidersBox );
+          equationAndSlidersNode.addChild( slidersBox );
           alignSliders( orderProperty.value );
         }
       } );
