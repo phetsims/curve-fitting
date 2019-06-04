@@ -30,6 +30,9 @@ define( require => {
   const symbolCString = require( 'string!CURVE_FITTING/symbol.c' );
   const symbolDString = require( 'string!CURVE_FITTING/symbol.d' );
 
+  // constants
+  const SLIDERS_OFFSET = 5;
+
   class FitPanel extends Panel {
 
     /**
@@ -123,9 +126,9 @@ define( require => {
       // we want sliders in DESCENDING order of polynomial
       const sliders = ascendingSliders.reverse();
 
-      // create slider box
+      // create slider box under the equationFitNode
       const slidersBox = new Node( { children: sliders } );
-      slidersBox.top = equationFitNode.bottom + 5;
+      slidersBox.top = equationFitNode.bottom + SLIDERS_OFFSET;
 
       // aligns sliders to be under coefficients
       const alignSliders = order => {
