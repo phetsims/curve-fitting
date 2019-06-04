@@ -16,8 +16,7 @@ define( require => {
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const EquationNode = require( 'CURVE_FITTING/curve-fitting/view/EquationNode' );
-  const HBox = require( 'SCENERY/nodes/HBox' );
-  const HStrut = require( 'SCENERY/nodes/HStrut' );
+  const Node = require( 'SCENERY/nodes/Node' );
   const Panel = require( 'SUN/Panel' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Text = require( 'SCENERY/nodes/Text' );
@@ -30,9 +29,6 @@ define( require => {
   const symbolBString = require( 'string!CURVE_FITTING/symbol.b' );
   const symbolCString = require( 'string!CURVE_FITTING/symbol.c' );
   const symbolDString = require( 'string!CURVE_FITTING/symbol.d' );
-
-  // constants
-  const SLIDERS_HORIZONTAL_OFFSET = 3;
 
   class FitPanel extends Panel {
 
@@ -126,7 +122,16 @@ define( require => {
       const sliders = ascendingSliders.reverse();
 
       // create slider box
-      const slidersBox = new HBox( { spacing: 6, children: sliders } );
+      const slidersBox = new Node( { children: sliders } );
+      slidersBox.top = equationFitNode.bottom + 5;
+
+      // aligns sliders to be under coefficients
+      const alignSliders = order => {
+        slidersBox.children.forEach( ( slider, index ) => {
+          const relevantCoefficientText = equationFitNode.coefficientTextNodes[ order - index ];
+          slider.centerX = slidersBox.globalToLocalPoint( equationFitNode.localToGlobalPoint( relevantCoefficientText.center ) ).x;
+        } );
+      };
 
       // add slider number observer
       orderProperty.link( order => {
@@ -138,17 +143,17 @@ define( require => {
         // and behave as described in #15 and #37
         slidersAttributes.forEach( ( sliderObject, index ) => sliderObject.enabledProperty.set( order >= index ) );
 
-        // adds a horizontal offset to the sliders so that they can line up under coefficients; see #80
-        slidersBox.children = [ new HStrut( SLIDERS_HORIZONTAL_OFFSET ) ].concat( slidersBox.children );
+        alignSliders( order );
       } );
 
       // show sliders when 'adjustable' fit is selected
       fitProperty.link( fit => {
         if ( fit === 'best' && contentNode.hasChild( slidersBox ) ) {
-          contentNode.removeChild( slidersBox );
+          this.removeChild( slidersBox );
         }
         else if ( fit === 'adjustable' ) {
-          contentNode.addChild( slidersBox );
+          this.addChild( slidersBox );
+          alignSliders( orderProperty.value );
         }
       } );
 

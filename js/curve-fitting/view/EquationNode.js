@@ -52,7 +52,7 @@ define( require => {
       // @private {Array.<Text>}
       this.signTextNodes = [];
 
-      // @private {Array.<Text>}
+      // @public (read-only) {Array.<Text>}
       this.coefficientTextNodes = [];
 
       // @private {Array.<RichText>}
