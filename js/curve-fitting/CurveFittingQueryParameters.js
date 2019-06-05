@@ -13,23 +13,12 @@ define( require => {
 
   const CurveFittingQueryParameters = window.QueryStringMachine.getAll( {
 
-    //TODO document
+    // determines whether dragged points should be placed such that their coordinates are rounded to the nearest 1
     snapToGrid: {
       type: 'boolean',
       defaultValue: false
-    },
-
-    //TODO document
-    animatedPoints: {
-      type: 'boolean',
-      defaultValue: false
-    },
-
-    //TODO document
-    debugLine: {
-      type: 'boolean',
-      defaultValue: false
     }
+
   } );
 
   curveFitting.register( 'CurveFittingQueryParameters', CurveFittingQueryParameters );

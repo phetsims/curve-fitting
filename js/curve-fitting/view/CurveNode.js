@@ -11,7 +11,6 @@ define( require => {
   // modules
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  const CurveFittingQueryParameters = require( 'CURVE_FITTING/curve-fitting/CurveFittingQueryParameters' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Path = require( 'SCENERY/nodes/Path' );
   const Shape = require( 'KITE/Shape' );
@@ -53,30 +52,6 @@ define( require => {
       curveVisibleProperty.link( updateCurve );
       curve.orderProperty.link( updateCurve );
       curve.updateCurveEmitter.addListener( updateCurve );
-
-      // for debugging purposes.
-      if ( CurveFittingQueryParameters.debugLine ) {
-        // create and add curve
-        const curveDebugPath = new Path( null, { stroke: 'red', lineWidth: 2 } );
-        this.addChild( curveDebugPath );
-
-        /**
-         * updates the debug curve
-         */
-        const updateDebugCurve = () => {
-          if ( curveVisibleProperty.value && curve.isCurvePresent() ) {
-            curveDebugPath.setShape( modelViewTransform.modelToViewShape( curve.getDebugShape() ) );
-          }
-          else {
-            // reset the curve shape to null
-            curveDebugPath.setShape( null );
-          }
-        };
-
-        curveVisibleProperty.link( updateDebugCurve );
-        curve.orderProperty.link( updateDebugCurve );
-        curve.updateCurveEmitter.addListener( updateDebugCurve );
-      }
     }
 
   }

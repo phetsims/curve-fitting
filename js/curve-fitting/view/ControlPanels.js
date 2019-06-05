@@ -1,6 +1,5 @@
 // Copyright 2015-2019, University of Colorado Boulder
 
-//TODO make all 3 panels the same width, https://github.com/phetsims/curve-fitting/issues/98
 /**
  * Container for control panels
  *

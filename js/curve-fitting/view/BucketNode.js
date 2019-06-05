@@ -117,8 +117,8 @@ define( require => {
           end: () => {
             if ( CurveFittingQueryParameters.snapToGrid ) {
               point.positionProperty.set( new Vector2(
-                Util.toFixedNumber( point.positionProperty.value.x, 1 ),
-                Util.toFixedNumber( point.positionProperty.value.y, 1 )
+                Util.toFixedNumber( point.positionProperty.value.x, 0 ),
+                Util.toFixedNumber( point.positionProperty.value.y, 0 )
               ) );
             }
             point.draggingProperty.set( false );
