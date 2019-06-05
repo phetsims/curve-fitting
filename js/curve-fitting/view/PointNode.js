@@ -38,6 +38,11 @@ define( require => {
     stroke: CurveFittingConstants.BLUE_COLOR,
     lineWidth: 1
   };
+  const COORDINATE_BACKGROUND_RECTANGLE_OPTIONS = {
+    fill: 'lightblue', //TODO: replace this color with something more aesthetically pleasing
+    opacity: 0.75,
+    cornerRadius: 4
+  };
   const DILATION_SIZE = 8;
   const ERROR_BAR_BOUNDS = new Bounds2( -10, 0, 10, 2 );
   const ERROR_BAR_OPTIONS = {
@@ -199,6 +204,8 @@ define( require => {
       const valueTextLabel = new Text( StringUtils.format( pattern0ValueX1ValueYString, Util.toFixed( point.positionProperty.value.x, 1 ), Util.toFixed( point.positionProperty.value.y, 1 ) ), {
         font: VALUE_FONT
       } );
+      const valueTextBackground = new Rectangle( 0, 0, 1, 1, COORDINATE_BACKGROUND_RECTANGLE_OPTIONS );
+      this.addChild( valueTextBackground );
       this.addChild( valueTextLabel );
 
       const deltaTextLabel = new RichText( StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( point.deltaProperty.value, 1 ) ), {
@@ -207,11 +214,11 @@ define( require => {
       this.addChild( deltaTextLabel );
 
       /**
-       * Ensures that the deltaTextLabel doesn't intersect with the valueTextLabel
+       * Moves the deltaTextLabel if it intersects with the valueTextBackground
        */
       function removeTextIntersection() {
-        if ( deltaTextLabel.bottom >= valueTextLabel.top ) {
-          deltaTextLabel.bottom = valueTextLabel.top + 1;
+        if ( deltaTextLabel.bottom >= valueTextBackground.top ) {
+          deltaTextLabel.bottom = valueTextBackground.top + 1;
         }
       }
 
@@ -250,12 +257,17 @@ define( require => {
       function updateValueText() {
         if ( valueTextLabel.visible && point.isInsideGraphProperty.value ) {
           valueTextLabel.setText( StringUtils.format( pattern0ValueX1ValueYString, Util.toFixed( point.positionProperty.value.x, 1 ), Util.toFixed( point.positionProperty.value.y, 1 ) ) );
+          valueTextBackground.visible = true;
         }
         else {
           valueTextLabel.setText( '' );
+          valueTextBackground.visible = false;
         }
+        valueTextBackground.setRect( 0, 0, valueTextLabel.width + 4, valueTextLabel.height + 4 );
+        valueTextLabel.center = valueTextBackground.center;
       }
-      const valueTextLabelHandle = valuesVisibleProperty.linkAttribute( valueTextLabel, 'visible' );
+      const valueTextLabelHandle = valuesVisibleProperty.linkAttribute( valueTextBackground, 'visible' );
+      const valueNodeLabelHandle = valuesVisibleProperty.linkAttribute( valueTextLabel, 'visible' );
       function updateValueTextWhenVisible( valuesVisible ) {
         if ( valuesVisible ) {
           updateValueText();
@@ -317,8 +329,9 @@ define( require => {
         circleView.center = modelViewTransform.modelToViewPosition( position );
         haloPointNode.center = circleView.center;
         updateErrorBars();
-        valueTextLabel.left = circleView.right + 2;
-        valueTextLabel.centerY = circleView.centerY;
+        valueTextBackground.left = circleView.right + 2;
+        valueTextBackground.centerY = circleView.centerY;
+        valueTextLabel.center = valueTextBackground.center;
         deltaTextLabel.left = errorBarTop.right + 2;
         deltaTextLabel.centerY = errorBarTop.centerY;
         removeTextIntersection();
@@ -334,6 +347,7 @@ define( require => {
         residualsVisibleProperty.unlink( updateResiduals );
         valuesVisibleProperty.unlinkAttribute( deltaTextLabelHandle );
         valuesVisibleProperty.unlinkAttribute( valueTextLabelHandle );
+        valuesVisibleProperty.unlinkAttribute( valueNodeLabelHandle );
         valuesVisibleProperty.unlink( updateValueTextWhenVisible );
         valuesVisibleProperty.unlink( updateDeltaTextIfVisible );
       };
