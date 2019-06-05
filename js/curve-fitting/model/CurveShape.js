@@ -20,13 +20,8 @@ define( require => {
      * @param {Function} getYValueAt - get the Y value at the x coordinate
      * @param {number[]} coefficients - coefficients of polynomial
      * @param {number} order - order of the polynomial that describes the curve
-     * @param {Object} [options]
      */
-    constructor( getYValueAt, coefficients, order, options ) {
-
-      options = _.extend( {
-        debug: false
-      }, options );
+    constructor( getYValueAt, coefficients, order ) {
 
       super();
 
@@ -59,20 +54,6 @@ define( require => {
           break;
         }
       } // end of switch statement
-
-      // slow but failsafe method: plot curve as a series of small linear segments
-      if ( options.debug ) {
-        // invalidate shape
-        this.shape = {};
-        // add many segments
-        const steps = 1000;
-        // separation between adjacent x coordinates
-        const interval = ( xMax - xMin ) / steps;
-        // array of x coordinates
-        const xCoordinates = _.range( xMin, xMax, interval );
-        // add linear segments
-        this.addSegments( this.addLinear.bind( this ), xCoordinates );
-      }
     }
 
     /**

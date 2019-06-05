@@ -102,15 +102,6 @@ define( require => {
     }
 
     /**
-     * gets the shape of the debug curve
-     * @returns {Shape}
-     * @public
-     */
-    getDebugShape() {
-      return new CurveShape( this.getYValueAt.bind( this ), this.coefficients, this.orderProperty.value, { debug: true } );
-    }
-
-    /**
      * updates fit
      * updates coefficients of the polynomial and recalculate the chi squared and r squared values
      * sends a message to the view to update itself
