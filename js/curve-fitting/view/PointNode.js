@@ -207,6 +207,15 @@ define( require => {
       this.addChild( deltaTextLabel );
 
       /**
+       * Ensures that the deltaTextLabel doesn't intersect with the valueTextLabel
+       */
+      function removeTextIntersection() {
+        if ( deltaTextLabel.bottom >= valueTextLabel.top ) {
+          deltaTextLabel.bottom = valueTextLabel.top + 1;
+        }
+      }
+
+      /**
        * updates the error bars
        *
        */
@@ -220,6 +229,7 @@ define( require => {
 
         //update label
         deltaTextLabel.centerY = errorBarTop.centerY;
+        removeTextIntersection();
 
         // update central line
         centralLine.setX1( circleView.centerX );
@@ -307,8 +317,11 @@ define( require => {
         circleView.center = modelViewTransform.modelToViewPosition( position );
         haloPointNode.center = circleView.center;
         updateErrorBars();
-        valueTextLabel.setTranslation( circleView.centerX + circleView.localBounds.maxX + 2, circleView.centerY );
-        deltaTextLabel.setTranslation( errorBarTop.centerX + errorBarTop.localBounds.maxX + 2, errorBarTop.centerY );
+        valueTextLabel.left = circleView.right + 2;
+        valueTextLabel.centerY = circleView.centerY;
+        deltaTextLabel.left = errorBarTop.right + 2;
+        deltaTextLabel.centerY = errorBarTop.centerY;
+        removeTextIntersection();
       }
       // move this node as the model moves
       point.positionProperty.link( centerPositionListener );
@@ -329,7 +342,7 @@ define( require => {
     // @public
     dispose() {
       this.disposePointNode();
-      Node.prototype.dispose.call( this );
+      super.dispose();
     }
 
   }
