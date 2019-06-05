@@ -39,7 +39,7 @@ define( require => {
     lineWidth: 1
   };
   const COORDINATE_BACKGROUND_RECTANGLE_OPTIONS = {
-    fill: 'lightblue', //TODO: replace this color with something more aesthetically pleasing
+    fill: 'lightgray',
     opacity: 0.75,
     cornerRadius: 4
   };
