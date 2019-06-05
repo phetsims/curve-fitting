@@ -38,7 +38,7 @@ define( require => {
     fill: CurveFittingConstants.BLUE_COLOR
   };
   const TEXT_OPTIONS = { font: new PhetFont( 12 ) };
-  //  max number precision decimal places for ascending order of coefficient of polynomials
+  // max number precision decimal places for ascending order of coefficient of polynomials
   const MAX_DECIMALS = [ 1, 2, 3, 3 ];
 
   class GraphEquationAccordionBox extends Panel {
@@ -58,7 +58,7 @@ define( require => {
                                      curveVisibleProperty,
                                      options ) {
 
-      //  visible text node when panel is not expanded
+      // visible text node when panel is not expanded
       const titleNode = new Text( equationString, TEXT_OPTIONS );
 
       // create expand button
@@ -75,7 +75,7 @@ define( require => {
 
       super( content, _.extend( PANEL_OPTIONS, options ) );
 
-      //  visible node when panel is expanded
+      // visible node when panel is expanded
       const equationNode = new EquationNode( orderProperty, { coefficientTextOptions: PARAMETER_TEXT_OPTIONS } );
 
       // toggle the content of the panel, based on the expansion status
@@ -89,7 +89,7 @@ define( require => {
       } );
 
       /**
-       * Function that returns (for numbers smaller than ten) a number (as a string)  with a fixed number of decimal places
+       * Function that returns (for numbers smaller than ten) a number (as a string) with a fixed number of decimal places
        * whereas for numbers larger than ten, the number/string is returned a fixed number of significant figures
        *
        * @param {number} number
@@ -132,7 +132,7 @@ define( require => {
           numberToString: numberToString, // {string}
           signToString: signToString, // {string}
           absoluteNumberToString: absoluteNumberToString, // {string}
-          isStringZero: isStringZero  // {boolean}
+          isStringZero: isStringZero // {boolean}
         };
       };
 

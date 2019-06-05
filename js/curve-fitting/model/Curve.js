@@ -28,14 +28,14 @@ define( require => {
      * @param {Property.<string>} fitProperty - the method of fitting the curve to data points
      */
     constructor( points, sliderPropertyArray, orderProperty, fitProperty ) {
-      // @public {Property.<number>}  X^2 deviation value, a number ranging from 0 to + $\infty$
+      // @public {Property.<number>} X^2 deviation value, a number ranging from 0 to + $\infty$
       this.chiSquaredProperty = new NumberProperty( 0 );
 
-      // @public {Property.<number>}  r^2 deviation value, a number ranging from 0 to 1
+      // @public {Property.<number>} r^2 deviation value, a number ranging from 0 to 1
       this.rSquaredProperty = new NumberProperty( 0 );
 
       // @public (read-only) {Array.<number>} array of coefficients of the polynomial curve stored in ascending polynomial order.
-      // eg. y = a_0 +a_1 x + a_2 x^2 + a_3 x^3  yields [a_0, a_1, a_2, a_3]
+      // eg. y = a_0 +a_1 x + a_2 x^2 + a_3 x^3 yields [a_0, a_1, a_2, a_3]
       // the length of the array is equal to the order of the polynomial + 1
       this.coefficients = [];
 
@@ -169,7 +169,7 @@ define( require => {
     updateRAndChiSquared() {
 
       const points = this.points.getPointsOnGraph();
-      const numberOfPoints = points.length; //  number of points in the array
+      const numberOfPoints = points.length; // number of points in the array
 
       if ( numberOfPoints < 2 ) {
         // rSquared and chiSquared do not have any meaning, set them to zero and bail out
@@ -212,7 +212,7 @@ define( require => {
         const residualSumOfSquares = (yySum - 2 * yAtySum + yAtyAtSum);
         // average of weighted squares of residuals, a.k.a average of residual squares
         const averageOfResidualSquares = residualSumOfSquares / denominator;
-        //  average of weighted squares
+        // average of weighted squares
         const averageOfSquares = yyAverage - yAverage * yAverage;
         // sum of of the weighted squares of residuals
 
@@ -223,7 +223,7 @@ define( require => {
         const chiSquared = residualSumOfSquares / Math.max( degreesOfFreedom, 1 );
         this.chiSquaredProperty.set( chiSquared );
 
-        // calculation of rSquared  = 1 - averageOfResidualSquares / averageOfSquares;
+        // calculation of rSquared = 1 - averageOfResidualSquares / averageOfSquares;
         // avoiding a divide by 0 situation and setting rSquared to 0 when averageOfSquares is basically 0; see #86
         if ( Math.abs( averageOfSquares ) < EPSILON ) {
           rSquared = 0;
@@ -251,7 +251,7 @@ define( require => {
      * The solution is found by solving the matrix equation, Y = X A
      * where X is a square matrix, and Y is a column matrix.
      *
-     * The number of rows of the solution matrix, A,  is given by the number of points, or
+     * The number of rows of the solution matrix, A, is given by the number of points, or
      * the order +1, whichever is smaller.
      * If the square matrix is singular, an array filled with zero is returned
      * otherwise, the solution matrix is unpacked into an array
@@ -285,7 +285,7 @@ define( require => {
               const x = point.positionProperty.value.x;
               const y = point.positionProperty.value.y;
               return accumulator + Math.pow( x, i ) * y / deltaSquared;
-            }, 0  // initial value of accumulator
+            }, 0 // initial value of accumulator
         ) );
       }
 

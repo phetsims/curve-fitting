@@ -19,7 +19,7 @@ define( require => {
     SCREEN_VIEW_OPTIONS: { layoutBounds: new Bounds2( 0, 0, 768, 504 ) },
 
     // speed for dataPoints to reach the bucket when animated
-    ANIMATION_SPEED: 0.1, //  in model units per millisecond;
+    ANIMATION_SPEED: 0.1, // in model units per millisecond;
 
     MAX_ORDER_OF_FIT: 3,
 

@@ -22,7 +22,7 @@ define( require => {
      * @param {Property.<boolean>} curveVisibleProperty
      * @param {Object} [options] for graph node.
      */
-    constructor( rSquaredProperty, curveVisibleProperty,  options ) {
+    constructor( rSquaredProperty, curveVisibleProperty, options ) {
 
       const tickLocationsToLabels = {
         0: '0',

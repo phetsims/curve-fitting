@@ -32,7 +32,7 @@ define( require => {
       // @public {Property.<Vector2>} position of point
       this.positionProperty = new Vector2Property( options.position );
 
-      // @public (read-only) {Property.<boolean>}  is the point inside the graph? (points outside the graph ares are not used for curve fitting purposes)
+      // @public (read-only) {Property.<boolean>} is the point inside the graph? (points outside the graph ares are not used for curve fitting purposes)
       this.isInsideGraphProperty = new BooleanProperty( false );
 
       // @public {Property.<boolean>}

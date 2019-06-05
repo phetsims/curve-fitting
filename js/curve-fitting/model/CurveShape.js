@@ -96,7 +96,7 @@ define( require => {
       const yStart = this.getYValueAt( start );
       const yEnd = this.getYValueAt( end );
       this.moveTo( start, yStart ).lineTo( end, yEnd );
-      return this;  // for chaining
+      return this; // for chaining
     }
 
     /**
@@ -119,7 +119,7 @@ define( require => {
       const cpy = ( -yAtStart + 4 * yAtCpx - yAtEnd ) / 2;
 
       this.moveTo( start, yAtStart ).quadraticCurveTo( cpx, cpy, end, yAtEnd );
-      return this;  // for chaining
+      return this; // for chaining
     }
 
     /**
@@ -190,27 +190,27 @@ define( require => {
       let xCoordinates = [ xMin, xMax ];
 
       if ( order === 3 ) {
-        // find the real solutions to  Y(x)=0, i.e. the zeros of the cubic polynomial
+        // find the real solutions to Y(x)=0, i.e. the zeros of the cubic polynomial
         // Util.solveCubicRootsReal wants the coefficients in reversed order
         const zeroXCubicSolutions = Util.solveCubicRootsReal( coef[ 3 ], coef[ 2 ], coef[ 1 ], coef[ 0 ] );
 
-        // find the real solutions to  Y(x)=  yMin, i.e. when the curve intersects the bottom axis
+        // find the real solutions to Y(x)= yMin, i.e. when the curve intersects the bottom axis
         const bottomXCubicSolutions = Util.solveCubicRootsReal( coef[ 3 ], coef[ 2 ], coef[ 1 ], coef[ 0 ] - yMin );
 
-        // find the real solutions to  Y(x)= yMax, i.e. when the curve intersects the top axis
+        // find the real solutions to Y(x)= yMax, i.e. when the curve intersects the top axis
         const topXCubicSolutions = Util.solveCubicRootsReal( coef[ 3 ], coef[ 2 ], coef[ 1 ], coef[ 0 ] - yMax );
 
         // concatenate all coordinates in a single array
         xCoordinates = xCoordinates.concat( zeroXCubicSolutions, bottomXCubicSolutions, topXCubicSolutions );
       }
       else if ( order === 2 ) {
-        // find the real solutions to quadratic polynomial  Y(x)=0, i.e. the zeros of the quadratic curve
+        // find the real solutions to quadratic polynomial Y(x)=0, i.e. the zeros of the quadratic curve
         const zeroXQuadraticSolutions = Util.solveQuadraticRootsReal( coef[ 2 ], coef[ 1 ], coef[ 0 ] );
 
-        // find the real solutions to  Y(x)=  yMin, i.e. when the curve intersects the bottom axis
+        // find the real solutions to Y(x)= yMin, i.e. when the curve intersects the bottom axis
         const bottomXQuadraticSolutions = Util.solveQuadraticRootsReal( coef[ 2 ], coef[ 1 ], coef[ 0 ] - yMin );
 
-        // find the real solutions to  Y(x)= yMax, i.e. when the curve intersects the top axis
+        // find the real solutions to Y(x)= yMax, i.e. when the curve intersects the top axis
         const topXQuadraticSolutions = Util.solveQuadraticRootsReal( coef[ 2 ], coef[ 1 ], coef[ 0 ] - yMax );
 
         xCoordinates = xCoordinates.concat( zeroXQuadraticSolutions, bottomXQuadraticSolutions, topXQuadraticSolutions );
