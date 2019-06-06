@@ -98,7 +98,7 @@ define( require => {
      * @public
      */
     getShape() {
-      return new CurveShape( this.getYValueAt.bind( this ), this.coefficients, this.orderProperty.value );
+      return new CurveShape( this.getYValueAt.bind( this ) );
     }
 
     /**
