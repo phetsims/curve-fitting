@@ -11,6 +11,7 @@ define( require => {
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const HBox = require( 'SCENERY/nodes/HBox' );
+  const HStrut = require( 'SCENERY/nodes/HStrut' );
   const MathSymbolFont = require( 'SCENERY_PHET/MathSymbolFont' );
   const MathSymbols = require( 'SCENERY_PHET/MathSymbols' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
@@ -82,6 +83,9 @@ define( require => {
       for ( let i = CurveFittingConstants.MAX_ORDER_OF_FIT; i >= 0; i-- ) {
         this.allPotentialChildren.push( this.signTextNodes[ i ] );
         this.allPotentialChildren.push( this.coefficientTextNodes[ i ] );
+
+        // arbitrary spacing to separate coefficient from variable to be more aesthetically pleasing
+        this.allPotentialChildren.push( new HStrut( 1 ) );
         this.allPotentialChildren.push( this.xVariableTextNodes[ i ] );
       }
 
@@ -122,6 +126,15 @@ define( require => {
       if ( leadingSignTextNode.text === ' ' + MathSymbols.MINUS + ' ' ) {
         const leadingCoefficient = this.coefficientTextNodes[ this.orderProperty.value ];
         leadingCoefficient.text = MathSymbols.UNARY_MINUS + leadingCoefficient.text;
+      }
+
+      // makes unnecessary HStruts invisible; HStruts are unnecessary when their proceeding variable texts are invisible
+      for ( let i = 0; i < this.allPotentialChildren.length - 1; i++ ) {
+        const child = this.allPotentialChildren[ i ];
+        if ( !( child instanceof HStrut ) ) {
+          continue;
+        }
+        child.visible = this.allPotentialChildren[ i + 1 ].visible;
       }
 
       // sets all children of this node to all the visible potential children
