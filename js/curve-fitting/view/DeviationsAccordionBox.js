@@ -109,7 +109,7 @@ define( require => {
         maxWidth: 22
       } );
       const chiSquaredValuePanel = new Panel( chiSquaredValueText, VALUE_PANEL_OPTIONS );
-      const chiSquaredLabelText = new RichText( symbolChiString + '<sup>2</sup>=', { font: MATH_FONT } );
+      const chiSquaredLabelText = new RichText( `${symbolChiString}<sup>2</sup>=`, { font: MATH_FONT } );
       const chiSquaredInformationBox = new HBox( {
         children: [ chiSquaredLabelText, chiSquaredValuePanel ]
       } );
@@ -121,7 +121,7 @@ define( require => {
         maxWidth: 22
       } );
       const rSquaredValuePanel = new Panel( rSquaredValueText, VALUE_PANEL_OPTIONS );
-      const rSquaredLabelText = new RichText( symbolRString + '<sup>2</sup>=', { font: MATH_FONT } );
+      const rSquaredLabelText = new RichText( `${symbolRString}<sup>2</sup>=`, { font: MATH_FONT } );
       const rSquaredInformationBox = new HBox( {
         children: [ rSquaredLabelText, rSquaredValuePanel ]
       } );
@@ -129,9 +129,22 @@ define( require => {
       // unlink unnecessary, present for the lifetime of the sim
       chiSquaredProperty.link( chiSquared => {
 
+        // if chiSquared is larger than a 1000, the actual value will not be displayed, so use a > sign
+        if ( chiSquared > 1000 ) {
+          chiSquaredLabelText.text = `${symbolChiString}<sup>2</sup>>`;
+        } else {
+          chiSquaredLabelText.text = `${symbolChiString}<sup>2</sup>=`;
+        }
+
+        // centers the chiSquared text node within the panel
+        // chi squared needs to be centered because the number of digits can change
+        chiSquaredValueText.centerX = chiSquaredValuePanel.width / 2;
+        chiSquaredValueText.centerY = chiSquaredValuePanel.height / 2;
+
         // If chiSquared is greater than 10 we have a bad fit so less precision is needed.
         // If chiSquared if greater than 100 we have a really bad fit and decimals are inconsequential.
-        chiSquaredValueText.setText( formatNumber( chiSquared, 2 ) );
+        // If chiSquared is larger than 1000, round it to 1000; see #28
+        chiSquaredValueText.setText( formatNumber( Math.min( chiSquared, 1000 ), 2 ) );
       } );
 
       // unlink unnecessary, present for the lifetime of the sim
