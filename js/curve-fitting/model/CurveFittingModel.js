@@ -50,11 +50,11 @@ define( require => {
       // validate Property values and update curve fit
       this.orderProperty.link( order => {
         // ensure the order is 1, 2 or 3: linear, quadratic or cubic
-        assert && assert( order === 1 || order === 2 || order === 3, 'invalid order: ' + order );
+        assert && assert( order === 1 || order === 2 || order === 3, `invalid order: ${order}` );
         this.curve.updateFit();
       } );
       this.fitProperty.link( fit => {
-        assert && assert( _.includes( VALID_FIT_VALUES, fit ), 'invalid fit: ' + fit );
+        assert && assert( _.includes( VALID_FIT_VALUES, fit ), `invalid fit: ${fit}` );
         this.curve.updateFit();
       } );
 

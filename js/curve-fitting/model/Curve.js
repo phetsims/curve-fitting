@@ -87,7 +87,7 @@ define( require => {
      * @public (read-only)
      */
     getYValueAt( x ) {
-      assert && assert( this.coefficients.length === this.orderProperty.value + 1, 'the coefficient array should be ' + this.orderProperty.value + 1 + ' long but is ' + this.coefficients.length );
+      assert && assert( this.coefficients.length === this.orderProperty.value + 1, `the coefficient array should be ${this.orderProperty.value} long but is ${this.coefficients.length}` );
 
       return this.coefficients.reduce( ( accumulator, value, index ) => accumulator + value * Math.pow( x, index ), 0 );
     }
@@ -116,7 +116,7 @@ define( require => {
         this.coefficients = this.getAdjustableFitCoefficients();
       }
 
-      assert && assert( this.coefficients.length === this.orderProperty.value + 1, 'the coefficient array should be ' + this.orderProperty.value + 1 + ' long but is ' + this.coefficients.length );
+      assert && assert( this.coefficients.length === this.orderProperty.value + 1, `the coefficient array should be ${this.orderProperty.value + 1} long but is ${this.coefficients.length}` );
 
       // update the property values of r squared and chi squared
       this.updateRAndChiSquared();
@@ -314,7 +314,7 @@ define( require => {
       }
 
       bestFitCoefficients.forEach( ( value, index ) => {
-        assert && assert( typeof value === 'number' && isFinite( value ), 'fit parameter: ' + index + ' is not finite: ' + value );
+        assert && assert( typeof value === 'number' && isFinite( value ), `fit parameter: ${index} is not finite: ${value}` );
       } );
 
       return bestFitCoefficients;

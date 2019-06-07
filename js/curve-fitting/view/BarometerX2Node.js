@@ -162,7 +162,7 @@ define( require => {
       blue = 0;
     }
 
-    return 'rgb(' + Util.roundSymmetric( red ) + ', ' + Util.roundSymmetric( green ) + ', ' + Util.roundSymmetric( blue ) + ')';
+    return `rgb( ${Util.roundSymmetric( red )}, ${Util.roundSymmetric( green )}, ${Util.roundSymmetric( blue )} )`;
   }
 
   /**

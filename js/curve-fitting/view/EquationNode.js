@@ -70,7 +70,7 @@ define( require => {
           this.xVariableTextNodes.push( new Text( symbolXString, options.xTextOptions ) );
         }
         else {
-          this.xVariableTextNodes.push( new RichText( symbolXString + '<sup>' + i + '</sup>', options.xTextOptions ) );
+          this.xVariableTextNodes.push( new RichText( `${symbolXString}<sup>${i}</sup>`, options.xTextOptions ) );
         }
       }
 
@@ -78,7 +78,7 @@ define( require => {
       this.allPotentialChildren = [];
 
       // initializes this.allPotentialChildren; this.allPotentialChildren SHOULD NOT CHANGE after this
-      const yNode = new Text( symbolYString + ' ' + MathSymbols.EQUAL_TO + ' ', options.yEqualsTextOptions );
+      const yNode = new Text( `${symbolYString} ${MathSymbols.EQUAL_TO} `, options.yEqualsTextOptions );
       this.allPotentialChildren.push( yNode );
       for ( let i = CurveFittingConstants.MAX_ORDER_OF_FIT; i >= 0; i-- ) {
         this.allPotentialChildren.push( this.signTextNodes[ i ] );
@@ -123,7 +123,7 @@ define( require => {
       // if it is a -, it is turned into a unary - on the leading coefficient
       const leadingSignTextNode = this.signTextNodes[ this.orderProperty.value ];
       leadingSignTextNode.visible = false;
-      if ( leadingSignTextNode.text === ' ' + MathSymbols.MINUS + ' ' ) {
+      if ( leadingSignTextNode.text === ` ${MathSymbols.MINUS} ` ) {
         const leadingCoefficient = this.coefficientTextNodes[ this.orderProperty.value ];
         leadingCoefficient.text = MathSymbols.UNARY_MINUS + leadingCoefficient.text;
       }
@@ -150,7 +150,7 @@ define( require => {
       assert && assert( coefficientsArray.length >= 2 * ( this.orderProperty.value + 1 ), 'Not enough coefficients for each term in the equation.' );
 
       for ( let i = 0; i < coefficientsArray.length; i += 2 ) {
-        this.signTextNodes[ i / 2 ].text = ' ' + coefficientsArray[ i ] + ' ';
+        this.signTextNodes[ i / 2 ].text = ` ${coefficientsArray[ i ]} `;
         this.coefficientTextNodes[ i / 2 ].text = coefficientsArray[ i + 1 ];
       }
 
