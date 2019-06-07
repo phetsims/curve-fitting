@@ -14,6 +14,7 @@ define( require => {
   const BarometerNode = require( 'CURVE_FITTING/curve-fitting/view/BarometerNode' );
   const Circle = require( 'SCENERY/nodes/Circle' );
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  const DerivedProperty = require( 'AXON/DerivedProperty' );
 
   class BarometerR2Node extends BarometerNode {
 
@@ -32,7 +33,15 @@ define( require => {
         1: '1'
       };
 
-      super( rSquaredProperty, curveVisibleProperty, tickLocationsToLabels, {
+      // property that maps rSquared -> rSquared, unless rSquared is NaN, where it maps NaN -> 0
+      const modifiedRSquaredProperty = new DerivedProperty( [ rSquaredProperty], rSquared => {
+        if ( isNaN( rSquared ) ) {
+          return 0;
+        }
+        return rSquared;
+      } );
+
+      super( modifiedRSquaredProperty, curveVisibleProperty, tickLocationsToLabels, {
         fill: 'blue',
         tickWidth: 20
       } );

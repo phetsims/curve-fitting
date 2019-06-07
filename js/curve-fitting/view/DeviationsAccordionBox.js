@@ -140,7 +140,7 @@ define( require => {
         // If chiSquared is greater than 10 we have a bad fit so less precision is needed.
         // If chiSquared if greater than 100 we have a really bad fit and decimals are inconsequential.
         // If chiSquared is larger than 1000, round it to 1000; see #28
-        chiSquaredValueText.setText( formatNumber( Math.min( chiSquared, 1000 ), 2 ) );
+        chiSquaredValueText.text = formatNumber( Math.min( chiSquared, 1000 ), 2 );
 
         // centers the chiSquared text node within the panel
         // chi squared needs to be centered because the number of digits can change
@@ -151,8 +151,13 @@ define( require => {
       // unlink unnecessary, present for the lifetime of the sim
       rSquaredProperty.link( rSquared => {
 
-        // rSquared can only be between 0 and 1 so it will always need 2 decimal points.
-        rSquaredValueText.setText( formatNumber( rSquared, 2 ) );
+        let rSquaredString;
+        if ( isNaN( rSquared ) ) {
+          rSquaredString = '';
+        } else {
+          rSquaredString = formatNumber( rSquared, 2 );
+        }
+        rSquaredValueText.text = rSquaredString;
       } );
 
       curveVisibleProperty.linkAttribute( rSquaredValueText, 'visible' );

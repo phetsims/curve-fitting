@@ -217,7 +217,7 @@ define( require => {
         // calculation of rSquared = 1 - averageOfResidualSquares / averageOfSquares;
         // avoiding a divide by 0 situation and setting rSquared to 0 when averageOfSquares is basically 0; see #86
         if ( Math.abs( averageOfSquares ) < EPSILON ) {
-          rSquared = 0;
+          rSquared = NaN;
         }
         else if ( Math.abs( averageOfResidualSquares ) < EPSILON ) {
           rSquared = 1;
@@ -231,7 +231,6 @@ define( require => {
           // weighted value of r square
           rSquared = 1 - averageOfResidualSquares / averageOfSquares;
         }
-        assert && assert( rSquared >= 0 && rSquared <= 1, 'rSquared should range from 0 to 1 ');
         this.rSquaredProperty.set( rSquared );
       }
     }
