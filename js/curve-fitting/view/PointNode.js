@@ -256,11 +256,11 @@ define( require => {
        */
       function updateValueText() {
         if ( valueTextLabel.visible && point.isInsideGraphProperty.value ) {
-          valueTextLabel.setText( StringUtils.format( pattern0ValueX1ValueYString, Util.toFixed( point.positionProperty.value.x, 1 ), Util.toFixed( point.positionProperty.value.y, 1 ) ) );
+          valueTextLabel.text = StringUtils.format( pattern0ValueX1ValueYString, Util.toFixed( point.positionProperty.value.x, 1 ), Util.toFixed( point.positionProperty.value.y, 1 ) );
           valueTextBackground.visible = true;
         }
         else {
-          valueTextLabel.setText( '' );
+          valueTextLabel.text = '';
           valueTextBackground.visible = false;
         }
         valueTextBackground.setRect( 0, 0, valueTextLabel.width + 4, valueTextLabel.height + 4 );
@@ -281,7 +281,7 @@ define( require => {
        */
       function updateDeltaText() {
         if ( deltaTextLabel.visible ) {
-          deltaTextLabel.setText( StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( point.deltaProperty.value, 1 ) ) );
+          deltaTextLabel.text = StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( point.deltaProperty.value, 1 ) );
         }
       }
       function updateDeltaTextIfVisible( valuesVisible ) {
