@@ -34,7 +34,7 @@ define( require => {
       };
 
       // property that maps rSquared -> rSquared, unless rSquared is NaN, where it maps NaN -> 0
-      const modifiedRSquaredProperty = new DerivedProperty( [ rSquaredProperty], rSquared => {
+      const modifiedRSquaredProperty = new DerivedProperty( [ rSquaredProperty ], rSquared => {
         if ( isNaN( rSquared ) ) {
           return 0;
         }
