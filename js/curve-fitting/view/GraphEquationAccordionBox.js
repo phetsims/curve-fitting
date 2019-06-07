@@ -140,10 +140,12 @@ define( require => {
        * update all the coefficients
        */
       const updateCoefficients = () => {
-        const coefficientStrings = getCoefficientArray().flatMap( ( coefficient, index ) => {
+
+        //TODO: flatMap doesn't work on iPad, but this workaround isn't efficient
+        const coefficientStrings = getCoefficientArray().map( ( coefficient, index ) => {
           const numberInfo = roundNumber( coefficient, MAX_DECIMALS[ index ] );
           return [ numberInfo.signToString, numberInfo.absoluteNumberToString ];
-        } );
+        } ).reduce( ( accumulator, value ) => accumulator.concat( value ), [] );
         equationNode.setCoefficients( coefficientStrings );
       };
 

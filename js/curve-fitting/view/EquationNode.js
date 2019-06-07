@@ -90,9 +90,10 @@ define( require => {
       }
 
       // makes an array of symbols as the initial coefficients; '+' signs are inserted before each coefficient in the array
-      const initialCoefficients = [ symbolDString, symbolCString, symbolBString, symbolAString ].flatMap(
+      //TODO: flatMap doesn't work on iPad, but this workaround isn't efficient
+      const initialCoefficients = [ symbolDString, symbolCString, symbolBString, symbolAString ].map(
         coefficient => [ MathSymbols.PLUS, coefficient ]
-      );
+      ).reduce( ( accumulator, value ) => accumulator.concat( value ), [] );
       this.setCoefficients( initialCoefficients );
 
       // links the visibility of terms to the order of the equation
