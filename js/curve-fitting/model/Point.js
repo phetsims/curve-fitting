@@ -2,7 +2,6 @@
 
 /**
  * Point model in 'Curve Fitting' simulation.
- * TODO: a lot of the logic here regarding the state/existence of animations can probably simplified a lot
  *
  * @author Andrey Zelenkov (Mlearner)
  */
@@ -44,27 +43,23 @@ define( require => {
       // @public {Property.<number>} vertical uncertainty of the point.
       this.deltaProperty = new NumberProperty( 0.8 );
 
-      // @private {boolean} is the point animated by external means (say TWEEN). Animated points are not used for curve fits
-      this.animated = false;
-
-      // @private {TWEEN.Tween|null} the animation of this point; is null if there is no animation
+      // @private {Animation|null} the animation of this point; is null if there is no animation
       this.animation = null;
 
       // check and set the flag that indicates if the point is within the bounds of the graph
       this.positionProperty.link( position => {
-        // Determines if the position of a point is within the visual bounds of the graph and is not animated on its way back
+
+        // determines if the position of a point is within the visual bounds of the graph and is not animated on its way back
         this.isInsideGraphProperty.value = CurveFittingConstants.GRAPH_MODEL_BOUNDS.containsPoint( position );
       } );
 
-      //if the user dropped the point outside of the graph send it back to the bucket
+      // if the user dropped the point outside of the graph send it back to the bucket
       this.draggingProperty.link( dragging => {
-        if ( !dragging && !this.isInsideGraphProperty.value && !this.animated ) {
+        if ( !dragging && !this.isInsideGraphProperty.value && this.animation === null ) {
           this.animate();
         }
-        if ( dragging && this.animated ) {
+        if ( dragging && this.animation !== null ) {
           this.animation.stop();
-          this.animation = null;
-          this.animated = false;
         }
       } );
 
@@ -79,8 +74,6 @@ define( require => {
      */
     animate() {
 
-      this.animated = true;
-
       // distance to the origin
       const distance = this.positionProperty.initialValue.distance( this.positionProperty.value );
 
@@ -92,14 +85,14 @@ define( require => {
           easing: Easing.CUBIC_IN
         } );
         this.animation.endedEmitter.addListener( () => {
-          this.animated = false;
           this.returnToOriginEmitter.emit();
+          this.animation = null;
         } );
         this.animation.start();
       }
       else {
-        // for cases where the distance is zero
-        this.animated = false;
+
+        // if the point is already at where it belongs, just emit and forgo the animation
         this.returnToOriginEmitter.emit();
       }
     }
