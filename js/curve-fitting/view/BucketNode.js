@@ -149,7 +149,6 @@ define( require => {
       this.addChild( pointsNode );
       this.addChild( bucketFrontNode );
 
-
       // handle the coming and going of points
       points.addItemAddedListener( addedPoint => {
         const pointNode = new PointNode( addedPoint, residualsVisibleProperty, valuesVisibleProperty, modelViewTransform );
