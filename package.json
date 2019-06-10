@@ -11,7 +11,9 @@
   },
   "phet": {
     "requirejsNamespace": "CURVE_FITTING",
-    "phetLibs": [],
+    "phetLibs": [
+      "twixt"
+    ],
     "preload": [
       "../sherpa/lib/Tween-r12.js"
     ],

@@ -2,6 +2,7 @@
 
 /**
  * Point model in 'Curve Fitting' simulation.
+ * TODO: a lot of the logic here regarding the state/existence of animations can probably simplified a lot
  *
  * @author Andrey Zelenkov (Mlearner)
  */
@@ -9,9 +10,11 @@ define( require => {
   'use strict';
 
   // modules
+  const Animation = require( 'TWIXT/Animation' );
   const BooleanProperty = require( 'AXON/BooleanProperty' );
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  const Easing = require( 'TWIXT/Easing' );
   const Emitter = require( 'AXON/Emitter' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Vector2 = require( 'DOT/Vector2' );
@@ -50,7 +53,7 @@ define( require => {
       // check and set the flag that indicates if the point is within the bounds of the graph
       this.positionProperty.link( position => {
         // Determines if the position of a point is within the visual bounds of the graph and is not animated on its way back
-        this.isInsideGraphProperty.set( CurveFittingConstants.GRAPH_MODEL_BOUNDS.containsPoint( position ) );
+        this.isInsideGraphProperty.value = CurveFittingConstants.GRAPH_MODEL_BOUNDS.containsPoint( position );
       } );
 
       //if the user dropped the point outside of the graph send it back to the bucket
@@ -78,26 +81,21 @@ define( require => {
 
       this.animated = true;
 
-      const location = {
-        x: this.positionProperty.value.x,
-        y: this.positionProperty.value.y
-      };
-
       // distance to the origin
       const distance = this.positionProperty.initialValue.distance( this.positionProperty.value );
 
       if ( distance > 0 ) {
-        this.animation = new TWEEN.Tween( location )
-          .to( { x: this.positionProperty.initialValue.x, y: this.positionProperty.initialValue.y },
-            distance / CurveFittingConstants.ANIMATION_SPEED )
-          .easing( TWEEN.Easing.Cubic.In )
-          .onUpdate( () => { this.positionProperty.set( new Vector2( location.x, location.y ) ); } )
-          .onComplete( () => {
-            this.animated = false;
-            this.returnToOriginEmitter.emit();
-          } );
-
-        this.animation.start( phet.joist.elapsedTime );
+        this.animation = new Animation( {
+          property: this.positionProperty,
+          to: this.positionProperty.initialValue,
+          duration: distance / CurveFittingConstants.ANIMATION_SPEED,
+          easing: Easing.CUBIC_IN
+        } );
+        this.animation.endedEmitter.addListener( () => {
+          this.animated = false;
+          this.returnToOriginEmitter.emit();
+        } );
+        this.animation.start();
       }
       else {
         // for cases where the distance is zero
