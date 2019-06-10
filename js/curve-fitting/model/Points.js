@@ -29,7 +29,7 @@ define( require => {
      * @public
      */
     getPointsOnGraph() {
-      return this.getArray().filter( point => point.isInsideGraphProperty.value && !point.animated );
+      return this.getArray().filter( point => point.isInsideGraphProperty.value && point.animation === null );
     }
 
     /**
