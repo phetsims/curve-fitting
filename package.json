@@ -15,7 +15,8 @@
       "twixt"
     ],
     "preload": [
-      "../sherpa/lib/Tween-r12.js"
+      "../sherpa/lib/katex-0.5.1-css-all.js",
+      "../sherpa/lib/katex-0.5.1.min.js"
     ],
     "runnable": true,
     "supportedBrands": [

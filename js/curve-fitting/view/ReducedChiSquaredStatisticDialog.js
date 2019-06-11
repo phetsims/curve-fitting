@@ -11,16 +11,13 @@ define( require => {
   // modules
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const Dialog = require( 'SUN/Dialog' );
+  const FormulaNode = require( 'SCENERY_PHET/FormulaNode' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const HStrut = require( 'SCENERY/nodes/HStrut' );
-  const Image = require( 'SCENERY/nodes/Image' );
   const MathSymbolFont = require( 'SCENERY_PHET/MathSymbolFont' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Text = require( 'SCENERY/nodes/Text' );
   const VBox = require( 'SCENERY/nodes/VBox' );
-
-  // images
-  const equationHelpImage = require( 'image!CURVE_FITTING/equation-help.png' );
 
   // strings
   const numberOfDataPointsString = require( 'string!CURVE_FITTING/numberOfDataPoints' );
@@ -69,7 +66,7 @@ define( require => {
           new HBox( {
             children: [
               new HStrut( 20 ),
-              new Image( equationHelpImage, { scale: 0.23 } )
+              new FormulaNode( 'X_r^2 = \\frac{1}{N - f} \\sum_i \\frac{[y(x_i) - y_i]^2}{\\sigma_i^2}' )
             ]
           } ),
           numberOfDataPointsNode,
