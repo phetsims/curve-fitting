@@ -23,8 +23,11 @@ define( require => {
   const numberOfDataPointsString = require( 'string!CURVE_FITTING/numberOfDataPoints' );
   const numberOfParameters1String = require( 'string!CURVE_FITTING/numberOfParameters1' );
   const numberOfParameters2String = require( 'string!CURVE_FITTING/numberOfParameters2' );
+  const symbolChiString = require( 'string!CURVE_FITTING/symbol.chi' );
   const symbolFString = require( 'string!CURVE_FITTING/symbol.f' );
   const symbolNString = require( 'string!CURVE_FITTING/symbol.N' );
+  const symbolXString = require( 'string!CURVE_FITTING/symbol.x' );
+  const symbolYString = require( 'string!CURVE_FITTING/symbol.y' );
   const theReducedChiSquaredStatisticIsString = require( 'string!CURVE_FITTING/theReducedChiSquaredStatisticIs' );
 
   // constants
@@ -66,7 +69,26 @@ define( require => {
           new HBox( {
             children: [
               new HStrut( 20 ),
-              new FormulaNode( 'X_r^2 = \\frac{1}{N - f} \\sum_i \\frac{[y(x_i) - y_i]^2}{\\sigma_i^2}' )
+              new FormulaNode(
+                `${symbolChiString}_r^2 = \\frac{1}{${symbolNString} - ${symbolFString}} \\sum_i \\frac{[${symbolYString}(${symbolXString}_i) - ${symbolYString}_i]^2}{\\sigma_i^2}`
+                  .replace('‪', '')
+                  .replace('‬', '')
+                  .replace('‪', '')
+                  .replace('‬', '')
+                  .replace('‪', '')
+                  .replace('‬', '')
+                  .replace('‪', '')
+                  .replace('‬', '')
+                  .replace('‪', '')
+                  .replace('‬', '')
+                  .replace('‪', '')
+                  .replace('‬', '')
+
+                // Now I know the above '.replace' calls look crazy. They are.
+                // Apparently each of the embedded symbol strings is padded with some invisible character that breaks KaTeX parsing.
+                // Even more crazily, each instance of an embedded string seems to be padded with different invisible characters.
+                // Removing any of those '.replace' calls will make the code error because KaTeX cannot parse the string.
+              )
             ]
           } ),
           numberOfDataPointsNode,
