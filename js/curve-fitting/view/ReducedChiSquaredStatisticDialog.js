@@ -4,6 +4,7 @@
  * Dialog that provides information about the reduced chi-squared statistic.
  *
  * @author Chris Malley (PixelZoom, Inc.)
+ * @author Saurabh Totey
  */
 define( require => {
   'use strict';
@@ -73,10 +74,11 @@ define( require => {
                 `${symbolChiString}_r^2 = \\frac{1}{${symbolNString} - ${symbolFString}} \\sum_i \\frac{[${symbolYString}(${symbolXString}_i) - ${symbolYString}_i]^2}{\\sigma_i^2}`
                   .split('‪').join('').split('‬').join('')
 
-                // The above split and join calls look crazy. They are.
-                // Each embedded string is padded by an invisible starting and ending character.
+                // Each translatable string is padded by an invisible starting and ending character.
+                // These characters are usually for determining if the string is LTR or RTL.
                 // These padding characters break KaTeX parsing and need to be removed.
                 // The invisible characters are removed by the split calls, and the string is regenerated with the join calls.
+                // The embedded strings should only be symbols/single characters anyways, so stripping direction characters shouldn't be too harmful.
               )
             ]
           } ),

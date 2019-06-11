@@ -179,7 +179,7 @@ define( require => {
     }
     else {
       // logarithmic scaling for X^2 values greater than 1, but returned ratio is capped at 1
-      return Math.min( 1, ( MIN_VALUE + 1 + Math.log( value - MIN_VALUE )) / ( MAX_VALUE - MIN_VALUE ) );
+      return Math.min( 1, ( MIN_VALUE + 1 + Math.log( value - MIN_VALUE ) ) / ( MAX_VALUE - MIN_VALUE ) );
     }
   }
 
