@@ -71,23 +71,12 @@ define( require => {
               new HStrut( 20 ),
               new FormulaNode(
                 `${symbolChiString}_r^2 = \\frac{1}{${symbolNString} - ${symbolFString}} \\sum_i \\frac{[${symbolYString}(${symbolXString}_i) - ${symbolYString}_i]^2}{\\sigma_i^2}`
-                  .replace('‪', '')
-                  .replace('‬', '')
-                  .replace('‪', '')
-                  .replace('‬', '')
-                  .replace('‪', '')
-                  .replace('‬', '')
-                  .replace('‪', '')
-                  .replace('‬', '')
-                  .replace('‪', '')
-                  .replace('‬', '')
-                  .replace('‪', '')
-                  .replace('‬', '')
+                  .split('‪').join('').split('‬').join('')
 
-                // Now I know the above '.replace' calls look crazy. They are.
-                // Apparently each of the embedded symbol strings is padded with some invisible character that breaks KaTeX parsing.
-                // Even more crazily, each instance of an embedded string seems to be padded with different invisible characters.
-                // Removing any of those '.replace' calls will make the code error because KaTeX cannot parse the string.
+                // The above split and join calls look crazy. They are.
+                // Each embedded string is padded by an invisible starting and ending character.
+                // These padding characters break KaTeX parsing and need to be removed.
+                // The invisible characters are removed by the split calls, and the string is regenerated with the join calls.
               )
             ]
           } ),
