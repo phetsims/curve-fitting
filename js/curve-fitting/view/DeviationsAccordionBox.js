@@ -43,6 +43,7 @@ define( require => {
     resize: false,
     maxWidth: 30
   };
+  const MAX_CHI_SQUARE_VALUE = 1000;
 
   // strings
   const symbolChiString = require( 'string!CURVE_FITTING/symbol.chi' );
@@ -98,6 +99,7 @@ define( require => {
           dialog.show();
         },
         baseColor: 'rgb( 204, 204, 204 )',
+        iconFill: 'blue',
         maxWidth: 30,
         touchAreaXDilation: 8,
         touchAreaYDilation: 8
@@ -131,7 +133,7 @@ define( require => {
       chiSquaredProperty.link( chiSquared => {
 
         // if chiSquared is larger than a 1000, the actual value will not be displayed, so use a '>' sign
-        if ( chiSquared > 1000 ) {
+        if ( chiSquared > MAX_CHI_SQUARE_VALUE ) {
           chiSquaredLabelText.text = `${symbolChiString}<sup>2</sup>${MathSymbols.GREATER_THAN}`;
         } else {
           chiSquaredLabelText.text = `${symbolChiString}<sup>2</sup>${MathSymbols.EQUAL_TO}`;
@@ -140,7 +142,7 @@ define( require => {
         // If chiSquared is greater than 10 we have a bad fit so less precision is needed.
         // If chiSquared if greater than 100 we have a really bad fit and decimals are inconsequential.
         // If chiSquared is larger than 1000, round it to 1000; see #28
-        chiSquaredValueText.text = formatNumber( Math.min( chiSquared, 1000 ), 2 );
+        chiSquaredValueText.text = formatNumber( Math.min( chiSquared, MAX_CHI_SQUARE_VALUE ), 2 );
 
         // centers the chiSquared text node within the panel
         // chi squared needs to be centered because the number of digits can change
