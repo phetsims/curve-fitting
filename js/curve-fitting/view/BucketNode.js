@@ -17,10 +17,10 @@ define( require => {
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const CurveFittingQueryParameters = require( 'CURVE_FITTING/curve-fitting/CurveFittingQueryParameters' );
   const Dimension2 = require( 'DOT/Dimension2' );
+  const DragListener = require( 'SCENERY/listeners/DragListener' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Point = require( 'CURVE_FITTING/curve-fitting/model/Point' );
   const PointNode = require( 'CURVE_FITTING/curve-fitting/view/PointNode' );
-  const SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   const Util = require( 'DOT/Util' );
   const Vector2 = require( 'DOT/Vector2' );
 
@@ -92,7 +92,7 @@ define( require => {
        */
       const createDragHandler = () => {
         let point = null;
-        return new SimpleDragHandler( {
+        return new DragListener( {
 
           allowTouchSnag: true,
 
@@ -110,8 +110,9 @@ define( require => {
             points.add( point );
           },
 
-          translate: translationParams => {
-            point.positionProperty.value = point.positionProperty.value.plus( modelViewTransform.viewToModelDelta( translationParams.delta ) );
+          drag: event => {
+            const viewLocation = this.globalToLocalPoint( event.pointer.point );
+            point.positionProperty.value = modelViewTransform.viewToModelPosition( viewLocation );
           },
 
           end: () => {
