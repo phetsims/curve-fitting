@@ -218,7 +218,7 @@ define( require => {
        * Moves the deltaTextLabel if it intersects with the valueTextBackground
        */
       function removeTextIntersection() {
-        if ( deltaTextLabel.bottom >= valueTextBackground.top - DISTANCE_BETWEEN_COORDINATE_AND_DELTA ) {
+        if ( deltaTextLabel.bottom > valueTextBackground.top - DISTANCE_BETWEEN_COORDINATE_AND_DELTA ) {
           deltaTextLabel.bottom = valueTextBackground.top - DISTANCE_BETWEEN_COORDINATE_AND_DELTA;
         }
       }
