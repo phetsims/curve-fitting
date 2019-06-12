@@ -43,6 +43,7 @@ define( require => {
     opacity: 0.75,
     cornerRadius: 4
   };
+  const DISTANCE_BETWEEN_COORDINATE_AND_DELTA = 1;
   const DILATION_SIZE = 8;
   const ERROR_BAR_BOUNDS = new Bounds2( -10, 0, 10, 2 );
   const ERROR_BAR_OPTIONS = {
@@ -217,8 +218,8 @@ define( require => {
        * Moves the deltaTextLabel if it intersects with the valueTextBackground
        */
       function removeTextIntersection() {
-        if ( deltaTextLabel.bottom >= valueTextBackground.top ) {
-          deltaTextLabel.bottom = valueTextBackground.top + 1;
+        if ( deltaTextLabel.bottom >= valueTextBackground.top - DISTANCE_BETWEEN_COORDINATE_AND_DELTA ) {
+          deltaTextLabel.bottom = valueTextBackground.top - DISTANCE_BETWEEN_COORDINATE_AND_DELTA;
         }
       }
 
