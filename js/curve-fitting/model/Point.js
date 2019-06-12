@@ -75,17 +75,20 @@ define( require => {
     animate() {
 
       // distance to the origin
-      const distance = this.positionProperty.initialValue.distance( this.positionProperty.value );
+      const getDistanceToOrigin = () => this.positionProperty.initialValue.distance( this.positionProperty.value );
+      const distance = getDistanceToOrigin();
 
       if ( distance > 0 ) {
         this.animation = new Animation( {
           property: this.positionProperty,
           to: this.positionProperty.initialValue,
           duration: distance / CurveFittingConstants.ANIMATION_SPEED,
-          easing: Easing.CUBIC_IN
+          easing: Easing.LINEAR
         } );
         this.animation.endedEmitter.addListener( () => {
-          this.returnToOriginEmitter.emit();
+          if ( getDistanceToOrigin() === 0 ) {
+            this.returnToOriginEmitter.emit();
+          }
           this.animation = null;
         } );
         this.animation.start();
