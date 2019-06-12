@@ -164,8 +164,8 @@ define( require => {
 
       if ( numberOfPoints < 2 ) {
         // rSquared and chiSquared do not have any meaning, set them to zero and bail out
-        this.chiSquaredProperty.set( 0 );
-        this.rSquaredProperty.set( 0 );
+        this.chiSquaredProperty.value = 0;
+        this.rSquaredProperty.value = 0;
       }
       else {
         // calculation of rSquared and chiSquared
@@ -185,7 +185,7 @@ define( require => {
           x = point.positionProperty.value.x; // x value of this point
           y = point.positionProperty.value.y; // y value of this point
           yAt = this.getYValueAt( x ); // y value of the curve
-          weight = 1 / (point.deltaProperty.value * point.deltaProperty.value); // weight of this point
+          weight = 1 / ( point.deltaProperty.value * point.deltaProperty.value ); // weight of this point
 
           weightSum = weightSum + weight; // sum of weights
           ySum = ySum + weight * y;   // weighted sum of y values
@@ -196,11 +196,11 @@ define( require => {
         } );
 
         const weightAverage = weightSum / numberOfPoints; // average of the weights
-        const denominator = (weightAverage * numberOfPoints); // convenience variable
+        const denominator = weightAverage * numberOfPoints; // convenience variable
         const yAverage = ySum / denominator; // weighted average of the y values
         const yyAverage = yySum / denominator; // weighted average of the <y_i y_i> correlation
 
-        const residualSumOfSquares = (yySum - 2 * yAtySum + yAtyAtSum);
+        const residualSumOfSquares = yySum - 2 * yAtySum + yAtyAtSum;
         // average of weighted squares of residuals, a.k.a average of residual squares
         const averageOfResidualSquares = residualSumOfSquares / denominator;
         // average of weighted squares
@@ -212,7 +212,7 @@ define( require => {
         const order = this.orderProperty.value;
         const degreesOfFreedom = numberOfPoints - order - 1;
         const chiSquared = residualSumOfSquares / Math.max( degreesOfFreedom, 1 );
-        this.chiSquaredProperty.set( chiSquared );
+        this.chiSquaredProperty.value = chiSquared;
 
         // calculation of rSquared = 1 - averageOfResidualSquares / averageOfSquares;
         // avoiding a divide by 0 situation and setting rSquared to 0 when averageOfSquares is basically 0; see #86
@@ -231,7 +231,7 @@ define( require => {
           // weighted value of r square
           rSquared = 1 - averageOfResidualSquares / averageOfSquares;
         }
-        this.rSquaredProperty.set( rSquared );
+        this.rSquaredProperty.value = rSquared;
       }
     }
 
