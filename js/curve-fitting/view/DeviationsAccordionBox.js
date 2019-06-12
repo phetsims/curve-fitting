@@ -99,7 +99,7 @@ define( require => {
           dialog.show();
         },
         baseColor: 'rgb( 204, 204, 204 )',
-        iconFill: 'blue',
+        iconFill: 'rgb( 44, 107, 159 )',
         maxWidth: 30,
         touchAreaXDilation: 8,
         touchAreaYDilation: 8
