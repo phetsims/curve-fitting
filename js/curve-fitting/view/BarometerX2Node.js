@@ -17,14 +17,11 @@ define( require => {
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
-  const Range = require( 'DOT/Range' );
   const Util = require( 'DOT/Util' );
 
   // constants
   const OFFSET = 6;
-  const RANGE = new Range( 0, 100 );
-  const MIN_VALUE = RANGE.min;
-  const MAX_VALUE = 1 + Math.log( RANGE.max );
+  const MAX_VALUE = 100;
   const HEAD_HEIGHT = 12;
   const BAR_HEIGHT = CurveFittingConstants.BAROMETER_AXIS_HEIGHT - HEAD_HEIGHT - OFFSET;
 
@@ -167,19 +164,25 @@ define( require => {
 
   /**
    * Convert X^2 value to a corresponding fill ratio
-   * TODO: understand/simplify these calculations
+   * X^2 scales linearly when less than 1, and logarithmically afterwards
    *
    * @param {number} value - Barometer's X^2 value.
    * @returns {number} ratio between 0 to 1 for how much the barometer should be filled
    */
   function chiSquaredValueToRatio( value ) {
+
+    // reassigns value if it is negative, which only happens in edge cases where it is supposed to be 0
+    if ( value < 0 ) {
+      value = 0;
+    }
+
     if ( value <= 1 ) {
-      // expression "0.5 + ( BAR_HEIGHT - 1 )" need to prevent bad graph view in corners
-      return ( 0.5 + ( BAR_HEIGHT - 1 ) * ( MIN_VALUE + ( value - MIN_VALUE ) / ( MAX_VALUE - MIN_VALUE ) ) ) / BAR_HEIGHT;
+      return value / ( 1 + Math.log( MAX_VALUE ) );
     }
     else {
+
       // logarithmic scaling for X^2 values greater than 1, but returned ratio is capped at 1
-      return Math.min( 1, ( MIN_VALUE + 1 + Math.log( value - MIN_VALUE ) ) / ( MAX_VALUE - MIN_VALUE ) );
+      return Math.min( 1, ( 1 + Math.log( value ) ) / ( 1 + Math.log( MAX_VALUE ) ) );
     }
   }
 
