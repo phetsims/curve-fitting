@@ -30,6 +30,7 @@ define( require => {
   const VERTICAL_TICKS = [ -10, -5, 5, 10 ];
   const TICK_DECIMAL_PLACES = 0;
   const TICK_FONT_OPTIONS = { font: new PhetFont( 12 ), fill: 'black' };
+  const TICK_DISTANCE_FROM_AXES = 3;
 
   class GraphAreaNode extends Node {
 
@@ -109,11 +110,11 @@ define( require => {
 
       if ( options.axis === 'horizontal' ) {
         tickLabel.centerX = this.modelViewTransform.modelToViewX( value );
-        tickLabel.top = this.modelViewTransform.modelToViewY( -TICK_LENGTH / 2 );
+        tickLabel.top = this.modelViewTransform.modelToViewY( -TICK_LENGTH / 2 ) + TICK_DISTANCE_FROM_AXES;
       }
       else {
         tickLabel.centerY = this.modelViewTransform.modelToViewY( value );
-        tickLabel.right = this.modelViewTransform.modelToViewX( -TICK_LENGTH / 2 );
+        tickLabel.right = this.modelViewTransform.modelToViewX( -TICK_LENGTH / 2 ) - TICK_DISTANCE_FROM_AXES;
       }
       this.addChild( tickLabel );
     }
