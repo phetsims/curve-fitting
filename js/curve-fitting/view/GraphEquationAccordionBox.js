@@ -76,7 +76,13 @@ define( require => {
       super( content, _.extend( PANEL_OPTIONS, options ) );
 
       // visible node when panel is expanded
-      const equationNode = new EquationNode( orderProperty, { coefficientTextOptions: PARAMETER_TEXT_OPTIONS } );
+      const equationNode = new EquationNode( orderProperty, {
+        coefficientTextOptions: PARAMETER_TEXT_OPTIONS,
+        coefficientSignTextOptions: {
+          font: new PhetFont( 12 ),
+          fill: CurveFittingConstants.BLUE_COLOR
+        }
+      } );
 
       // toggle the content of the panel, based on the expansion status
       equationPanelExpandedProperty.link( isEquationPanelExpanded => {

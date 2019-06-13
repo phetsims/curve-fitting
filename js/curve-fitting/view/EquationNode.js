@@ -124,8 +124,8 @@ define( require => {
       // if it is a -, it is turned into a unary - on the leading coefficient
       const leadingSignTextNode = this.signTextNodes[ this.orderProperty.value ];
       leadingSignTextNode.visible = false;
-      if ( leadingSignTextNode.text === ` ${MathSymbols.MINUS} ` ) {
-        const leadingCoefficient = this.coefficientTextNodes[ this.orderProperty.value ];
+      const leadingCoefficient = this.coefficientTextNodes[ this.orderProperty.value ];
+      if ( leadingSignTextNode.text === ` ${MathSymbols.MINUS} ` && !leadingCoefficient.text.includes( MathSymbols.UNARY_MINUS ) ) {
         leadingCoefficient.text = MathSymbols.UNARY_MINUS + leadingCoefficient.text;
       }
 
