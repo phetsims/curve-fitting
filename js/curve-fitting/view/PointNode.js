@@ -4,6 +4,7 @@
  * Single point node in 'Curve Fitting' simulation.
  *
  * @author Andrey Zelenkov (Mlearner)
+ * @author Saurabh Totey
  */
 define( require => {
   'use strict';
@@ -39,7 +40,12 @@ define( require => {
     lineWidth: 1
   };
   const COORDINATE_BACKGROUND_RECTANGLE_OPTIONS = {
-    fill: 'lightgray',
+    fill: CurveFittingConstants.POINT_FILL,
+    opacity: 0.75,
+    cornerRadius: 4
+  };
+  const DELTA_BACKGROUND_RECTANGLE_OPTIONS = {
+    fill: 'white',
     opacity: 0.75,
     cornerRadius: 4
   };
@@ -209,18 +215,24 @@ define( require => {
       this.addChild( valueTextBackground );
       this.addChild( valueTextLabel );
 
+      // add delta text label
       const deltaTextLabel = new RichText( StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( point.deltaProperty.value, 1 ) ), {
         font: VALUE_FONT
       } );
+      const deltaTextBackground = new Rectangle( 0, 0, 1, 1, DELTA_BACKGROUND_RECTANGLE_OPTIONS );
+      this.addChild( deltaTextBackground);
       this.addChild( deltaTextLabel );
 
       /**
        * Moves the deltaTextLabel if it intersects with the valueTextBackground
+       * Also updates the size of the background rectangle and re-centers the text
        */
-      function removeTextIntersection() {
-        if ( deltaTextLabel.bottom > valueTextBackground.top - DISTANCE_BETWEEN_COORDINATE_AND_DELTA ) {
-          deltaTextLabel.bottom = valueTextBackground.top - DISTANCE_BETWEEN_COORDINATE_AND_DELTA;
+      function updateDeltaTextPositionings() {
+        deltaTextBackground.setRect( 0, 0, deltaTextLabel.width + 4, deltaTextLabel.height + 4 );
+        if ( deltaTextBackground.bottom > valueTextBackground.top - DISTANCE_BETWEEN_COORDINATE_AND_DELTA ) {
+          deltaTextBackground.bottom = valueTextBackground.top - DISTANCE_BETWEEN_COORDINATE_AND_DELTA;
         }
+        deltaTextLabel.center = deltaTextBackground.center;
       }
 
       /**
@@ -236,8 +248,8 @@ define( require => {
         errorBarTopNode.mouseArea = errorBarTop.localBounds.dilated( DILATION_SIZE );
 
         //update label
-        deltaTextLabel.centerY = errorBarTop.centerY;
-        removeTextIntersection();
+        deltaTextBackground.centerY = errorBarTop.centerY;
+        updateDeltaTextPositionings();
 
         // update central line
         centralLine.setX1( circleView.centerX );
@@ -267,8 +279,8 @@ define( require => {
         valueTextBackground.setRect( 0, 0, valueTextLabel.width + 4, valueTextLabel.height + 4 );
         valueTextLabel.center = valueTextBackground.center;
       }
-      const valueTextLabelHandle = valuesVisibleProperty.linkAttribute( valueTextBackground, 'visible' );
-      const valueNodeLabelHandle = valuesVisibleProperty.linkAttribute( valueTextLabel, 'visible' );
+      const valueBackgroundHandle = valuesVisibleProperty.linkAttribute( valueTextBackground, 'visible' );
+      const valueTextHandle = valuesVisibleProperty.linkAttribute( valueTextLabel, 'visible' );
       function updateValueTextWhenVisible( valuesVisible ) {
         if ( valuesVisible ) {
           updateValueText();
@@ -283,6 +295,7 @@ define( require => {
       function updateDeltaText() {
         if ( deltaTextLabel.visible ) {
           deltaTextLabel.text = StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( point.deltaProperty.value, 1 ) );
+          updateDeltaTextPositionings();
         }
       }
       function updateDeltaTextIfVisible( valuesVisible ) {
@@ -291,7 +304,8 @@ define( require => {
         }
       }
       valuesVisibleProperty.link( updateDeltaTextIfVisible );
-      const deltaTextLabelHandle = valuesVisibleProperty.linkAttribute( deltaTextLabel, 'visible' );
+      const deltaBackgroundHandle = valuesVisibleProperty.linkAttribute( deltaTextBackground, 'visible' );
+      const deltaTextHandle = valuesVisibleProperty.linkAttribute( deltaTextLabel, 'visible' );
       point.deltaProperty.lazyLink( updateDeltaText );
 
       /**
@@ -333,9 +347,9 @@ define( require => {
         valueTextBackground.left = circleView.right + 2;
         valueTextBackground.centerY = circleView.centerY;
         valueTextLabel.center = valueTextBackground.center;
-        deltaTextLabel.left = errorBarTop.right + 2;
-        deltaTextLabel.centerY = errorBarTop.centerY;
-        removeTextIntersection();
+        deltaTextBackground.left = errorBarTop.right + 2;
+        deltaTextBackground.centerY = errorBarTop.centerY;
+        updateDeltaTextPositionings();
       }
       // move this node as the model moves
       point.positionProperty.link( centerPositionListener );
@@ -346,9 +360,10 @@ define( require => {
         point.deltaProperty.unlink( updateDeltaText );
         point.positionProperty.unlink( centerPositionListener );
         residualsVisibleProperty.unlink( updateResiduals );
-        valuesVisibleProperty.unlinkAttribute( deltaTextLabelHandle );
-        valuesVisibleProperty.unlinkAttribute( valueTextLabelHandle );
-        valuesVisibleProperty.unlinkAttribute( valueNodeLabelHandle );
+        valuesVisibleProperty.unlinkAttribute( deltaTextHandle );
+        valuesVisibleProperty.unlinkAttribute( deltaBackgroundHandle );
+        valuesVisibleProperty.unlinkAttribute( valueBackgroundHandle );
+        valuesVisibleProperty.unlinkAttribute( valueTextHandle );
         valuesVisibleProperty.unlink( updateValueTextWhenVisible );
         valuesVisibleProperty.unlink( updateDeltaTextIfVisible );
       };
