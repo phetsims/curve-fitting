@@ -5,6 +5,7 @@
  * For 'adjustable fit', provides additional controls for coefficients.
  *
  * @author Andrey Zelenkov (Mlearner)
+ * @author Saurabh Totey
  */
 define( require => {
   'use strict';
@@ -16,7 +17,8 @@ define( require => {
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const EquationNode = require( 'CURVE_FITTING/curve-fitting/view/EquationNode' );
-  const Node = require( 'SCENERY/nodes/Node' );
+  const HBox = require( 'SCENERY/nodes/HBox' );
+  const HStrut = require( 'SCENERY/nodes/HStrut' );
   const Panel = require( 'SUN/Panel' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Text = require( 'SCENERY/nodes/Text' );
@@ -29,9 +31,6 @@ define( require => {
   const symbolBString = require( 'string!CURVE_FITTING/symbol.b' );
   const symbolCString = require( 'string!CURVE_FITTING/symbol.c' );
   const symbolDString = require( 'string!CURVE_FITTING/symbol.d' );
-
-  // constants
-  const SLIDERS_OFFSET = 5;
 
   class FitPanel extends Panel {
 
@@ -76,15 +75,13 @@ define( require => {
         }
       } );
 
-      const equationAndSlidersNode = new Node( { children: [ equationFitNode ] } );
-
       // vertical layout
       const contentNode = new VBox( {
         align: 'left',
         spacing: 5,
         children: [
           radioButtonsBox,
-          equationAndSlidersNode
+          equationFitNode
         ]
       } );
 
@@ -127,16 +124,9 @@ define( require => {
       const sliders = ascendingSliders.reverse();
 
       // create slider box under the equationFitNode
-      const slidersBox = new Node( { children: sliders } );
-      slidersBox.top = equationFitNode.bottom + SLIDERS_OFFSET;
-
-      // aligns sliders to be under coefficients
-      const alignSliders = order => {
-        slidersBox.children.forEach( ( slider, index ) => {
-          const relevantCoefficientText = equationFitNode.coefficientTextNodes[ order - index ];
-          slider.centerX = slidersBox.globalToLocalPoint( equationFitNode.localToGlobalPoint( relevantCoefficientText.center ) ).x;
-        } );
-      };
+      // HBox and HStrut spacing are empirically determined
+      const slidersBox = new HBox( { spacing: 7, children: sliders } );
+      const slidersOffset = new HStrut( 3 );
 
       // add slider number observer
       orderProperty.link( order => {
@@ -148,17 +138,16 @@ define( require => {
         // and behave as described in #15 and #37
         slidersAttributes.forEach( ( sliderObject, index ) => sliderObject.enabledProperty.set( order >= index ) );
 
-        alignSliders( order );
+        slidersBox.children = [ slidersOffset ].concat( slidersBox.children );
       } );
 
       // show sliders when 'adjustable' fit is selected
       fitProperty.link( fit => {
-        if ( fit === 'best' && equationAndSlidersNode.hasChild( slidersBox ) ) {
-          equationAndSlidersNode.removeChild( slidersBox );
+        if ( fit === 'best' && contentNode.hasChild( slidersBox ) ) {
+          contentNode.removeChild( slidersBox );
         }
         else if ( fit === 'adjustable' ) {
-          equationAndSlidersNode.addChild( slidersBox );
-          alignSliders( orderProperty.value );
+          contentNode.addChild( slidersBox );
         }
       } );
 
