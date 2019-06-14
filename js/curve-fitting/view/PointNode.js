@@ -340,7 +340,15 @@ define( require => {
        * and everything else moves accordingly
        * @param {Vector2} position
        */
-      function centerPositionListener( position ) {
+      const centerPositionListener = position => {
+
+        // puts this point at the highest z-index
+        const parent = this.getParent();
+        if ( parent ) {
+          parent.removeChild( this );
+          parent.addChild( this );
+        }
+
         circleView.center = modelViewTransform.modelToViewPosition( position );
         haloPointNode.center = circleView.center;
         updateErrorBars();
@@ -350,7 +358,7 @@ define( require => {
         deltaTextBackground.left = errorBarTop.right + 2;
         deltaTextBackground.centerY = errorBarTop.centerY;
         updateDeltaTextPositionings();
-      }
+      };
       // move this node as the model moves
       point.positionProperty.link( centerPositionListener );
 
