@@ -31,7 +31,7 @@ define( require => {
       const xMax = graphBounds.maxX; // maximum value of the x range
 
       // how many segments: more segments means a finer/more accurate curve
-      const steps = 500;
+      const steps = 220;
 
       // separation between adjacent x coordinates
       const interval = ( xMax - xMin ) / steps;
