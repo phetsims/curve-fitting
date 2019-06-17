@@ -1,5 +1,5 @@
 {
-  "comment": "# curve-fitting 1.0.0-dev.9 Mon Jun 10 2019 15:46:03 GMT-0600 (Mountain Daylight Time)",
+  "comment": "# curve-fitting 1.0.0-dev.10 Mon Jun 17 2019 15:51:20 GMT-0600 (Mountain Daylight Time)",
   "assert": {
     "sha": "d8a2e8992420327ff72a6fc4bb93ec76549ded0e",
     "branch": "master"
@@ -17,7 +17,7 @@
     "branch": "master"
   },
   "curve-fitting": {
-    "sha": "af4045a72284b3f685212ca233aca9712bdfd01b",
+    "sha": "ca5f6d282fc201931dac44b4c667b7bbbdeb2dac",
     "branch": "master"
   },
   "dot": {
@@ -37,7 +37,7 @@
     "branch": "master"
   },
   "phet-io": {
-    "sha": "e5eb188213bb4ecc5428b4eec6dc03fbcd8824a9",
+    "sha": "e578073a615ba2115fa57acf1f66fa7dcfa72b14",
     "branch": "master"
   },
   "phet-io-wrappers": {
@@ -61,7 +61,7 @@
     "branch": "master"
   },
   "scenery-phet": {
-    "sha": "729e2844e2359fb3e3d63cb4856bbc0e74d6d44e",
+    "sha": "3d24a217eb90276ee1e039fda870fb0885c0c92a",
     "branch": "master"
   },
   "sherpa": {
@@ -69,15 +69,15 @@
     "branch": "master"
   },
   "sun": {
-    "sha": "3cc1388b9bb4ed29a9ac4f77153897a34c7f3859",
+    "sha": "e87e94f35962b6b6f84f6be16f4da49b86fa1fef",
     "branch": "master"
   },
   "tambo": {
-    "sha": "3137f0a640d5d0c47ba172272d55dc469fa0a34d",
+    "sha": "7f4380b9868e0fd3e3b8ee57237d700cb0e1b7e0",
     "branch": "master"
   },
   "tandem": {
-    "sha": "eb9d9cfbaee5ad76a685c7825b8b26ed138fade5",
+    "sha": "cd0caef2cea397aad42653dff0ff925cb3747337",
     "branch": "master"
   },
   "twixt": {
