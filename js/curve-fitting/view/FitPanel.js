@@ -136,7 +136,9 @@ define( require => {
 
         // if the sliders are not disabled they will be able to change
         // and behave as described in #15 and #37
-        slidersAttributes.forEach( ( sliderObject, index ) => sliderObject.enabledProperty.set( order >= index ) );
+        slidersAttributes.forEach(
+          ( sliderObject, index ) => { sliderObject.enabledProperty.value = order >= index; }
+        );
 
         slidersBox.children = [ slidersOffset ].concat( slidersBox.children );
       } );

@@ -42,7 +42,7 @@ define( require => {
         yEqualsTextOptions: { font: NORMAL_FONT },
         coefficientSignTextOptions: { font: NORMAL_FONT },
         coefficientTextOptions: { font: NORMAL_FONT, fill: 'blue' },
-        xTextOptions: { font: MATH_FONT }
+        xTextOptions: { font: NORMAL_FONT }
       }, options );
 
       super( { align: 'bottom' } );
@@ -59,6 +59,8 @@ define( require => {
       // @private {Array.<RichText>}
       this.xVariableTextNodes = [];
 
+      const mathFontXString = `<i style='font-family:${MATH_FONT.family}'>${symbolXString}</i>`;
+
       // initializes this.signTextNodes and this.coefficientTextNodes
       for ( let i = 0; i <= CurveFittingConstants.MAX_ORDER_OF_FIT; i++ ) {
         this.signTextNodes.push( new Text( '', options.coefficientSignTextOptions ) );
@@ -67,10 +69,10 @@ define( require => {
           this.xVariableTextNodes.push( new Text( '', options.xTextOptions ) );
         }
         else if ( i === 1 ) {
-          this.xVariableTextNodes.push( new Text( symbolXString, options.xTextOptions ) );
+          this.xVariableTextNodes.push( new RichText( mathFontXString, options.xTextOptions ) );
         }
         else {
-          this.xVariableTextNodes.push( new RichText( `${symbolXString}<sup>${i}</sup>`, options.xTextOptions ) );
+          this.xVariableTextNodes.push( new RichText( `${mathFontXString}<sup>${i}</sup>`, options.xTextOptions ) );
         }
       }
 
