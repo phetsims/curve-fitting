@@ -24,7 +24,7 @@
     "value": "Linear"
   },
   "pattern.fEqualsNumberOfParameters": {
-    "value": "{{fSymbol}} = number of parameters in a fit (e.g. {{fSymbol}} = 4, for a cubic fit)"
+    "value": "{{fSymbol}} = number of parameters in fit (e.g. {{fSymbol}} = 4, for a cubic fit)"
   },
   "pattern.nEqualsNumberOfDataPoints": {
     "value": "{{nSymbol}} = number of data points"
