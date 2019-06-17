@@ -115,7 +115,7 @@ define( require => {
         maxWidth: 22
       } );
       const chiSquaredValuePanel = new Panel( chiSquaredValueText, VALUE_PANEL_OPTIONS );
-      const chiSquaredLabelText = new RichText( `${mathFontChiString}<sup>2</sup>${MathSymbols.EQUAL_TO}`, { font: TEXT_FONT } );
+      const chiSquaredLabelText = new RichText( `${mathFontChiString}<sup>2</sup> ${MathSymbols.EQUAL_TO}&nbsp;`, { font: TEXT_FONT } );
       const chiSquaredInformationBox = new HBox( {
         children: [ chiSquaredLabelText, chiSquaredValuePanel ]
       } );
@@ -127,7 +127,7 @@ define( require => {
         maxWidth: 22
       } );
       const rSquaredValuePanel = new Panel( rSquaredValueText, VALUE_PANEL_OPTIONS );
-      const rSquaredLabelText = new RichText( `${mathFontRString}<sup>2</sup>${MathSymbols.EQUAL_TO}`, { font: TEXT_FONT } );
+      const rSquaredLabelText = new RichText( `${mathFontRString}<sup>2</sup> ${MathSymbols.EQUAL_TO}&nbsp;`, { font: TEXT_FONT } );
       const rSquaredInformationBox = new HBox( {
         children: [ rSquaredLabelText, rSquaredValuePanel ]
       } );
@@ -137,9 +137,9 @@ define( require => {
 
         // if chiSquared is larger than a 1000, the actual value will not be displayed, so use a '>' sign
         if ( chiSquared > MAX_CHI_SQUARE_VALUE ) {
-          chiSquaredLabelText.text = `${mathFontChiString}<sup>2</sup>${MathSymbols.GREATER_THAN}`;
+          chiSquaredLabelText.text = `${mathFontChiString}<sup>2</sup> ${MathSymbols.GREATER_THAN}&nbsp;`;
         } else {
-          chiSquaredLabelText.text = `${mathFontChiString}<sup>2</sup>${MathSymbols.EQUAL_TO}`;
+          chiSquaredLabelText.text = `${mathFontChiString}<sup>2</sup> ${MathSymbols.EQUAL_TO}&nbsp;`;
         }
 
         // If chiSquared is greater than 10 we have a bad fit so less precision is needed.
