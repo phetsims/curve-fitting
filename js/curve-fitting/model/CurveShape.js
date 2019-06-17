@@ -47,15 +47,6 @@ define( require => {
 
     }
 
-    /**
-     * gets the shape of the curve
-     * @returns {Shape}
-     * @public (read-only)
-     */
-    getShape() {
-      return this;
-    }
-
   }
 
   curveFitting.register( 'CurveShape', CurveShape );
