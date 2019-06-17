@@ -12,7 +12,6 @@ define( require => {
 
   // modules
   const BarometerNode = require( 'CURVE_FITTING/curve-fitting/view/BarometerNode' );
-  const Circle = require( 'SCENERY/nodes/Circle' );
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
 
@@ -45,11 +44,6 @@ define( require => {
         fill: 'blue',
         tickWidth: 20
       } );
-
-      // put a red dot at the origin
-      if ( phet.chipper.queryParameters.dev ) {
-        this.addChild( new Circle( 3, { fill: 'red' } ) );
-      }
 
     }
 
