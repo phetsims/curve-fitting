@@ -17,6 +17,7 @@ define( require => {
   const HStrut = require( 'SCENERY/nodes/HStrut' );
   const MathSymbolFont = require( 'SCENERY_PHET/MathSymbolFont' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const RichText = require( 'SCENERY/nodes/RichText' );
   const Text = require( 'SCENERY/nodes/Text' );
   const VBox = require( 'SCENERY/nodes/VBox' );
 
@@ -35,7 +36,6 @@ define( require => {
   const DIALOG_FONT_SIZE = 14;
   const DIALOG_PLAIN_FONT = new PhetFont( DIALOG_FONT_SIZE );
   const DIALOG_MATH_FONT = new MathSymbolFont( DIALOG_FONT_SIZE );
-  const TEXT_SPACING = 6;
 
   class ReducedChiSquaredStatisticDialog extends Dialog {
 
@@ -44,23 +44,16 @@ define( require => {
      */
     constructor() {
 
-      const numberOfDataPointsNode = new HBox( {
-        spacing: TEXT_SPACING,
-        children: [
-          new Text( symbolNString, { font: DIALOG_MATH_FONT } ),
-          new Text( numberOfDataPointsString, { font: DIALOG_PLAIN_FONT } )
-        ]
-      } );
+      const numberOfDataPointsNode = new RichText(
+        `<i style='font-family:${DIALOG_MATH_FONT.family}'>${symbolNString}</i> ${numberOfDataPointsString}`,
+        { font: DIALOG_PLAIN_FONT }
+      );
 
-      const numberOfParametersNode = new HBox( {
-        spacing: TEXT_SPACING,
-        children: [
-          new Text( symbolFString, { font: DIALOG_MATH_FONT } ),
-          new Text( numberOfParameters1String, { font: DIALOG_PLAIN_FONT } ),
-          new Text( symbolFString, { font: DIALOG_MATH_FONT } ),
-          new Text( numberOfParameters2String, { font: DIALOG_PLAIN_FONT } )
-        ]
-      } );
+      const mathFontFString = `<i style='font-family:${DIALOG_MATH_FONT.family}'>${symbolFString}</i>`;
+      const numberOfParametersNode = new RichText(
+        `${mathFontFString} ${numberOfParameters1String} ${mathFontFString} ${numberOfParameters2String}`,
+        { font: DIALOG_PLAIN_FONT }
+      );
 
       const contentNode = new VBox( {
         align: 'left',
