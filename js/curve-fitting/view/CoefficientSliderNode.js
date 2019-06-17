@@ -40,7 +40,7 @@ define( require => {
         trackSize: new Dimension2( 120, 1 ),
         thumbSize: new Dimension2( 15, 23 ),
         minorTickLineWidth: 2,
-        thumbTouchAreaYDilation: 1   // small such that touch areas of adjacent sliders don't overlap. It is YDilation since we rotate by 90
+        thumbTouchAreaYDilation: 3   // small such that touch areas of adjacent sliders don't overlap. It is YDilation since we rotate by 90
       }, options );
 
       const sliderNode = new VSlider( property, range, options );
