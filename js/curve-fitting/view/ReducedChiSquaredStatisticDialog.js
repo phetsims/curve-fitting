@@ -18,13 +18,13 @@ define( require => {
   const MathSymbolFont = require( 'SCENERY_PHET/MathSymbolFont' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const RichText = require( 'SCENERY/nodes/RichText' );
+  const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
   const VBox = require( 'SCENERY/nodes/VBox' );
 
   // strings
-  const numberOfDataPointsString = require( 'string!CURVE_FITTING/numberOfDataPoints' );
-  const numberOfParameters1String = require( 'string!CURVE_FITTING/numberOfParameters1' );
-  const numberOfParameters2String = require( 'string!CURVE_FITTING/numberOfParameters2' );
+  const patternFEqualsNumberOfParametersString = require( 'string!CURVE_FITTING/pattern.fEqualsNumberOfParameters' );
+  const patternNEqualsNumberOfDataPointsString = require( 'string!CURVE_FITTING/pattern.nEqualsNumberOfDataPoints' );
   const symbolChiString = require( 'string!CURVE_FITTING/symbol.chi' );
   const symbolFString = require( 'string!CURVE_FITTING/symbol.f' );
   const symbolNString = require( 'string!CURVE_FITTING/symbol.N' );
@@ -45,13 +45,16 @@ define( require => {
     constructor() {
 
       const numberOfDataPointsNode = new RichText(
-        `<i style='font-family:${DIALOG_MATH_FONT.family}'>${symbolNString}</i> ${numberOfDataPointsString}`,
+        StringUtils.fillIn( patternNEqualsNumberOfDataPointsString, {
+          nSymbol: `<i style='font-family:${DIALOG_MATH_FONT.family}'>${symbolNString}</i>`
+        } ),
         { font: DIALOG_PLAIN_FONT }
       );
 
-      const mathFontFString = `<i style='font-family:${DIALOG_MATH_FONT.family}'>${symbolFString}</i>`;
       const numberOfParametersNode = new RichText(
-        `${mathFontFString} ${numberOfParameters1String} ${mathFontFString} ${numberOfParameters2String}`,
+        StringUtils.fillIn( patternFEqualsNumberOfParametersString, {
+          fSymbol: `<i style='font-family:${DIALOG_MATH_FONT.family}'>${symbolFString}</i>`
+        } ),
         { font: DIALOG_PLAIN_FONT }
       );
 

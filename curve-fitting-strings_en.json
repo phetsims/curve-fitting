@@ -23,14 +23,11 @@
   "linear": {
     "value": "Linear"
   },
-  "numberOfParameters1": {
-    "value": "= number of parameters in fit (e.g."
+  "pattern.fEqualsNumberOfParameters": {
+    "value": "{{fSymbol}} = number of parameters in a fit (e.g. {{fSymbol}} = 4, for a cubic fit)"
   },
-  "numberOfParameters2": {
-    "value": "= 4, for a cubic fit)"
-  },
-  "numberOfDataPoints": {
-    "value": "= number of data points"
+  "pattern.nEqualsNumberOfDataPoints": {
+    "value": "{{nSymbol}} = number of data points"
   },
   "pattern.delta.0valueDelta": {
     "value": "D<sub>y</sub> = {0}"
