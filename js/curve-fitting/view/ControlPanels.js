@@ -31,7 +31,7 @@ define( require => {
     /**
      * @param {Property.<number>[]} sliderPropertyArray
      * @param {Property.<number>} orderProperty
-     * @param {Property.<string>} fitProperty
+     * @param {Property.<FitType>} fitProperty
      * @param {Property.<boolean>} curveVisibleProperty
      * @param {Property.<boolean>} residualsVisibleProperty
      * @param {Property.<boolean>} valuesProperty

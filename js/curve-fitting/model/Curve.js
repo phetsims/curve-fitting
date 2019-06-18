@@ -12,6 +12,7 @@ define( require => {
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveShape = require( 'CURVE_FITTING/curve-fitting/model/CurveShape' );
   const Emitter = require( 'AXON/Emitter' );
+  const FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
   const Matrix = require( 'DOT/Matrix' );
   const NumberProperty = require( 'AXON/NumberProperty' );
 
@@ -25,7 +26,7 @@ define( require => {
      * @param {Points} points - array of points
      * @param {Property.<number>[]} sliderPropertyArray - an array of properties starting from dProperty up to aProperty
      * @param {Property.<number>} orderProperty - order of the polynomial that describes the curve
-     * @param {Property.<string>} fitProperty - the method of fitting the curve to data points
+     * @param {Property.<FitType>} fitProperty - the method of fitting the curve to data points
      */
     constructor( points, sliderPropertyArray, orderProperty, fitProperty ) {
 
@@ -68,7 +69,7 @@ define( require => {
      * @public (read-only)
      */
     isCurvePresent() {
-      return this.points.getNumberPointsOnGraph() >= 2 || this.fitProperty.value === 'adjustable';
+      return this.points.getNumberPointsOnGraph() >= 2 || this.fitProperty.value === FitType.ADJUSTABLE;
     }
 
     /**
@@ -100,10 +101,10 @@ define( require => {
      */
     updateFit() {
 
-      if ( this.fitProperty.value === 'best' ) {
+      if ( this.fitProperty.value === FitType.BEST ) {
         this.coefficients = this.getBestFitCoefficients();
       }
-      else { // this.fitProperty.value must be 'adjustable'
+      else { // this.fitProperty.value must be FitType.ADJUSTABLE
         this.coefficients = this.getAdjustableFitCoefficients();
       }
 
@@ -145,7 +146,7 @@ define( require => {
      * chi squared ranges from 0 to infinity
      *
      * r squared ranges from 0 to 1 for 'best fit'
-     * it is possible for 'adjustable fit' to get such a bad fit that the standard r squared calculation would yield a negative value.
+     * it is possible for the adjustable fit to get such a bad fit that the standard r squared calculation would yield a negative value.
      * For those cases, the r squared value to zero is set to zero.
      *
      * @private
@@ -214,7 +215,7 @@ define( require => {
         }
         else if ( averageOfResidualSquares / averageOfSquares > 1 ) {
 
-          // rSquared can be negative if the curve fitting done by the client i.e. 'adjustable fit' is very poor
+          // rSquared can be negative if the curve fitting done by the client i.e. adjustable fit is very poor
           // set it to zero for those cases.
           rSquared = 0;
         }

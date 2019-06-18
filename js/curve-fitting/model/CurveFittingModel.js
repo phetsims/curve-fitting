@@ -12,12 +12,10 @@ define( require => {
   const Curve = require( 'CURVE_FITTING/curve-fitting/model/Curve' );
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  const FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Points = require( 'CURVE_FITTING/curve-fitting/model/Points' );
   const Property = require( 'AXON/Property' );
-
-  // constants
-  const VALID_FIT_VALUES = [ 'best', 'adjustable' ];
 
   class CurveFittingModel {
 
@@ -29,8 +27,8 @@ define( require => {
       // @public {Property.<number>} order of the polynomial that describes the curve, valid values are 1, 2, 3
       this.orderProperty = new NumberProperty( 1 );
 
-      // @public {Property.<string>}, the method of fitting the curve to data points, see VALID_FIT_VALUES
-      this.fitProperty = new Property( 'best' );
+      // @public {Property.<FitType>}, the method of fitting the curve to data points
+      this.fitProperty = new Property( FitType.BEST, { validValues: FitType.VALUES } );
 
       // @public {Property.<number>[]}, user input values for coefficients of the polynomial, starting from lowest order x^0 to x^3
       this.sliderPropertyArray = [
@@ -53,10 +51,7 @@ define( require => {
         assert && assert( order === 1 || order === 2 || order === 3, `invalid order: ${order}` );
         this.curve.updateFit();
       } );
-      this.fitProperty.link( fit => {
-        assert && assert( _.includes( VALID_FIT_VALUES, fit ), `invalid fit: ${fit}` );
-        this.curve.updateFit();
-      } );
+      this.fitProperty.link( () => { this.curve.updateFit(); } );
 
       // a change of any of the value sliders force an update of the curve model
       this.sliderPropertyArray.forEach( sliderProperty => {

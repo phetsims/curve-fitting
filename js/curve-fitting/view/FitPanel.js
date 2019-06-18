@@ -2,7 +2,7 @@
 
 /**
  * Control panel for selecting how the curve is fit to data points.
- * For 'adjustable fit', provides additional controls for coefficients.
+ * For adjustable fit, provides additional controls for coefficients.
  *
  * @author Andrey Zelenkov (Mlearner)
  * @author Saurabh Totey
@@ -17,6 +17,7 @@ define( require => {
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const EquationNode = require( 'CURVE_FITTING/curve-fitting/view/EquationNode' );
+  const FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const HStrut = require( 'SCENERY/nodes/HStrut' );
   const Panel = require( 'SUN/Panel' );
@@ -36,7 +37,7 @@ define( require => {
 
     /**
      * @param {Property.<number>[]} sliderPropertyArray - stored in ascending order of the polynomial fit, starting with order zero.
-     * @param {Property.<string>} fitProperty
+     * @param {Property.<FitType>} fitProperty
      * @param {Property.<number>} orderProperty
      * @param {Object} [options]
      */
@@ -51,8 +52,8 @@ define( require => {
       }, options );
 
       // radio buttons
-      const bestFitButton = createRadioButton( fitProperty, 'best', bestFitString );
-      const adjustableFitButton = createRadioButton( fitProperty, 'adjustable', adjustableFitString );
+      const bestFitButton = createRadioButton( fitProperty, FitType.BEST, bestFitString );
+      const adjustableFitButton = createRadioButton( fitProperty, FitType.ADJUSTABLE, adjustableFitString );
 
       // vertical layout
       const radioButtonsBox = new VBox( {
@@ -143,12 +144,12 @@ define( require => {
         slidersBox.children = [ slidersOffset ].concat( slidersBox.children );
       } );
 
-      // show sliders when 'adjustable' fit is selected
+      // show sliders when adjustable fit is selected
       fitProperty.link( fit => {
-        if ( fit === 'best' && contentNode.hasChild( slidersBox ) ) {
+        if ( fit === FitType.BEST && contentNode.hasChild( slidersBox ) ) {
           contentNode.removeChild( slidersBox );
         }
-        else if ( fit === 'adjustable' ) {
+        else if ( fit === FitType.ADJUSTABLE ) {
           contentNode.addChild( slidersBox );
         }
       } );
