@@ -4,6 +4,7 @@
  * Point model in 'Curve Fitting' simulation.
  *
  * @author Andrey Zelenkov (Mlearner)
+ * @author Saurabh Totey
  */
 define( require => {
   'use strict';
@@ -13,6 +14,7 @@ define( require => {
   const BooleanProperty = require( 'AXON/BooleanProperty' );
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  const DerivedProperty = require( 'AXON/DerivedProperty' );
   const Easing = require( 'TWIXT/Easing' );
   const Emitter = require( 'AXON/Emitter' );
   const NumberProperty = require( 'AXON/NumberProperty' );
@@ -34,11 +36,8 @@ define( require => {
       // @public {Property.<Vector2>} position of point
       this.positionProperty = new Vector2Property( options.position );
 
-      // @public (read-only) {Property.<boolean>} is the point inside the graph? (points outside the graph ares are not used for curve fitting purposes)
-      this.isInsideGraphProperty = new BooleanProperty( false );
-
-      // @public {Property.<boolean>}
-      this.draggingProperty = new BooleanProperty( options.dragging ); // {boolean} is the user dragging the point?
+      // @public {Property.<boolean>} property that reflects whether the user is dragging the point
+      this.draggingProperty = new BooleanProperty( options.dragging );
 
       // @public {Property.<number>} vertical uncertainty of the point.
       this.deltaProperty = new NumberProperty( 0.8 );
@@ -46,12 +45,11 @@ define( require => {
       // @private {Animation|null} the animation of this point; is null if there is no animation
       this.animation = null;
 
-      // check and set the flag that indicates if the point is within the bounds of the graph
-      this.positionProperty.link( position => {
-
-        // determines if the position of a point is within the visual bounds of the graph and is not animated on its way back
-        this.isInsideGraphProperty.value = CurveFittingConstants.GRAPH_MODEL_BOUNDS.containsPoint( position );
-      } );
+      // @public {Property.<boolean>} a property that reflects whether the point is in the graph
+      this.isInsideGraphProperty = new DerivedProperty(
+        [ this.positionProperty ],
+        position => CurveFittingConstants.GRAPH_MODEL_BOUNDS.containsPoint( position )
+      );
 
       // if the user dropped the point outside of the graph send it back to the bucket
       this.draggingProperty.link( dragging => {
@@ -79,18 +77,24 @@ define( require => {
       const distance = getDistanceToOrigin();
 
       if ( distance > 0 ) {
+
+        // sets up the animation
         this.animation = new Animation( {
           property: this.positionProperty,
           to: this.positionProperty.initialValue,
           duration: distance / CurveFittingConstants.ANIMATION_SPEED,
           easing: Easing.LINEAR
         } );
+
+        // once the animation is done, set the animation field to null
+        // if the final destination was reached, emit the returnToOriginEmitter
         this.animation.endedEmitter.addListener( () => {
           if ( getDistanceToOrigin() === 0 ) {
             this.returnToOriginEmitter.emit();
           }
           this.animation = null;
         } );
+
         this.animation.start();
       }
       else {
