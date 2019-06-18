@@ -20,10 +20,12 @@ define( require => {
   const Util = require( 'DOT/Util' );
 
   // constants
-  const OFFSET = 6;
-  const MAX_VALUE = 100;
-  const HEAD_HEIGHT = 12;
-  const BAR_HEIGHT = CurveFittingConstants.BAROMETER_AXIS_HEIGHT - HEAD_HEIGHT - OFFSET;
+  const ARROW_OFFSET = 6;
+  const ARROW_HEAD_HEIGHT = 12;
+  const ARROW_HEAD_WIDTH = 8;
+  const ARROW_TAIL_WIDTH = 0.5;
+  const BAROMETER_HEIGHT = CurveFittingConstants.BAROMETER_AXIS_HEIGHT - ARROW_HEAD_HEIGHT - ARROW_OFFSET;
+  const MAX_CHI_SQUARED_VALUE = 100;
 
   // arrays necessary for calculating chi value bounds while getting barometer color
   const LOWER_LIMIT_ARRAY = [ 0.004, 0.052, 0.118, 0.178, 0.23, 0.273, 0.31, 0.342, 0.369, 0.394, 0.545, 0.695, 0.779, 0.927 ];
@@ -51,10 +53,10 @@ define( require => {
       const chiSquaredValueToFillColor = chiSquaredValue => getFillColorFromChiSquaredValue( chiSquaredValue, points.length );
       const fillColorProperty = new DerivedProperty( [ chiSquaredProperty ], chiSquaredValueToFillColor );
 
-      // calls the superconstructor that initializes BarometerX2Node as a BarometerNode
+      // calls the superclass's constructor that initializes BarometerX2Node as a BarometerNode
       super( fillProportionProperty, curveVisibleProperty, tickLocationsToLabels, {
         fill: fillColorProperty,
-        axisHeight: BAR_HEIGHT,
+        axisHeight: BAROMETER_HEIGHT,
         tickWidth: 10
       } );
 
@@ -65,10 +67,10 @@ define( require => {
       };
 
       // adds the arrow to the top of this BarometerX2Node to show that the values can extend past 100
-      const topArrow = new ArrowNode( 0, 0, 0, -BAR_HEIGHT - HEAD_HEIGHT * 1.5, {
-        headHeight: HEAD_HEIGHT,
-        headWidth: 8,
-        tailWidth: 0.5
+      const topArrow = new ArrowNode( 0, 0, 0, -BAROMETER_HEIGHT - ARROW_HEAD_HEIGHT * 1.5, {
+        headHeight: ARROW_HEAD_HEIGHT,
+        headWidth: ARROW_HEAD_WIDTH,
+        tailWidth: ARROW_TAIL_WIDTH
       } );
       this.addChild( topArrow );
     }
@@ -177,12 +179,12 @@ define( require => {
     }
 
     if ( value <= 1 ) {
-      return value / ( 1 + Math.log( MAX_VALUE ) );
+      return value / ( 1 + Math.log( MAX_CHI_SQUARED_VALUE ) );
     }
     else {
 
       // logarithmic scaling for X^2 values greater than 1, but returned ratio is capped at 1
-      return Math.min( 1, ( 1 + Math.log( value ) ) / ( 1 + Math.log( MAX_VALUE ) ) );
+      return Math.min( 1, ( 1 + Math.log( value ) ) / ( 1 + Math.log( MAX_CHI_SQUARED_VALUE ) ) );
     }
   }
 
