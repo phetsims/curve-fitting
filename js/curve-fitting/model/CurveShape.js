@@ -2,6 +2,7 @@
 
 /**
  * Model of the shape of a polynomial curve.
+ * Uses linear interpolation to make lines between points.
  *
  * @author Martin Veillette (Berea College)
  * @author Saurabh Totey
@@ -13,6 +14,10 @@ define( require => {
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const Shape = require( 'KITE/Shape' );
+
+  // constants
+  // how many segments: more segments means a finer/more accurate curve
+  const NUMBER_STEPS = 220;
 
   class CurveShape extends Shape {
 
@@ -30,11 +35,8 @@ define( require => {
       const xMin = graphBounds.minX; // minimum value of the x range
       const xMax = graphBounds.maxX; // maximum value of the x range
 
-      // how many segments: more segments means a finer/more accurate curve
-      const steps = 220;
-
       // separation between adjacent x coordinates
-      const interval = ( xMax - xMin ) / steps;
+      const interval = ( xMax - xMin ) / NUMBER_STEPS;
 
       // move shape to initial location
       this.moveTo( xMin, getYValueAt( xMin ) );
