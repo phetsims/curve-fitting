@@ -35,14 +35,6 @@ define( require => {
   const TEXT_FONT = new PhetFont( 12 );
   const VALUES_TEXT_FONT = new PhetFont( 10 );
   const MATH_FONT = new MathSymbolFont( 12 );
-  const VALUE_PANEL_OPTIONS = {
-    fill: 'white',
-    cornerRadius: 4,
-    xMargin: 4,
-    yMargin: 4,
-    resize: false,
-    maxWidth: 30
-  };
   const MAX_CHI_SQUARE_VALUE = 1000;
 
   // strings
@@ -76,6 +68,14 @@ define( require => {
         expandCollapseButtonOptions: {
           touchAreaXDilation: 8,
           touchAreaYDilation: 8
+        },
+        valuePanelOptions: {
+          fill: 'white',
+          cornerRadius: 4,
+          xMargin: 4,
+          yMargin: 4,
+          resize: false,
+          maxWidth: 30
         }
       }, options );
 
@@ -114,7 +114,7 @@ define( require => {
         textAlign: 'left',
         maxWidth: 22
       } );
-      const chiSquaredValuePanel = new Panel( chiSquaredValueText, VALUE_PANEL_OPTIONS );
+      const chiSquaredValuePanel = new Panel( chiSquaredValueText, options.valuePanelOptions );
       const chiSquaredLabelText = new RichText( `${mathFontChiString}<sup>2</sup> ${MathSymbols.EQUAL_TO}&nbsp;`, { font: TEXT_FONT } );
       const chiSquaredInformationBox = new HBox( {
         children: [ chiSquaredLabelText, chiSquaredValuePanel ]
@@ -126,7 +126,7 @@ define( require => {
         textAlign: 'left',
         maxWidth: 22
       } );
-      const rSquaredValuePanel = new Panel( rSquaredValueText, VALUE_PANEL_OPTIONS );
+      const rSquaredValuePanel = new Panel( rSquaredValueText, options.valuePanelOptions );
       const rSquaredLabelText = new RichText( `${mathFontRString}<sup>2</sup> ${MathSymbols.EQUAL_TO}&nbsp;`, { font: TEXT_FONT } );
       const rSquaredInformationBox = new HBox( {
         children: [ rSquaredLabelText, rSquaredValuePanel ]
@@ -189,8 +189,6 @@ define( require => {
 
   }
 
-  curveFitting.register( 'DeviationsAccordionBox', DeviationsAccordionBox );
-
   /**
    * For numbers smaller than ten, returns a number with digits decimal places.
    * For numbers larger than ten, returns a fixed number with (digits + 1) significant figures.
@@ -228,6 +226,8 @@ define( require => {
 
     return Util.toFixed( number, decimalPlaces );
   }
+
+  curveFitting.register( 'DeviationsAccordionBox', DeviationsAccordionBox );
 
   return DeviationsAccordionBox;
 } );
