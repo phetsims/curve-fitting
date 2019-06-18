@@ -17,15 +17,6 @@ define( require => {
   const VBox = require( 'SCENERY/nodes/VBox' );
   const VSlider = require( 'SUN/VSlider' );
 
-  // constants
-  const LABEL_OPTIONS = {
-    font: new PhetFont( {
-      weight: 'bold',
-      size: 13
-    } ),
-    fill: CurveFittingConstants.BLUE_COLOR
-  };
-
   class CoefficientSliderNode extends VBox {
 
     /**
@@ -40,7 +31,14 @@ define( require => {
         trackSize: new Dimension2( 120, 1 ),
         thumbSize: new Dimension2( 15, 23 ),
         minorTickLineWidth: 2,
-        thumbTouchAreaYDilation: 3   // small such that touch areas of adjacent sliders don't overlap. It is YDilation since we rotate by 90
+        thumbTouchAreaYDilation: 3, // supposed to make touch horizontal areas flush; is YDilation since we rotate by 90; see #72
+        labelOptions: {
+          font: new PhetFont( {
+            weight: 'bold',
+            size: 13
+          } ),
+          fill: CurveFittingConstants.BLUE_COLOR
+        }
       }, options );
 
       const sliderNode = new VSlider( property, range, options );
@@ -51,7 +49,7 @@ define( require => {
       super( _.extend( {
         children: [
           sliderNode,
-          new Text( label, LABEL_OPTIONS )
+          new Text( label, options.labelOptions )
         ]
       }, options ) );
     }
