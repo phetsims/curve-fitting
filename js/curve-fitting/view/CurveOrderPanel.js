@@ -36,8 +36,12 @@ define( require => {
        * @param {string} label
        * @returns {AquaRadioButton}
        */
-      const createRadioButton = ( value, label ) => new AquaRadioButton( orderProperty, value,
-          new Text( label, CurveFittingConstants.CONTROL_TEXT_OPTIONS ), CurveFittingConstants.RADIO_BUTTON_OPTIONS );
+      const createRadioButton = ( value, label ) => new AquaRadioButton(
+        orderProperty,
+        value,
+        new Text( label, CurveFittingConstants.CONTROL_TEXT_OPTIONS ),
+        CurveFittingConstants.RADIO_BUTTON_OPTIONS
+      );
 
       // radio buttons
       const linearButton = createRadioButton( 1, linearString );
