@@ -87,7 +87,7 @@ define( require => {
 
       // create the equation node (accordion box) in the upper left corner of the graph
       const graphEquationAccordionBox = new GraphEquationAccordionBox(
-          model.curve.getCoefficients.bind( model.curve ),
+          () => model.curve.coefficients,
           model.curve.updateCurveEmitter,
           model.orderProperty,
           equationPanelExpandedProperty,

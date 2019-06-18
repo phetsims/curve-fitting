@@ -23,11 +23,12 @@ define( require => {
 
     /**
      * @param {Points} points - array of points
-     * @param {Property.<number>[]} sliderPropertyArray - an array of property starting from dProperty up to aProperty
+     * @param {Property.<number>[]} sliderPropertyArray - an array of properties starting from dProperty up to aProperty
      * @param {Property.<number>} orderProperty - order of the polynomial that describes the curve
      * @param {Property.<string>} fitProperty - the method of fitting the curve to data points
      */
     constructor( points, sliderPropertyArray, orderProperty, fitProperty ) {
+
       // @public {Property.<number>} X^2 deviation value, a number ranging from 0 to + $\infty$
       this.chiSquaredProperty = new NumberProperty( 0 );
 
@@ -52,22 +53,12 @@ define( require => {
     }
 
     /**
-     * resets
+     * Resets the X^2 and r^2 values.
      * @public
      */
     reset() {
       this.rSquaredProperty.reset();
       this.chiSquaredProperty.reset();
-    }
-
-    /**
-     * gets coefficient array of the polynomial, sorted in ascending order
-     * e.g. y = 5 + 3 x + 4 x^2 yields [5,3,4]
-     * @returns {number[]}
-     * @public (read-only)
-     */
-    getCoefficients() {
-      return this.coefficients;
     }
 
     /**
@@ -77,7 +68,7 @@ define( require => {
      * @public (read-only)
      */
     isCurvePresent() {
-      return ( this.points.getNumberPointsOnGraph() >= 2 || this.fitProperty.value === 'adjustable' );
+      return this.points.getNumberPointsOnGraph() >= 2 || this.fitProperty.value === 'adjustable';
     }
 
     /**
@@ -98,7 +89,7 @@ define( require => {
      * @public
      */
     getShape() {
-      return new CurveShape( this.getYValueAt.bind( this ) );
+      return new CurveShape( x => this.getYValueAt( x ) );
     }
 
     /**
@@ -112,7 +103,7 @@ define( require => {
       if ( this.fitProperty.value === 'best' ) {
         this.coefficients = this.getBestFitCoefficients();
       }
-      else { // must be (this.fitProperty.value === 'adjustable')
+      else { // this.fitProperty.value must be 'adjustable'
         this.coefficients = this.getAdjustableFitCoefficients();
       }
 
@@ -134,8 +125,10 @@ define( require => {
     getAdjustableFitCoefficients() {
       const order = this.orderProperty.value;
       const adjustableFitCoefficients = [];
+
       // assign the slider values to the coefficients in the array
       this.sliderPropertyArray.forEach( ( sliderProperty, index ) => {
+
         // ensure that only the relevant coefficients are passed on to the array
         if ( index <= order ) {
           adjustableFitCoefficients.push( sliderProperty.value );
@@ -163,36 +156,33 @@ define( require => {
       const numberOfPoints = points.length; // number of points in the array
 
       if ( numberOfPoints < 2 ) {
+
         // rSquared and chiSquared do not have any meaning, set them to zero and bail out
         this.chiSquaredProperty.value = 0;
         this.rSquaredProperty.value = 0;
       }
       else {
+
         // calculation of rSquared and chiSquared
-        let weightSum = 0;
-        let ySum = 0;
-        let yySum = 0;
-        let yAtSum = 0;
-        let yAtySum = 0;
-        let yAtyAtSum = 0;
-        let x;
-        let y;
-        let yAt;
-        let weight;
-        let rSquared;
+        let weightSum = 0; // sum of weights
+        let ySum = 0; // weighted sum of y values
+        let yySum = 0; // weighted sum of the square of the y values
+        let yAtSum = 0; // weighted sum of the approximated y values (from curve)
+        let yAtySum = 0; // weighted sum of the product of of the y values times the approximated y value
+        let yAtyAtSum = 0; // weighted sum of the squared of the approximated y value
 
         points.forEach( point => {
-          x = point.positionProperty.value.x; // x value of this point
-          y = point.positionProperty.value.y; // y value of this point
-          yAt = this.getYValueAt( x ); // y value of the curve
-          weight = 1 / ( point.deltaProperty.value * point.deltaProperty.value ); // weight of this point
+          const x = point.positionProperty.value.x; // x value of this point
+          const y = point.positionProperty.value.y; // y value of this point
+          const yAt = this.getYValueAt( x ); // y value of the curve
+          const weight = 1 / ( point.deltaProperty.value * point.deltaProperty.value ); // weight of this point
 
-          weightSum = weightSum + weight; // sum of weights
-          ySum = ySum + weight * y;   // weighted sum of y values
-          yAtSum = yAtSum + weight * yAt; // weighted sum of the approximated y values (from curve)
-          yySum = yySum + weight * y * y; // weighted sum of the square of the y values
-          yAtySum = yAtySum + weight * yAt * y; // weighted sum of the product of of the y values times the approximated y value
-          yAtyAtSum = yAtyAtSum + weight * yAt * yAt; // weighted sum of the squared of the approximated y value
+          weightSum = weightSum + weight;
+          ySum = ySum + weight * y;
+          yAtSum = yAtSum + weight * yAt;
+          yySum = yySum + weight * y * y;
+          yAtySum = yAtySum + weight * yAt * y;
+          yAtyAtSum = yAtyAtSum + weight * yAt * yAt;
         } );
 
         const weightAverage = weightSum / numberOfPoints; // average of the weights
@@ -200,22 +190,22 @@ define( require => {
         const yAverage = ySum / denominator; // weighted average of the y values
         const yyAverage = yySum / denominator; // weighted average of the <y_i y_i> correlation
 
+        // sum of of the weighted squares of residuals
         const residualSumOfSquares = yySum - 2 * yAtySum + yAtyAtSum;
+
         // average of weighted squares of residuals, a.k.a average of residual squares
         const averageOfResidualSquares = residualSumOfSquares / denominator;
+
         // average of weighted squares
         const averageOfSquares = yyAverage - yAverage * yAverage;
-        // sum of of the weighted squares of residuals
-
 
         // calculation of chiSquared
-        const order = this.orderProperty.value;
-        const degreesOfFreedom = numberOfPoints - order - 1;
-        const chiSquared = residualSumOfSquares / Math.max( degreesOfFreedom, 1 );
-        this.chiSquaredProperty.value = chiSquared;
+        const degreesOfFreedom = numberOfPoints - this.orderProperty.value - 1;
+        this.chiSquaredProperty.value = residualSumOfSquares / Math.max( degreesOfFreedom, 1 );
 
         // calculation of rSquared = 1 - averageOfResidualSquares / averageOfSquares;
-        // avoiding a divide by 0 situation and setting rSquared to 0 when averageOfSquares is basically 0; see #86
+        // avoiding a divide by 0 situation and setting rSquared to NaN when averageOfSquares is basically 0; see #86
+        let rSquared;
         if ( Math.abs( averageOfSquares ) < EPSILON ) {
           rSquared = NaN;
         }
@@ -223,11 +213,13 @@ define( require => {
           rSquared = 1;
         }
         else if ( averageOfResidualSquares / averageOfSquares > 1 ) {
+
           // rSquared can be negative if the curve fitting done by the client i.e. 'adjustable fit' is very poor
           // set it to zero for those cases.
           rSquared = 0;
         }
         else {
+
           // weighted value of r square
           rSquared = 1 - averageOfResidualSquares / averageOfSquares;
         }
@@ -237,7 +229,7 @@ define( require => {
 
     /**
      * returns a solution an array containing the coefficients of the polynomial for best fit
-
+     *
      * The solution is found by solving the matrix equation, Y = X A
      * where X is a square matrix, and Y is a column matrix.
      *
@@ -259,35 +251,44 @@ define( require => {
       const solutionArrayLength = this.orderProperty.value + 1;
 
       // the rank of the matrix cannot be larger than the number of points with unique x value
-      // the rank of the matrix, m, is the order +1, or the number of points with unique x value, whichever is less.
-      const m = Math.min( solutionArrayLength, this.points.getNumberUniquePositionX() );
+      // the rank of the matrix is the order + 1, or the number of points with unique x value, whichever is less.
+      const matrixRank = Math.min( solutionArrayLength, this.points.getNumberUniquePositionX() );
 
-      const squareMatrix = new Matrix( m, m ); // matrix X
-      const columnMatrix = new Matrix( m, 1 ); // matrix Y
-
-      let i;
-      let j;
+      const squareMatrix = new Matrix( matrixRank, matrixRank ); // matrix X
+      const columnMatrix = new Matrix( matrixRank, 1 ); // matrix Y
 
       // fill out the elements of the column Matrix
-      for ( i = 0; i < m; ++i ) {
-        columnMatrix.set( i, 0, pointsOnGraph.reduce( ( accumulator, point ) => {
+      for ( let i = 0; i < matrixRank; ++i ) {
+        columnMatrix.set(
+          i,
+          0,
+          pointsOnGraph.reduce(
+            ( accumulator, point ) => {
               const deltaSquared = Math.pow( point.deltaProperty.value, 2 );
               const x = point.positionProperty.value.x;
               const y = point.positionProperty.value.y;
               return accumulator + Math.pow( x, i ) * y / deltaSquared;
-            }, 0 // initial value of accumulator
-        ) );
+            },
+            0 // initial value of accumulator
+          )
+        );
       }
 
       // fill out the elements of the square Matrix
-      for ( i = 0; i < m; ++i ) {
-        for ( j = 0; j < m; ++j ) {
-          squareMatrix.set( i, j, pointsOnGraph.reduce( ( accumulator, point ) => {
+      for ( let i = 0; i < matrixRank; ++i ) {
+        for ( let j = 0; j < matrixRank; ++j ) {
+          squareMatrix.set(
+            i,
+            j,
+            pointsOnGraph.reduce(
+              ( accumulator, point ) => {
                 const deltaSquared = Math.pow( point.deltaProperty.value, 2 );
                 const x = point.positionProperty.value.x;
                 return accumulator + Math.pow( x, i + j ) / deltaSquared;
-              }, 0 // initial value of accumulator
-          ) );
+              },
+              0 // initial value of accumulator
+            )
+          );
         }
       }
 
@@ -297,18 +298,19 @@ define( require => {
       const bestFitCoefficients = [];
 
       // filled the bestFitCoefficients array with zeros, the default solution
-      let n;
-      for ( n = 0; n < solutionArrayLength; n++ ) {
+      for ( let i = 0; i < solutionArrayLength; i++ ) {
         bestFitCoefficients.push( 0 );
       }
 
       // if the square matrix is not singular, it implies that a solution exists
       if ( Math.abs( squareMatrix.det() ) > DETERMINANT_EPSILON ) {
+
         // the solution matrix, A, is X^-1 * Y
         const solutionMatrix = squareMatrix.solve( columnMatrix );
+
         // unpack the column solution Matrix into a javascript array
-        for ( n = 0; n < m; n++ ) {
-          bestFitCoefficients[ n ] = solutionMatrix.get( n, 0 );
+        for ( let i = 0; i < matrixRank; i++ ) {
+          bestFitCoefficients[ i ] = solutionMatrix.get( i, 0 );
         }
       }
 
