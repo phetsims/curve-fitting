@@ -41,11 +41,12 @@ define( require => {
        */
       const updateCurve = () => {
         if ( curveVisibleProperty.value && curve.isCurvePresent() ) {
-          curvePath.setShape( modelViewTransform.modelToViewShape( curve.getShape() ) );
+          curvePath.shape = modelViewTransform.modelToViewShape( curve.shape );
         }
         else {
+
           // reset the curve shape to null
-          curvePath.setShape( null );
+          curvePath.shape = null;
         }
       };
 

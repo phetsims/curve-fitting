@@ -92,6 +92,7 @@ define( require => {
     getShape() {
       return new CurveShape( x => this.getYValueAt( x ) );
     }
+    get shape() { return this.getShape(); }
 
     /**
      * updates fit
