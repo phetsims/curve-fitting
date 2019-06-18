@@ -52,70 +52,75 @@ define( require => {
       // @public {Property.<boolean>} determines visibility of the curve fit
       const curveVisibleProperty = new BooleanProperty( false );
 
-      // Deviations accordion box, at left of screen
-      const deviationsAccordionBox = new DeviationsAccordionBox( deviationsAccordionBoxExpandedProperty,
-          model.points, model.curve.chiSquaredProperty, model.curve.rSquaredProperty, curveVisibleProperty, {
-            left: 10,
-            top: 10
-          } );
+      // deviations accordion box, at left of screen
+      const deviationsAccordionBox = new DeviationsAccordionBox(
+        deviationsAccordionBoxExpandedProperty,
+        model.points,
+        model.curve.chiSquaredProperty,
+        model.curve.rSquaredProperty,
+        curveVisibleProperty,
+        { left: 10, top: 10 }
+      );
 
-      // All other controls, at right of screen
+      // all other controls, at right of screen
       const controlPanels = new ControlPanels(
-          model.sliderPropertyArray,
-          model.orderProperty,
-          model.fitProperty,
-          curveVisibleProperty,
-          residualsVisibleProperty,
-          valuesVisibleProperty,
-          {
-            right: this.layoutBounds.right - 10,
-            top: deviationsAccordionBox.top
-          } );
+        model.sliderPropertyArray,
+        model.orderProperty,
+        model.fitProperty,
+        curveVisibleProperty,
+        residualsVisibleProperty,
+        valuesVisibleProperty,
+        { right: this.layoutBounds.right - 10, top: deviationsAccordionBox.top }
+      );
 
       // create a model view transform
       const graphAreaWidth = controlPanels.left - deviationsAccordionBox.right - GRAPH_PADDING_LEFT_RIGHT * 2;
-      const graphCenterX = 0.5 * (controlPanels.left + deviationsAccordionBox.right);
+      const graphCenterX = 0.5 * ( controlPanels.left + deviationsAccordionBox.right );
       const graphCenterY = graphAreaWidth / 2 + deviationsAccordionBox.top;
       const scale = graphAreaWidth / CurveFittingConstants.GRAPH_MODEL_BOUNDS.width;
       const modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping(
-          new Vector2( 0, 0 ),
-          new Vector2( graphCenterX, graphCenterY ),
-          scale );
+        new Vector2( 0, 0 ),
+        new Vector2( graphCenterX, graphCenterY ),
+        scale
+      );
 
       // create the graph area node - responsible for the rendering of the axes, ticks and background.
       const graphAreaNode = new GraphAreaNode( modelViewTransform );
 
       // create the equation node (accordion box) in the upper left corner of the graph
       const graphEquationAccordionBox = new GraphEquationAccordionBox(
-          () => model.curve.coefficients,
-          model.curve.updateCurveEmitter,
-          model.orderProperty,
-          equationPanelExpandedProperty,
-          curveVisibleProperty );
+        () => model.curve.coefficients,
+        model.curve.updateCurveEmitter,
+        model.orderProperty,
+        equationPanelExpandedProperty,
+        curveVisibleProperty
+      );
 
       // create the curve and the residual lines
       const curveNode = new CurveNode(
-          model.curve,
-          curveVisibleProperty,
-          modelViewTransform );
+        model.curve,
+        curveVisibleProperty,
+        modelViewTransform
+      );
 
       // create the residual lines
       const residualsNode = new ResidualsNode(
-          model.points,
-          model.curve,
-          residualsVisibleProperty,
-          modelViewTransform );
+        model.points,
+        model.curve,
+        residualsVisibleProperty,
+        modelViewTransform
+      );
 
       // layout of equation inset on graph
       graphEquationAccordionBox.left = graphAreaNode.left + 10;
       graphEquationAccordionBox.top = graphAreaNode.top + 10;
 
-      // create bucket (and handle responsibilities associated with points)
+      // create bucket
       const bucketNode = new BucketNode(
-          model.points,
-          residualsVisibleProperty,
-          valuesVisibleProperty,
-          modelViewTransform
+        model.points,
+        residualsVisibleProperty,
+        valuesVisibleProperty,
+        modelViewTransform
       );
 
       // create reset all button
