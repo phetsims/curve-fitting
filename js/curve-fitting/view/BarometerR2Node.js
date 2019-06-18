@@ -1,7 +1,7 @@
 // Copyright 2015-2019, University of Colorado Boulder
 
 /**
- * Barometer for r^2 deviation. Origin is at the origin of the y axis.
+ * Barometer for r^2 deviation.
  *
  * @author Andrey Zelenkov (Mlearner)
  * @author Chris Malley (PixelZoom, Inc.)
@@ -14,6 +14,9 @@ define( require => {
   const BarometerNode = require( 'CURVE_FITTING/curve-fitting/view/BarometerNode' );
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
+
+  // constants
+  const TICK_WIDTH = 20;
 
   class BarometerR2Node extends BarometerNode {
 
@@ -33,16 +36,14 @@ define( require => {
       };
 
       // property that maps rSquared -> rSquared, unless rSquared is NaN, where it maps NaN -> 0
-      const modifiedRSquaredProperty = new DerivedProperty( [ rSquaredProperty ], rSquared => {
-        if ( isNaN( rSquared ) ) {
-          return 0;
-        }
-        return rSquared;
-      } );
+      const modifiedRSquaredProperty = new DerivedProperty(
+        [ rSquaredProperty ],
+        rSquared => isNaN( rSquared ) ? 0 : rSquared
+      );
 
       super( modifiedRSquaredProperty, curveVisibleProperty, tickLocationsToLabels, {
         fill: 'blue',
-        tickWidth: 20
+        tickWidth: TICK_WIDTH
       } );
 
     }
