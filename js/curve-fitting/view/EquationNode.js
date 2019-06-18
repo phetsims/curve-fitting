@@ -61,7 +61,7 @@ define( require => {
 
       const mathFontXString = `<i style='font-family:${MATH_FONT.family}'>${symbolXString}</i>`;
 
-      // initializes this.signTextNodes and this.coefficientTextNodes
+      // initializes this.signTextNodes, this.coefficientTextNodes, and this.xVariableTextNodes
       for ( let i = 0; i <= CurveFittingConstants.MAX_ORDER_OF_FIT; i++ ) {
         this.signTextNodes.push( new Text( '', options.coefficientSignTextOptions ) );
         this.coefficientTextNodes.push( new Text( '', options.coefficientTextOptions ) );
