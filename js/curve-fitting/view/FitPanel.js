@@ -113,12 +113,13 @@ define( require => {
       ];
 
       // create array in ASCENDING order of polynomial
-      const ascendingSliders = slidersAttributes.map( ( sliderObject, index ) => {
-          return new CoefficientSliderNode( sliderPropertyArray[ index ],
-            sliderObject.range,
-            sliderObject.string,
-            { enabledProperty: sliderObject.enabledProperty } );
-        }
+      const ascendingSliders = slidersAttributes.map(
+        ( sliderObject, index ) => new CoefficientSliderNode(
+          sliderPropertyArray[ index ],
+          sliderObject.range,
+          sliderObject.string,
+          { enabledProperty: sliderObject.enabledProperty }
+        )
       );
 
       // we want sliders in DESCENDING order of polynomial
@@ -158,8 +159,6 @@ define( require => {
 
   }
 
-  curveFitting.register( 'FitPanel', FitPanel );
-
   /**
    * Creates a radio button for this panel.
    *
@@ -169,10 +168,15 @@ define( require => {
    * @returns {AquaRadioButton}
    */
   function createRadioButton( property, value, label ) {
-    return new AquaRadioButton( property, value,
+    return new AquaRadioButton(
+      property,
+      value,
       new Text( label, CurveFittingConstants.CONTROL_TEXT_OPTIONS ),
-      CurveFittingConstants.RADIO_BUTTON_OPTIONS );
+      CurveFittingConstants.RADIO_BUTTON_OPTIONS
+    );
   }
+
+  curveFitting.register( 'FitPanel', FitPanel );
 
   return FitPanel;
 } );
