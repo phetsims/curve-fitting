@@ -4,6 +4,7 @@
  * Points is a collection of Point in 'Curve Fitting' simulation.
  *
  * @author Martin Veillette (Berea College)
+ * @author Saurabh Totey
  */
 define( require => {
   'use strict';
@@ -28,18 +29,10 @@ define( require => {
      * @returns {Array.<Point>}
      * @public
      */
-    getPointsOnGraph() {
+    getRelevantPoints() {
       return this.getArray().filter( point => point.isInsideGraphProperty.value && point.animation === null );
     }
-
-    /**
-     * Gets the number of points on the graph area that should be used for curve-fitting calculations
-     * @returns {number}
-     * @public
-     */
-    getNumberPointsOnGraph() {
-      return this.getPointsOnGraph().length;
-    }
+    get relevantPoints() { return this.getRelevantPoints(); }
 
     /**
      * Returns the number of points on graph that have a unique x position.
@@ -48,7 +41,7 @@ define( require => {
      * @public
      */
     getNumberUniquePositionX() {
-      return _.chain( this.getPointsOnGraph() ).map( point => point.positionProperty.value.x ).uniq().value().length;
+      return _.chain( this.relevantPoints ).map( point => point.positionProperty.value.x ).uniq().value().length;
     }
 
   }

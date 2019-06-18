@@ -69,7 +69,7 @@ define( require => {
      * @public (read-only)
      */
     isCurvePresent() {
-      return this.points.getNumberPointsOnGraph() >= 2 || this.fitProperty.value === FitType.ADJUSTABLE;
+      return this.points.relevantPoints.length >= 2 || this.fitProperty.value === FitType.ADJUSTABLE;
     }
 
     /**
@@ -153,7 +153,7 @@ define( require => {
      */
     updateRAndChiSquared() {
 
-      const points = this.points.getPointsOnGraph();
+      const points = this.points.relevantPoints;
       const numberOfPoints = points.length; // number of points in the array
 
       if ( numberOfPoints < 2 ) {
@@ -247,7 +247,7 @@ define( require => {
      */
     getBestFitCoefficients() {
 
-      const pointsOnGraph = this.points.getPointsOnGraph();
+      const relevantPoints = this.points.relevantPoints;
 
       const solutionArrayLength = this.orderProperty.value + 1;
 
@@ -263,7 +263,7 @@ define( require => {
         columnMatrix.set(
           i,
           0,
-          pointsOnGraph.reduce(
+          relevantPoints.reduce(
             ( accumulator, point ) => {
               const deltaSquared = Math.pow( point.deltaProperty.value, 2 );
               const x = point.positionProperty.value.x;
@@ -281,7 +281,7 @@ define( require => {
           squareMatrix.set(
             i,
             j,
-            pointsOnGraph.reduce(
+            relevantPoints.reduce(
               ( accumulator, point ) => {
                 const deltaSquared = Math.pow( point.deltaProperty.value, 2 );
                 const x = point.positionProperty.value.x;

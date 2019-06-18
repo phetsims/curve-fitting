@@ -39,7 +39,7 @@ define( require => {
       ];
 
       // @public {Points} - Points for plotting curve. This includes points that are outside the bounds of the graph, so
-      // be careful to call getPointsOnGraph when using points in calculations. Order of the points doesn't matter.
+      // be careful to call getRelevantPoints when using points in calculations. Order of the points doesn't matter.
       this.points = new Points();
 
       // @public {Curve} - the model of the curve

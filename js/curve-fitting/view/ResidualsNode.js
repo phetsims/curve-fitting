@@ -43,10 +43,9 @@ define( require => {
       const updateResiduals = () => {
         if ( residualsVisibleProperty.value && curve.isCurvePresent() ) {
 
-          const pointsOnGraph = points.getPointsOnGraph();
           const residualsShape = new Shape();
           // updates the path residuals which are the vertical lines connecting data points to curve
-          pointsOnGraph.forEach( point => {
+          points.relevantPoints.forEach( point => {
             residualsShape.moveToPoint( point.positionProperty.value );
             residualsShape.verticalLineTo( curve.getYValueAt( point.positionProperty.value.x ) );
           } );
