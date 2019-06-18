@@ -27,10 +27,13 @@ define( require => {
   // constants
   const BUCKET_WIDTH = 5; // in model coordinates
   const BUCKET_HEIGHT = BUCKET_WIDTH * 0.50;
+  const BUCKET_COLOR = 'rgb( 65, 63, 117 )';
+
   // bucket position is to the left and up from the bottom left corner of graph, in model coordinates
   const BUCKET_POSITION_X = CurveFittingConstants.GRAPH_MODEL_BOUNDS.minX - 3;
   const BUCKET_POSITION_Y = CurveFittingConstants.GRAPH_MODEL_BOUNDS.minY;
-  // position of points
+
+  // position of points inside bucket
   const POINT_POSITIONS = [
     { x: -33, y: 8 },
     { x: -25, y: 10 },
@@ -77,7 +80,7 @@ define( require => {
       const bucket = new Bucket( {
         position: new Vector2( BUCKET_POSITION_X, BUCKET_POSITION_Y ),
         size: new Dimension2( BUCKET_WIDTH, BUCKET_HEIGHT ),
-        baseColor: 'rgb( 65, 63, 117 )'
+        baseColor: BUCKET_COLOR
       } );
 
       // front of the bucket
@@ -87,8 +90,8 @@ define( require => {
       const bucketHoleNode = new BucketHole( bucket, modelViewTransform );
 
       /**
-       * create a drag handler that adds a point to the model
-       * @returns {SimpleDragHandler}
+       * creates a drag listener that adds a point to the model
+       * @returns {DragListener}
        */
       const createDragHandler = () => {
         let point = null;
