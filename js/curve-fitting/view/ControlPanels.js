@@ -58,10 +58,8 @@ define( require => {
       super( options );
 
       // hide panels when curve is not visible
-      curveVisibleProperty.link( curveVisible => {
-        orderPanel.visible = curveVisible;
-        fitPanel.visible = curveVisible;
-      } );
+      curveVisibleProperty.linkAttribute( orderPanel, 'visible' );
+      curveVisibleProperty.linkAttribute( fitPanel, 'visible' );
     }
 
   }
