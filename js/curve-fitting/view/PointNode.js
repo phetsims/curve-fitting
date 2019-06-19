@@ -59,6 +59,12 @@ define( require => {
   };
   const HALO_BOUNDS = new Bounds2( -12, -2, 12, 4 );
   const POINT_COLOR = Color.toColor( CurveFittingConstants.POINT_FILL );
+  const CIRCLE_VIEW_OPTIONS = {
+    fill: POINT_COLOR,
+    radius: CurveFittingConstants.POINT_RADIUS,
+    stroke: CurveFittingConstants.POINT_STROKE,
+    lineWidth: CurveFittingConstants.POINT_LINE_WIDTH
+  };
   const HALO_BAR_OPTIONS = {
     fill: BAR_COLOR.withAlpha( 0.3 ),
     pickable: false,
@@ -157,12 +163,7 @@ define( require => {
       } ) );
 
       // point view
-      const circleView = new Circle( {
-        fill: POINT_COLOR,
-        radius: CurveFittingConstants.POINT_RADIUS,
-        stroke: CurveFittingConstants.POINT_STROKE,
-        lineWidth: CurveFittingConstants.POINT_LINE_WIDTH
-      } );
+      const circleView = new Circle( CIRCLE_VIEW_OPTIONS );
       circleView.touchArea = circleView.bounds.dilated( 3 );
       circleView.mouseArea = circleView.bounds.dilated( 1 );
       this.addChild( circleView );
@@ -330,7 +331,6 @@ define( require => {
 
       this.disposePointNode = () => {
         point.deltaProperty.unlink( updateDelta );
-        point.positionProperty.unlink( updateValue );
         point.positionProperty.unlink( centerPositionListener );
         residualsVisibleProperty.unlink( updateErrorBarsBasedOnResidualsVisibility );
         valuesVisibleProperty.unlinkAttribute( deltaTextHandle );
