@@ -25,7 +25,7 @@ define( require => {
   const GRAPH_BACKGROUND_OPTIONS = { fill: 'white', lineWidth: 2, stroke: 'rgb( 214, 223, 226 )' };
 
   // ticks
-  const TICK_LENGTH = 0.3; // in model coordinate
+  const TICK_LENGTH = 0.3; // in model coordinates
   const HORIZONTAL_TICKS = [ -10, -5, 5, 10 ];
   const VERTICAL_TICKS = [ -10, -5, 5, 10 ];
   const TICK_DECIMAL_PLACES = 0;
@@ -126,16 +126,9 @@ define( require => {
      * @private
      */
     addTicks( ticksLocation, options ) {
-
-      options = _.extend( {
-        withLabels: true
-      }, options );
-
       ticksLocation.forEach( location => {
         this.addTickLine( location, options );
-        if ( options.withLabels ) {
-          this.addTickLabel( location, options );
-        }
+        this.addTickLabel( location, options );
       } );
     }
 

@@ -114,11 +114,11 @@ define( require => {
 
       // create array in ASCENDING order of polynomial
       const ascendingSliders = slidersAttributes.map(
-        ( sliderObject, index ) => new CoefficientSliderNode(
+        ( sliderAttribute, index ) => new CoefficientSliderNode(
           sliderPropertyArray[ index ],
-          sliderObject.range,
-          sliderObject.string,
-          { enabledProperty: sliderObject.enabledProperty }
+          sliderAttribute.range,
+          sliderAttribute.string,
+          { enabledProperty: sliderAttribute.enabledProperty }
         )
       );
 
