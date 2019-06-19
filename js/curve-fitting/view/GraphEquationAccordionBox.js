@@ -30,6 +30,10 @@ define( require => {
     cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
     fill: 'white'
   };
+  const PARAMETER_SIGN_TEXT_OPTIONS = {
+    font: new PhetFont( 12 ),
+    fill: CurveFittingConstants.BLUE_COLOR
+  };
   const PARAMETER_TEXT_OPTIONS = {
     font: new PhetFont( {
       weight: 'bold',
@@ -38,8 +42,9 @@ define( require => {
     fill: CurveFittingConstants.BLUE_COLOR
   };
   const TEXT_OPTIONS = { font: new PhetFont( 12 ) };
-  // max number precision decimal places for ascending order of coefficient of polynomials
-  const MAX_DECIMALS = [ 1, 2, 3, 3 ];
+
+  // max number of digits for coefficients in ascending order of polynomials
+  const MAX_DIGITS = [ 2, 3, 4, 4 ];
 
   class GraphEquationAccordionBox extends Panel {
 
@@ -51,12 +56,7 @@ define( require => {
      * @param {Property.<boolean>} curveVisibleProperty
      * @param {Object} [options] for slider node.
      */
-    constructor( getCoefficientArray,
-                                     updateCurveEmitter,
-                                     orderProperty,
-                                     equationPanelExpandedProperty,
-                                     curveVisibleProperty,
-                                     options ) {
+    constructor( getCoefficientArray, updateCurveEmitter, orderProperty, equationPanelExpandedProperty, curveVisibleProperty, options ) {
 
       // visible text node when panel is not expanded
       const titleNode = new Text( equationString, TEXT_OPTIONS );
@@ -78,10 +78,7 @@ define( require => {
       // visible node when panel is expanded
       const equationNode = new EquationNode( orderProperty, {
         coefficientTextOptions: PARAMETER_TEXT_OPTIONS,
-        coefficientSignTextOptions: {
-          font: new PhetFont( 12 ),
-          fill: CurveFittingConstants.BLUE_COLOR
-        }
+        coefficientSignTextOptions: PARAMETER_SIGN_TEXT_OPTIONS
       } );
 
       // toggle the content of the panel, based on the expansion status
@@ -95,61 +92,45 @@ define( require => {
       } );
 
       /**
-       * Function that returns (for numbers smaller than ten) a number (as a string) with a fixed number of decimal places
-       * whereas for numbers larger than ten, the number/string is returned a fixed number of significant figures
+       * Function that rounds the given number to the given amount of digits
+       * Rounds the number to the nearest whole number if the nearest whole number has as many or more digits than maxDigits
+       * Returns an array of two strings: the first string is the number's sign, and the second string is the absolute number
        *
        * @param {number} number
-       * @param {number} maxDecimalPlaces
-       * @returns {Object}
+       * @param {number} maxDigits
+       * @returns {Array.<string>} - first string is number's sign, second string is number's absolute value
        */
-      const roundNumber = ( number, maxDecimalPlaces ) => {
-
-        // eg. if maxDecimalPlaces = 3
-        // 9999.11 -> 9999  (number larger than 10^3) are rounded to unity
-        // 999.111 -> 999.1
-        // 99.1111 -> 99.11
-        // 9.11111 -> 9.111
-        // 1.11111 -> 1.111
-        // 0.11111 -> 0.111
-        // 0.01111 -> 0.011
-        // 0.00111 -> 0.001
-        // 0.00011 -> 0.000
+      const getRoundedParamterStrings = ( number, maxDigits ) => {
 
         // number = mantissa times 10^(exponent) where the mantissa is between 1 and 10 (or -1 to -10)
         const exponent = Math.floor( Util.log10( Math.abs( number ) ) );
 
         let decimalPlaces;
-        if ( exponent >= maxDecimalPlaces ) {
+        if ( exponent >= maxDigits ) {
           decimalPlaces = 0;
         }
         else if ( exponent > 0 ) {
-          decimalPlaces = maxDecimalPlaces - exponent;
+          decimalPlaces = maxDigits - exponent - 1;
         }
         else {
-          decimalPlaces = maxDecimalPlaces;
+          decimalPlaces = maxDigits - 1;
         }
+
         const roundedNumber = Util.toFixedNumber( number, decimalPlaces );
-        const numberToString = Util.toFixed( number, decimalPlaces );
         const signToString = ( roundedNumber >= 0 ) ? MathSymbols.PLUS : MathSymbols.MINUS; // N.B.
         const absoluteNumberToString = Util.toFixed( Math.abs( number ), decimalPlaces ); // N.B.
-        const isStringZero = numberToString === Util.toFixed( 0, decimalPlaces );
 
-        return {
-          numberToString: numberToString, // {string}
-          signToString: signToString, // {string}
-          absoluteNumberToString: absoluteNumberToString, // {string}
-          isStringZero: isStringZero // {boolean}
-        };
+        return [ signToString, absoluteNumberToString ];
       };
 
       /**
        * update all the coefficients
        */
       const updateCoefficients = () => {
-        const coefficientStrings = _.flatMap( getCoefficientArray(), ( coefficient, index ) => {
-          const numberInfo = roundNumber( coefficient, MAX_DECIMALS[ index ] );
-          return [ numberInfo.signToString, numberInfo.absoluteNumberToString ];
-        } );
+        const coefficientStrings = _.flatMap(
+          getCoefficientArray(),
+          ( coefficient, index ) => getRoundedParamterStrings( coefficient, MAX_DIGITS[ index ] )
+        );
         equationNode.setCoefficients( coefficientStrings );
       };
 
