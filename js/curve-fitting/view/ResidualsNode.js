@@ -41,19 +41,20 @@ define( require => {
        * Updates the paths for all the residuals from all the points
        */
       const updateResiduals = () => {
-        if ( residualsVisibleProperty.value && curve.isCurvePresent() ) {
 
+        // invalidate shape
+        residualsPath.shape = null;
+
+        if ( residualsVisibleProperty.value && curve.isCurvePresent() ) {
           const residualsShape = new Shape();
+
           // updates the path residuals which are the vertical lines connecting data points to curve
           points.relevantPoints.forEach( point => {
             residualsShape.moveToPoint( point.positionProperty.value );
             residualsShape.verticalLineTo( curve.getYValueAt( point.positionProperty.value.x ) );
           } );
-          residualsPath.setShape( modelViewTransform.modelToViewShape( residualsShape ) );
+          residualsPath.shape = modelViewTransform.modelToViewShape( residualsShape );
 
-        }
-        else {
-          residualsPath.setShape( null );
         }
       };
 
