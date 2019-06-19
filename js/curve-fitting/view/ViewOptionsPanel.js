@@ -56,13 +56,14 @@ define( require => {
         children: [
           curveCheckbox,
           residualsCheckbox,
-          valuesCheckbox ]
+          valuesCheckbox
+        ]
       } );
 
       super( contentNode, options );
 
       // Saves state of residualsVisibleProperty while the residuals checkbox is disabled.
-      let wereResidualsVisible = residualsVisibleProperty.get();
+      let wereResidualsVisible = residualsVisibleProperty.value;
 
       // Visibility of the curve affects other controls.
       curveVisibleProperty.link( isCurveVisible => {
@@ -73,13 +74,13 @@ define( require => {
         if ( isCurveVisible ) {
 
           // When curve is checked, restore the state of residuals.
-          residualsVisibleProperty.set( wereResidualsVisible );
+          residualsVisibleProperty.value = wereResidualsVisible;
         }
         else {
 
-          // When the curve is unchecked, save state and turn off residuals.
-          wereResidualsVisible = residualsVisibleProperty.get();
-          residualsVisibleProperty.set( false );
+          // When the curve is unchecked, save residuals state and turn off residuals.
+          wereResidualsVisible = residualsVisibleProperty.value;
+          residualsVisibleProperty.value = false;
         }
       } );
     }
