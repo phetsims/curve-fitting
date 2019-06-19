@@ -17,12 +17,12 @@ define( require => {
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const CurveFittingQueryParameters = require( 'CURVE_FITTING/curve-fitting/CurveFittingQueryParameters' );
+  const DragListener = require( 'SCENERY/listeners/DragListener' );
   const Line = require( 'SCENERY/nodes/Line' );
   const Node = require( 'SCENERY/nodes/Node' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const RichText = require( 'SCENERY/nodes/RichText' );
-  const SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
   const Util = require( 'DOT/Util' );
@@ -33,6 +33,7 @@ define( require => {
   const patternDelta0ValueDeltaString = require( 'string!CURVE_FITTING/pattern.delta.0valueDelta' );
 
   // constants
+  const MIN_DELTA = 0.00000000000000001; // arbitrarily smallest non-zero delta allowable: 0 causes divide by 0 errors
   const VALUE_FONT = new PhetFont( 11 );
   const BAR_COLOR = Color.toColor( CurveFittingConstants.BLUE_COLOR );
   const CENTRAL_LINE_OPTIONS = {
@@ -49,6 +50,7 @@ define( require => {
     opacity: 0.75,
     cornerRadius: 4
   };
+  const VALUE_BACKGROUND_PADDING = 2;
   const DISTANCE_BETWEEN_COORDINATE_AND_DELTA = 1;
   const DILATION_SIZE = 8;
   const ERROR_BAR_BOUNDS = new Bounds2( -10, 0, 10, 2 );
@@ -81,99 +83,80 @@ define( require => {
 
       super( _.extend( { cursor: 'pointer' }, options ) );
 
-      // create common drag and drop vars and functions for top and bottom error bars
-      let draggingDeltaTop = false;
-      let draggingDeltaBottom = false;
-
-      // top error bar line node
-      const errorBarTopNode = new Rectangle( ERROR_BAR_BOUNDS, ERROR_BAR_OPTIONS );
-      let newDeltaValue;
-      errorBarTopNode.addInputListener( new SimpleDragHandler( {
-        start: () => {
-          if ( !draggingDeltaBottom ) {
-            draggingDeltaTop = true;
-          }
-        },
-        translate: translationParams => {
-          if ( draggingDeltaTop ) {
-            newDeltaValue = point.deltaProperty.value + modelViewTransform.viewToModelDeltaY( translationParams.delta.y );
-
-            // don't let the top error bar become the bottom error bar
-            if ( newDeltaValue > 0 ) {
-              point.deltaProperty.value = newDeltaValue;
-            }
-          }
-        },
-        end: () => {
-          draggingDeltaTop = false;
-          newDeltaValue = null;
-        }
-      } ) );
-
-      // top error bar line halo node
-      const haloErrorBarTopNode = new Rectangle( HALO_BOUNDS, HALO_BAR_OPTIONS );
+      // bottom error bar
+      const errorBarBottomRectangle = new Rectangle( ERROR_BAR_BOUNDS, ERROR_BAR_OPTIONS );
+      const errorBarBottomHaloRectangle = new Rectangle( HALO_BOUNDS, HALO_BAR_OPTIONS );
+      const errorBarBottomNode = new Node( { children: [ errorBarBottomRectangle, errorBarBottomHaloRectangle ] } );
+      this.addChild( errorBarBottomNode );
 
       // top error bar
-      const errorBarTop = new Node( {
-        children: [ errorBarTopNode, haloErrorBarTopNode ]
-      } );
-      this.addChild( errorBarTop );
+      const errorBarTopRectangle = new Rectangle( ERROR_BAR_BOUNDS, ERROR_BAR_OPTIONS );
+      const errorBarTopHaloRectangle = new Rectangle( HALO_BOUNDS, HALO_BAR_OPTIONS );
+      const errorBarTopNode = new Node( { children: [ errorBarTopRectangle, errorBarTopHaloRectangle ] } );
+      this.addChild( errorBarTopNode );
 
-      // add bottom error bar line node
-      const errorBarBottomNode = new Rectangle( ERROR_BAR_BOUNDS, ERROR_BAR_OPTIONS );
-      errorBarBottomNode.addInputListener( new SimpleDragHandler( {
-        start: () => {
-          if ( !draggingDeltaTop ) {
-            draggingDeltaBottom = true;
-          }
-        },
-        translate: translationParams => {
-          if ( draggingDeltaBottom ) {
-            newDeltaValue = point.deltaProperty.value - modelViewTransform.viewToModelDeltaY( translationParams.delta.y );
-
-            // don't let the bottom error bar become the top error bar
-            if ( newDeltaValue > 0 ) {
-              point.deltaProperty.value = newDeltaValue;
-            }
-          }
-        },
-        end: () => {
-          draggingDeltaBottom = false;
-        }
-      } ) );
-
-      // bottom error bar line halo node
-      const haloTopBarBottomNode = new Rectangle( HALO_BOUNDS, HALO_BAR_OPTIONS );
-
-      // bottom error bar
-      const errorBarBottom = new Node( {
-        children: [ errorBarBottomNode, haloTopBarBottomNode ]
-      } );
-      this.addChild( errorBarBottom );
-
-      // add halo bar nodes handler
-      const barHaloHandler = new ButtonListener( {
-        up: () => {
-          haloErrorBarTopNode.visible = false;
-          haloTopBarBottomNode.visible = false;
-        },
-        down: () => {
-          haloErrorBarTopNode.visible = true;
-          haloTopBarBottomNode.visible = true;
-        },
-        over: () => {
-          haloErrorBarTopNode.visible = true;
-          haloTopBarBottomNode.visible = true;
-        }
-      } );
-      errorBarBottomNode.addInputListener( barHaloHandler );
-      errorBarTopNode.addInputListener( barHaloHandler );
-
-      // add central line, of length zero initially
+      // central line, of length zero initially
       const centralLine = new Line( 0, 0, 0, 0, CENTRAL_LINE_OPTIONS );
       this.addChild( centralLine );
 
-      // add point view
+      // delta text label
+      const deltaTextLabel = new RichText(
+        StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( point.deltaProperty.value, 1 ) ),
+        { font: VALUE_FONT }
+      );
+      const deltaTextBackground = new Rectangle( 0, 0, 1, 1, DELTA_BACKGROUND_RECTANGLE_OPTIONS );
+      this.addChild( deltaTextBackground);
+      this.addChild( deltaTextLabel );
+
+      // handler for delta halos
+      const barHaloHandler = new ButtonListener( {
+        up: () => {
+          errorBarTopHaloRectangle.visible = false;
+          errorBarBottomHaloRectangle.visible = false;
+        },
+        down: () => {
+          errorBarTopHaloRectangle.visible = true;
+          errorBarBottomHaloRectangle.visible = true;
+        },
+        over: () => {
+          errorBarTopHaloRectangle.visible = true;
+          errorBarBottomHaloRectangle.visible = true;
+        }
+      } );
+      errorBarBottomRectangle.addInputListener( barHaloHandler );
+      errorBarTopRectangle.addInputListener( barHaloHandler );
+
+      // handling for error bar dragging
+      let isDraggingDeltaTop = false;
+      let isDraggingDeltaBottom = false;
+      errorBarTopRectangle.addInputListener( new DragListener( {
+        start: () => { isDraggingDeltaTop = !isDraggingDeltaBottom; },
+        drag: event => {
+          if ( !isDraggingDeltaTop ) {
+            return;
+          }
+          point.deltaProperty.value = Math.max(
+            MIN_DELTA,
+            modelViewTransform.viewToModelDeltaY( this.globalToLocalPoint( event.pointer.point ).y - this.centerY )
+          );
+        },
+        end: () => { isDraggingDeltaTop = false; }
+      } ) );
+      errorBarBottomRectangle.addInputListener( new DragListener( {
+        start: () => { isDraggingDeltaBottom = !isDraggingDeltaTop; },
+        drag: event => {
+          if ( !isDraggingDeltaBottom ) {
+            return;
+          }
+          point.deltaProperty.value = Math.max(
+            MIN_DELTA,
+            modelViewTransform.viewToModelDeltaY( this.centerY - this.globalToLocalPoint( event.pointer.point ).y )
+          );
+        },
+        end: () => { isDraggingDeltaBottom = false; }
+      } ) );
+
+      // point view
       const circleView = new Circle( {
         fill: POINT_COLOR,
         radius: CurveFittingConstants.POINT_RADIUS,
@@ -184,11 +167,24 @@ define( require => {
       circleView.mouseArea = circleView.bounds.dilated( 1 );
       this.addChild( circleView );
 
+      // value text label
+      const valueTextLabel = new Text(
+        StringUtils.format(
+          pattern0ValueX1ValueYString,
+          Util.toFixed( point.positionProperty.value.x, 1 ),
+          Util.toFixed( point.positionProperty.value.y, 1 )
+        ),
+        { font: VALUE_FONT }
+      );
+      const valueTextBackground = new Rectangle( 0, 0, 1, 1, COORDINATE_BACKGROUND_RECTANGLE_OPTIONS );
+      this.addChild( valueTextBackground );
+      this.addChild( valueTextLabel );
+
       // add drag handler for point
-      circleView.addInputListener( new SimpleDragHandler( {
+      circleView.addInputListener( new DragListener( {
         allowTouchSnag: true,
         start: () => {
-          point.draggingProperty.set( true );
+          point.draggingProperty.value = true;
 
           // puts this point at the highest z-index
           const parent = this.getParent();
@@ -197,14 +193,14 @@ define( require => {
             parent.addChild( this );
           }
         },
-        translate: ( translationParams ) => {
-          if ( point.draggingProperty.value ) {
-            // self.setTranslation( parentNode.globalToLocalPoint( e.pointer.point ) );
-            point.positionProperty.value = point.positionProperty.value.plus( modelViewTransform.viewToModelDelta( translationParams.delta ) );
+        drag: event => {
+          if ( !point.draggingProperty.value ) {
+            return;
           }
+          point.positionProperty.value = modelViewTransform.viewToModelPosition( this.globalToLocalPoint( event.pointer.point ) );
         },
         end: () => {
-          point.draggingProperty.set( false );
+          point.draggingProperty.value = false;
           if ( CurveFittingQueryParameters.snapToGrid ) {
             point.positionProperty.set( new Vector2(
               Util.toFixedNumber( point.positionProperty.value.x, 0 ),
@@ -214,49 +210,20 @@ define( require => {
         }
       } ) );
 
-      // add value text label
-      const valueTextLabel = new Text( StringUtils.format( pattern0ValueX1ValueYString, Util.toFixed( point.positionProperty.value.x, 1 ), Util.toFixed( point.positionProperty.value.y, 1 ) ), {
-        font: VALUE_FONT
-      } );
-      const valueTextBackground = new Rectangle( 0, 0, 1, 1, COORDINATE_BACKGROUND_RECTANGLE_OPTIONS );
-      this.addChild( valueTextBackground );
-      this.addChild( valueTextLabel );
-
-      // add delta text label
-      const deltaTextLabel = new RichText( StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( point.deltaProperty.value, 1 ) ), {
-        font: VALUE_FONT
-      } );
-      const deltaTextBackground = new Rectangle( 0, 0, 1, 1, DELTA_BACKGROUND_RECTANGLE_OPTIONS );
-      this.addChild( deltaTextBackground);
-      this.addChild( deltaTextLabel );
-
       /**
-       * Moves the deltaTextLabel if it intersects with the valueTextBackground
-       * Also updates the size of the background rectangle and re-centers the text
+       * updates the error bars and corresponding text
        */
-      function updateDeltaTextPositionings() {
-        deltaTextBackground.setRect( 0, 0, deltaTextLabel.width + 4, deltaTextLabel.height + 4 );
-        if ( deltaTextBackground.bottom > valueTextBackground.top - DISTANCE_BETWEEN_COORDINATE_AND_DELTA ) {
-          deltaTextBackground.bottom = valueTextBackground.top - DISTANCE_BETWEEN_COORDINATE_AND_DELTA;
-        }
-        deltaTextLabel.center = deltaTextBackground.center;
-      }
+      function updateDelta() {
 
-      /**
-       * updates the error bars
-       *
-       */
-      function updateErrorBars() {
+        // update text
+        deltaTextLabel.text = StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( point.deltaProperty.value, 1 ) );
+
         const lineHeight = modelViewTransform.modelToViewDeltaY( point.deltaProperty.value );
 
         // update top error bar
-        errorBarTop.setTranslation( circleView.centerX, circleView.centerY + lineHeight - ERROR_BAR_BOUNDS.height / 2 );
-        errorBarTopNode.touchArea = errorBarTop.localBounds.dilated( DILATION_SIZE );
-        errorBarTopNode.mouseArea = errorBarTop.localBounds.dilated( DILATION_SIZE );
-
-        //update label
-        deltaTextBackground.centerY = errorBarTop.centerY;
-        updateDeltaTextPositionings();
+        errorBarTopNode.setTranslation( circleView.centerX, circleView.centerY + lineHeight - ERROR_BAR_BOUNDS.height / 2 );
+        errorBarTopRectangle.touchArea = errorBarTopNode.localBounds.dilated( DILATION_SIZE );
+        errorBarTopRectangle.mouseArea = errorBarTopNode.localBounds.dilated( DILATION_SIZE );
 
         // update central line
         centralLine.setX1( circleView.centerX );
@@ -265,75 +232,82 @@ define( require => {
         centralLine.setY2( circleView.centerY - lineHeight );
 
         // update bottom error bar
-        errorBarBottom.setTranslation( circleView.centerX, circleView.centerY - lineHeight - ERROR_BAR_BOUNDS.height / 2 );
-        errorBarBottomNode.touchArea = errorBarBottom.localBounds.dilated( DILATION_SIZE );
-        errorBarBottomNode.mouseArea = errorBarBottom.localBounds.dilated( DILATION_SIZE );
+        errorBarBottomNode.setTranslation( circleView.centerX, circleView.centerY - lineHeight - ERROR_BAR_BOUNDS.height / 2 );
+        errorBarBottomRectangle.touchArea = errorBarBottomNode.localBounds.dilated( DILATION_SIZE );
+        errorBarBottomRectangle.mouseArea = errorBarBottomNode.localBounds.dilated( DILATION_SIZE );
+
+        // update text background positioning
+        deltaTextBackground.centerY = errorBarTopNode.centerY;
+        deltaTextBackground.left = errorBarTopNode.right + 2;
+        deltaTextBackground.setRect(
+          0,
+          0,
+          deltaTextLabel.width + 2 * VALUE_BACKGROUND_PADDING,
+          deltaTextLabel.height + 2 * VALUE_BACKGROUND_PADDING
+        );
+
+        // update label and background and ensure that coordinate and delta backgrounds do not intersect
+        if ( deltaTextBackground.bottom > valueTextBackground.top - DISTANCE_BETWEEN_COORDINATE_AND_DELTA ) {
+          deltaTextBackground.bottom = valueTextBackground.top - DISTANCE_BETWEEN_COORDINATE_AND_DELTA;
+        }
+
+        // set text position to final background position
+        deltaTextLabel.center = deltaTextBackground.center;
       }
-      point.deltaProperty.link( updateErrorBars );
+      point.deltaProperty.link( updateDelta );
 
       /**
-       * updates the value text for the points
+       * updates the value text for the coordinates and the position of the labels
        */
-      function updateValueText() {
-        if ( valueTextLabel.visible && point.isInsideGraphProperty.value ) {
-          valueTextLabel.text = StringUtils.format( pattern0ValueX1ValueYString, Util.toFixed( point.positionProperty.value.x, 1 ), Util.toFixed( point.positionProperty.value.y, 1 ) );
-          valueTextBackground.visible = true;
-        }
-        else {
-          valueTextLabel.text = '';
-          valueTextBackground.visible = false;
-        }
-        valueTextBackground.setRect( 0, 0, valueTextLabel.width + 4, valueTextLabel.height + 4 );
+      function updateValue() {
+
+        // update text
+        valueTextLabel.text = StringUtils.format(
+          pattern0ValueX1ValueYString,
+          Util.toFixed( point.positionProperty.value.x, 1 ),
+          Util.toFixed( point.positionProperty.value.y, 1 )
+        );
+
+        // update visibility
+        valueTextLabel.visible = valuesVisibleProperty.value && point.isInsideGraphProperty.value;
+        valueTextBackground.visible = valueTextLabel.visible;
+
+        // update positionings
+        valueTextBackground.left = circleView.right + 2;
+        valueTextBackground.centerY = circleView.centerY;
+        valueTextBackground.setRect(
+          0,
+          0,
+          valueTextLabel.width + 2 * VALUE_BACKGROUND_PADDING,
+          valueTextLabel.height + 2 * VALUE_BACKGROUND_PADDING
+        );
         valueTextLabel.center = valueTextBackground.center;
       }
+
       const valueBackgroundHandle = valuesVisibleProperty.linkAttribute( valueTextBackground, 'visible' );
       const valueTextHandle = valuesVisibleProperty.linkAttribute( valueTextLabel, 'visible' );
-      function updateValueTextWhenVisible( valuesVisible ) {
-        if ( valuesVisible ) {
-          updateValueText();
-        }
-      }
-      valuesVisibleProperty.link( updateValueTextWhenVisible );
-      point.positionProperty.link( updateValueText );
-
-      /**
-       * Update the text attached to the error bar
-       */
-      function updateDeltaText() {
-        if ( deltaTextLabel.visible ) {
-          deltaTextLabel.text = StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( point.deltaProperty.value, 1 ) );
-          updateDeltaTextPositionings();
-        }
-      }
-      function updateDeltaTextIfVisible( valuesVisible ) {
-        if ( valuesVisible ) {
-          updateDeltaText();
-        }
-      }
-      valuesVisibleProperty.link( updateDeltaTextIfVisible );
       const deltaBackgroundHandle = valuesVisibleProperty.linkAttribute( deltaTextBackground, 'visible' );
       const deltaTextHandle = valuesVisibleProperty.linkAttribute( deltaTextLabel, 'visible' );
-      point.deltaProperty.lazyLink( updateDeltaText );
 
       /**
-       * updates Residuals
+       * updates how the error bars look based on whether the residuals are visible or not
+       * @param {boolean} residualsVisible
        */
-      function updateResiduals( residualsVisible ) {
+      function updateErrorBarsBasedOnResidualsVisibility( residualsVisible ) {
         if ( residualsVisible ) {
           centralLine.visible = false;
-          errorBarTopNode.setFill( CurveFittingConstants.LIGHT_GRAY_COLOR );
-          errorBarBottomNode.setFill( CurveFittingConstants.LIGHT_GRAY_COLOR );
+          errorBarTopRectangle.setFill( CurveFittingConstants.LIGHT_GRAY_COLOR );
+          errorBarBottomRectangle.setFill( CurveFittingConstants.LIGHT_GRAY_COLOR );
         }
         else {
           centralLine.visible = true;
-          errorBarTopNode.setFill( CurveFittingConstants.BLUE_COLOR );
-          errorBarBottomNode.setFill( CurveFittingConstants.BLUE_COLOR );
+          errorBarTopRectangle.setFill( CurveFittingConstants.BLUE_COLOR );
+          errorBarBottomRectangle.setFill( CurveFittingConstants.BLUE_COLOR );
         }
       }
-      // change appearance when residuals active
-      residualsVisibleProperty.link( updateResiduals );
+      residualsVisibleProperty.link( updateErrorBarsBasedOnResidualsVisibility );
 
-      // add halo to point
+      // point halo
       const haloPointNode = new Circle( 1.75 * CurveFittingConstants.POINT_RADIUS, HALO_POINT_OPTIONS );
       this.addChild( haloPointNode );
       circleView.addInputListener( new ButtonListener( {
@@ -343,36 +317,26 @@ define( require => {
       } ) );
 
       /**
-       * moves everything according to the position so that the circle view appears in where the point should
-       * and everything else moves accordingly
+       * updates all the view positions and texts whenever the point model's position changes
        * @param {Vector2} position
        */
       function centerPositionListener( position ) {
         circleView.center = modelViewTransform.modelToViewPosition( position );
         haloPointNode.center = circleView.center;
-        updateErrorBars();
-        valueTextBackground.left = circleView.right + 2;
-        valueTextBackground.centerY = circleView.centerY;
-        valueTextLabel.center = valueTextBackground.center;
-        deltaTextBackground.left = errorBarTop.right + 2;
-        deltaTextBackground.centerY = errorBarTop.centerY;
-        updateDeltaTextPositionings();
+        updateValue();
+        updateDelta();
       }
-      // move this node as the model moves
       point.positionProperty.link( centerPositionListener );
 
       this.disposePointNode = () => {
-        point.deltaProperty.unlink( updateErrorBars );
-        point.positionProperty.unlink( updateValueText );
-        point.deltaProperty.unlink( updateDeltaText );
+        point.deltaProperty.unlink( updateDelta );
+        point.positionProperty.unlink( updateValue );
         point.positionProperty.unlink( centerPositionListener );
-        residualsVisibleProperty.unlink( updateResiduals );
+        residualsVisibleProperty.unlink( updateErrorBarsBasedOnResidualsVisibility );
         valuesVisibleProperty.unlinkAttribute( deltaTextHandle );
+        valuesVisibleProperty.unlinkAttribute( valueTextHandle );
         valuesVisibleProperty.unlinkAttribute( deltaBackgroundHandle );
         valuesVisibleProperty.unlinkAttribute( valueBackgroundHandle );
-        valuesVisibleProperty.unlinkAttribute( valueTextHandle );
-        valuesVisibleProperty.unlink( updateValueTextWhenVisible );
-        valuesVisibleProperty.unlink( updateDeltaTextIfVisible );
       };
     }
 
