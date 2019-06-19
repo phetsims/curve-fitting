@@ -75,7 +75,7 @@ define( require => {
               //  characters shouldn't be too harmful.
               new FormulaNode(
                 `${symbolChiString}_r^2 = \\frac{1}{${symbolNString} - ${symbolFString}} \\sum_i \\frac{[${symbolYString}(${symbolXString}_i) - ${symbolYString}_i]^2}{\\sigma_i^2}`
-                  .split('‪').join('').split('‬').join('').split('‫').join('')
+                  .split('\u202a').join('').split('\u202b').join('').split('\u202c').join('')
               )
             ]
           } ),
