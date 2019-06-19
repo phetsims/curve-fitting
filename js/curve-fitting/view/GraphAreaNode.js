@@ -24,13 +24,13 @@ define( require => {
   const AXIS_OPTIONS = { lineWidth: 1, stroke: 'black' };
   const GRAPH_BACKGROUND_OPTIONS = { fill: 'white', lineWidth: 2, stroke: 'rgb( 214, 223, 226 )' };
 
-  // ticks
-  const TICK_LENGTH = 0.3; // in model coordinates
-  const HORIZONTAL_TICKS = [ -10, -5, 5, 10 ];
-  const VERTICAL_TICKS = [ -10, -5, 5, 10 ];
+  // tick information in model coordinates
+  const TICK_LENGTH = 0.3;
+  const HORIZONTAL_TICK_LOCATIONS = [ -10, -5, 5, 10 ];
+  const VERTICAL_TICK_LOCATIONS = [ -10, -5, 5, 10 ];
   const TICK_DECIMAL_PLACES = 0;
   const TICK_FONT_OPTIONS = { font: new PhetFont( 12 ), fill: 'black' };
-  const TICK_DISTANCE_FROM_AXES = 3;
+  const TICK_LABEL_DISTANCE_FROM_AXES = 3; // in view coordinates
 
   class GraphAreaNode extends Node {
 
@@ -62,10 +62,10 @@ define( require => {
       this.addChild( new Path( modelViewTransform.modelToViewShape( axisShape ), AXIS_OPTIONS ) );
 
       // create and add horizontal tick lines and labels
-      this.addTicks( HORIZONTAL_TICKS );
+      this.addTicks( HORIZONTAL_TICK_LOCATIONS );
 
       // create and add vertical tick lines and labels
-      this.addTicks( VERTICAL_TICKS, { axis: 'vertical' } );
+      this.addTicks( VERTICAL_TICK_LOCATIONS, { axis: 'vertical' } );
 
       // add clip area
       this.clipArea = Shape.bounds( modelViewTransform.modelToViewBounds( graphBounds ) );
@@ -110,11 +110,11 @@ define( require => {
 
       if ( options.axis === 'horizontal' ) {
         tickLabel.centerX = this.modelViewTransform.modelToViewX( value );
-        tickLabel.top = this.modelViewTransform.modelToViewY( -TICK_LENGTH / 2 ) + TICK_DISTANCE_FROM_AXES;
+        tickLabel.top = this.modelViewTransform.modelToViewY( -TICK_LENGTH / 2 ) + TICK_LABEL_DISTANCE_FROM_AXES;
       }
       else {
         tickLabel.centerY = this.modelViewTransform.modelToViewY( value );
-        tickLabel.right = this.modelViewTransform.modelToViewX( -TICK_LENGTH / 2 ) - TICK_DISTANCE_FROM_AXES;
+        tickLabel.right = this.modelViewTransform.modelToViewX( -TICK_LENGTH / 2 ) - TICK_LABEL_DISTANCE_FROM_AXES;
       }
       this.addChild( tickLabel );
     }
