@@ -48,7 +48,7 @@ define( require => {
     PANEL_MIN_WIDTH: 151,
 
     RADIO_BUTTON_OPTIONS: {
-      radius: 8,
+      radius: 6,
       touchAreaXDilation: 5
     },
 
@@ -57,7 +57,7 @@ define( require => {
     },
 
     CHECK_BOX_OPTIONS: {
-      boxWidth: 16
+      boxWidth: 14
     },
 
     // sliders
