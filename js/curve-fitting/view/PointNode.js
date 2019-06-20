@@ -33,7 +33,7 @@ define( require => {
   const patternDelta0ValueDeltaString = require( 'string!CURVE_FITTING/pattern.delta.0valueDelta' );
 
   // constants
-  const MIN_DELTA = 1E-30; // arbitrarily small non-zero number for minimum delta: 0 causes divide by 0 errors
+  const MIN_DELTA = 1E-3; // arbitrarily small non-zero number for minimum delta: 0 causes divide by 0 errors
   const VALUE_FONT = new PhetFont( 11 );
   const BAR_COLOR = Color.toColor( CurveFittingConstants.BLUE_COLOR );
   const CENTRAL_LINE_OPTIONS = {
