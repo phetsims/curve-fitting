@@ -186,13 +186,7 @@ define( require => {
         allowTouchSnag: true,
         start: () => {
           point.draggingProperty.value = true;
-
-          // puts this point at the highest z-index
-          const parent = this.getParent();
-          if ( parent ) {
-            parent.removeChild( this );
-            parent.addChild( this );
-          }
+          this.moveToFront();
         },
         drag: event => {
           if ( !point.draggingProperty.value ) {
