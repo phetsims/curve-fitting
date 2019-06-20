@@ -17,6 +17,7 @@ define( require => {
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const RichText = require( 'SCENERY/nodes/RichText' );
   const Text = require( 'SCENERY/nodes/Text' );
+  const VStrut = require( 'SCENERY/nodes/VStrut' );
 
   // strings
   const symbolAString = require( 'string!CURVE_FITTING/symbol.a' );
@@ -90,6 +91,11 @@ define( require => {
         this.allPotentialChildren.push( new HStrut( 1 ) );
         this.allPotentialChildren.push( this.xVariableTextNodes[ i ] );
       }
+
+      // adds a VStrut to this.allPotentialChildren that is always visible
+      // VStrut is the same height as a text with an exponent (in this case, the x^2 term)
+      // this ensures that even if no terms with exponents are visible, this node will still have the same height; see #124
+      this.allPotentialChildren.push( new VStrut( this.xVariableTextNodes[ 2 ].height ) );
 
       // makes an array of symbols as the initial coefficients; '+' signs are inserted before each coefficient in the array
       const initialCoefficients = _.flatMap(
