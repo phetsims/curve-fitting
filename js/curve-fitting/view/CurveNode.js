@@ -50,6 +50,7 @@ define( require => {
         }
       };
 
+      // unlinks unnecessary because this CurveNode is always present for the lifetime of the simulation
       curveVisibleProperty.link( updateCurve );
       curve.orderProperty.link( updateCurve );
       curve.updateCurveEmitter.addListener( updateCurve );

@@ -57,7 +57,7 @@ define( require => {
 
       super( options );
 
-      // hide panels when curve is not visible
+      // hide panels when curve is not visible; unlink unnecessary because ControlPanels is always present
       curveVisibleProperty.linkAttribute( orderPanel, 'visible' );
       curveVisibleProperty.linkAttribute( fitPanel, 'visible' );
     }

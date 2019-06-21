@@ -134,7 +134,7 @@ define( require => {
         equationNode.setCoefficients( coefficientStrings );
       };
 
-      // add observer, present of the lifetime of the simulation
+      // add observers which don't need to be disposed because this is present for the lifetime of the simulation
       curveVisibleProperty.linkAttribute( this, 'visible' );
       curveVisibleProperty.link( updateCoefficients );
       equationPanelExpandedProperty.link( updateCoefficients );

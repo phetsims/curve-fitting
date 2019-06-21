@@ -130,7 +130,7 @@ define( require => {
       const slidersBox = new HBox( { spacing: 7, children: sliders } );
       const slidersOffset = new HStrut( 3 );
 
-      // add slider number observer
+      // add slider number observer; no dispose necessary because FitPanel is always present
       orderProperty.link( order => {
 
         // set the content of the slidersBox
@@ -145,7 +145,7 @@ define( require => {
         slidersBox.children = [ slidersOffset ].concat( slidersBox.children );
       } );
 
-      // show sliders when adjustable fit is selected
+      // show sliders when adjustable fit is selected; no dispose necessary because FitPanel is always present
       fitProperty.link( fit => {
         if ( fit === FitType.BEST && contentNode.hasChild( slidersBox ) ) {
           contentNode.removeChild( slidersBox );

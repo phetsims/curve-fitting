@@ -65,7 +65,7 @@ define( require => {
       // Saves state of residualsVisibleProperty while the residuals checkbox is disabled.
       let wereResidualsVisible = residualsVisibleProperty.value;
 
-      // Visibility of the curve affects other controls.
+      // Visibility of the curve affects other controls. No dispose necessary because this panel is present for the lifetime of the sim.
       curveVisibleProperty.link( isCurveVisible => {
 
         // Enable residuals checkbox when curve is checked.
