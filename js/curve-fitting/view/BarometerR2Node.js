@@ -15,9 +15,6 @@ define( require => {
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
 
-  // constants
-  const TICK_WIDTH = 20;
-
   class BarometerR2Node extends BarometerNode {
 
     /**
@@ -26,6 +23,11 @@ define( require => {
      * @param {Object} [options] for graph node.
      */
     constructor( rSquaredProperty, curveVisibleProperty, options ) {
+
+      options = _.extend( {
+        fill: 'blue',
+        tickWidth: 20
+      }, options );
 
       const tickLocationsToLabels = {
         0: '0',
@@ -41,10 +43,7 @@ define( require => {
         rSquared => isNaN( rSquared ) ? 0 : rSquared
       );
 
-      super( modifiedRSquaredProperty, curveVisibleProperty, tickLocationsToLabels, {
-        fill: 'blue',
-        tickWidth: TICK_WIDTH
-      } );
+      super( modifiedRSquaredProperty, curveVisibleProperty, tickLocationsToLabels, options );
 
     }
 

@@ -25,6 +25,7 @@ define( require => {
   const ARROW_HEAD_WIDTH = 8;
   const ARROW_TAIL_WIDTH = 0.5;
   const BAROMETER_HEIGHT = CurveFittingConstants.BAROMETER_AXIS_HEIGHT - ARROW_HEAD_HEIGHT - ARROW_OFFSET;
+  const BAROMETER_TICK_WIDTH = 10;
   const MAX_CHI_SQUARED_VALUE = 100;
 
   // arrays necessary for calculating chi value bounds while getting barometer color
@@ -49,22 +50,19 @@ define( require => {
       } );
 
       // links up listeners to properties that map chi squared values to fill ratios and colors
+      // dispose unnecessary because BarometerX2 is present for the lifetime of the simulation
       const fillProportionProperty = new DerivedProperty( [ chiSquaredProperty ], chiSquaredValueToRatio );
-      const chiSquaredValueToFillColor = chiSquaredValue => getFillColorFromChiSquaredValue( chiSquaredValue, points.length );
-      const fillColorProperty = new DerivedProperty( [ chiSquaredProperty ], chiSquaredValueToFillColor );
+      const fillColorProperty = new DerivedProperty(
+        [ chiSquaredProperty ],
+        chiSquaredValue => getFillColorFromChiSquaredValue( chiSquaredValue, points.length )
+      );
 
       // calls the superclass's constructor that initializes BarometerX2Node as a BarometerNode
       super( fillProportionProperty, curveVisibleProperty, tickLocationsToLabels, {
         fill: fillColorProperty,
         axisHeight: BAROMETER_HEIGHT,
-        tickWidth: 10
+        tickWidth: BAROMETER_TICK_WIDTH
       } );
-
-      // @private {Function}
-      this.disposeChiSquaredListeners = () => {
-        fillProportionProperty.unlink( chiSquaredValueToRatio );
-        fillColorProperty.unlink( chiSquaredValueToFillColor );
-      };
 
       // adds the arrow to the top of this BarometerX2Node to show that the values can extend past 100
       const topArrow = new ArrowNode( 0, 0, 0, -BAROMETER_HEIGHT - ARROW_HEAD_HEIGHT * 1.5, {
@@ -73,15 +71,6 @@ define( require => {
         tailWidth: ARROW_TAIL_WIDTH
       } );
       this.addChild( topArrow );
-    }
-
-    /**
-     * @override
-     * @public
-     */
-    dispose() {
-      this.disposeChiSquaredListeners();
-      super.dispose();
     }
 
   }
