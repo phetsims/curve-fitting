@@ -32,8 +32,8 @@ define( require => {
         thumbSize: new Dimension2( 8, 20 ),
         minorTickLineWidth: 2,
         minorTickLength: 12,
-        thumbTouchAreaYDilation: 3, // supposed to make touch horizontal areas flush; is YDilation since we rotate by 90; see #72
-        thumbMouseAreaYDilation: 3,
+        thumbTouchAreaYDilation: 4, // supposed to make touch horizontal areas flush; is YDilation since we rotate by 90; see #72
+        thumbMouseAreaYDilation: 4,
         thumbMouseAreaXDilation: 10,
         labelOptions: {
           font: new PhetFont( {
