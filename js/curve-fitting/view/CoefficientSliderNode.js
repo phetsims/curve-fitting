@@ -29,9 +29,12 @@ define( require => {
       options = _.extend( {
         trackFill: 'black',
         trackSize: new Dimension2( 120, 1 ),
-        thumbSize: new Dimension2( 15, 23 ),
+        thumbSize: new Dimension2( 8, 20 ),
         minorTickLineWidth: 2,
+        minorTickLength: 12,
         thumbTouchAreaYDilation: 3, // supposed to make touch horizontal areas flush; is YDilation since we rotate by 90; see #72
+        thumbMouseAreaYDilation: 3,
+        thumbMouseAreaXDilation: 10,
         labelOptions: {
           font: new PhetFont( {
             weight: 'bold',
