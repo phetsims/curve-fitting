@@ -34,6 +34,7 @@ define( require => {
 
   // constants
   const MIN_DELTA = 1E-3; // arbitrarily small non-zero number for minimum delta: 0 causes divide by 0 errors
+  const MAX_DELTA = 10;
   const VALUE_FONT = new PhetFont( 11 );
   const BAR_COLOR = Color.toColor( CurveFittingConstants.BLUE_COLOR );
   const CENTRAL_LINE_OPTIONS = {
@@ -141,9 +142,10 @@ define( require => {
           if ( !isDraggingDeltaTop ) {
             return;
           }
-          point.deltaProperty.value = Math.max(
+          point.deltaProperty.value = Util.clamp(
+            modelViewTransform.viewToModelDeltaY( this.globalToLocalPoint( event.pointer.point ).y - this.centerY ),
             MIN_DELTA,
-            modelViewTransform.viewToModelDeltaY( this.globalToLocalPoint( event.pointer.point ).y - this.centerY )
+            MAX_DELTA
           );
         },
         end: () => { isDraggingDeltaTop = false; }
@@ -154,9 +156,10 @@ define( require => {
           if ( !isDraggingDeltaBottom ) {
             return;
           }
-          point.deltaProperty.value = Math.max(
+          point.deltaProperty.value = Util.clamp(
+            modelViewTransform.viewToModelDeltaY( this.centerY - this.globalToLocalPoint( event.pointer.point ).y ),
             MIN_DELTA,
-            modelViewTransform.viewToModelDeltaY( this.centerY - this.globalToLocalPoint( event.pointer.point ).y )
+            MAX_DELTA
           );
         },
         end: () => { isDraggingDeltaBottom = false; }
