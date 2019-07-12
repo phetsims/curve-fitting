@@ -53,7 +53,8 @@ define( require => {
   };
   const VALUE_BACKGROUND_PADDING = 2;
   const DISTANCE_BETWEEN_COORDINATE_AND_DELTA = 1;
-  const DILATION_SIZE = 8;
+  const ERROR_BAR_DILATION_X = 14;
+  const ERROR_BAR_DILATION_Y = 2;
   const ERROR_BAR_BOUNDS = new Bounds2( -10, 0, 10, 2 );
   const ERROR_BAR_OPTIONS = {
     fill: CurveFittingConstants.BLUE_COLOR
@@ -172,8 +173,8 @@ define( require => {
 
       // point view
       const circleView = new Circle( CIRCLE_VIEW_OPTIONS );
-      circleView.touchArea = circleView.bounds.dilated( 3 );
-      circleView.mouseArea = circleView.bounds.dilated( 1 );
+      circleView.touchArea = circleView.bounds.dilated( 5 );
+      circleView.mouseArea = circleView.bounds.dilated( 5 );
       this.addChild( circleView );
 
       // value text label
@@ -225,8 +226,8 @@ define( require => {
 
         // update top error bar
         errorBarTopNode.setTranslation( circleView.centerX, circleView.centerY + lineHeight - ERROR_BAR_BOUNDS.height / 2 );
-        errorBarTopRectangle.touchArea = errorBarTopNode.localBounds.dilated( DILATION_SIZE );
-        errorBarTopRectangle.mouseArea = errorBarTopNode.localBounds.dilated( DILATION_SIZE );
+        errorBarTopRectangle.touchArea = errorBarTopNode.localBounds.dilatedXY( ERROR_BAR_DILATION_X, ERROR_BAR_DILATION_Y );
+        errorBarTopRectangle.mouseArea = errorBarTopNode.localBounds.dilatedXY( ERROR_BAR_DILATION_X, ERROR_BAR_DILATION_Y );
 
         // update central line
         centralLine.setX1( circleView.centerX );
@@ -236,8 +237,8 @@ define( require => {
 
         // update bottom error bar
         errorBarBottomNode.setTranslation( circleView.centerX, circleView.centerY - lineHeight - ERROR_BAR_BOUNDS.height / 2 );
-        errorBarBottomRectangle.touchArea = errorBarBottomNode.localBounds.dilated( DILATION_SIZE );
-        errorBarBottomRectangle.mouseArea = errorBarBottomNode.localBounds.dilated( DILATION_SIZE );
+        errorBarBottomRectangle.touchArea = errorBarBottomNode.localBounds.dilatedXY( ERROR_BAR_DILATION_X, ERROR_BAR_DILATION_Y );
+        errorBarBottomRectangle.mouseArea = errorBarBottomNode.localBounds.dilatedXY( ERROR_BAR_DILATION_X, ERROR_BAR_DILATION_Y );
 
         // update text background positioning
         deltaTextBackground.centerY = errorBarTopNode.centerY;
