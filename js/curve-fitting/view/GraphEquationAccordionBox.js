@@ -13,6 +13,7 @@ define( require => {
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const EquationNode = require( 'CURVE_FITTING/curve-fitting/view/EquationNode' );
+  const Emitter = require( 'AXON/Emitter' );
   const ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const MathSymbols = require( 'SCENERY_PHET/MathSymbols' );
@@ -76,6 +77,9 @@ define( require => {
 
       super( content, _.extend( PANEL_OPTIONS, options ) );
 
+      // @public an emitter that is fired whenever this panel is updated: is used for background node for #126
+      this.updatedEmitter = new Emitter();
+
       // visible node when panel is expanded
       const equationNode = new EquationNode( orderProperty, {
         coefficientTextOptions: PARAMETER_TEXT_OPTIONS,
@@ -90,6 +94,7 @@ define( require => {
         else {
           content.children = [ expandCollapseButton, titleNode ];
         }
+        this.updatedEmitter.emit();
       } );
 
       /**
@@ -133,6 +138,7 @@ define( require => {
           ( coefficient, index ) => getRoundedParamterStrings( coefficient, MAX_DIGITS[ index ] )
         );
         equationNode.setCoefficients( coefficientStrings );
+        this.updatedEmitter.emit();
       };
 
       // add observers which don't need to be disposed because this is present for the lifetime of the simulation
@@ -140,6 +146,7 @@ define( require => {
       curveVisibleProperty.link( updateCoefficients );
       equationPanelExpandedProperty.link( updateCoefficients );
       updateCurveEmitter.addListener( updateCoefficients );
+      orderProperty.link( () => { this.updatedEmitter.emit(); } );
     }
 
   }

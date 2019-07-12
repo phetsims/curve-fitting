@@ -19,6 +19,7 @@ define( require => {
   const GraphAreaNode = require( 'CURVE_FITTING/curve-fitting/view/GraphAreaNode' );
   const GraphEquationAccordionBox = require( 'CURVE_FITTING/curve-fitting/view/GraphEquationAccordionBox' );
   const ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   const ResidualsNode = require( 'CURVE_FITTING/curve-fitting/view/ResidualsNode' );
   const ScreenView = require( 'JOIST/ScreenView' );
@@ -96,6 +97,16 @@ define( require => {
         curveVisibleProperty
       );
 
+      // create the panel that serves as an opaque background for the graphEquationAccordionBox; see #126
+      const graphEquationBackground = new Rectangle( 0, 0, 0, 0, 0, 0, {
+        cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
+        fill: 'white'
+      } );
+      graphEquationAccordionBox.updatedEmitter.addListener( () => {
+        graphEquationBackground.visible = graphEquationAccordionBox.visible;
+        graphEquationBackground.rectBounds = graphEquationAccordionBox.bounds;
+      } );
+
       // create the curve and the residual lines
       const curveNode = new CurveNode(
         model.curve,
@@ -143,6 +154,7 @@ define( require => {
       this.addChild( controlPanels );
       this.addChild( graphAreaNode );
       this.addChild( resetAllButton );
+      this.addChild( graphEquationBackground );
       this.addChild( curveNode );
       this.addChild( residualsNode );
       this.addChild( bucketNode );
