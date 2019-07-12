@@ -134,19 +134,6 @@ define( require => {
       errorBarBottomRectangle.addInputListener( barHaloHandler );
       errorBarTopRectangle.addInputListener( barHaloHandler );
 
-      /**
-       * handler for setting point deltas
-       * doesn't care about whether the mouse location is above or below: takes the distance between mouse location and point
-       * @param {Vector2} mouseLocation
-       */
-      const setDeltaBasedOnMouseLocation = mouseLocation => {
-        point.deltaProperty.value = Util.clamp(
-          Math.abs( modelViewTransform.viewToModelDeltaY( this.globalToLocalPoint( mouseLocation ).y - this.centerY ) ),
-          MIN_DELTA,
-          MAX_DELTA
-        );
-      };
-
       // handling for error bar dragging
       let isDraggingDeltaTop = false;
       let isDraggingDeltaBottom = false;
@@ -156,7 +143,11 @@ define( require => {
           if ( !isDraggingDeltaTop ) {
             return;
           }
-          setDeltaBasedOnMouseLocation( event.pointer.point );
+          point.deltaProperty.value = Util.clamp(
+            modelViewTransform.viewToModelDeltaY( this.globalToLocalPoint( event.pointer.point ).y - this.centerY ),
+            MIN_DELTA,
+            MAX_DELTA
+          );
         },
         end: () => { isDraggingDeltaTop = false; }
       } ) );
@@ -166,7 +157,11 @@ define( require => {
           if ( !isDraggingDeltaBottom ) {
             return;
           }
-          setDeltaBasedOnMouseLocation( event.pointer.point );
+          point.deltaProperty.value = Util.clamp(
+            modelViewTransform.viewToModelDeltaY( this.centerY - this.globalToLocalPoint( event.pointer.point ).y ),
+            MIN_DELTA,
+            MAX_DELTA
+          );
         },
         end: () => { isDraggingDeltaBottom = false; }
       } ) );
