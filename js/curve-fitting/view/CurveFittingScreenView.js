@@ -142,11 +142,11 @@ define( require => {
       this.addChild( deviationsAccordionBox );
       this.addChild( controlPanels );
       this.addChild( graphAreaNode );
-      this.addChild( graphEquationAccordionBox );
       this.addChild( resetAllButton );
       this.addChild( curveNode );
       this.addChild( residualsNode );
-      this.addChild( bucketNode ); // must be last in the z-ordering
+      this.addChild( bucketNode );
+      this.addChild( graphEquationAccordionBox );
     }
 
   }

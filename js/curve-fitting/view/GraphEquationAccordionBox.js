@@ -28,7 +28,8 @@ define( require => {
   const BUTTON_LENGTH = 16;
   const PANEL_OPTIONS = {
     cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
-    fill: 'white'
+    fill: 'white',
+    opacity: 0.8
   };
   const PARAMETER_SIGN_TEXT_OPTIONS = {
     font: new PhetFont( 12 ),
