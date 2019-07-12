@@ -29,7 +29,7 @@ define( require => {
       options = _.extend( {
         trackFill: 'black',
         trackSize: new Dimension2( 120, 1 ),
-        thumbSize: new Dimension2( 8, 20 ),
+        thumbSize: new Dimension2( 10, 20 ),
         minorTickLineWidth: 2,
         minorTickLength: 12,
         thumbTouchAreaYDilation: 4, // supposed to make touch horizontal areas flush; is YDilation since we rotate by 90; see #72
