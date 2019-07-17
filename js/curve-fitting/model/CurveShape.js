@@ -29,7 +29,7 @@ define( require => {
       super();
 
       // model bounds of the graph area
-      const graphBounds = CurveFittingConstants.GRAPH_MODEL_BOUNDS;
+      const graphBounds = CurveFittingConstants.GRAPH_NODE_MODEL_BOUNDS;
 
       // convenience variables
       const xMin = graphBounds.minX; // minimum value of the x range

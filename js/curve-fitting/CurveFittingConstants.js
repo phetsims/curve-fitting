@@ -66,8 +66,11 @@ define( require => {
     QUADRATIC_RANGE: new RangeWithValue( -1, 1, 0 ),
     CUBIC_RANGE: new RangeWithValue( -1, 1, 0 ),
 
-    // size
-    GRAPH_MODEL_BOUNDS: new Bounds2( -11, -11, 11, 11 )
+    // size of the graph node in model coordinates (including axes and labels)
+    GRAPH_NODE_MODEL_BOUNDS: new Bounds2( -11, -11, 11, 11 ),
+
+    //size of the graph in model coordinates (just the white background)
+    GRAPH_BACKGROUND_MODEL_BOUNDS: new Bounds2( -10, -10, 10, 10 )
   };
 
   curveFitting.register( 'CurveFittingConstants', CurveFittingConstants );

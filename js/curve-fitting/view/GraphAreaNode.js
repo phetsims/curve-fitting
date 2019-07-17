@@ -45,10 +45,13 @@ define( require => {
       this.modelViewTransform = modelViewTransform;
 
       // convenience variable, graph bound in model coordinates.
-      const graphBounds = CurveFittingConstants.GRAPH_MODEL_BOUNDS;
+      const graphBounds = CurveFittingConstants.GRAPH_NODE_MODEL_BOUNDS;
 
       // create and add white background
-      this.addChild( new Rectangle.bounds( modelViewTransform.modelToViewBounds( graphBounds ), GRAPH_BACKGROUND_OPTIONS ) );
+      this.addChild( new Rectangle.bounds(
+        modelViewTransform.modelToViewBounds( CurveFittingConstants.GRAPH_BACKGROUND_MODEL_BOUNDS ),
+        GRAPH_BACKGROUND_OPTIONS
+      ) );
 
       const axisShape = new Shape();
 

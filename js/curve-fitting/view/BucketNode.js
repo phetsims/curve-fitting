@@ -30,8 +30,8 @@ define( require => {
   const BUCKET_COLOR = 'rgb( 65, 63, 117 )';
 
   // bucket position is to the left and up from the bottom left corner of graph, in model coordinates
-  const BUCKET_POSITION_X = CurveFittingConstants.GRAPH_MODEL_BOUNDS.minX - 3;
-  const BUCKET_POSITION_Y = CurveFittingConstants.GRAPH_MODEL_BOUNDS.minY;
+  const BUCKET_POSITION_X = CurveFittingConstants.GRAPH_NODE_MODEL_BOUNDS.minX - 3;
+  const BUCKET_POSITION_Y = CurveFittingConstants.GRAPH_NODE_MODEL_BOUNDS.minY;
 
   // position of points inside bucket
   const POINT_POSITIONS = [

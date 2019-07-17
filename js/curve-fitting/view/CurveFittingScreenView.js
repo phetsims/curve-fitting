@@ -78,7 +78,7 @@ define( require => {
       const graphAreaWidth = controlPanels.left - deviationsAccordionBox.right - GRAPH_PADDING_LEFT_RIGHT * 2;
       const graphCenterX = 0.5 * ( controlPanels.left + deviationsAccordionBox.right );
       const graphCenterY = graphAreaWidth / 2 + deviationsAccordionBox.top;
-      const scale = graphAreaWidth / CurveFittingConstants.GRAPH_MODEL_BOUNDS.width;
+      const scale = graphAreaWidth / CurveFittingConstants.GRAPH_NODE_MODEL_BOUNDS.width;
       const modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping(
         new Vector2( 0, 0 ),
         new Vector2( graphCenterX, graphCenterY ),
@@ -123,8 +123,8 @@ define( require => {
       );
 
       // layout of equation inset on graph
-      graphEquationAccordionBox.left = graphAreaNode.left + 10;
-      graphEquationAccordionBox.top = graphAreaNode.top + 10;
+      graphEquationAccordionBox.left = graphAreaNode.left + modelViewTransform.modelToViewDeltaX( 1 ) + 10;
+      graphEquationAccordionBox.top = graphAreaNode.top + modelViewTransform.modelToViewDeltaY( -1 )  + 10;
 
       // create bucket
       const bucketNode = new BucketNode(
