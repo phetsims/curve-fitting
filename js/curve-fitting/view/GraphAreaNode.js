@@ -21,7 +21,6 @@ define( require => {
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const Shape = require( 'KITE/Shape' );
   const Text = require( 'SCENERY/nodes/Text' );
-  const Util = require( 'DOT/Util' );
 
   // strings
   const symbolXString = require( 'string!CURVE_FITTING/symbol.x' );
@@ -32,12 +31,11 @@ define( require => {
   const GRAPH_BACKGROUND_OPTIONS = { fill: 'white', lineWidth: 2, stroke: 'rgb( 214, 223, 226 )' };
 
   // information regarding ticks and axes; all distances and lengths are in model coordinates
-  const TICK_LENGTH = 0.3;
-  const HORIZONTAL_TICK_LOCATIONS = [ -10, -5, 5, 10 ];
-  const VERTICAL_TICK_LOCATIONS = [ -10, -5, 5, 10 ];
-  const TICK_DECIMAL_PLACES = 0;
-  const TICK_FONT_OPTIONS = { font: new PhetFont( 12 ), fill: 'black' };
-  const TICK_LABEL_DISTANCE_FROM_AXES = 0.15;
+  const MINOR_TICK_LENGTH = 0.3;
+  const MAJOR_TICK_LENGTH = 0.75;
+  const MAJOR_TICK_LOCATIONS = [ -10, -5, 5, 10 ];
+  const TICK_LABEL_FONT = new PhetFont( 12 );
+  const TICK_LABEL_DISTANCE_FROM_AXES = 0.5;
   const AXIS_LABEL_DISTANCE_FROM_AXES = 0.2;
   const AXIS_LABEL_FONT = new MathSymbolFont( { size: 12, weight: 'bold' } );
   const AXIS_ARROW_OPTIONS = {
@@ -56,9 +54,6 @@ define( require => {
 
       super();
 
-      // @private
-      this.modelViewTransform = modelViewTransform;
-
       // convenience variable, white background bounds for graph in model coordinates
       const backgroundBounds = CurveFittingConstants.GRAPH_BACKGROUND_MODEL_BOUNDS;
 
@@ -74,22 +69,37 @@ define( require => {
         GRAPH_BACKGROUND_OPTIONS
       ) );
 
+      // axes
       const axisShape = new Shape();
-
-      // create X axis
       axisShape.moveTo( curveBounds.minX, 0 ).horizontalLineTo( curveBounds.maxX );
-
-      // create Y axis
       axisShape.moveTo( 0, curveBounds.minY ).verticalLineTo( curveBounds.maxY );
 
-      // add axes
+      // ticks: assumes that backgroundBounds is a square
+      for ( let i = backgroundBounds.minX; i <= backgroundBounds.maxX; i++ ) {
+        let tickLength = MINOR_TICK_LENGTH;
+        if ( MAJOR_TICK_LOCATIONS.includes( i ) ) {
+          tickLength = MAJOR_TICK_LENGTH;
+        }
+        axisShape.moveTo( i, -tickLength / 2 );
+        axisShape.lineTo( i, tickLength / 2 );
+        axisShape.moveTo( -tickLength / 2, i );
+        axisShape.lineTo( tickLength / 2, i );
+      }
       this.addChild( new Path( modelViewTransform.modelToViewShape( axisShape ), AXIS_OPTIONS ) );
 
-      // create and add horizontal tick lines and labels
-      this.addTicks( HORIZONTAL_TICK_LOCATIONS );
-
-      // create and add vertical tick lines and labels
-      this.addTicks( VERTICAL_TICK_LOCATIONS, { axis: 'vertical' } );
+      // tick labels
+      MAJOR_TICK_LOCATIONS.forEach( tickLocation => {
+        this.addChild( new Text( tickLocation, {
+          font: TICK_LABEL_FONT,
+          centerX: modelViewTransform.modelToViewX( tickLocation ),
+          top: modelViewTransform.modelToViewY( -TICK_LABEL_DISTANCE_FROM_AXES )
+        } ) );
+        this.addChild( new Text( tickLocation, {
+          font: TICK_LABEL_FONT,
+          centerY: modelViewTransform.modelToViewY( tickLocation ),
+          right: modelViewTransform.modelToViewX( -TICK_LABEL_DISTANCE_FROM_AXES )
+        } ) );
+      } );
 
       // axis labels
       this.addChild( new Text( symbolXString, {
@@ -122,66 +132,6 @@ define( require => {
       // add clip area
       this.clipArea = Shape.bounds( modelViewTransform.modelToViewBounds( graphBounds ) );
 
-    }
-
-    /***
-     * create and add a tick line
-     * @param {number} location
-     * @param {Object} [options]
-     * @private
-     */
-    addTickLine( location, options ) {
-      options = _.extend( {
-        axis: 'horizontal'
-      }, options );
-
-      const tickShape = new Shape();
-
-      if ( options.axis === 'horizontal' ) {
-        tickShape.moveTo( location, -TICK_LENGTH / 2 ); // tick lines are straddling the x-axis
-        tickShape.verticalLineToRelative( TICK_LENGTH );
-      }
-      else {
-        tickShape.moveTo( -TICK_LENGTH / 2, location );
-        tickShape.horizontalLineToRelative( TICK_LENGTH );
-      }
-      this.addChild( new Path( this.modelViewTransform.modelToViewShape( tickShape ), AXIS_OPTIONS ) );
-    }
-
-    /**
-     * create and add a tick label
-     * @param {number} value
-     * @param {Object} [options]
-     */
-    addTickLabel( value, options ) {
-      options = _.extend( {
-        axis: 'horizontal'
-      }, options );
-
-      const tickLabel = new Text( Util.toFixed( value, TICK_DECIMAL_PLACES ), TICK_FONT_OPTIONS );
-
-      if ( options.axis === 'horizontal' ) {
-        tickLabel.centerX = this.modelViewTransform.modelToViewX( value );
-        tickLabel.top = this.modelViewTransform.modelToViewY( -TICK_LENGTH / 2 - TICK_LABEL_DISTANCE_FROM_AXES );
-      }
-      else {
-        tickLabel.centerY = this.modelViewTransform.modelToViewY( value );
-        tickLabel.right = this.modelViewTransform.modelToViewX( -TICK_LENGTH / 2 - TICK_LABEL_DISTANCE_FROM_AXES );
-      }
-      this.addChild( tickLabel );
-    }
-
-    /**
-     * create and add ticks and labels
-     * @param {Array.<number>} ticksLocation - in model coordinates
-     * @param {Object} [options]
-     * @private
-     */
-    addTicks( ticksLocation, options ) {
-      ticksLocation.forEach( location => {
-        this.addTickLine( location, options );
-        this.addTickLabel( location, options );
-      } );
     }
 
   }
