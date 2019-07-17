@@ -30,7 +30,7 @@ define( require => {
       super();
 
       // add clip area
-      this.clipArea = Shape.bounds( modelViewTransform.modelToViewBounds( CurveFittingConstants.GRAPH_NODE_MODEL_BOUNDS ) );
+      this.clipArea = Shape.bounds( modelViewTransform.modelToViewBounds( CurveFittingConstants.CURVE_CLIP_BOUNDS ) );
 
       // create and add curve
       const curvePath = new Path( null, CURVE_OPTIONS );

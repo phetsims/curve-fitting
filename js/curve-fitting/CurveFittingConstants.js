@@ -67,7 +67,10 @@ define( require => {
     CUBIC_RANGE: new RangeWithValue( -1, 1, 0 ),
 
     // size of the graph node in model coordinates (including axes and labels)
-    GRAPH_NODE_MODEL_BOUNDS: new Bounds2( -11, -11, 11, 11 ),
+    GRAPH_NODE_MODEL_BOUNDS: new Bounds2( -11.75, -11.75, 11.75, 11.75 ),
+
+    // clipping bounds for the drawn curve in model coordinates
+    CURVE_CLIP_BOUNDS: new Bounds2( -11, -11, 11, 11 ),
 
     //size of the graph in model coordinates (just the white background)
     GRAPH_BACKGROUND_MODEL_BOUNDS: new Bounds2( -10, -10, 10, 10 )

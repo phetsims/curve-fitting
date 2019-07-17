@@ -123,8 +123,8 @@ define( require => {
       );
 
       // layout of equation inset on graph
-      graphEquationAccordionBox.left = graphAreaNode.left + modelViewTransform.modelToViewDeltaX( 1 ) + 10;
-      graphEquationAccordionBox.top = graphAreaNode.top + modelViewTransform.modelToViewDeltaY( -1 )  + 10;
+      graphEquationAccordionBox.left = modelViewTransform.modelToViewX( -10 ) + 10;
+      graphEquationAccordionBox.top = modelViewTransform.modelToViewY( 10 )  + 10;
 
       // create bucket
       const bucketNode = new BucketNode(

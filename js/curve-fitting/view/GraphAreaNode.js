@@ -44,8 +44,11 @@ define( require => {
       // @private
       this.modelViewTransform = modelViewTransform;
 
-      // convenience variable, graph bound in model coordinates.
+      // convenience variable, graph node bounds in model coordinates.
       const graphBounds = CurveFittingConstants.GRAPH_NODE_MODEL_BOUNDS;
+
+      // convenience variable, curve bounds in model coordinates
+      const curveBounds = CurveFittingConstants.CURVE_CLIP_BOUNDS;
 
       // create and add white background
       this.addChild( new Rectangle.bounds(
@@ -56,10 +59,10 @@ define( require => {
       const axisShape = new Shape();
 
       // create X axis
-      axisShape.moveTo( graphBounds.minX, 0 ).horizontalLineTo( graphBounds.maxX );
+      axisShape.moveTo( curveBounds.minX, 0 ).horizontalLineTo( curveBounds.maxX );
 
       // create Y axis
-      axisShape.moveTo( 0, graphBounds.minY ).verticalLineTo( graphBounds.maxY );
+      axisShape.moveTo( 0, curveBounds.minY ).verticalLineTo( curveBounds.maxY );
 
       // add axes
       this.addChild( new Path( modelViewTransform.modelToViewShape( axisShape ), AXIS_OPTIONS ) );
@@ -69,6 +72,18 @@ define( require => {
 
       // create and add vertical tick lines and labels
       this.addTicks( VERTICAL_TICK_LOCATIONS, { axis: 'vertical' } );
+
+      // axis labels TODO: migrate strings to constants and use math font
+      this.addChild( new Text( 'x', {
+        font: new PhetFont( 12 ),
+        centerY: modelViewTransform.modelToViewY( 0 ),
+        left: modelViewTransform.modelToViewX( 11.2 )
+      } ) );
+      this.addChild( new Text( 'y', {
+        font: new PhetFont( 12 ),
+        centerX: modelViewTransform.modelToViewX( 0 ),
+        bottom: modelViewTransform.modelToViewY( 11.2 )
+      } ) );
 
       // add clip area
       this.clipArea = Shape.bounds( modelViewTransform.modelToViewBounds( graphBounds ) );
