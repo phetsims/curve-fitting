@@ -31,14 +31,15 @@ define( require => {
   const AXIS_OPTIONS = { lineWidth: 1, stroke: 'black' };
   const GRAPH_BACKGROUND_OPTIONS = { fill: 'white', lineWidth: 2, stroke: 'rgb( 214, 223, 226 )' };
 
-  // tick information in model coordinates
+  // information regarding ticks and axes; all distances and lengths are in model coordinates
   const TICK_LENGTH = 0.3;
   const HORIZONTAL_TICK_LOCATIONS = [ -10, -5, 5, 10 ];
   const VERTICAL_TICK_LOCATIONS = [ -10, -5, 5, 10 ];
   const TICK_DECIMAL_PLACES = 0;
   const TICK_FONT_OPTIONS = { font: new PhetFont( 12 ), fill: 'black' };
-  const TICK_LABEL_DISTANCE_FROM_AXES = 3; // in view coordinates
-  const AXIS_LABEL_FONT = new MathSymbolFont( 12 );
+  const TICK_LABEL_DISTANCE_FROM_AXES = 0.15;
+  const AXIS_LABEL_DISTANCE_FROM_AXES = 0.2;
+  const AXIS_LABEL_FONT = new MathSymbolFont( { size: 12, weight: 'bold' } );
   const AXIS_ARROW_OPTIONS = {
     doubleHead: true,
     tailWidth: 0,
@@ -94,12 +95,12 @@ define( require => {
       this.addChild( new Text( symbolXString, {
         font: AXIS_LABEL_FONT,
         centerY: modelViewTransform.modelToViewY( 0 ),
-        left: modelViewTransform.modelToViewX( curveBounds.maxX + 0.2 )
+        left: modelViewTransform.modelToViewX( curveBounds.maxX + AXIS_LABEL_DISTANCE_FROM_AXES )
       } ) );
       this.addChild( new Text( symbolYString, {
         font: AXIS_LABEL_FONT,
         centerX: modelViewTransform.modelToViewX( 0 ),
-        bottom: modelViewTransform.modelToViewY( curveBounds.maxY + 0.2 )
+        bottom: modelViewTransform.modelToViewY( curveBounds.maxY + AXIS_LABEL_DISTANCE_FROM_AXES )
       } ) );
 
       // axis arrows
@@ -161,11 +162,11 @@ define( require => {
 
       if ( options.axis === 'horizontal' ) {
         tickLabel.centerX = this.modelViewTransform.modelToViewX( value );
-        tickLabel.top = this.modelViewTransform.modelToViewY( -TICK_LENGTH / 2 ) + TICK_LABEL_DISTANCE_FROM_AXES;
+        tickLabel.top = this.modelViewTransform.modelToViewY( -TICK_LENGTH / 2 - TICK_LABEL_DISTANCE_FROM_AXES );
       }
       else {
         tickLabel.centerY = this.modelViewTransform.modelToViewY( value );
-        tickLabel.right = this.modelViewTransform.modelToViewX( -TICK_LENGTH / 2 ) - TICK_LABEL_DISTANCE_FROM_AXES;
+        tickLabel.right = this.modelViewTransform.modelToViewX( -TICK_LENGTH / 2 - TICK_LABEL_DISTANCE_FROM_AXES );
       }
       this.addChild( tickLabel );
     }
