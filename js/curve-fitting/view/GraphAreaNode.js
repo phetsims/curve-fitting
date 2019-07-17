@@ -12,6 +12,7 @@ define( require => {
   // modules
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  const MathSymbolFont = require( 'SCENERY_PHET/MathSymbolFont' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Path = require( 'SCENERY/nodes/Path' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
@@ -19,6 +20,10 @@ define( require => {
   const Shape = require( 'KITE/Shape' );
   const Text = require( 'SCENERY/nodes/Text' );
   const Util = require( 'DOT/Util' );
+
+  // strings
+  const symbolXString = require( 'string!CURVE_FITTING/symbol.x' );
+  const symbolYString = require( 'string!CURVE_FITTING/symbol.y' );
 
   // constants
   const AXIS_OPTIONS = { lineWidth: 1, stroke: 'black' };
@@ -31,6 +36,7 @@ define( require => {
   const TICK_DECIMAL_PLACES = 0;
   const TICK_FONT_OPTIONS = { font: new PhetFont( 12 ), fill: 'black' };
   const TICK_LABEL_DISTANCE_FROM_AXES = 3; // in view coordinates
+  const AXIS_LABEL_FONT = new MathSymbolFont( 12 );
 
   class GraphAreaNode extends Node {
 
@@ -73,17 +79,19 @@ define( require => {
       // create and add vertical tick lines and labels
       this.addTicks( VERTICAL_TICK_LOCATIONS, { axis: 'vertical' } );
 
-      // axis labels TODO: migrate strings to constants and use math font
-      this.addChild( new Text( 'x', {
-        font: new PhetFont( 12 ),
+      // axis labels
+      this.addChild( new Text( symbolXString, {
+        font: AXIS_LABEL_FONT,
         centerY: modelViewTransform.modelToViewY( 0 ),
         left: modelViewTransform.modelToViewX( 11.2 )
       } ) );
-      this.addChild( new Text( 'y', {
-        font: new PhetFont( 12 ),
+      this.addChild( new Text( symbolYString, {
+        font: AXIS_LABEL_FONT,
         centerX: modelViewTransform.modelToViewX( 0 ),
         bottom: modelViewTransform.modelToViewY( 11.2 )
       } ) );
+
+      //TODO: axis arrows
 
       // add clip area
       this.clipArea = Shape.bounds( modelViewTransform.modelToViewBounds( graphBounds ) );
