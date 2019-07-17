@@ -5,11 +5,13 @@
  * Contains static graph area with axes, tick lines and labels
  *
  * @author Andrey Zelenkov (Mlearner)
+ * @author Saurabh Totey
  */
 define( require => {
   'use strict';
 
   // modules
+  const ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const MathSymbolFont = require( 'SCENERY_PHET/MathSymbolFont' );
@@ -37,6 +39,12 @@ define( require => {
   const TICK_FONT_OPTIONS = { font: new PhetFont( 12 ), fill: 'black' };
   const TICK_LABEL_DISTANCE_FROM_AXES = 3; // in view coordinates
   const AXIS_LABEL_FONT = new MathSymbolFont( 12 );
+  const AXIS_ARROW_OPTIONS = {
+    doubleHead: true,
+    tailWidth: 0,
+    headWidth: 5,
+    headHeight: 5
+  };
 
   class GraphAreaNode extends Node {
 
@@ -50,6 +58,9 @@ define( require => {
       // @private
       this.modelViewTransform = modelViewTransform;
 
+      // convenience variable, white background bounds for graph in model coordinates
+      const backgroundBounds = CurveFittingConstants.GRAPH_BACKGROUND_MODEL_BOUNDS;
+
       // convenience variable, graph node bounds in model coordinates.
       const graphBounds = CurveFittingConstants.GRAPH_NODE_MODEL_BOUNDS;
 
@@ -58,7 +69,7 @@ define( require => {
 
       // create and add white background
       this.addChild( new Rectangle.bounds(
-        modelViewTransform.modelToViewBounds( CurveFittingConstants.GRAPH_BACKGROUND_MODEL_BOUNDS ),
+        modelViewTransform.modelToViewBounds( backgroundBounds ),
         GRAPH_BACKGROUND_OPTIONS
       ) );
 
@@ -83,15 +94,29 @@ define( require => {
       this.addChild( new Text( symbolXString, {
         font: AXIS_LABEL_FONT,
         centerY: modelViewTransform.modelToViewY( 0 ),
-        left: modelViewTransform.modelToViewX( 11.2 )
+        left: modelViewTransform.modelToViewX( curveBounds.maxX + 0.2 )
       } ) );
       this.addChild( new Text( symbolYString, {
         font: AXIS_LABEL_FONT,
         centerX: modelViewTransform.modelToViewX( 0 ),
-        bottom: modelViewTransform.modelToViewY( 11.2 )
+        bottom: modelViewTransform.modelToViewY( curveBounds.maxY + 0.2 )
       } ) );
 
-      //TODO: axis arrows
+      // axis arrows
+      this.addChild( new ArrowNode(
+        modelViewTransform.modelToViewX( curveBounds.minX ),
+        modelViewTransform.modelToViewY( 0 ),
+        modelViewTransform.modelToViewX( curveBounds.maxX ),
+        modelViewTransform.modelToViewY( 0 ),
+        AXIS_ARROW_OPTIONS
+      ) );
+      this.addChild( new ArrowNode(
+        modelViewTransform.modelToViewX( 0 ),
+        modelViewTransform.modelToViewY( curveBounds.minY ),
+        modelViewTransform.modelToViewX( 0 ),
+        modelViewTransform.modelToViewY( curveBounds.maxY ),
+        AXIS_ARROW_OPTIONS
+      ) );
 
       // add clip area
       this.clipArea = Shape.bounds( modelViewTransform.modelToViewBounds( graphBounds ) );
