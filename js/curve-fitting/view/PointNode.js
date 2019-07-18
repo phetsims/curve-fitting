@@ -140,28 +140,22 @@ define( require => {
       circleView.mouseArea = circleView.bounds.dilated( 5 );
       this.addChild( circleView );
 
-      // {boolean|null} shouldTopBarActLikeBottomBar comes into play when the delta is MIN_DELTA
-      //  and the top bar covers the bottom bar
-      // true means the top bar can only be dragged downwards past the point as if it were the bottom bar
-      //  (this unlike normal behaviour); see #127
-      // false means that the top bar is following normal dragging rules
-      // null means that the top bar is currently covering the bottom bar
-      //  and will therefore become true or false upon the next drag event
+      // variables that allow for the top bar to be dragged in either direction when it covers the bottom bar; see #127
+      // initialTopBarDragLocation is null unless it is relevant for choosing a dragging direction
       let shouldTopBarActLikeBottomBar = false;
+      let initialTopBarDragLocation = null;
 
       // handling for error bar dragging
       let isDraggingDeltaTop = false;
       let isDraggingDeltaBottom = false;
-      let initialTopBarDragLocation;
       errorBarTopRectangle.addInputListener( new DragListener( {
         start: event => {
           isDraggingDeltaTop = !isDraggingDeltaBottom;
 
-          // the top bar is currently covering the bottom bar
-          // so shouldTopBarActLikeBottomBar is set to null because it is ready to become either true or false
-          // shouldTopBarActLikeBottomBar is given a boolean value upon the first drag event
+          // the top bar is currently covering the bottom bar so initialTopBarDragLocation is set to be non-null
+          // initialTopBarDragLocation is now set to the current mouse location because it is now relevant
+          //  for choosing a drag direction
           if ( point.deltaProperty.value === MIN_DELTA ) {
-            shouldTopBarActLikeBottomBar = null;
             initialTopBarDragLocation = event.pointer.point;
           }
         },
@@ -171,11 +165,13 @@ define( require => {
           }
           let newUnclampedDelta = modelViewTransform.viewToModelDeltaY( this.globalToLocalPoint( event.pointer.point ).y - circleView.centerY );
 
-          // if shouldTopBarActLikeBottomBar is set to null (the top bar covers the bottom bar),
-          // we check the direction of the drag to see whether they are dragging up or down
-          // if the drag is down, the top bar will act like the bottom bar
-          if ( shouldTopBarActLikeBottomBar === null ) {
+          // if initialTopBarDragLocation has a value, that means that it is intentionally so because the user can choose a drag direction
+          // the allowed direction of the top bar drag is now set by whether the user dragged up or down
+          // if the user dragged down, the top bar acts like the bottom bar because that is how the user interacted with it
+          // for this case, the user couldn't have interacted with the actual bottom bar because it was covered by this top one
+          if ( initialTopBarDragLocation !== null ) {
             shouldTopBarActLikeBottomBar = event.pointer.point.y > initialTopBarDragLocation.y;
+            initialTopBarDragLocation = null;
           }
 
           if ( shouldTopBarActLikeBottomBar ) {
@@ -190,6 +186,7 @@ define( require => {
         end: () => {
           isDraggingDeltaTop = false;
           shouldTopBarActLikeBottomBar = false;
+          initialTopBarDragLocation = null;
         }
       } ) );
       errorBarBottomRectangle.addInputListener( new DragListener( {
