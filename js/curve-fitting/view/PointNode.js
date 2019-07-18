@@ -152,8 +152,9 @@ define( require => {
       // handling for error bar dragging
       let isDraggingDeltaTop = false;
       let isDraggingDeltaBottom = false;
+      let initialTopBarDragLocation;
       errorBarTopRectangle.addInputListener( new DragListener( {
-        start: () => {
+        start: event => {
           isDraggingDeltaTop = !isDraggingDeltaBottom;
 
           // the top bar is currently covering the bottom bar
@@ -161,6 +162,7 @@ define( require => {
           // shouldTopBarActLikeBottomBar is given a boolean value upon the first drag event
           if ( point.deltaProperty.value === MIN_DELTA ) {
             shouldTopBarActLikeBottomBar = null;
+            initialTopBarDragLocation = event.pointer.point;
           }
         },
         drag: event => {
@@ -170,10 +172,10 @@ define( require => {
           let newUnclampedDelta = modelViewTransform.viewToModelDeltaY( this.globalToLocalPoint( event.pointer.point ).y - circleView.centerY );
 
           // if shouldTopBarActLikeBottomBar is set to null (the top bar covers the bottom bar),
-          // we check the direction of newUnclampedDelta to see whether they are dragging above or below the point
+          // we check the direction of the drag to see whether they are dragging up or down
           // if the drag is down, the top bar will act like the bottom bar
           if ( shouldTopBarActLikeBottomBar === null ) {
-            shouldTopBarActLikeBottomBar = newUnclampedDelta < 0;
+            shouldTopBarActLikeBottomBar = event.pointer.point.y > initialTopBarDragLocation.y;
           }
 
           if ( shouldTopBarActLikeBottomBar ) {
