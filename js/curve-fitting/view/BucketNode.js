@@ -122,10 +122,10 @@ define( require => {
           end: () => {
             bumpOutFunction();
             if ( CurveFittingQueryParameters.snapToGrid ) {
-              point.positionProperty.set( new Vector2(
+              point.positionProperty.value = new Vector2(
                 Util.toFixedNumber( point.positionProperty.value.x, 0 ),
                 Util.toFixedNumber( point.positionProperty.value.y, 0 )
-              ) );
+              );
             }
             point.draggingProperty.value = false;
             point = null;
