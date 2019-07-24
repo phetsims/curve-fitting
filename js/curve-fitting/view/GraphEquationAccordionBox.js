@@ -77,6 +77,9 @@ define( require => {
 
       super( content, _.extend( PANEL_OPTIONS, options ) );
 
+      // @public (read-only) is used by the screen view to bump out points from below; see #131
+      this.expandCollapseButton = expandCollapseButton;
+
       // @public an emitter that is fired whenever this panel is updated: is used for background node for #126
       this.updatedEmitter = new Emitter();
 

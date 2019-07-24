@@ -69,11 +69,12 @@ define( require => {
 
     /**
      * @param {Points} points
+     * @param {function} bumpOutFunction - the function that bumps points out of invalid locations (see #131)
      * @param {Property.<boolean>} residualsVisibleProperty
      * @param {Property.<boolean>} valuesVisibleProperty
      * @param {ModelViewTransform2} modelViewTransform
      */
-    constructor( points, residualsVisibleProperty, valuesVisibleProperty, modelViewTransform ) {
+    constructor( points, bumpOutFunction, residualsVisibleProperty, valuesVisibleProperty, modelViewTransform ) {
       super();
 
       // model of the bucket
@@ -155,7 +156,7 @@ define( require => {
 
       // handle the coming and going of points
       points.addItemAddedListener( addedPoint => {
-        const pointNode = new PointNode( addedPoint, residualsVisibleProperty, valuesVisibleProperty, modelViewTransform );
+        const pointNode = new PointNode( addedPoint, bumpOutFunction, residualsVisibleProperty, valuesVisibleProperty, modelViewTransform );
         this.addChild( pointNode );
 
         const removalListener = removedPoint => {

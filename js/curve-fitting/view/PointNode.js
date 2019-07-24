@@ -82,12 +82,13 @@ define( require => {
 
     /**
      * @param {Point} point - Model for single point
+     * @param {function} bumpOutFunction - a function that bumps this point out of invalid locations (see #131)
      * @param {Property.<boolean>} residualsVisibleProperty
      * @param {Property.<boolean>} valuesVisibleProperty
      * @param {ModelViewTransform2} modelViewTransform
      * @param {Object} [options] for graph node.
      */
-    constructor( point, residualsVisibleProperty, valuesVisibleProperty, modelViewTransform, options ) {
+    constructor( point, bumpOutFunction, residualsVisibleProperty, valuesVisibleProperty, modelViewTransform, options ) {
 
       super( _.extend( { cursor: 'pointer' }, options ) );
 
@@ -232,11 +233,12 @@ define( require => {
         },
         end: () => {
           point.draggingProperty.value = false;
+          bumpOutFunction();
           if ( CurveFittingQueryParameters.snapToGrid ) {
-            point.positionProperty.set( new Vector2(
+            point.positionProperty.value = new Vector2(
               Util.toFixedNumber( point.positionProperty.value.x, 0 ),
               Util.toFixedNumber( point.positionProperty.value.y, 0 )
-            ) );
+            );
           }
         }
       } ) );

@@ -107,6 +107,34 @@ define( require => {
         graphEquationBackground.rectBounds = graphEquationAccordionBox.bounds;
       } );
 
+      // Whenever the curve becomes visible, points below the GraphEquationAccordionBox's expand/collapse button get
+      // pushed out from under the button; see #131
+      const bumpOutPointsUnderExpandCollapseButton = () => {
+        if ( !curveVisibleProperty.value ) {
+          return;
+        }
+
+        const expandCollapseBounds = modelViewTransform.viewToModelBounds(
+          graphAreaNode.globalToLocalBounds(
+            graphEquationAccordionBox.expandCollapseButton.localToGlobalBounds(
+              graphEquationAccordionBox.expandCollapseButton.localBounds
+            )
+          )
+        );
+
+        //Gets points that intersect with the expand/collapse button and pushes them until they don't intersect
+        let pointsUnder = [];
+        do {
+          pointsUnder = model.points.filter( point => expandCollapseBounds.containsPoint( point.positionProperty.value ) );
+          pointsUnder.forEach( point => {
+            const directionToPush = point.positionProperty.value.minus( expandCollapseBounds.center );
+            directionToPush.setMagnitude( 0.05 );
+            point.positionProperty.value = point.positionProperty.value.plus( directionToPush );
+          } );
+        } while ( pointsUnder.length > 0 );
+      };
+      curveVisibleProperty.link( bumpOutPointsUnderExpandCollapseButton );
+
       // create the curve and the residual lines
       const curveNode = new CurveNode(
         model.curve,
@@ -129,6 +157,7 @@ define( require => {
       // create bucket
       const bucketNode = new BucketNode(
         model.points,
+        bumpOutPointsUnderExpandCollapseButton,
         residualsVisibleProperty,
         valuesVisibleProperty,
         modelViewTransform
