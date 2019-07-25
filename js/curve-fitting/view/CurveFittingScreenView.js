@@ -27,7 +27,7 @@ define( require => {
 
   // constants
   const GRAPH_PADDING_LEFT_RIGHT = 15;
-  const EXPAND_COLLAPSE_PUSH_BOUNDS_DILATION = 0.55; // in model coordinates
+  const EXPAND_COLLAPSE_PUSH_BOUNDS_DILATION = 0.45; // in model coordinates
 
   class CurveFittingScreenView extends ScreenView {
 
