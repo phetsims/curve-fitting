@@ -128,7 +128,10 @@ define( require => {
         do {
           pointsUnder = model.points.filter( point => pointPushBounds.containsPoint( point.positionProperty.value ) );
           pointsUnder.forEach( point => {
-            const directionToPush = point.positionProperty.value.minus( pointPushBounds.center );
+            let directionToPush = point.positionProperty.value.minus( pointPushBounds.center );
+            while ( directionToPush.equals( Vector2.ZERO ) ) {
+              directionToPush = new Vector2( phet.joist.random.nextDouble(), phet.joist.random.nextDouble() );
+            }
             directionToPush.setMagnitude( 0.05 );
             point.positionProperty.value = point.positionProperty.value.plus( directionToPush );
           } );
