@@ -27,6 +27,7 @@ define( require => {
 
   // constants
   const GRAPH_PADDING_LEFT_RIGHT = 15;
+  const EXPAND_COLLAPSE_PUSH_BOUNDS_DILATION = 0.55; // in model coordinates
 
   class CurveFittingScreenView extends ScreenView {
 
@@ -114,20 +115,20 @@ define( require => {
           return;
         }
 
-        const expandCollapseBounds = modelViewTransform.viewToModelBounds(
+        const pointPushBounds = modelViewTransform.viewToModelBounds(
           graphAreaNode.globalToLocalBounds(
             graphEquationAccordionBox.expandCollapseButton.localToGlobalBounds(
               graphEquationAccordionBox.expandCollapseButton.localBounds
             )
           )
-        );
+        ).dilatedXY( EXPAND_COLLAPSE_PUSH_BOUNDS_DILATION, EXPAND_COLLAPSE_PUSH_BOUNDS_DILATION );
 
         //Gets points that intersect with the expand/collapse button and pushes them until they don't intersect
         let pointsUnder = [];
         do {
-          pointsUnder = model.points.filter( point => expandCollapseBounds.containsPoint( point.positionProperty.value ) );
+          pointsUnder = model.points.filter( point => pointPushBounds.containsPoint( point.positionProperty.value ) );
           pointsUnder.forEach( point => {
-            const directionToPush = point.positionProperty.value.minus( expandCollapseBounds.center );
+            const directionToPush = point.positionProperty.value.minus( pointPushBounds.center );
             directionToPush.setMagnitude( 0.05 );
             point.positionProperty.value = point.positionProperty.value.plus( directionToPush );
           } );
