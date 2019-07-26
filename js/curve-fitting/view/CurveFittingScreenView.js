@@ -121,7 +121,7 @@ define( require => {
               graphEquationAccordionBox.expandCollapseButton.localBounds
             )
           )
-        ).dilatedXY( EXPAND_COLLAPSE_PUSH_BOUNDS_DILATION, EXPAND_COLLAPSE_PUSH_BOUNDS_DILATION );
+        ).dilated( EXPAND_COLLAPSE_PUSH_BOUNDS_DILATION );
 
         //Gets points that intersect with the expand/collapse button and pushes them until they don't intersect
         let pointsUnder = [];
