@@ -36,6 +36,7 @@ define( require => {
   const VALUES_TEXT_FONT = new PhetFont( 10 );
   const MATH_FONT = new MathSymbolFont( 12 );
   const MAX_CHI_SQUARE_VALUE = 1000;
+  const LABEL_TEXT_OPTIONS = { font: TEXT_FONT, maxWidth: 25 };
 
   // strings
   const symbolChiString = require( 'string!CURVE_FITTING/symbol.chi' );
@@ -116,7 +117,9 @@ define( require => {
         maxWidth: 22
       } );
       const chiSquaredValuePanel = new Panel( chiSquaredValueText, options.valuePanelOptions );
-      const chiSquaredLabelText = new RichText( `${mathFontChiString}<sup>2</sup> ${MathSymbols.EQUAL_TO}&nbsp;`, { font: TEXT_FONT, maxWidth: 25 } );
+      const chiSquaredLabelText = new RichText(
+        `${mathFontChiString}<sup>2</sup> ${MathSymbols.EQUAL_TO}&nbsp;`, LABEL_TEXT_OPTIONS
+      );
       const chiSquaredInformationBox = new HBox( {
         children: [ chiSquaredLabelText, chiSquaredValuePanel ]
       } );
@@ -128,7 +131,9 @@ define( require => {
         maxWidth: 22
       } );
       const rSquaredValuePanel = new Panel( rSquaredValueText, options.valuePanelOptions );
-      const rSquaredLabelText = new RichText( `${mathFontRString}<sup>2</sup> ${MathSymbols.EQUAL_TO}&nbsp;`, { font: TEXT_FONT, maxWidth: 25 } );
+      const rSquaredLabelText = new RichText(
+        `${mathFontRString}<sup>2</sup> ${MathSymbols.EQUAL_TO}&nbsp;`, LABEL_TEXT_OPTIONS
+      );
       const rSquaredInformationBox = new HBox( {
         children: [ rSquaredLabelText, rSquaredValuePanel ]
       } );

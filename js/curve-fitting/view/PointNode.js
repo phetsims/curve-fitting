@@ -35,7 +35,7 @@ define( require => {
   // constants
   const MIN_DELTA = 1E-3; // arbitrarily small non-zero number for minimum delta: 0 causes divide by 0 errors
   const MAX_DELTA = 10;
-  const VALUE_FONT = new PhetFont( 11 );
+  const VALUE_TEXT_OPTIONS = { font: new PhetFont( 11 ), maxWidth: 100 };
   const BAR_COLOR = Color.toColor( CurveFittingConstants.BLUE_COLOR );
   const CENTRAL_LINE_OPTIONS = {
     stroke: CurveFittingConstants.BLUE_COLOR,
@@ -111,7 +111,7 @@ define( require => {
       // delta text label
       const deltaTextLabel = new RichText(
         StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( point.deltaProperty.value, 1 ) ),
-        { font: VALUE_FONT, maxWidth: 100 }
+        VALUE_TEXT_OPTIONS
       );
       const deltaTextBackground = new Rectangle( 0, 0, 1, 1, DELTA_BACKGROUND_RECTANGLE_OPTIONS );
       this.addChild( deltaTextBackground);
@@ -212,7 +212,7 @@ define( require => {
           Util.toFixed( point.positionProperty.value.x, 1 ),
           Util.toFixed( point.positionProperty.value.y, 1 )
         ),
-        { font: VALUE_FONT, maxWidth: 100 }
+        VALUE_TEXT_OPTIONS
       );
       const valueTextBackground = new Rectangle( 0, 0, 1, 1, COORDINATE_BACKGROUND_RECTANGLE_OPTIONS );
       this.addChild( valueTextBackground );
