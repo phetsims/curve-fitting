@@ -43,7 +43,7 @@ define( require => {
     } ),
     fill: CurveFittingConstants.BLUE_COLOR
   };
-  const TEXT_OPTIONS = { font: new PhetFont( 12 ) };
+  const TEXT_OPTIONS = { font: new PhetFont( 12 ), maxWidth: 100 };
 
   // max number of digits for coefficients in ascending order of polynomials
   const MAX_DIGITS = [ 2, 3, 4, 4 ];
@@ -86,7 +86,8 @@ define( require => {
       // visible node when panel is expanded
       const equationNode = new EquationNode( orderProperty, {
         coefficientTextOptions: PARAMETER_TEXT_OPTIONS,
-        coefficientSignTextOptions: PARAMETER_SIGN_TEXT_OPTIONS
+        coefficientSignTextOptions: PARAMETER_SIGN_TEXT_OPTIONS,
+        maxWidth: 250
       } );
 
       // toggle the content of the panel, based on the expansion status

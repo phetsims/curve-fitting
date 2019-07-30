@@ -56,9 +56,10 @@ define( require => {
       options = _.extend( {
         cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
         fill: CurveFittingConstants.PANEL_BACKGROUND_COLOR,
+        minWidth: CurveFittingConstants.PANEL_MIN_WIDTH,
         maxWidth: CurveFittingConstants.PANEL_MAX_WIDTH,
         expandedProperty: expandedProperty,
-        titleNode: new Text( deviationsString, { font: TEXT_FONT } ),
+        titleNode: new Text( deviationsString, { font: TEXT_FONT, maxWidth: 50 } ),
         titleAlignX: 'left',
         showTitleWhenExpanded: true,
         buttonXMargin: 5,
@@ -115,7 +116,7 @@ define( require => {
         maxWidth: 22
       } );
       const chiSquaredValuePanel = new Panel( chiSquaredValueText, options.valuePanelOptions );
-      const chiSquaredLabelText = new RichText( `${mathFontChiString}<sup>2</sup> ${MathSymbols.EQUAL_TO}&nbsp;`, { font: TEXT_FONT } );
+      const chiSquaredLabelText = new RichText( `${mathFontChiString}<sup>2</sup> ${MathSymbols.EQUAL_TO}&nbsp;`, { font: TEXT_FONT, maxWidth: 25 } );
       const chiSquaredInformationBox = new HBox( {
         children: [ chiSquaredLabelText, chiSquaredValuePanel ]
       } );
@@ -127,7 +128,7 @@ define( require => {
         maxWidth: 22
       } );
       const rSquaredValuePanel = new Panel( rSquaredValueText, options.valuePanelOptions );
-      const rSquaredLabelText = new RichText( `${mathFontRString}<sup>2</sup> ${MathSymbols.EQUAL_TO}&nbsp;`, { font: TEXT_FONT } );
+      const rSquaredLabelText = new RichText( `${mathFontRString}<sup>2</sup> ${MathSymbols.EQUAL_TO}&nbsp;`, { font: TEXT_FONT, maxWidth: 25 } );
       const rSquaredInformationBox = new HBox( {
         children: [ rSquaredLabelText, rSquaredValuePanel ]
       } );

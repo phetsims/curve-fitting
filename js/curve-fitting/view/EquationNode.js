@@ -43,10 +43,11 @@ define( require => {
         yEqualsTextOptions: { font: NORMAL_FONT },
         coefficientSignTextOptions: { font: NORMAL_FONT },
         coefficientTextOptions: { font: NORMAL_FONT, fill: 'blue' },
-        xTextOptions: { font: NORMAL_FONT }
+        xTextOptions: { font: NORMAL_FONT },
+        maxWidth: 130
       }, options );
 
-      super( { align: 'bottom' } );
+      super( { align: 'bottom', maxWidth: options.maxWidth } );
 
       // @private {Property.<number>}
       this.orderProperty = orderProperty;

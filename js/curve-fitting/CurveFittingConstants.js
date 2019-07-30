@@ -43,7 +43,6 @@ define( require => {
     PANEL_BACKGROUND_COLOR: 'rgb( 254, 235, 214 )',
     PANEL_CORNER_RADIUS: 5,
     PANEL_MARGIN: 10,
-    PANEL_WIDTH: 130,
     PANEL_MAX_WIDTH: 151,
     PANEL_MIN_WIDTH: 151,
 
@@ -53,7 +52,8 @@ define( require => {
     },
 
     CONTROL_TEXT_OPTIONS: {
-      font: new PhetFont( 12 )
+      font: new PhetFont( 12 ),
+      maxWidth: 100
     },
 
     CHECK_BOX_OPTIONS: {

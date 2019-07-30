@@ -40,7 +40,8 @@ define( require => {
             weight: 'bold',
             size: 13
           } ),
-          fill: CurveFittingConstants.BLUE_COLOR
+          fill: CurveFittingConstants.BLUE_COLOR,
+          maxWidth: 20
         }
       }, options );
 

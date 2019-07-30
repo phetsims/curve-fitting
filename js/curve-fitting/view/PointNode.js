@@ -111,7 +111,7 @@ define( require => {
       // delta text label
       const deltaTextLabel = new RichText(
         StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( point.deltaProperty.value, 1 ) ),
-        { font: VALUE_FONT }
+        { font: VALUE_FONT, maxWidth: 100 }
       );
       const deltaTextBackground = new Rectangle( 0, 0, 1, 1, DELTA_BACKGROUND_RECTANGLE_OPTIONS );
       this.addChild( deltaTextBackground);
@@ -212,7 +212,7 @@ define( require => {
           Util.toFixed( point.positionProperty.value.x, 1 ),
           Util.toFixed( point.positionProperty.value.y, 1 )
         ),
-        { font: VALUE_FONT }
+        { font: VALUE_FONT, maxWidth: 100 }
       );
       const valueTextBackground = new Rectangle( 0, 0, 1, 1, COORDINATE_BACKGROUND_RECTANGLE_OPTIONS );
       this.addChild( valueTextBackground );

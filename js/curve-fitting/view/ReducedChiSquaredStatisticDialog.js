@@ -48,21 +48,21 @@ define( require => {
         StringUtils.fillIn( patternNEqualsNumberOfDataPointsString, {
           nSymbol: `<i style='font-family:${DIALOG_MATH_FONT.family}'>${symbolNString}</i>`
         } ),
-        { font: DIALOG_PLAIN_FONT }
+        { font: DIALOG_PLAIN_FONT, maxWidth: 500 }
       );
 
       const numberOfParametersNode = new RichText(
         StringUtils.fillIn( patternFEqualsNumberOfParametersString, {
           fSymbol: `<i style='font-family:${DIALOG_MATH_FONT.family}'>${symbolFString}</i>`
         } ),
-        { font: DIALOG_PLAIN_FONT }
+        { font: DIALOG_PLAIN_FONT, maxWidth: 500 }
       );
 
       const contentNode = new VBox( {
         align: 'left',
         spacing: 10,
         children: [
-          new Text( theReducedChiSquaredStatisticIsString, { font: DIALOG_PLAIN_FONT } ),
+          new Text( theReducedChiSquaredStatisticIsString, { font: DIALOG_PLAIN_FONT, maxWidth: 500 } ),
           new HBox( {
             children: [
               new HStrut( 20 ),
@@ -77,7 +77,8 @@ define( require => {
                 `${symbolChiString}_r^2 = \\frac{1}{${symbolNString} - ${symbolFString}} \\sum_i \\frac{[${symbolYString}(${symbolXString}_i) - ${symbolYString}_i]^2}{\\sigma_i^2}`
                   .split('\u202a').join('').split('\u202b').join('').split('\u202c').join('')
               )
-            ]
+            ],
+            maxWidth: 800
           } ),
           numberOfDataPointsNode,
           numberOfParametersNode
