@@ -60,7 +60,7 @@ define( require => {
         minWidth: CurveFittingConstants.PANEL_MIN_WIDTH,
         maxWidth: CurveFittingConstants.PANEL_MAX_WIDTH,
         expandedProperty: expandedProperty,
-        titleNode: new Text( deviationsString, { font: TEXT_FONT, maxWidth: 50 } ),
+        titleNode: new Text( deviationsString, { font: TEXT_FONT, maxWidth: 115 } ),
         titleAlignX: 'left',
         showTitleWhenExpanded: true,
         buttonXMargin: 5,
