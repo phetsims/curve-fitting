@@ -4,6 +4,7 @@
  * Main ScreenView node that contains all other nodes.
  *
  * @author Andrey Zelenkov (Mlearner)
+ * @author Saurabh Totey
  */
 define( require => {
   'use strict';
@@ -90,12 +91,18 @@ define( require => {
       const graphAreaNode = new GraphAreaNode( modelViewTransform );
 
       // create the equation node (accordion box) in the upper left corner of the graph
+      const equationBoxLeft = modelViewTransform.modelToViewX( -10 ) + 10;
       const graphEquationAccordionBox = new GraphEquationAccordionBox(
         () => model.curve.coefficients,
         model.curve.updateCurveEmitter,
         model.orderProperty,
         equationPanelExpandedProperty,
-        curveVisibleProperty
+        curveVisibleProperty,
+        {
+          left: equationBoxLeft,
+          top: modelViewTransform.modelToViewY( 10 )  + 10,
+          equationNodeMaxWidth: modelViewTransform.modelToViewX( 10 ) - equationBoxLeft - 45
+        }
       );
 
       // create the panel that serves as an opaque background for the graphEquationAccordionBox; see #126
@@ -153,10 +160,6 @@ define( require => {
         residualsVisibleProperty,
         modelViewTransform
       );
-
-      // layout of equation inset on graph
-      graphEquationAccordionBox.left = modelViewTransform.modelToViewX( -10 ) + 10;
-      graphEquationAccordionBox.top = modelViewTransform.modelToViewY( 10 )  + 10;
 
       // create bucket
       const bucketNode = new BucketNode(

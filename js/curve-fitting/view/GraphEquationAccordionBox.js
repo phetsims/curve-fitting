@@ -44,7 +44,6 @@ define( require => {
     fill: CurveFittingConstants.BLUE_COLOR
   };
   const TEXT_OPTIONS = { font: new PhetFont( 12 ), maxWidth: 100 };
-  const EQUATION_NODE_MAX_WIDTH = 250;
 
   // max number of digits for coefficients in ascending order of polynomials
   const MAX_DIGITS = [ 2, 3, 4, 4 ];
@@ -60,6 +59,10 @@ define( require => {
      * @param {Object} [options] for slider node.
      */
     constructor( getCoefficientArray, updateCurveEmitter, orderProperty, equationPanelExpandedProperty, curveVisibleProperty, options ) {
+
+      options = _.extend( {
+        equationNodeMaxWidth: 250
+      }, options );
 
       // visible text node when panel is not expanded
       const titleNode = new Text( equationString, TEXT_OPTIONS );
@@ -88,7 +91,7 @@ define( require => {
       const equationNode = new EquationNode( orderProperty, {
         coefficientTextOptions: PARAMETER_TEXT_OPTIONS,
         coefficientSignTextOptions: PARAMETER_SIGN_TEXT_OPTIONS,
-        maxWidth: EQUATION_NODE_MAX_WIDTH
+        maxWidth: options.equationNodeMaxWidth
       } );
 
       // toggle the content of the panel, based on the expansion status
