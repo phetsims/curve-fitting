@@ -28,7 +28,7 @@ define( require => {
     /**
      * @param {Property.<number>} fillProportionProperty - how much the barometer should be filled in a scale from 0 to 1
      * @param {Property.<boolean>} fillVisibleProperty - property that controls whether the fill of the barometer is visible
-     * @param {Object.<number, string>} tickLocationToLabels - a map of tick location from 0 to 1 to the corresponding label
+     * @param {Object.<number, string>} tickLocationToLabels - a map of tick location from 0 to 1 to the corresponding label text
      * @param {Object} [options]
      */
     constructor( fillProportionProperty, fillVisibleProperty, tickLocationToLabels, options ) {
@@ -71,7 +71,7 @@ define( require => {
       fillProportionProperty.link( valueRectangleHeightSetter );
       const fillVisiblePropertyLinkHandle = fillVisibleProperty.linkAttribute( valueRectangle, 'visible' );
 
-      // @private {Function}
+      // @private {function}
       this.disposeListeners = () => {
         fillProportionProperty.unlink( valueRectangleHeightSetter );
         fillVisibleProperty.unlinkAttribute( fillVisiblePropertyLinkHandle );

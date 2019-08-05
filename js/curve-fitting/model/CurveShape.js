@@ -22,7 +22,7 @@ define( require => {
   class CurveShape extends Shape {
 
     /**
-     * @param {Function} getYValueAt - a function that gets a Y value for the given X coordinate
+     * @param {function(number): number} getYValueAt - a function that gets a Y value for the given X coordinate
      */
     constructor( getYValueAt ) {
 

@@ -51,7 +51,7 @@ define( require => {
   class GraphEquationAccordionBox extends Panel {
 
     /**
-     * @param {Function} getCoefficientArray - returns an array of coefficient of the polynomial curve sorted in ascending order {<number>[]}
+     * @param {function: number[]} getCoefficientArray - returns an array of coefficient of the polynomial curve sorted in ascending order
      * @param {Emitter} updateCurveEmitter
      * @param {Property.<number>} orderProperty - order of the polynomial:(1,2,3)
      * @param {Property.<boolean>} equationPanelExpandedProperty
@@ -106,7 +106,7 @@ define( require => {
       } );
 
       /**
-       * Function that rounds the given number to the given amount of digits
+       * This method rounds the given number to the given amount of digits
        * Rounds the number to the nearest whole number if the nearest whole number has as many or more digits than maxDigits
        * Returns an array of two strings: the first string is the number's sign, and the second string is the absolute number
        *

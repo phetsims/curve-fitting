@@ -45,7 +45,7 @@ define( require => {
       // @public {Curve} - the model of the curve
       this.curve = new Curve( this.points, this.sliderPropertyArray, this.orderProperty, this.fitProperty );
 
-      // @private {Function}
+      // @private {function}
       this.updateCurveFit = () => { this.curve.updateFit(); };
 
       // validate Property values and update curve fit
