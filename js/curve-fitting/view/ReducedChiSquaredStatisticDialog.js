@@ -25,11 +25,11 @@ define( require => {
   // strings
   const patternFEqualsNumberOfParametersString = require( 'string!CURVE_FITTING/pattern.fEqualsNumberOfParameters' );
   const patternNEqualsNumberOfDataPointsString = require( 'string!CURVE_FITTING/pattern.nEqualsNumberOfDataPoints' );
-  const symbolChiString = require( 'string!CURVE_FITTING/symbol.chi' );
+  // const symbolChiString = require( 'string!CURVE_FITTING/symbol.chi' );
   const symbolFString = require( 'string!CURVE_FITTING/symbol.f' );
   const symbolNString = require( 'string!CURVE_FITTING/symbol.N' );
-  const symbolXString = require( 'string!CURVE_FITTING/symbol.x' );
-  const symbolYString = require( 'string!CURVE_FITTING/symbol.y' );
+  // const symbolXString = require( 'string!CURVE_FITTING/symbol.x' );
+  // const symbolYString = require( 'string!CURVE_FITTING/symbol.y' );
   const theReducedChiSquaredStatisticIsString = require( 'string!CURVE_FITTING/theReducedChiSquaredStatisticIs' );
 
   // constants
@@ -66,16 +66,13 @@ define( require => {
           new HBox( {
             children: [
               new HStrut( 20 ),
-
-              // Each translatable string is padded by an invisible starting and ending character.
-              // These characters are usually for determining if the string is LTR or RTL.
-              // These padding characters break KaTeX parsing and need to be removed.
-              // The invisible characters are removed by the split calls, and the string is regenerated with the join calls.
-              // The embedded strings should only be symbols/single characters anyways, so stripping direction
-              //  characters shouldn't be too harmful.
               new FormulaNode(
-                `${symbolChiString}_r^2 = \\frac{1}{${symbolNString} - ${symbolFString}} \\sum_i \\frac{[${symbolYString}(${symbolXString}_i) - ${symbolYString}_i]^2}{\\sigma_i^2}`
-                  .split('\u202a').join('').split('\u202b').join('').split('\u202c').join('')
+
+                // the below 3 lines are commented out because of https://github.com/phetsims/curve-fitting/issues/132
+                // StringUtils.stripEmbeddingMarks(
+                //   `${symbolChiString}_r^2 = \\frac{1}{${symbolNString} - ${symbolFString}} \\sum_i \\frac{[${symbolYString}(${symbolXString}_i) - ${symbolYString}_i]^2}{\\sigma_i^2}`
+                // )
+                'X_r^2 = \\frac{1}{N - f} \\sum_i \\frac{[y(x_i) - y_i]^2}{\\sigma_i^2}'
               )
             ],
             maxWidth: 800
