@@ -69,8 +69,11 @@ define( require => {
     // size of the graph node in model coordinates (including axes and labels)
     GRAPH_NODE_MODEL_BOUNDS: new Bounds2( -12, -12, 12, 12 ),
 
+    // bounds for the graph axes
+    GRAPH_AXES_BOUNDS: new Bounds2( -11, -11, 11, 11 ),
+
     // clipping bounds for the drawn curve in model coordinates
-    CURVE_CLIP_BOUNDS: new Bounds2( -11, -11, 11, 11 ),
+    CURVE_CLIP_BOUNDS: new Bounds2( -10, -10, 10, 10 ),
 
     //size of the graph in model coordinates (just the white background)
     GRAPH_BACKGROUND_MODEL_BOUNDS: new Bounds2( -10, -10, 10, 10 )

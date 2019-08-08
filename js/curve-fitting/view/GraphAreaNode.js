@@ -28,7 +28,7 @@ define( require => {
 
   // constants
   const AXIS_OPTIONS = { lineWidth: 1, stroke: 'black' };
-  const GRAPH_BACKGROUND_OPTIONS = { fill: 'white', lineWidth: 2, stroke: 'rgb( 214, 223, 226 )' };
+  const GRAPH_BACKGROUND_OPTIONS = { fill: 'white', stroke: 'rgb( 214, 223, 226 )' };
 
   // information regarding ticks and axes; all distances and lengths are in model coordinates
   const MINOR_TICK_LENGTH = 0.3;
@@ -61,7 +61,7 @@ define( require => {
       const graphBounds = CurveFittingConstants.GRAPH_NODE_MODEL_BOUNDS;
 
       // convenience variable, curve bounds in model coordinates
-      const curveBounds = CurveFittingConstants.CURVE_CLIP_BOUNDS;
+      const axesBounds = CurveFittingConstants.GRAPH_AXES_BOUNDS;
 
       // create and add white background
       this.addChild( new Rectangle.bounds(
@@ -71,8 +71,8 @@ define( require => {
 
       // axes
       const axisShape = new Shape();
-      axisShape.moveTo( curveBounds.minX, 0 ).horizontalLineTo( curveBounds.maxX );
-      axisShape.moveTo( 0, curveBounds.minY ).verticalLineTo( curveBounds.maxY );
+      axisShape.moveTo( axesBounds.minX, 0 ).horizontalLineTo( axesBounds.maxX );
+      axisShape.moveTo( 0, axesBounds.minY ).verticalLineTo( axesBounds.maxY );
 
       // ticks: assumes that backgroundBounds is a square
       for ( let i = backgroundBounds.minX; i <= backgroundBounds.maxX; i++ ) {
@@ -105,27 +105,27 @@ define( require => {
       this.addChild( new Text( symbolXString, {
         font: AXIS_LABEL_FONT,
         centerY: modelViewTransform.modelToViewY( 0 ),
-        left: modelViewTransform.modelToViewX( curveBounds.maxX + AXIS_LABEL_DISTANCE_FROM_AXES )
+        left: modelViewTransform.modelToViewX( axesBounds.maxX + AXIS_LABEL_DISTANCE_FROM_AXES )
       } ) );
       this.addChild( new Text( symbolYString, {
         font: AXIS_LABEL_FONT,
         centerX: modelViewTransform.modelToViewX( 0 ),
-        bottom: modelViewTransform.modelToViewY( curveBounds.maxY + AXIS_LABEL_DISTANCE_FROM_AXES )
+        bottom: modelViewTransform.modelToViewY( axesBounds.maxY + AXIS_LABEL_DISTANCE_FROM_AXES )
       } ) );
 
       // axis arrows
       this.addChild( new ArrowNode(
-        modelViewTransform.modelToViewX( curveBounds.minX ),
+        modelViewTransform.modelToViewX( axesBounds.minX ),
         modelViewTransform.modelToViewY( 0 ),
-        modelViewTransform.modelToViewX( curveBounds.maxX ),
+        modelViewTransform.modelToViewX( axesBounds.maxX ),
         modelViewTransform.modelToViewY( 0 ),
         AXIS_ARROW_OPTIONS
       ) );
       this.addChild( new ArrowNode(
         modelViewTransform.modelToViewX( 0 ),
-        modelViewTransform.modelToViewY( curveBounds.minY ),
+        modelViewTransform.modelToViewY( axesBounds.minY ),
         modelViewTransform.modelToViewX( 0 ),
-        modelViewTransform.modelToViewY( curveBounds.maxY ),
+        modelViewTransform.modelToViewY( axesBounds.maxY ),
         AXIS_ARROW_OPTIONS
       ) );
 
