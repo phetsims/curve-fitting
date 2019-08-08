@@ -77,7 +77,7 @@ define( require => {
       // ticks: assumes that backgroundBounds is a square
       for ( let i = backgroundBounds.minX; i <= backgroundBounds.maxX; i++ ) {
         let tickLength = MINOR_TICK_LENGTH;
-        if ( MAJOR_TICK_LOCATIONS.includes( i ) ) {
+        if ( _.includes( MAJOR_TICK_LOCATIONS, i ) ) {
           tickLength = MAJOR_TICK_LENGTH;
         }
         axisShape.moveTo( i, -tickLength / 2 );
