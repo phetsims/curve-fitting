@@ -53,7 +53,7 @@ define( require => {
   };
   const VALUE_BACKGROUND_PADDING = 2;
   const DISTANCE_BETWEEN_COORDINATE_AND_DELTA = 1;
-  const ERROR_BAR_DILATION_X = 14;
+  const ERROR_BAR_DILATION_X = 11;
   const ERROR_BAR_DILATION_Y = 2;
   const ERROR_BAR_BOUNDS = new Bounds2( -13, 0, 13, 2 );
   const ERROR_BAR_OPTIONS = {
