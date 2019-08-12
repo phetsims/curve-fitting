@@ -53,13 +53,13 @@ define( require => {
   };
   const VALUE_BACKGROUND_PADDING = 2;
   const DISTANCE_BETWEEN_COORDINATE_AND_DELTA = 1;
-  const ERROR_BAR_DILATION_X = 11;
+  const ERROR_BAR_DILATION_X = 14;
   const ERROR_BAR_DILATION_Y = 2;
-  const ERROR_BAR_BOUNDS = new Bounds2( -13, 0, 13, 2 );
+  const ERROR_BAR_BOUNDS = new Bounds2( -10, 0, 10, 2 );
   const ERROR_BAR_OPTIONS = {
     fill: CurveFittingConstants.BLUE_COLOR
   };
-  const HALO_BOUNDS = new Bounds2( -15, -2, 15, 4 );
+  const HALO_BOUNDS = new Bounds2( -12, -2, 12, 4 );
   const POINT_COLOR = Color.toColor( CurveFittingConstants.POINT_FILL );
   const CIRCLE_VIEW_OPTIONS = {
     fill: POINT_COLOR,
