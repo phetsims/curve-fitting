@@ -179,11 +179,11 @@ define( require => {
           residualsVisibleProperty.reset();
           valuesVisibleProperty.reset();
           curveVisibleProperty.reset();
-        }
+        },
+        scale: 0.75,
+        right: controlPanels.right,
+        bottom: this.layoutBounds.bottom - 15
       } );
-      resetAllButton.scale( 0.75 );
-      resetAllButton.right = controlPanels.right;
-      resetAllButton.bottom = this.layoutBounds.bottom - 15;
 
       // add the children to the scene graph
       this.addChild( deviationsAccordionBox );
