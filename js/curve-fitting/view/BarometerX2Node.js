@@ -172,8 +172,10 @@ define( require => {
     }
     else {
 
-      // logarithmic scaling for X^2 values greater than 1, but returned ratio is capped at 1
-      return Math.min( 1, ( 1 + Math.log( value ) ) / ( 1 + Math.log( MAX_CHI_SQUARED_VALUE ) ) );
+      // logarithmic scaling for X^2 values greater than 1, but returned ratio is capped at 1.023
+      // 1.023 is cap because bar can extend past top of barometer (see #136)
+      // 1.023 was empirically determined to line up with arrow base
+      return Math.min( 1.023, ( 1 + Math.log( value ) ) / ( 1 + Math.log( MAX_CHI_SQUARED_VALUE ) ) );
     }
   }
 
