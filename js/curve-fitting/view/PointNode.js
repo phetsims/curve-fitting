@@ -369,7 +369,7 @@ define( require => {
       circleView.addInputListener( new ButtonListener( {
         up: () => { haloPointNode.visible = false; },
         down: () => { haloPointNode.visible = true; },
-        over: () => { haloPointNode.visible = currentlyInteractingPoints.length === 0; }
+        over: () => { haloPointNode.visible = currentlyInteractingPoints.length === 0 || _.includes( currentlyInteractingPoints, point ); }
       } ) );
 
       /**
