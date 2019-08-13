@@ -84,6 +84,7 @@ define( require => {
      * @param {Point} point - Model for single point
      * @param {function} bumpOutFunction - a function that bumps this point out of invalid locations (see #131)
      * @param {Point[]} currentlyInteractingPoints - an array of points that are being interacted with currently
+     *  is used to determine when points should be displaying their halos (see #133)
      * @param {Property.<boolean>} residualsVisibleProperty
      * @param {Property.<boolean>} valuesVisibleProperty
      * @param {ModelViewTransform2} modelViewTransform
@@ -142,6 +143,7 @@ define( require => {
       circleView.mouseArea = circleView.bounds.dilated( 5 );
       this.addChild( circleView );
 
+      // utility functions that record this point in the currentlyInteractingPoints array as being interacted with or not
       const addPointAsCurrentlyInteracting = () => {
         if ( !_.includes( currentlyInteractingPoints, point ) ) {
           currentlyInteractingPoints.push( point );

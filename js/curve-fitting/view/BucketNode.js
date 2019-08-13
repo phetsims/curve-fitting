@@ -92,6 +92,7 @@ define( require => {
       const bucketHoleNode = new BucketHole( bucket, modelViewTransform );
 
       // an array that records which points are being interacted with currently
+      // used by points to determine when they should display their halos (see #133)
       const currentlyInteractingPoints = [];
 
       /**
