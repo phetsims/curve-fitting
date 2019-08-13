@@ -4,6 +4,7 @@
  * Bucket node with points in 'Curve Fitting' simulation.
  *
  * @author Andrey Zelenkov (Mlearner)
+ * @author Saurabh Totey
  */
 define( require => {
   'use strict';
@@ -90,6 +91,9 @@ define( require => {
       // back of the bucket
       const bucketHoleNode = new BucketHole( bucket, modelViewTransform );
 
+      // an array that records which points are being interacted with currently
+      const currentlyInteractingPoints = [];
+
       /**
        * creates a drag listener that adds a point to the model
        * @returns {DragListener}
@@ -112,6 +116,8 @@ define( require => {
 
             // add the model point to the observable array in model curve
             points.add( point );
+
+            currentlyInteractingPoints.push( point );
           },
 
           drag: event => {
@@ -127,6 +133,7 @@ define( require => {
                 Util.toFixedNumber( point.positionProperty.value.y, 0 )
               );
             }
+            currentlyInteractingPoints.splice( currentlyInteractingPoints.indexOf( point ), 1 );
             point.draggingProperty.value = false;
             point = null;
           }
@@ -157,7 +164,7 @@ define( require => {
 
       // handle the coming and going of points
       points.addItemAddedListener( addedPoint => {
-        const pointNode = new PointNode( addedPoint, bumpOutFunction, residualsVisibleProperty, valuesVisibleProperty, modelViewTransform );
+        const pointNode = new PointNode( addedPoint, bumpOutFunction, currentlyInteractingPoints, residualsVisibleProperty, valuesVisibleProperty, modelViewTransform );
         this.addChild( pointNode );
 
         const removalListener = removedPoint => {

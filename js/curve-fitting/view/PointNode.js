@@ -83,12 +83,13 @@ define( require => {
     /**
      * @param {Point} point - Model for single point
      * @param {function} bumpOutFunction - a function that bumps this point out of invalid locations (see #131)
+     * @param {Point[]} currentlyInteractingPoints - an array of points that are being interacted with currently
      * @param {Property.<boolean>} residualsVisibleProperty
      * @param {Property.<boolean>} valuesVisibleProperty
      * @param {ModelViewTransform2} modelViewTransform
      * @param {Object} [options] for graph node.
      */
-    constructor( point, bumpOutFunction, residualsVisibleProperty, valuesVisibleProperty, modelViewTransform, options ) {
+    constructor( point, bumpOutFunction, currentlyInteractingPoints, residualsVisibleProperty, valuesVisibleProperty, modelViewTransform, options ) {
 
       super( _.extend( { cursor: 'pointer' }, options ) );
 
@@ -128,8 +129,8 @@ define( require => {
           errorBarBottomHaloRectangle.visible = true;
         },
         over: () => {
-          errorBarTopHaloRectangle.visible = true;
-          errorBarBottomHaloRectangle.visible = true;
+          errorBarTopHaloRectangle.visible = currentlyInteractingPoints.length === 0;
+          errorBarBottomHaloRectangle.visible = currentlyInteractingPoints.length === 0;
         }
       } );
       errorBarBottomRectangle.addInputListener( barHaloHandler );
@@ -140,6 +141,17 @@ define( require => {
       circleView.touchArea = circleView.bounds.dilated( 5 );
       circleView.mouseArea = circleView.bounds.dilated( 5 );
       this.addChild( circleView );
+
+      const addPointAsCurrentlyInteracting = () => {
+        if ( !_.includes( currentlyInteractingPoints, point ) ) {
+          currentlyInteractingPoints.push( point );
+        }
+      };
+      const removePointFromCurrentlyInteracting = () => {
+        if ( _.includes( currentlyInteractingPoints, point ) ) {
+          currentlyInteractingPoints.splice( currentlyInteractingPoints.indexOf( point ), 1 );
+        }
+      };
 
       // variables that allow for the top bar to be dragged in either direction when it covers the bottom bar; see #127
       // initialTopBarDragLocation is null unless it is relevant for choosing a dragging direction
@@ -159,6 +171,8 @@ define( require => {
           if ( point.deltaProperty.value === MIN_DELTA ) {
             initialTopBarDragLocation = event.pointer.point;
           }
+
+          addPointAsCurrentlyInteracting();
         },
         drag: event => {
           if ( !isDraggingDeltaTop ) {
@@ -188,10 +202,14 @@ define( require => {
           isDraggingDeltaTop = false;
           shouldTopBarActLikeBottomBar = false;
           initialTopBarDragLocation = null;
+          removePointFromCurrentlyInteracting();
         }
       } ) );
       errorBarBottomRectangle.addInputListener( new DragListener( {
-        start: () => { isDraggingDeltaBottom = !isDraggingDeltaTop; },
+        start: () => {
+          isDraggingDeltaBottom = !isDraggingDeltaTop;
+          addPointAsCurrentlyInteracting();
+        },
         drag: event => {
           if ( !isDraggingDeltaBottom ) {
             return;
@@ -202,7 +220,10 @@ define( require => {
             MAX_DELTA
           );
         },
-        end: () => { isDraggingDeltaBottom = false; }
+        end: () => {
+          isDraggingDeltaBottom = false;
+          removePointFromCurrentlyInteracting();
+        }
       } ) );
 
       // value text label
@@ -224,6 +245,7 @@ define( require => {
         start: () => {
           point.draggingProperty.value = true;
           this.moveToFront();
+          addPointAsCurrentlyInteracting();
         },
         drag: event => {
           if ( !point.draggingProperty.value ) {
@@ -240,6 +262,7 @@ define( require => {
               Util.toFixedNumber( point.positionProperty.value.y, 0 )
             );
           }
+          removePointFromCurrentlyInteracting();
         }
       } ) );
 
@@ -346,7 +369,7 @@ define( require => {
       circleView.addInputListener( new ButtonListener( {
         up: () => { haloPointNode.visible = false; },
         down: () => { haloPointNode.visible = true; },
-        over: () => { haloPointNode.visible = true; }
+        over: () => { haloPointNode.visible = currentlyInteractingPoints.length === 0; }
       } ) );
 
       /**
