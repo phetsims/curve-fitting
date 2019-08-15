@@ -37,7 +37,7 @@ define( require => {
   const TICK_LABEL_FONT = new PhetFont( 12 );
   const TICK_LABEL_DISTANCE_FROM_AXES = 0.5;
   const AXIS_LABEL_DISTANCE_FROM_AXES = 0.2;
-  const AXIS_LABEL_FONT = new MathSymbolFont( { size: 12, weight: 'bold' } );
+  const AXIS_LABEL_FONT = new MathSymbolFont( { size: 14, weight: 'bold' } );
   const AXIS_ARROW_OPTIONS = {
     doubleHead: true,
     tailWidth: 0,
