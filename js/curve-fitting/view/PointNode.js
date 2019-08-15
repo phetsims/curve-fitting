@@ -180,6 +180,11 @@ define( require => {
           if ( !isDraggingDeltaTop ) {
             return;
           }
+
+          // necessary because button listener doesn't activate for touch snag
+          errorBarTopHaloRectangle.visible = true;
+          errorBarBottomHaloRectangle.visible = true;
+
           let newUnclampedDelta = modelViewTransform.viewToModelDeltaY( this.globalToLocalPoint( event.pointer.point ).y - circleView.centerY );
 
           // if initialTopBarDragLocation has a value, that means that it is intentionally so because the user can choose a drag direction
@@ -205,6 +210,10 @@ define( require => {
           shouldTopBarActLikeBottomBar = false;
           initialTopBarDragLocation = null;
           removePointFromCurrentlyInteracting();
+
+          // necessary because button listener doesn't activate for touch snag
+          errorBarTopHaloRectangle.visible = false;
+          errorBarBottomHaloRectangle.visible = false;
         }
       } ) );
       errorBarBottomRectangle.addInputListener( new DragListener( {
@@ -216,6 +225,11 @@ define( require => {
           if ( !isDraggingDeltaBottom ) {
             return;
           }
+
+          // necessary because button listener doesn't activate for touch snag
+          errorBarTopHaloRectangle.visible = true;
+          errorBarBottomHaloRectangle.visible = true;
+
           point.deltaProperty.value = Util.clamp(
             modelViewTransform.viewToModelDeltaY( circleView.centerY - this.globalToLocalPoint( event.pointer.point ).y ),
             MIN_DELTA,
@@ -225,6 +239,10 @@ define( require => {
         end: () => {
           isDraggingDeltaBottom = false;
           removePointFromCurrentlyInteracting();
+
+          // necessary because button listener doesn't activate for touch snag
+          errorBarTopHaloRectangle.visible = false;
+          errorBarBottomHaloRectangle.visible = false;
         }
       } ) );
 
