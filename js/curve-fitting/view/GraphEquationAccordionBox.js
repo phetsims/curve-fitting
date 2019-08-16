@@ -76,8 +76,7 @@ define( require => {
 
       const content = new HBox( {
         spacing: 5,
-        children: [ expandCollapseButton, titleNode ],
-        align: 'bottom'
+        children: [ expandCollapseButton, titleNode ]
       } );
 
       super( content, _.extend( PANEL_OPTIONS, options ) );
