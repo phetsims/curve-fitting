@@ -93,8 +93,7 @@ define( require => {
       // create the equation node (accordion box) in the upper left corner of the graph
       const equationBoxLeft = modelViewTransform.modelToViewX( -10 ) + 10;
       const graphEquationAccordionBox = new GraphEquationAccordionBox(
-        () => model.curve.coefficients,
-        model.curve.updateCurveEmitter,
+        model.curve,
         model.orderProperty,
         equationPanelExpandedProperty,
         curveVisibleProperty,

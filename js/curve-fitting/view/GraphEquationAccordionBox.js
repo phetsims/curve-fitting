@@ -51,14 +51,13 @@ define( require => {
   class GraphEquationAccordionBox extends Panel {
 
     /**
-     * @param {function: number[]} getCoefficientArray - returns an array of coefficient of the polynomial curve sorted in ascending order
-     * @param {Emitter} updateCurveEmitter
+     * @param {Curve} curve
      * @param {Property.<number>} orderProperty - order of the polynomial:(1,2,3)
      * @param {Property.<boolean>} equationPanelExpandedProperty
      * @param {Property.<boolean>} curveVisibleProperty
      * @param {Object} [options] for slider node.
      */
-    constructor( getCoefficientArray, updateCurveEmitter, orderProperty, equationPanelExpandedProperty, curveVisibleProperty, options ) {
+    constructor( curve, orderProperty, equationPanelExpandedProperty, curveVisibleProperty, options ) {
 
       options = _.extend( {
         equationNodeMaxWidth: 250
@@ -94,16 +93,8 @@ define( require => {
         maxWidth: options.equationNodeMaxWidth
       } );
 
-      // toggle the content of the panel, based on the expansion status
-      equationPanelExpandedProperty.link( isEquationPanelExpanded => {
-        if ( isEquationPanelExpanded ) {
-          content.children = [ expandCollapseButton, equationNode ];
-        }
-        else {
-          content.children = [ expandCollapseButton, titleNode ];
-        }
-        this.updatedEmitter.emit();
-      } );
+      // visible node when panel is expanded but there is no equation
+      const undefinedEquationText = new Text( 'undefined' );
 
       /**
        * This method rounds the given number to the given amount of digits
@@ -138,23 +129,34 @@ define( require => {
       };
 
       /**
-       * update all the coefficients
+       * updates all the coefficients and panel content
        */
-      const updateCoefficients = () => {
+      const updateContent = () => {
+
+        this.visible = curveVisibleProperty.value;
+
         const coefficientStrings = _.flatMap(
-          getCoefficientArray(),
+          curve.coefficients,
           ( coefficient, index ) => getRoundedParamterStrings( coefficient, MAX_DIGITS[ index ] )
         );
         equationNode.setCoefficients( coefficientStrings );
+
+        if ( equationPanelExpandedProperty.value ) {
+          content.children = [ expandCollapseButton, curve.isCurvePresent() ? equationNode : undefinedEquationText ];
+        }
+        else {
+          content.children = [ expandCollapseButton, titleNode ];
+        }
+
         this.updatedEmitter.emit();
+
       };
 
       // add observers which don't need to be disposed because this is present for the lifetime of the simulation
-      curveVisibleProperty.linkAttribute( this, 'visible' );
-      curveVisibleProperty.link( updateCoefficients );
-      equationPanelExpandedProperty.link( updateCoefficients );
-      updateCurveEmitter.addListener( updateCoefficients );
-      orderProperty.link( () => { this.updatedEmitter.emit(); } );
+      curveVisibleProperty.link( updateContent );
+      equationPanelExpandedProperty.link( updateContent );
+      curve.updateCurveEmitter.addListener( updateContent );
+      orderProperty.link( updateContent );
     }
 
   }
