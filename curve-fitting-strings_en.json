@@ -23,6 +23,9 @@
   "linear": {
     "value": "Linear"
   },
+  "undefined": {
+    "value": "undefined"
+  },
   "pattern.fEqualsNumberOfParameters": {
     "value": "{{fSymbol}} = number of parameters in fit (e.g. {{fSymbol}} = 4, for a cubic fit)"
   },

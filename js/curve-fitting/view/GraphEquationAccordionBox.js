@@ -24,6 +24,7 @@ define( require => {
 
   // strings
   const equationString = require( 'string!CURVE_FITTING/equation' );
+  const undefinedString = require( 'string!CURVE_FITTING/undefined' );
 
   // constants
   const BUTTON_LENGTH = 16;
@@ -94,7 +95,10 @@ define( require => {
       } );
 
       // visible node when panel is expanded but there is no equation
-      const undefinedEquationText = new Text( 'undefined' );
+      const undefinedEquationText = new Text( undefinedString, {
+        size: 14,
+        maxWidth: options.equationNodeMaxWidth
+      } );
 
       /**
        * This method rounds the given number to the given amount of digits
