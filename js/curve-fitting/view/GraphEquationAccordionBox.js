@@ -76,7 +76,8 @@ define( require => {
 
       const content = new HBox( {
         spacing: 5,
-        children: [ expandCollapseButton, titleNode ]
+        children: [ expandCollapseButton, titleNode ],
+        align: 'bottom'
       } );
 
       super( content, _.extend( PANEL_OPTIONS, options ) );
@@ -96,7 +97,7 @@ define( require => {
 
       // visible node when panel is expanded but there is no equation
       const undefinedEquationText = new Text( undefinedString, {
-        size: 14,
+        font: new PhetFont( 12 ),
         maxWidth: options.equationNodeMaxWidth
       } );
 
