@@ -67,9 +67,7 @@ define( require => {
             children: [
               new HStrut( 20 ),
               new FormulaNode(
-                StringUtils.stripEmbeddingMarks(
-                  `${symbolChiString}_r^2 = \\frac{1}{${symbolNString} - ${symbolFString}} \\sum_i \\frac{[${symbolYString}(${symbolXString}_i) - ${symbolYString}_i]^2}{\\sigma_i^2}`
-                )
+                `${symbolChiString}_r^2 = \\frac{1}{${symbolNString} - ${symbolFString}} \\sum_i \\frac{[${symbolYString}(${symbolXString}_i) - ${symbolYString}_i]^2}{\\sigma_i^2}`
               )
             ],
             maxWidth: 800
