@@ -26,16 +26,16 @@
   "undefined": {
     "value": "undefined"
   },
-  "pattern.fEqualsNumberOfParameters": {
+  "fEqualsNumberOfParametersPattern": {
     "value": "{{fSymbol}} = number of parameters in fit (e.g. {{fSymbol}} = 4, for a cubic fit)"
   },
-  "pattern.nEqualsNumberOfDataPoints": {
+  "nEqualsNumberOfDataPointsPattern": {
     "value": "{{nSymbol}} = number of data points"
   },
-  "pattern.deltaEquals": {
+  "deltaEqualsPattern": {
     "value": "D<sub>y</sub> = {0}"
   },
-  "pattern.pointCoordinates": {
+  "pointCoordinatesPattern": {
     "value": "({0}, {1})"
   },
   "theReducedChiSquaredStatisticIs": {

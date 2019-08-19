@@ -23,8 +23,8 @@ define( require => {
   const VBox = require( 'SCENERY/nodes/VBox' );
 
   // strings
-  const patternFEqualsNumberOfParametersString = require( 'string!CURVE_FITTING/pattern.fEqualsNumberOfParameters' );
-  const patternNEqualsNumberOfDataPointsString = require( 'string!CURVE_FITTING/pattern.nEqualsNumberOfDataPoints' );
+  const fEqualsNumberOfParametersPatternString = require( 'string!CURVE_FITTING/fEqualsNumberOfParametersPattern' );
+  const nEqualsNumberOfDataPointsPatternString = require( 'string!CURVE_FITTING/nEqualsNumberOfDataPointsPattern' );
   const chiSymbolString = require( 'string!CURVE_FITTING/chiSymbol' );
   const fSymbolString = require( 'string!CURVE_FITTING/fSymbol' );
   const nSymbolString = require( 'string!CURVE_FITTING/nSymbol' );
@@ -45,14 +45,14 @@ define( require => {
     constructor() {
 
       const numberOfDataPointsNode = new RichText(
-        StringUtils.fillIn( patternNEqualsNumberOfDataPointsString, {
+        StringUtils.fillIn( nEqualsNumberOfDataPointsPatternString, {
           nSymbol: `<i style='font-family:${DIALOG_MATH_FONT.family}'>${nSymbolString}</i>`
         } ),
         { font: DIALOG_PLAIN_FONT, maxWidth: 500 }
       );
 
       const numberOfParametersNode = new RichText(
-        StringUtils.fillIn( patternFEqualsNumberOfParametersString, {
+        StringUtils.fillIn( fEqualsNumberOfParametersPatternString, {
           fSymbol: `<i style='font-family:${DIALOG_MATH_FONT.family}'>${fSymbolString}</i>`
         } ),
         { font: DIALOG_PLAIN_FONT, maxWidth: 500 }
