@@ -20,12 +20,12 @@ define( require => {
   const VStrut = require( 'SCENERY/nodes/VStrut' );
 
   // strings
-  const symbolAString = require( 'string!CURVE_FITTING/symbol.a' );
-  const symbolBString = require( 'string!CURVE_FITTING/symbol.b' );
-  const symbolCString = require( 'string!CURVE_FITTING/symbol.c' );
-  const symbolDString = require( 'string!CURVE_FITTING/symbol.d' );
-  const symbolXString = require( 'string!CURVE_FITTING/symbol.x' );
-  const symbolYString = require( 'string!CURVE_FITTING/symbol.y' );
+  const aSymbolString = require( 'string!CURVE_FITTING/aSymbol' );
+  const bSymbolString = require( 'string!CURVE_FITTING/bSymbol' );
+  const cSymbolString = require( 'string!CURVE_FITTING/cSymbol' );
+  const dSymbolString = require( 'string!CURVE_FITTING/dSymbol' );
+  const xSymbolString = require( 'string!CURVE_FITTING/xSymbol' );
+  const ySymbolString = require( 'string!CURVE_FITTING/ySymbol' );
 
   // constants
   const NORMAL_FONT = new PhetFont( 12 );
@@ -61,7 +61,7 @@ define( require => {
       // @private {Array.<RichText>}
       this.xVariableTextNodes = [];
 
-      const mathFontXString = `<i style='font-family:${MATH_FONT.family}'>${symbolXString}</i>`;
+      const mathFontXString = `<i style='font-family:${MATH_FONT.family}'>${xSymbolString}</i>`;
 
       // initializes this.signTextNodes, this.coefficientTextNodes, and this.xVariableTextNodes
       for ( let i = 0; i <= CurveFittingConstants.MAX_ORDER_OF_FIT; i++ ) {
@@ -82,7 +82,7 @@ define( require => {
       this.allPotentialChildren = [];
 
       // initializes this.allPotentialChildren; this.allPotentialChildren SHOULD NOT CHANGE after this
-      const yNode = new Text( `${symbolYString} ${MathSymbols.EQUAL_TO} `, options.yEqualsTextOptions );
+      const yNode = new Text( `${ySymbolString} ${MathSymbols.EQUAL_TO} `, options.yEqualsTextOptions );
       this.allPotentialChildren.push( yNode );
       for ( let i = CurveFittingConstants.MAX_ORDER_OF_FIT; i >= 0; i-- ) {
         this.allPotentialChildren.push( this.signTextNodes[ i ] );
@@ -100,7 +100,7 @@ define( require => {
 
       // makes an array of symbols as the initial coefficients; '+' signs are inserted before each coefficient in the array
       const initialCoefficients = _.flatMap(
-        [ symbolDString, symbolCString, symbolBString, symbolAString ],
+        [ dSymbolString, cSymbolString, bSymbolString, aSymbolString ],
         coefficient => [ MathSymbols.PLUS, coefficient ]
       );
       this.setCoefficients( initialCoefficients );

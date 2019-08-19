@@ -39,8 +39,8 @@ define( require => {
   const LABEL_TEXT_OPTIONS = { font: TEXT_FONT, maxWidth: 25 };
 
   // strings
-  const symbolChiString = require( 'string!CURVE_FITTING/symbol.chi' );
-  const symbolRString = require( 'string!CURVE_FITTING/symbol.r' );
+  const chiSymbolString = require( 'string!CURVE_FITTING/chiSymbol' );
+  const rSymbolString = require( 'string!CURVE_FITTING/rSymbol' );
 
   class DeviationsAccordionBox extends AccordionBox {
 
@@ -107,8 +107,8 @@ define( require => {
         touchAreaYDilation: 8
       } );
 
-      const mathFontChiString = `<i style='font-family:${MATH_FONT.family}'>${symbolChiString}</i>`;
-      const mathFontRString = `<i style='font-family:${MATH_FONT.family}'>${symbolRString}</i>`;
+      const mathFontChiString = `<i style='font-family:${MATH_FONT.family}'>${chiSymbolString}</i>`;
+      const mathFontRString = `<i style='font-family:${MATH_FONT.family}'>${rSymbolString}</i>`;
 
       // X^2 value
       const chiSquaredValueText = new Text( '0.00', {

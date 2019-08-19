@@ -23,8 +23,8 @@ define( require => {
   const Text = require( 'SCENERY/nodes/Text' );
 
   // strings
-  const symbolXString = require( 'string!CURVE_FITTING/symbol.x' );
-  const symbolYString = require( 'string!CURVE_FITTING/symbol.y' );
+  const xSymbolString = require( 'string!CURVE_FITTING/xSymbol' );
+  const ySymbolString = require( 'string!CURVE_FITTING/ySymbol' );
 
   // constants
   const AXIS_OPTIONS = { lineWidth: 1, stroke: 'black' };
@@ -102,12 +102,12 @@ define( require => {
       } );
 
       // axis labels
-      this.addChild( new Text( symbolXString, {
+      this.addChild( new Text( xSymbolString, {
         font: AXIS_LABEL_FONT,
         centerY: modelViewTransform.modelToViewY( 0 ),
         left: modelViewTransform.modelToViewX( axesBounds.maxX + AXIS_LABEL_DISTANCE_FROM_AXES )
       } ) );
-      this.addChild( new Text( symbolYString, {
+      this.addChild( new Text( ySymbolString, {
         font: AXIS_LABEL_FONT,
         centerX: modelViewTransform.modelToViewX( 0 ),
         bottom: modelViewTransform.modelToViewY( axesBounds.maxY + AXIS_LABEL_DISTANCE_FROM_AXES )

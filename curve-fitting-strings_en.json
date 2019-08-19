@@ -50,34 +50,34 @@
   "values": {
     "value": "Values"
   },
-  "symbol.a": {
+  "aSymbol": {
     "value": "a"
   },
-  "symbol.b": {
+  "bSymbol": {
     "value": "b"
   },
-  "symbol.c": {
+  "cSymbol": {
     "value": "c"
   },
-  "symbol.d": {
+  "dSymbol": {
     "value": "d"
   },
-  "symbol.f": {
+  "fSymbol": {
     "value": "f"
   },
-  "symbol.N": {
+  "nSymbol": {
     "value": "N"
   },
-  "symbol.x": {
+  "xSymbol": {
     "value": "x"
   },
-  "symbol.y": {
+  "ySymbol": {
     "value": "y"
   },
-  "symbol.r": {
+  "rSymbol": {
     "value": "r"
   },
-  "symbol.chi": {
+  "chiSymbol": {
     "value": "X"
   }
 }

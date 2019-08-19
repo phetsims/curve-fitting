@@ -25,11 +25,11 @@ define( require => {
   // strings
   const patternFEqualsNumberOfParametersString = require( 'string!CURVE_FITTING/pattern.fEqualsNumberOfParameters' );
   const patternNEqualsNumberOfDataPointsString = require( 'string!CURVE_FITTING/pattern.nEqualsNumberOfDataPoints' );
-  const symbolChiString = require( 'string!CURVE_FITTING/symbol.chi' );
-  const symbolFString = require( 'string!CURVE_FITTING/symbol.f' );
-  const symbolNString = require( 'string!CURVE_FITTING/symbol.N' );
-  const symbolXString = require( 'string!CURVE_FITTING/symbol.x' );
-  const symbolYString = require( 'string!CURVE_FITTING/symbol.y' );
+  const chiSymbolString = require( 'string!CURVE_FITTING/chiSymbol' );
+  const fSymbolString = require( 'string!CURVE_FITTING/fSymbol' );
+  const nSymbolString = require( 'string!CURVE_FITTING/nSymbol' );
+  const xSymbolString = require( 'string!CURVE_FITTING/xSymbol' );
+  const ySymbolString = require( 'string!CURVE_FITTING/ySymbol' );
   const theReducedChiSquaredStatisticIsString = require( 'string!CURVE_FITTING/theReducedChiSquaredStatisticIs' );
 
   // constants
@@ -46,14 +46,14 @@ define( require => {
 
       const numberOfDataPointsNode = new RichText(
         StringUtils.fillIn( patternNEqualsNumberOfDataPointsString, {
-          nSymbol: `<i style='font-family:${DIALOG_MATH_FONT.family}'>${symbolNString}</i>`
+          nSymbol: `<i style='font-family:${DIALOG_MATH_FONT.family}'>${nSymbolString}</i>`
         } ),
         { font: DIALOG_PLAIN_FONT, maxWidth: 500 }
       );
 
       const numberOfParametersNode = new RichText(
         StringUtils.fillIn( patternFEqualsNumberOfParametersString, {
-          fSymbol: `<i style='font-family:${DIALOG_MATH_FONT.family}'>${symbolFString}</i>`
+          fSymbol: `<i style='font-family:${DIALOG_MATH_FONT.family}'>${fSymbolString}</i>`
         } ),
         { font: DIALOG_PLAIN_FONT, maxWidth: 500 }
       );
@@ -67,7 +67,7 @@ define( require => {
             children: [
               new HStrut( 20 ),
               new FormulaNode(
-                `${symbolChiString}_r^2 = \\frac{1}{${symbolNString} - ${symbolFString}} \\sum_i \\frac{[${symbolYString}(${symbolXString}_i) - ${symbolYString}_i]^2}{\\sigma_i^2}`
+                `${chiSymbolString}_r^2 = \\frac{1}{${nSymbolString} - ${fSymbolString}} \\sum_i \\frac{[${ySymbolString}(${xSymbolString}_i) - ${ySymbolString}_i]^2}{\\sigma_i^2}`
               )
             ],
             maxWidth: 800

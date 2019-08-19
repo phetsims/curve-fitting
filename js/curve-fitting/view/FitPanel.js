@@ -28,10 +28,10 @@ define( require => {
   // strings
   const adjustableFitString = require( 'string!CURVE_FITTING/adjustableFit' );
   const bestFitString = require( 'string!CURVE_FITTING/bestFit' );
-  const symbolAString = require( 'string!CURVE_FITTING/symbol.a' );
-  const symbolBString = require( 'string!CURVE_FITTING/symbol.b' );
-  const symbolCString = require( 'string!CURVE_FITTING/symbol.c' );
-  const symbolDString = require( 'string!CURVE_FITTING/symbol.d' );
+  const aSymbolString = require( 'string!CURVE_FITTING/aSymbol' );
+  const bSymbolString = require( 'string!CURVE_FITTING/bSymbol' );
+  const cSymbolString = require( 'string!CURVE_FITTING/cSymbol' );
+  const dSymbolString = require( 'string!CURVE_FITTING/dSymbol' );
 
   class FitPanel extends Panel {
 
@@ -91,22 +91,22 @@ define( require => {
       // attributes for four sliders in ASCENDING order of polynomial
       const slidersAttributes = [
         {
-          string: symbolDString,
+          string: dSymbolString,
           range: CurveFittingConstants.CONSTANT_RANGE,
           enabledProperty: new BooleanProperty( true )
         },
         {
-          string: symbolCString,
+          string: cSymbolString,
           range: CurveFittingConstants.LINEAR_RANGE,
           enabledProperty: new BooleanProperty( true )
         },
         {
-          string: symbolBString,
+          string: bSymbolString,
           range: CurveFittingConstants.QUADRATIC_RANGE,
           enabledProperty: new BooleanProperty( true )
         },
         {
-          string: symbolAString,
+          string: aSymbolString,
           range: CurveFittingConstants.CUBIC_RANGE,
           enabledProperty: new BooleanProperty( true )
         }
