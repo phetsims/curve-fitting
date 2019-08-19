@@ -112,7 +112,7 @@ define( require => {
 
       // delta text label
       const deltaTextLabel = new RichText(
-        StringUtils.format( deltaEqualsPatternString, Util.toFixed( point.deltaProperty.value, 1 ) ),
+        StringUtils.fillIn( deltaEqualsPatternString, { deltaValue: Util.toFixed( point.deltaProperty.value, 1 ) } ),
         VALUE_TEXT_OPTIONS
       );
       const deltaTextBackground = new Rectangle( 0, 0, 1, 1, DELTA_BACKGROUND_RECTANGLE_OPTIONS );
@@ -248,10 +248,12 @@ define( require => {
 
       // value text label
       const valueTextLabel = new Text(
-        StringUtils.format(
+        StringUtils.fillIn(
           pointCoordinatesPatternString,
-          Util.toFixed( point.positionProperty.value.x, 1 ),
-          Util.toFixed( point.positionProperty.value.y, 1 )
+          {
+            xCoordinate: Util.toFixed( point.positionProperty.value.x, 1 ),
+            yCoordinate: Util.toFixed( point.positionProperty.value.y, 1 )
+          }
         ),
         VALUE_TEXT_OPTIONS
       );
@@ -292,7 +294,10 @@ define( require => {
       function updateDelta() {
 
         // update text
-        deltaTextLabel.text = StringUtils.format( deltaEqualsPatternString, Util.toFixed( point.deltaProperty.value, 1 ) );
+        deltaTextLabel.text = StringUtils.fillIn(
+          deltaEqualsPatternString,
+          { deltaValue: Util.toFixed( point.deltaProperty.value, 1 ) }
+        );
 
         const lineHeight = modelViewTransform.modelToViewDeltaY( point.deltaProperty.value );
 
@@ -338,10 +343,12 @@ define( require => {
       function updateValue() {
 
         // update text
-        valueTextLabel.text = StringUtils.format(
+        valueTextLabel.text = StringUtils.fillIn(
           pointCoordinatesPatternString,
-          Util.toFixed( point.positionProperty.value.x, 1 ),
-          Util.toFixed( point.positionProperty.value.y, 1 )
+          {
+            xCoordinate: Util.toFixed( point.positionProperty.value.x, 1 ),
+            yCoordinate: Util.toFixed( point.positionProperty.value.y, 1 )
+          }
         );
 
         // update visibility

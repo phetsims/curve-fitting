@@ -33,10 +33,10 @@
     "value": "{{nSymbol}} = number of data points"
   },
   "deltaEqualsPattern": {
-    "value": "D<sub>y</sub> = {0}"
+    "value": "D<sub>y</sub> = {{deltaValue}}"
   },
   "pointCoordinatesPattern": {
-    "value": "({0}, {1})"
+    "value": "({{xCoordinate}}, {{yCoordinate}})"
   },
   "theReducedChiSquaredStatisticIs": {
     "value": "The reduced chi-squared statistic is:"
