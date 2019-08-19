@@ -117,38 +117,42 @@ define( require => {
     if ( chiSquaredValue < lowerBound ) {
       red = 0;
       green = 0;
-      blue = 255;
+      blue = 1;
     }
     else if ( chiSquaredValue >= lowerBound && chiSquaredValue < step4 ) {
       red = 0;
-      green = 255 * ( chiSquaredValue - lowerBound ) / ( step4 - lowerBound );
-      blue = 255;
+      green = ( chiSquaredValue - lowerBound ) / ( step4 - lowerBound );
+      blue = 1;
     }
     else if ( chiSquaredValue >= step4 && chiSquaredValue < step2 ) {
-      blue = 255 * ( step2 - chiSquaredValue ) / ( step2 - step4 );
-      green = 255;
+      blue = ( step2 - chiSquaredValue ) / ( step2 - step4 );
+      green = 1;
       red = 0;
     }
     else if ( chiSquaredValue >= step2 && chiSquaredValue <= step1 ) {
       red = 0;
-      green = 255;
+      green = 1;
       blue = 0;
     }
     else if ( chiSquaredValue > step1 && chiSquaredValue < step3 ) {
-      red = 255 * ( chiSquaredValue - step1 ) / ( step3 - step1 );
-      green = 255;
+      red = ( chiSquaredValue - step1 ) / ( step3 - step1 );
+      green = 1;
       blue = 0;
     }
     else if ( chiSquaredValue >= step3 && chiSquaredValue < upperBound ) {
-      red = 255;
-      green = 255 * ( upperBound - chiSquaredValue ) / ( upperBound - step3 );
+      red = 1;
+      green = ( upperBound - chiSquaredValue ) / ( upperBound - step3 );
       blue = 0;
     }
     else if ( chiSquaredValue >= upperBound ) {
-      red = 255;
+      red = 1;
       green = 0;
       blue = 0;
     }
+
+    red *= 255;
+    blue *= 255;
+    green *= 255;
 
     return `rgb( ${Util.roundSymmetric( red )}, ${Util.roundSymmetric( green )}, ${Util.roundSymmetric( blue )} )`;
   }
