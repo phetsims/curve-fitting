@@ -32,10 +32,10 @@
   "pattern.nEqualsNumberOfDataPoints": {
     "value": "{{nSymbol}} = number of data points"
   },
-  "pattern.delta.0valueDelta": {
+  "pattern.deltaEquals": {
     "value": "D<sub>y</sub> = {0}"
   },
-  "pattern.0valueX.1valueY": {
+  "pattern.pointCoordinates": {
     "value": "({0}, {1})"
   },
   "theReducedChiSquaredStatisticIs": {

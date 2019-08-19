@@ -29,8 +29,8 @@ define( require => {
   const Vector2 = require( 'DOT/Vector2' );
 
   // strings
-  const pattern0ValueX1ValueYString = require( 'string!CURVE_FITTING/pattern.0valueX.1valueY' );
-  const patternDelta0ValueDeltaString = require( 'string!CURVE_FITTING/pattern.delta.0valueDelta' );
+  const patternPointCoordinatesString = require( 'string!CURVE_FITTING/pattern.pointCoordinates' );
+  const patternDeltaEqualsString = require( 'string!CURVE_FITTING/pattern.deltaEquals' );
 
   // constants
   const MIN_DELTA = 1E-3; // arbitrarily small non-zero number for minimum delta: 0 causes divide by 0 errors
@@ -112,7 +112,7 @@ define( require => {
 
       // delta text label
       const deltaTextLabel = new RichText(
-        StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( point.deltaProperty.value, 1 ) ),
+        StringUtils.format( patternDeltaEqualsString, Util.toFixed( point.deltaProperty.value, 1 ) ),
         VALUE_TEXT_OPTIONS
       );
       const deltaTextBackground = new Rectangle( 0, 0, 1, 1, DELTA_BACKGROUND_RECTANGLE_OPTIONS );
@@ -249,7 +249,7 @@ define( require => {
       // value text label
       const valueTextLabel = new Text(
         StringUtils.format(
-          pattern0ValueX1ValueYString,
+          patternPointCoordinatesString,
           Util.toFixed( point.positionProperty.value.x, 1 ),
           Util.toFixed( point.positionProperty.value.y, 1 )
         ),
@@ -292,7 +292,7 @@ define( require => {
       function updateDelta() {
 
         // update text
-        deltaTextLabel.text = StringUtils.format( patternDelta0ValueDeltaString, Util.toFixed( point.deltaProperty.value, 1 ) );
+        deltaTextLabel.text = StringUtils.format( patternDeltaEqualsString, Util.toFixed( point.deltaProperty.value, 1 ) );
 
         const lineHeight = modelViewTransform.modelToViewDeltaY( point.deltaProperty.value );
 
@@ -339,7 +339,7 @@ define( require => {
 
         // update text
         valueTextLabel.text = StringUtils.format(
-          pattern0ValueX1ValueYString,
+          patternPointCoordinatesString,
           Util.toFixed( point.positionProperty.value.x, 1 ),
           Util.toFixed( point.positionProperty.value.y, 1 )
         );
