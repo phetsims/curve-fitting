@@ -51,6 +51,7 @@ define( require => {
     { x: 2, y: -2 },
     { x: 5, y: 2 },
     { x: 5, y: 9 },
+    { x: 10, y: -5 },
     { x: 8, y: -12 },
     { x: 18, y: 2 },
     { x: 23, y: 9 },
@@ -150,7 +151,8 @@ define( require => {
           stroke: CurveFittingConstants.POINT_STROKE,
           lineWidth: CurveFittingConstants.POINT_LINE_WIDTH,
           x: position.x,
-          y: position.y
+          y: position.y,
+          cursor: 'pointer'
         } );
         circle.addInputListener( createDragHandler() );
         pointsNode.addChild( circle );
