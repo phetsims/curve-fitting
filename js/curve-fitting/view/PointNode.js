@@ -90,7 +90,8 @@ define( require => {
      * @param {ModelViewTransform2} modelViewTransform
      * @param {Object} [options] for graph node.
      */
-    constructor( point, bumpOutFunction, currentlyInteractingPoints, residualsVisibleProperty, valuesVisibleProperty, modelViewTransform, options ) {
+    constructor( point, bumpOutFunction, currentlyInteractingPoints, residualsVisibleProperty, valuesVisibleProperty,
+                 modelViewTransform, options ) {
 
       super( _.extend( { cursor: 'pointer' }, options ) );
 
@@ -185,7 +186,9 @@ define( require => {
           errorBarTopHaloRectangle.visible = true;
           errorBarBottomHaloRectangle.visible = true;
 
-          let newUnclampedDelta = modelViewTransform.viewToModelDeltaY( this.globalToLocalPoint( event.pointer.point ).y - circleView.centerY );
+          let newUnclampedDelta = modelViewTransform.viewToModelDeltaY(
+            this.globalToLocalPoint( event.pointer.point ).y - circleView.centerY
+          );
 
           // if initialTopBarDragLocation has a value, that means that it is intentionally so because the user can choose a drag direction
           // the allowed direction of the top bar drag is now set by whether the user dragged up or down
@@ -197,7 +200,9 @@ define( require => {
           }
 
           if ( shouldTopBarActLikeBottomBar ) {
-            newUnclampedDelta = modelViewTransform.viewToModelDeltaY( circleView.centerY - this.globalToLocalPoint( event.pointer.point ).y );
+            newUnclampedDelta = modelViewTransform.viewToModelDeltaY(
+              circleView.centerY - this.globalToLocalPoint( event.pointer.point ).y
+            );
           }
           point.deltaProperty.value = Util.clamp(
             newUnclampedDelta,
@@ -396,7 +401,9 @@ define( require => {
       circleView.addInputListener( new ButtonListener( {
         up: () => { haloPointNode.visible = false; },
         down: () => { haloPointNode.visible = true; },
-        over: () => { haloPointNode.visible = currentlyInteractingPoints.length === 0 || _.includes( currentlyInteractingPoints, point ); }
+        over: () => {
+          haloPointNode.visible = currentlyInteractingPoints.length === 0 || _.includes( currentlyInteractingPoints, point );
+        }
       } ) );
 
       /**

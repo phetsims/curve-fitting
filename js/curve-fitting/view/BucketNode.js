@@ -167,7 +167,14 @@ define( require => {
 
       // handle the coming and going of points
       points.addItemAddedListener( addedPoint => {
-        const pointNode = new PointNode( addedPoint, bumpOutFunction, currentlyInteractingPoints, residualsVisibleProperty, valuesVisibleProperty, modelViewTransform );
+        const pointNode = new PointNode(
+          addedPoint,
+          bumpOutFunction,
+          currentlyInteractingPoints,
+          residualsVisibleProperty,
+          valuesVisibleProperty,
+          modelViewTransform
+        );
         this.addChild( pointNode );
 
         const removalListener = removedPoint => {

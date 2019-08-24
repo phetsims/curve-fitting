@@ -37,7 +37,8 @@ define( require => {
      * @param {Property.<boolean>} valuesProperty
      * @param {Object} [options]
      */
-    constructor( sliderPropertyArray, orderProperty, fitProperty, curveVisibleProperty, residualsVisibleProperty, valuesProperty, options ) {
+    constructor( sliderPropertyArray, orderProperty, fitProperty, curveVisibleProperty, residualsVisibleProperty,
+                 valuesProperty, options ) {
       options = _.extend( {
         align: 'left',
         spacing: 10

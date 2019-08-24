@@ -152,12 +152,16 @@ define( require => {
     }
 
     /**
-     * @param {Array.<string>} coefficientsArray - an array of interleaved signs and coefficients to set for this equation by ascending order
+     * @param {Array.<string>} coefficientsArray - an array of interleaved signs and coefficients to
+     *  visually display in this equation; should be ordered by ascending order
      * @public
      */
     setCoefficients( coefficientsArray ) {
 
-      assert && assert( coefficientsArray.length >= 2 * ( this.orderProperty.value + 1 ), 'Not enough coefficients for each term in the equation.' );
+      assert && assert(
+        coefficientsArray.length >= 2 * ( this.orderProperty.value + 1 ),
+        'Not enough coefficients for each term in the equation.'
+      );
 
       for ( let i = 0; i < coefficientsArray.length; i += 2 ) {
         this.signTextNodes[ i / 2 ].text = ` ${coefficientsArray[ i ]} `;
