@@ -61,7 +61,7 @@ define( require => {
         }
       } );
 
-      // create emitter that will signal that the point has returned to the bucket
+      // @public (read-only) create emitter that will signal that the point has returned to the bucket
       this.returnToOriginEmitter = new Emitter();
     }
 

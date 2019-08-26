@@ -116,6 +116,8 @@ define( require => {
         this.updateChildrenAndVisibilities();
       };
       this.orderProperty.link( visibilityUpdater );
+
+      // @private
       this.disposeVisibilityUpdater = () => { this.orderProperty.unlink( visibilityUpdater ); };
 
     }

@@ -75,7 +75,7 @@ define( require => {
     // clipping bounds for the drawn curve in model coordinates
     CURVE_CLIP_BOUNDS: new Bounds2( -10, -10, 10, 10 ),
 
-    //size of the graph in model coordinates (just the white background)
+    // size of the graph in model coordinates (just the white background)
     GRAPH_BACKGROUND_MODEL_BOUNDS: new Bounds2( -10, -10, 10, 10 )
   };
 

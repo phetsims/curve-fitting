@@ -418,6 +418,7 @@ define( require => {
       }
       point.positionProperty.link( centerPositionListener );
 
+      // @private
       this.disposePointNode = () => {
         point.deltaProperty.unlink( updateDelta );
         point.positionProperty.unlink( centerPositionListener );
