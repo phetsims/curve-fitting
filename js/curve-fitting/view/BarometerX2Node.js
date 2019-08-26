@@ -83,6 +83,7 @@ define( require => {
    *
    * @param {number} chiSquaredValue - X^2 value.
    * @param {number} numberOfPoints - Number of points on Graph.
+   * @returns {string} rgb color string
    */
   function getFillColorFromChiSquaredValue( chiSquaredValue, numberOfPoints ) {
 
