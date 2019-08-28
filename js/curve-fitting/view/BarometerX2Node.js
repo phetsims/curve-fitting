@@ -38,9 +38,8 @@ define( require => {
      * @param {Points} points
      * @param {Property.<number>} chiSquaredProperty - Property that represents x squared deviation.
      * @param {Property.<boolean>} curveVisibleProperty
-     * @param {Object} [options] for graph node.
      */
-    constructor( points, chiSquaredProperty, curveVisibleProperty, options ) {
+    constructor( points, chiSquaredProperty, curveVisibleProperty ) {
 
       // sets up a map of location along barometer (a ratio from 0 to 1) to chi squared value (0, 0.5, 1, 2, 3, 10, 30, 100)
       const tickLocationsToLabels = { 0: '0' };
