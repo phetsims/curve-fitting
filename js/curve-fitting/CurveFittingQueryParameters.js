@@ -13,7 +13,8 @@ define( require => {
 
   const CurveFittingQueryParameters = window.QueryStringMachine.getAll( {
 
-    // determines whether dragged points should be placed such that their coordinates are rounded to the nearest 1
+    // Determines whether dragged points should be placed such that their coordinates are rounded to the nearest 1.
+    // For internal use only, not public facing.
     snapToGrid: {
       type: 'boolean',
       defaultValue: false
