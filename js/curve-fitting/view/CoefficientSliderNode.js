@@ -20,8 +20,8 @@ define( require => {
   class CoefficientSliderNode extends VBox {
 
     /**
-     * @param {Property.<number>} property parameter to track.
-     * @param {Range} range - Possible range for property.
+     * @param {Property.<number>} property - parameter to track.
+     * @param {Range} range - Possible range for Property.
      * @param {string} label - Label for slider.
      * @param {Object} [options] for slider node.
      */

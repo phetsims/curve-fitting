@@ -27,7 +27,7 @@ define( require => {
 
     /**
      * @param {Property.<number>} fillProportionProperty - how much the barometer should be filled in a scale from 0 to 1
-     * @param {Property.<boolean>} fillVisibleProperty - property that controls whether the fill of the barometer is visible
+     * @param {Property.<boolean>} fillVisibleProperty - Property that controls whether the fill of the barometer is visible
      * @param {Object.<number, string>} tickLocationToLabels - a map of tick location from 0 to 1 to the corresponding label text
      * @param {Object} [options]
      */

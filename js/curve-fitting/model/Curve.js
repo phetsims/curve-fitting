@@ -44,7 +44,7 @@ define( require => {
       // @public
       this.updateCurveEmitter = new Emitter();
 
-      // @private {Property.<number>[]} array of slider property stored in ascending polynomial order
+      // @private {Property.<number>[]} array of slider Property stored in ascending polynomial order
       this.sliderPropertyArray = sliderPropertyArray;
 
       // @private
@@ -114,7 +114,7 @@ define( require => {
       assert && assert( this.coefficients.length === this.orderProperty.value + 1,
         `the coefficient array should be ${this.orderProperty.value + 1} long but is ${this.coefficients.length}` );
 
-      // update the property values of r squared and chi squared
+      // update the Property values of r squared and chi squared
       this.updateRAndChiSquared();
 
       // send a message to the view to update the curve and the residuals

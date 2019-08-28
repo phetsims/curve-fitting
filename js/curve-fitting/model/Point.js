@@ -36,7 +36,7 @@ define( require => {
       // @public {Property.<Vector2>} position of point
       this.positionProperty = new Vector2Property( options.position );
 
-      // @public {Property.<boolean>} property that reflects whether the user is dragging the point
+      // @public {Property.<boolean>} Property that reflects whether the user is dragging the point
       this.draggingProperty = new BooleanProperty( options.dragging );
 
       // @public {Property.<number>} vertical uncertainty of the point.
@@ -45,7 +45,7 @@ define( require => {
       // @private {Animation|null} the animation of this point; is null if there is no animation
       this.animation = null;
 
-      // @public {Property.<boolean>} a property that reflects whether the point is in the graph
+      // @public {Property.<boolean>} a Property that reflects whether the point is in the graph
       this.isInsideGraphProperty = new DerivedProperty(
         [ this.positionProperty ],
         position => CurveFittingConstants.GRAPH_BACKGROUND_MODEL_BOUNDS.containsPoint( position )

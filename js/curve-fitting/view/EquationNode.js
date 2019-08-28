@@ -35,7 +35,7 @@ define( require => {
   class EquationNode extends HBox {
 
     /**
-     * @param {Property.<number>} orderProperty - a property that reflects what order this equation should be
+     * @param {Property.<number>} orderProperty - a Property that reflects what order this equation should be
      * @param {Object} [options]
      */
     constructor( orderProperty, options ) {
