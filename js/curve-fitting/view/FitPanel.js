@@ -176,7 +176,5 @@ define( require => {
     );
   }
 
-  curveFitting.register( 'FitPanel', FitPanel );
-
-  return FitPanel;
+  return curveFitting.register( 'FitPanel', FitPanel );
 } );

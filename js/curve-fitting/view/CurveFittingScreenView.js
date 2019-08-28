@@ -198,7 +198,5 @@ define( require => {
 
   }
 
-  curveFitting.register( 'CurveFittingScreenView', CurveFittingScreenView );
-
-  return CurveFittingScreenView;
+  return curveFitting.register( 'CurveFittingScreenView', CurveFittingScreenView );
 } );

@@ -442,7 +442,5 @@ define( require => {
 
   }
 
-  curveFitting.register( 'PointNode', PointNode );
-
-  return PointNode;
+  return curveFitting.register( 'PointNode', PointNode );
 } );

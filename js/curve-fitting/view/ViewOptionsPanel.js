@@ -87,7 +87,5 @@ define( require => {
 
   }
 
-  curveFitting.register( 'ViewOptionsPanel', ViewOptionsPanel );
-
-  return ViewOptionsPanel;
+  return curveFitting.register( 'ViewOptionsPanel', ViewOptionsPanel );
 } );

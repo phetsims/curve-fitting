@@ -58,7 +58,5 @@ define( require => {
 
   }
 
-  curveFitting.register( 'CurveNode', CurveNode );
-
-  return CurveNode;
+  return curveFitting.register( 'CurveNode', CurveNode );
 } );

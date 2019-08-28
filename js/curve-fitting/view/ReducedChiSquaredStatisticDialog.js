@@ -79,7 +79,5 @@ define( require => {
 
   }
 
-  curveFitting.register( 'ReducedChiSquaredStatisticDialog', ReducedChiSquaredStatisticDialog );
-
-  return ReducedChiSquaredStatisticDialog;
+  return curveFitting.register( 'ReducedChiSquaredStatisticDialog', ReducedChiSquaredStatisticDialog );
 } );

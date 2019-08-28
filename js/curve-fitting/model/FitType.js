@@ -16,7 +16,5 @@ define( require => {
 
   const FitType = new Enumeration( [ 'ADJUSTABLE', 'BEST' ] );
 
-  curveFitting.register( 'FitType', FitType );
-
-  return FitType;
+  return curveFitting.register( 'FitType', FitType );
 } );

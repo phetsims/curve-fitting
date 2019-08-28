@@ -165,7 +165,5 @@ define( require => {
 
   }
 
-  curveFitting.register( 'GraphEquationAccordionBox', GraphEquationAccordionBox );
-
-  return GraphEquationAccordionBox;
+  return curveFitting.register( 'GraphEquationAccordionBox', GraphEquationAccordionBox );
 } );

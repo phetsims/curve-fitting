@@ -65,7 +65,5 @@ define( require => {
 
   }
 
-  curveFitting.register( 'ControlPanels', ControlPanels );
-
-  return ControlPanels;
+  return curveFitting.register( 'ControlPanels', ControlPanels );
 } );

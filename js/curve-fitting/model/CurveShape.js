@@ -51,7 +51,5 @@ define( require => {
 
   }
 
-  curveFitting.register( 'CurveShape', CurveShape );
-
-  return CurveShape;
+  return curveFitting.register( 'CurveShape', CurveShape );
 } );

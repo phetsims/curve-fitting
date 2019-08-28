@@ -109,7 +109,5 @@ define( require => {
 
   }
 
-  curveFitting.register( 'BarometerNode', BarometerNode );
-
-  return BarometerNode;
+  return curveFitting.register( 'BarometerNode', BarometerNode );
 } );

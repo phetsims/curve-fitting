@@ -64,7 +64,5 @@ define( require => {
 
   }
 
-  curveFitting.register( 'CurveOrderPanel', CurveOrderPanel );
-
-  return CurveOrderPanel;
+  return curveFitting.register( 'CurveOrderPanel', CurveOrderPanel );
 } );

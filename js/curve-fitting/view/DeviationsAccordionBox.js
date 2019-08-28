@@ -235,7 +235,5 @@ define( require => {
     return Util.toFixed( number, decimalPlaces );
   }
 
-  curveFitting.register( 'DeviationsAccordionBox', DeviationsAccordionBox );
-
-  return DeviationsAccordionBox;
+  return curveFitting.register( 'DeviationsAccordionBox', DeviationsAccordionBox );
 } );

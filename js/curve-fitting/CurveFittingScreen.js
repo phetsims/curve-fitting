@@ -27,7 +27,5 @@ define( require => {
 
   }
 
-  curveFitting.register( 'CurveFittingScreen', CurveFittingScreen );
-
-  return CurveFittingScreen;
+  return curveFitting.register( 'CurveFittingScreen', CurveFittingScreen );
 } );

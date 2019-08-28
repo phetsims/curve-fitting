@@ -60,7 +60,5 @@ define( require => {
 
   }
 
-  curveFitting.register( 'CoefficientSliderNode', CoefficientSliderNode );
-
-  return CoefficientSliderNode;
+  return curveFitting.register( 'CoefficientSliderNode', CoefficientSliderNode );
 } );

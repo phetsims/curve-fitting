@@ -136,7 +136,5 @@ define( require => {
 
   }
 
-  curveFitting.register( 'GraphAreaNode', GraphAreaNode );
-
-  return GraphAreaNode;
+  return curveFitting.register( 'GraphAreaNode', GraphAreaNode );
 } );

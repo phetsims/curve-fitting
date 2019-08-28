@@ -66,7 +66,5 @@ define( require => {
 
   }
 
-  curveFitting.register( 'ResidualsNode', ResidualsNode );
-
-  return ResidualsNode;
+  return curveFitting.register( 'ResidualsNode', ResidualsNode );
 } );

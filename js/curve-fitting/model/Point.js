@@ -106,7 +106,5 @@ define( require => {
 
   }
 
-  curveFitting.register( 'Point', Point );
-
-  return Point;
+  return curveFitting.register( 'Point', Point );
 } );

@@ -22,7 +22,5 @@ define( require => {
 
   } );
 
-  curveFitting.register( 'CurveFittingQueryParameters', CurveFittingQueryParameters );
-
-  return CurveFittingQueryParameters;
+  return curveFitting.register( 'CurveFittingQueryParameters', CurveFittingQueryParameters );
 } );

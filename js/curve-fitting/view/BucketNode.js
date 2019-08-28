@@ -190,7 +190,5 @@ define( require => {
 
   }
 
-  curveFitting.register( 'BucketNode', BucketNode );
-
-  return BucketNode;
+  return curveFitting.register( 'BucketNode', BucketNode );
 } );

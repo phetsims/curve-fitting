@@ -79,7 +79,5 @@ define( require => {
     GRAPH_BACKGROUND_MODEL_BOUNDS: new Bounds2( -10, -10, 10, 10 )
   };
 
-  curveFitting.register( 'CurveFittingConstants', CurveFittingConstants );
-
-  return CurveFittingConstants;
+  return curveFitting.register( 'CurveFittingConstants', CurveFittingConstants );
 } );

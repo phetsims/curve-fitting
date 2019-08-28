@@ -186,7 +186,5 @@ define( require => {
 
   }
 
-  curveFitting.register( 'EquationNode', EquationNode );
-
-  return EquationNode;
+  return curveFitting.register( 'EquationNode', EquationNode );
 } );

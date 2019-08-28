@@ -75,8 +75,6 @@ define( require => {
 
   }
 
-  curveFitting.register( 'BarometerX2Node', BarometerX2Node );
-
   /**
    * Convert X^2 values into barometer color depending on number of points.
    * This algorithm was copied directly from Flash simulation.
@@ -184,5 +182,5 @@ define( require => {
     }
   }
 
-  return BarometerX2Node;
+  return curveFitting.register( 'BarometerX2Node', BarometerX2Node );
 } );

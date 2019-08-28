@@ -117,7 +117,5 @@ define( require => {
 
   }
 
-  curveFitting.register( 'CurveFittingModel', CurveFittingModel );
-
-  return CurveFittingModel;
+  return curveFitting.register( 'CurveFittingModel', CurveFittingModel );
 } );

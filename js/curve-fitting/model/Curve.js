@@ -329,7 +329,5 @@ define( require => {
 
   }
 
-  curveFitting.register( 'Curve', Curve );
-
-  return Curve;
+  return curveFitting.register( 'Curve', Curve );
 } );
