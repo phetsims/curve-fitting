@@ -70,7 +70,7 @@ define( require => {
                 `${chiSymbolString}_r^2 = \\frac{1}{${nSymbolString} - ${fSymbolString}} \\sum_i \\frac{[${ySymbolString}(${xSymbolString}_i) - ${ySymbolString}_i]^2}{\\sigma_i^2}`
               )
             ],
-            maxWidth: 800
+            maxWidth: 650
           } ),
           numberOfDataPointsNode,
           numberOfParametersNode
