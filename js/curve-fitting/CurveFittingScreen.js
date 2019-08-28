@@ -17,9 +17,6 @@ define( require => {
 
   class CurveFittingScreen extends Screen {
 
-    /**
-     * @constructor
-     */
     constructor() {
       super(
         () => new CurveFittingModel(),

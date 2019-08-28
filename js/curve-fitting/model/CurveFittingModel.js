@@ -19,9 +19,6 @@ define( require => {
 
   class CurveFittingModel {
 
-    /**
-     * @constructor
-     */
     constructor() {
 
       // @public {Property.<number>} order of the polynomial that describes the curve, valid values are 1, 2, 3

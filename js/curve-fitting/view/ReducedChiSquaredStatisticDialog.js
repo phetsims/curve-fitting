@@ -39,9 +39,6 @@ define( require => {
 
   class ReducedChiSquaredStatisticDialog extends Dialog {
 
-    /**
-     * @constructor
-     */
     constructor() {
 
       const numberOfDataPointsNode = new RichText(
