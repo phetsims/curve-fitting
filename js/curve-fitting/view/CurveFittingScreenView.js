@@ -129,7 +129,7 @@ define( require => {
           )
         ).dilated( EXPAND_COLLAPSE_PUSH_BOUNDS_DILATION );
 
-        //Gets points that intersect with the expand/collapse button and pushes them until they don't intersect
+        // Gets points that intersect with the expand/collapse button and pushes them until they don't intersect
         let pointsUnder = [];
         do {
           pointsUnder = model.points.filter( point => pointPushBounds.containsPoint( point.positionProperty.value ) );
@@ -143,6 +143,8 @@ define( require => {
           } );
         } while ( pointsUnder.length > 0 );
       };
+
+      // unlink unnecessary, present for the lifetime of the sim
       curveVisibleProperty.link( bumpOutPointsUnderExpandCollapseButton );
 
       // create the curve and the residual lines

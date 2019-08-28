@@ -46,16 +46,19 @@ define( require => {
       // @private {function}
       this.updateCurveFit = () => { this.curve.updateFit(); };
 
-      // validate Property values and update curve fit
+      // validate Property values and update curve fit; unlink unnecessary present for the lifetime of the sim
       this.orderProperty.link( order => {
 
         // ensure the order is 1, 2 or 3: linear, quadratic or cubic
         assert && assert( order === 1 || order === 2 || order === 3, `invalid order: ${order}` );
         this.updateCurveFit();
       } );
+
+      // unlink unnecessary, present for the lifetime of the sim
       this.fitProperty.link( this.updateCurveFit );
 
       // a change of any of the value sliders force an update of the curve model
+      // unlinks unnecessary: present for lifetime of the sim
       this.sliderPropertyArray.forEach( sliderProperty => {
         sliderProperty.link( this.updateCurveFit );
       } );

@@ -173,6 +173,7 @@ define( require => {
         rSquaredValueText.text = rSquaredString;
       } );
 
+      // unlinks unnecessary, present for the lifetime of the sim
       curveVisibleProperty.linkAttribute( rSquaredValueText, 'visible' );
       curveVisibleProperty.linkAttribute( chiSquaredValueText, 'visible' );
 
