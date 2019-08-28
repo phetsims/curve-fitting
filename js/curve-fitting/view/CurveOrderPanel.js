@@ -29,24 +29,10 @@ define( require => {
      */
     constructor( orderProperty, options ) {
 
-      /**
-       * Creates a uniform radio button for this panel.
-       *
-       * @param {number} value
-       * @param {string} label
-       * @returns {AquaRadioButton}
-       */
-      const createRadioButton = ( value, label ) => new AquaRadioButton(
-        orderProperty,
-        value,
-        new Text( label, CurveFittingConstants.CONTROL_TEXT_OPTIONS ),
-        CurveFittingConstants.RADIO_BUTTON_OPTIONS
-      );
-
       // radio buttons
-      const linearButton = createRadioButton( 1, linearString );
-      const quadraticButton = createRadioButton( 2, quadraticString );
-      const cubicButton = createRadioButton( 3, cubicString );
+      const linearButton = createRadioButton( 1, linearString, orderProperty );
+      const quadraticButton = createRadioButton( 2, quadraticString, orderProperty );
+      const cubicButton = createRadioButton( 3, cubicString, orderProperty );
 
       // vertical layout
       const contentNode = new VBox( {
@@ -62,6 +48,23 @@ define( require => {
       super( contentNode, options );
     }
 
+  }
+
+  /**
+   * Creates a uniform radio button for this panel.
+   *
+   * @param {number} value
+   * @param {string} label
+   * @param {Property.<number>} orderProperty
+   * @returns {AquaRadioButton}
+   */
+  function createRadioButton( value, label, orderProperty ) {
+    return new AquaRadioButton(
+      orderProperty,
+      value,
+      new Text( label, CurveFittingConstants.CONTROL_TEXT_OPTIONS ),
+      CurveFittingConstants.RADIO_BUTTON_OPTIONS
+    );
   }
 
   return curveFitting.register( 'CurveOrderPanel', CurveOrderPanel );
