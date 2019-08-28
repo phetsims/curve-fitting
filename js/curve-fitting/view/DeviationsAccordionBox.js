@@ -144,7 +144,8 @@ define( require => {
         // if chiSquared is larger than a 1000, the actual value will not be displayed, so use a '>' sign
         if ( chiSquared > MAX_CHI_SQUARE_VALUE ) {
           chiSquaredLabelText.text = `${mathFontChiString}<sup>&#8198;2</sup> ${MathSymbols.GREATER_THAN}&nbsp;`;
-        } else {
+        }
+        else {
           chiSquaredLabelText.text = `${mathFontChiString}<sup>&#8198;2</sup> ${MathSymbols.EQUAL_TO}&nbsp;`;
         }
 
@@ -165,7 +166,8 @@ define( require => {
         let rSquaredString;
         if ( isNaN( rSquared ) ) {
           rSquaredString = '';
-        } else {
+        }
+        else {
           rSquaredString = formatNumber( rSquared, 2 );
         }
         rSquaredValueText.text = rSquaredString;

@@ -117,7 +117,7 @@ define( require => {
         VALUE_TEXT_OPTIONS
       );
       const deltaTextBackground = new Rectangle( 0, 0, 1, 1, DELTA_BACKGROUND_RECTANGLE_OPTIONS );
-      this.addChild( deltaTextBackground);
+      this.addChild( deltaTextBackground );
       this.addChild( deltaTextLabel );
 
       // handler for delta halos
@@ -340,6 +340,7 @@ define( require => {
         // set text position to final background position
         deltaTextLabel.center = deltaTextBackground.center;
       }
+
       point.deltaProperty.link( updateDelta );
 
       /**
@@ -393,6 +394,7 @@ define( require => {
           errorBarBottomRectangle.setFill( CurveFittingConstants.BLUE_COLOR );
         }
       }
+
       residualsVisibleProperty.link( updateErrorBarsBasedOnResidualsVisibility );
 
       // point halo
@@ -416,6 +418,7 @@ define( require => {
         updateValue();
         updateDelta();
       }
+
       point.positionProperty.link( centerPositionListener );
 
       // @private

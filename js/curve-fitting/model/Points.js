@@ -32,6 +32,7 @@ define( require => {
     getRelevantPoints() {
       return this.getArray().filter( point => point.isInsideGraphProperty.value && point.animation === null );
     }
+
     get relevantPoints() { return this.getRelevantPoints(); }
 
     /**

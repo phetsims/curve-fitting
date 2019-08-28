@@ -99,7 +99,7 @@ define( require => {
         curveVisibleProperty,
         {
           left: equationBoxLeft,
-          top: modelViewTransform.modelToViewY( 10 )  + 10,
+          top: modelViewTransform.modelToViewY( 10 ) + 10,
           equationNodeMaxWidth: modelViewTransform.modelToViewX( 10 ) - equationBoxLeft - 45
         }
       );
