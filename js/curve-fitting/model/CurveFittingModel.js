@@ -99,6 +99,7 @@ define( require => {
       };
 
       // remove points when they have returned to the bucket
+      // listener removes itself when called
       point.returnToOriginEmitter.addListener( removePointListener );
     }
 

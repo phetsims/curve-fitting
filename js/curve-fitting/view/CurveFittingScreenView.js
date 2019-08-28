@@ -105,6 +105,7 @@ define( require => {
       );
 
       // create the panel that serves as an opaque background for the graphEquationAccordionBox; see #126
+      // no dispose necessary because graphEquationAccordionBox is present for the lifetime of the sim
       const graphEquationBackground = new Rectangle( 0, 0, 0, 0, 0, 0, {
         cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
         fill: 'white'

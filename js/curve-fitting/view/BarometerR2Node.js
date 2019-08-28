@@ -38,6 +38,7 @@ define( require => {
       };
 
       // Property that maps rSquared -> rSquared, unless rSquared is NaN, where it maps NaN -> 0
+      // No dispose necessary, present for the lifetime of the sim
       const modifiedRSquaredProperty = new DerivedProperty(
         [ rSquaredProperty ],
         rSquared => isNaN( rSquared ) ? 0 : rSquared

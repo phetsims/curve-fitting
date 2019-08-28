@@ -88,12 +88,14 @@ define( require => {
 
         // once the animation is done, set the animation field to null
         // if the final destination was reached, emit the returnToOriginEmitter
-        this.animation.endedEmitter.addListener( () => {
+        const onAnimationEnd = () => {
           if ( getDistanceToOrigin() === 0 ) {
             this.returnToOriginEmitter.emit();
           }
+          this.animation.endedEmitter.removeListener( onAnimationEnd );
           this.animation = null;
-        } );
+        };
+        this.animation.endedEmitter.addListener( onAnimationEnd );
 
         this.animation.start();
       }
