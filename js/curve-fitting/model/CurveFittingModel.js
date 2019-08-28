@@ -12,10 +12,10 @@ define( require => {
   const Curve = require( 'CURVE_FITTING/curve-fitting/model/Curve' );
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  const EnumerationProperty = require( 'AXON/EnumerationProperty' );
   const FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Points = require( 'CURVE_FITTING/curve-fitting/model/Points' );
-  const Property = require( 'AXON/Property' );
 
   class CurveFittingModel {
 
@@ -25,7 +25,7 @@ define( require => {
       this.orderProperty = new NumberProperty( 1 );
 
       // @public {Property.<FitType>}, the method of fitting the curve to data points
-      this.fitProperty = new Property( FitType.BEST, { validValues: FitType.VALUES } );
+      this.fitProperty = new EnumerationProperty( FitType, FitType.BEST );
 
       // @public {Property.<number>[]}, user input values for coefficients of the polynomial, starting from lowest
       // order x^0 to x^3
