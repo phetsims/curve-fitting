@@ -31,7 +31,7 @@ define( require => {
       super();
 
       // add clip area
-      this.clipArea = Shape.bounds( modelViewTransform.modelToViewBounds( CurveFittingConstants.GRAPH_NODE_MODEL_BOUNDS ) );
+      this.clipArea = Shape.bounds( modelViewTransform.modelToViewBounds( CurveFittingConstants.GRAPH_BACKGROUND_MODEL_BOUNDS ) );
 
       // create and add path for all residual lines
       const residualsPath = new Path( null, RESIDUAL_OPTIONS );
