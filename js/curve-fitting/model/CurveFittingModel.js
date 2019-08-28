@@ -27,7 +27,8 @@ define( require => {
       // @public {Property.<FitType>}, the method of fitting the curve to data points
       this.fitProperty = new Property( FitType.BEST, { validValues: FitType.VALUES } );
 
-      // @public {Property.<number>[]}, user input values for coefficients of the polynomial, starting from lowest order x^0 to x^3
+      // @public {Property.<number>[]}, user input values for coefficients of the polynomial, starting from lowest
+      // order x^0 to x^3
       this.sliderPropertyArray = [
         new NumberProperty( CurveFittingConstants.CONSTANT_RANGE.defaultValue ),
         new NumberProperty( CurveFittingConstants.LINEAR_RANGE.defaultValue ),
@@ -35,8 +36,8 @@ define( require => {
         new NumberProperty( CurveFittingConstants.CUBIC_RANGE.defaultValue )
       ];
 
-      // @public {Points} - Points for plotting curve. This includes points that are outside the bounds of the graph, so
-      // be careful to call getRelevantPoints when using points in calculations. Order of the points doesn't matter.
+      // @public {Points} - Points for plotting curve. This includes points that are outside the bounds of the graph,
+      // so be careful to call getRelevantPoints when using points in calculations. Order of the points doesn't matter.
       this.points = new Points();
 
       // @public {Curve} - the model of the curve

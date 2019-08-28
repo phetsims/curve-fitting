@@ -190,10 +190,11 @@ define( require => {
             this.globalToLocalPoint( event.pointer.point ).y - circleView.centerY
           );
 
-          // if initialTopBarDragLocation has a value, that means that it is intentionally so because the user can choose a drag direction
-          // the allowed direction of the top bar drag is now set by whether the user dragged up or down
-          // if the user dragged down, the top bar acts like the bottom bar because that is how the user interacted with it
-          // for this case, the user couldn't have interacted with the actual bottom bar because it was covered by this top one
+          // If initialTopBarDragLocation has a value, that means that it is intentionally so because the user can
+          // choose a drag direction the allowed direction of the top bar drag is now set by whether the user dragged
+          // up or down. If the user dragged down, the top bar acts like the bottom bar because that is how the user
+          // interacted with it for this case, the user couldn't have interacted with the actual bottom bar because
+          // it was covered by this top one.
           if ( initialTopBarDragLocation !== null ) {
             shouldTopBarActLikeBottomBar = event.pointer.point.y > initialTopBarDragLocation.y;
             initialTopBarDragLocation = null;
