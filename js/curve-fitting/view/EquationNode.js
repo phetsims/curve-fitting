@@ -14,6 +14,7 @@ define( require => {
   const HBox = require( 'SCENERY/nodes/HBox' );
   const HStrut = require( 'SCENERY/nodes/HStrut' );
   const MathSymbols = require( 'SCENERY_PHET/MathSymbols' );
+  const merge = require( 'PHET_CORE/merge' );
   const RichText = require( 'SCENERY/nodes/RichText' );
   const Text = require( 'SCENERY/nodes/Text' );
   const VStrut = require( 'SCENERY/nodes/VStrut' );
@@ -39,10 +40,10 @@ define( require => {
      */
     constructor( orderProperty, options ) {
 
-      options = _.extend( {
+      options = merge( {
         yEqualsTextOptions: { font: SYMBOL_FONT },
         coefficientSignTextOptions: { font: NORMAL_FONT },
-        coefficientTextOptions: { font: COEFFICIENT_FONT, fill: 'blue' },
+        coefficientTextOptions: { font: COEFFICIENT_FONT, fill: CurveFittingConstants.BLUE_COLOR },
         xTextOptions: { font: SYMBOL_FONT },
         align: 'bottom',
         maxWidth: 160

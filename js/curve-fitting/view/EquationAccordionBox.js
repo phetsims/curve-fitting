@@ -75,9 +75,6 @@ define( require => {
 
       // visible node when panel is expanded
       const equationNode = new EquationNode( orderProperty, {
-        coefficientTextOptions: {
-          fill: CurveFittingConstants.BLUE_COLOR
-        },
         coefficientSignTextOptions: {
           fill: CurveFittingConstants.BLUE_COLOR
         },
