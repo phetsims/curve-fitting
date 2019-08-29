@@ -16,7 +16,6 @@ define( require => {
   const RangeWithValue = require( 'DOT/RangeWithValue' );
 
   // constants
-  const CONTROL_FONT_SIZE = 16;
   const EQUATION_FONT_SIZE = 16;
 
   const CurveFittingConstants = {
@@ -51,11 +50,6 @@ define( require => {
     RADIO_BUTTON_OPTIONS: {
       radius: 7,
       touchAreaXDilation: 5
-    },
-
-    CONTROL_TEXT_OPTIONS: {
-      font: new PhetFont( CONTROL_FONT_SIZE ),
-      maxWidth: 100
     },
 
     CHECK_BOX_OPTIONS: {
