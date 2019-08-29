@@ -37,6 +37,11 @@ define( require => {
     maxWidth: 500
   };
 
+  const FORMULA_STRING = `${chiSymbolString}_r^2 = ` +
+                         `\\frac{1}{${nSymbolString} - ${fSymbolString}} ` +
+                         '\\sum_i ' +
+                         `\\frac{[${ySymbolString}(${xSymbolString}_i) - ${ySymbolString}_i]^2}{\\sigma_i^2}`;
+
   class ReducedChiSquaredStatisticDialog extends Dialog {
 
     constructor() {
@@ -63,9 +68,7 @@ define( require => {
           new HBox( {
             children: [
               new HStrut( 20 ),
-              new FormulaNode(
-                `${chiSymbolString}_r^2 = \\frac{1}{${nSymbolString} - ${fSymbolString}} \\sum_i \\frac{[${ySymbolString}(${xSymbolString}_i) - ${ySymbolString}_i]^2}{\\sigma_i^2}`
-              )
+              new FormulaNode( FORMULA_STRING )
             ],
             maxWidth: 650
           } ),
