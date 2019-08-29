@@ -36,6 +36,7 @@ define( require => {
   const TICK_LABEL_DISTANCE_FROM_AXES = 0.5;
   const AXIS_LABEL_DISTANCE_FROM_AXES = 0.2;
   const AXIS_LABEL_FONT = CurveFittingConstants.GRAPH_AXIS_LABEL_FONT;
+  const AXIS_LABEL_MAX_WIDTH = 20;
   const AXIS_ARROW_OPTIONS = {
     doubleHead: true,
     tailWidth: 0,
@@ -102,11 +103,13 @@ define( require => {
       // axis labels
       this.addChild( new Text( xSymbolString, {
         font: AXIS_LABEL_FONT,
+        maxWidth: AXIS_LABEL_MAX_WIDTH,
         centerY: modelViewTransform.modelToViewY( 0 ),
         left: modelViewTransform.modelToViewX( axesBounds.maxX + AXIS_LABEL_DISTANCE_FROM_AXES )
       } ) );
       this.addChild( new Text( ySymbolString, {
         font: AXIS_LABEL_FONT,
+        maxWidth: AXIS_LABEL_MAX_WIDTH,
         centerX: modelViewTransform.modelToViewX( 0 ),
         bottom: modelViewTransform.modelToViewY( axesBounds.maxY + AXIS_LABEL_DISTANCE_FROM_AXES )
       } ) );
