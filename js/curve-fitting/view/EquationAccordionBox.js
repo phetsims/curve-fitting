@@ -21,6 +21,7 @@ define( require => {
   const Panel = require( 'SUN/Panel' );
   const Text = require( 'SCENERY/nodes/Text' );
   const Util = require( 'DOT/Util' );
+  const VStrut = require( 'SCENERY/nodes/VStrut' );
 
   // strings
   const equationString = require( 'string!CURVE_FITTING/equation' );
@@ -62,19 +63,6 @@ define( require => {
       expandCollapseButton.touchArea = expandCollapseButton.localBounds.dilated( expandCollapseButton.width / 3 );
       expandCollapseButton.mouseArea = expandCollapseButton.localBounds.dilated( expandCollapseButton.width / 3 );
 
-      const content = new HBox( {
-        spacing: 8,
-        children: [ expandCollapseButton, titleNode ]
-      } );
-
-      super( content, options );
-
-      // @public (read-only) is used by the screen view to bump out points from below; see #131
-      this.expandCollapseButton = expandCollapseButton;
-
-      // @public an emitter that is fired whenever this panel is updated: is used for background node for #126
-      this.updatedEmitter = new Emitter();
-
       // visible node when panel is expanded
       const equationNode = new EquationNode( orderProperty, {
         coefficientSignTextOptions: {
@@ -88,6 +76,21 @@ define( require => {
         font: CurveFittingConstants.ACCORDION_BOX_TITLE_FONT,
         maxWidth: options.equationNodeMaxWidth
       } );
+
+      // So that the panel's height doesn't change.
+      const vStrut = new VStrut( equationNode.height );
+
+      const content = new HBox( {
+        spacing: 8
+      } );
+
+      super( content, options );
+
+      // @public (read-only) is used by the screen view to bump out points from below; see #131
+      this.expandCollapseButton = expandCollapseButton;
+
+      // @public an emitter that is fired whenever this panel is updated: is used for background node for #126
+      this.updatedEmitter = new Emitter();
 
       /**
        * This method rounds the given number to the given amount of digits
@@ -134,12 +137,16 @@ define( require => {
         );
         equationNode.setCoefficients( coefficientStrings );
 
+        const children = [ expandCollapseButton ];
         if ( equationPanelExpandedProperty.value ) {
-          content.children = [ expandCollapseButton, curve.isCurvePresent() ? equationNode : undefinedEquationText ];
+          children.push( curve.isCurvePresent() ? equationNode : undefinedEquationText );
         }
         else {
-          content.children = [ expandCollapseButton, titleNode ];
+          children.push( titleNode );
         }
+        children.push( vStrut );
+
+        content.children = children;
 
         this.updatedEmitter.emit();
 
