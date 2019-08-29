@@ -23,6 +23,7 @@ define( require => {
   const Panel = require( 'SUN/Panel' );
   const ReducedChiSquaredStatisticDialog = require( 'CURVE_FITTING/curve-fitting/view/ReducedChiSquaredStatisticDialog' );
   const RichText = require( 'SCENERY/nodes/RichText' );
+  const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
   const Util = require( 'DOT/Util' );
 
@@ -31,7 +32,6 @@ define( require => {
 
   // constants
   const VALUES_TEXT_FONT = CurveFittingConstants.BAROMETER_VALUE_FONT;
-  const MATH_FONT = CurveFittingConstants.BAROMETER_SYMBOL_FONT;
   const MAX_CHI_SQUARE_VALUE = 1000;
   const LABEL_TEXT_OPTIONS = {
     font: CurveFittingConstants.BAROMETER_SYMBOL_FONT,
@@ -44,7 +44,10 @@ define( require => {
 
   // constants
   const LABEL_MAX_WIDTH = 30;
-  const VALUE_MAX_WIDTH = 30;
+  const VALUE_MAX_WIDTH = 45;
+
+  const CHI_SQUARED_PATTERN = `${chiSymbolString}<sup>2</sup>&nbsp;{{relationalOperator}}&nbsp;`;
+  const R_SQUARED_EQUALS_STRING = `${rSymbolString}<sup>2</sup>&nbsp;${MathSymbols.EQUAL_TO}&nbsp;`;
 
   class DeviationsAccordionBox extends AccordionBox {
 
@@ -114,13 +117,8 @@ define( require => {
         touchAreaYDilation: 8
       } );
 
-      const mathFontChiString = `<i style='font-family:${MATH_FONT.family}'>${chiSymbolString}</i>`;
-      const mathFontRString = `<i style='font-family:${MATH_FONT.family}'>${rSymbolString}</i>`;
-
       // X^2 =
-      const chiSquaredLabelText = new RichText(
-        `${mathFontChiString}<sup>&#8198;2</sup> ${MathSymbols.EQUAL_TO}&nbsp;`, LABEL_TEXT_OPTIONS
-      );
+      const chiSquaredLabelText = new RichText( '', LABEL_TEXT_OPTIONS );
 
       // X^2 value
       const chiSquaredValueText = new Text( '0.00', {
@@ -136,9 +134,7 @@ define( require => {
       } );
 
       // r^2 =
-      const rSquaredLabelText = new RichText(
-        `${mathFontRString}<sup>&#8198;2</sup> ${MathSymbols.EQUAL_TO}&nbsp;`, LABEL_TEXT_OPTIONS
-      );
+      const rSquaredLabelText = new RichText( R_SQUARED_EQUALS_STRING, LABEL_TEXT_OPTIONS );
 
       // r^2 value
       const rSquaredValueText = new Text( '0.00', {
@@ -157,12 +153,9 @@ define( require => {
       chiSquaredProperty.link( chiSquared => {
 
         // if chiSquared is larger than a 1000, the actual value will not be displayed, so use a '>' sign
-        if ( chiSquared > MAX_CHI_SQUARE_VALUE ) {
-          chiSquaredLabelText.text = `${mathFontChiString}<sup>&#8198;2</sup> ${MathSymbols.GREATER_THAN}&nbsp;`;
-        }
-        else {
-          chiSquaredLabelText.text = `${mathFontChiString}<sup>&#8198;2</sup> ${MathSymbols.EQUAL_TO}&nbsp;`;
-        }
+        chiSquaredLabelText.text = StringUtils.fillIn( CHI_SQUARED_PATTERN, {
+          relationalOperator:  ( chiSquared > MAX_CHI_SQUARE_VALUE ) ? MathSymbols.GREATER_THAN : MathSymbols.EQUAL_TO
+        } );
 
         // If chiSquared is greater than 10 we have a bad fit so less precision is needed.
         // If chiSquared if greater than 100 we have a really bad fit and decimals are inconsequential.
@@ -198,7 +191,7 @@ define( require => {
       panelContent.addChild( barometerX2 );
       panelContent.addChild( barometerR2 );
 
-      const xSpacing = 10;
+      const xSpacing = 8;
       const ySpacing = 10;
       helpButton.centerX = panelContent.width / 2;
       chiSquaredInformationBox.right = helpButton.centerX - xSpacing;

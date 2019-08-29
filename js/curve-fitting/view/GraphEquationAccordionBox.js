@@ -18,32 +18,12 @@ define( require => {
   const HBox = require( 'SCENERY/nodes/HBox' );
   const MathSymbols = require( 'SCENERY_PHET/MathSymbols' );
   const Panel = require( 'SUN/Panel' );
-  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Text = require( 'SCENERY/nodes/Text' );
   const Util = require( 'DOT/Util' );
 
   // strings
   const equationString = require( 'string!CURVE_FITTING/equation' );
   const undefinedString = require( 'string!CURVE_FITTING/undefined' );
-
-  // constants
-  const BUTTON_LENGTH = 16;
-  const PANEL_OPTIONS = {
-    cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
-    fill: 'white',
-    opacity: 0.8
-  };
-  const PARAMETER_SIGN_TEXT_OPTIONS = {
-    font: new PhetFont( 12 ),
-    fill: CurveFittingConstants.BLUE_COLOR
-  };
-  const PARAMETER_TEXT_OPTIONS = {
-    font: new PhetFont( {
-      weight: 'bold',
-      size: 12
-    } ),
-    fill: CurveFittingConstants.BLUE_COLOR
-  };
 
   // max number of digits for coefficients in ascending order of polynomials
   const MAX_DIGITS = [ 2, 3, 4, 4 ];
@@ -59,8 +39,10 @@ define( require => {
      */
     constructor( curve, orderProperty, equationPanelExpandedProperty, curveVisibleProperty, options ) {
 
-      options = _.extend( {
-        equationNodeMaxWidth: 250
+      options = _.extend( {}, CurveFittingConstants.PANEL_CORNER_RADIUS, {
+        equationNodeMaxWidth: 250,
+        fill: 'white',
+        opacity: 0.8
       }, options );
 
       // visible text node when panel is not expanded
@@ -71,17 +53,17 @@ define( require => {
 
       // create expand button
       const expandCollapseButton = new ExpandCollapseButton( equationPanelExpandedProperty, {
-        sideLength: BUTTON_LENGTH
+        sideLength: 16
       } );
-      expandCollapseButton.touchArea = expandCollapseButton.localBounds.dilated( BUTTON_LENGTH / 3 );
-      expandCollapseButton.mouseArea = expandCollapseButton.localBounds.dilated( BUTTON_LENGTH / 3 );
+      expandCollapseButton.touchArea = expandCollapseButton.localBounds.dilated( expandCollapseButton.width / 3 );
+      expandCollapseButton.mouseArea = expandCollapseButton.localBounds.dilated( expandCollapseButton.width / 3 );
 
       const content = new HBox( {
         spacing: 5,
         children: [ expandCollapseButton, titleNode ]
       } );
 
-      super( content, _.extend( PANEL_OPTIONS, options ) );
+      super( content, options );
 
       // @public (read-only) is used by the screen view to bump out points from below; see #131
       this.expandCollapseButton = expandCollapseButton;
@@ -91,8 +73,12 @@ define( require => {
 
       // visible node when panel is expanded
       const equationNode = new EquationNode( orderProperty, {
-        coefficientTextOptions: PARAMETER_TEXT_OPTIONS,
-        coefficientSignTextOptions: PARAMETER_SIGN_TEXT_OPTIONS,
+        coefficientTextOptions: {
+          fill: CurveFittingConstants.BLUE_COLOR
+        },
+        coefficientSignTextOptions: {
+          fill: CurveFittingConstants.BLUE_COLOR
+        },
         maxWidth: options.equationNodeMaxWidth
       } );
 

@@ -98,8 +98,8 @@ define( require => {
     GRAPH_TICK_LABEL_FONT: new PhetFont( 14 ),
     GRAPH_AXIS_LABEL_FONT: new MathSymbolFont( 16 ),
     BAROMETER_TICK_LABEL_FONT: new PhetFont( 14 ),
-    BAROMETER_VALUE_FONT: new PhetFont( 12 ),
-    BAROMETER_SYMBOL_FONT: new MathSymbolFont( 14 ),
+    BAROMETER_VALUE_FONT: new PhetFont( 14 ),
+    BAROMETER_SYMBOL_FONT: new MathSymbolFont( 16 ),
     POINT_VALUE_FONT: new PhetFont( 14 ),
     INFO_DIALOG_NORMAL_FONT: new PhetFont( 14 ),
     INFO_DIALOG_SYMBOL_FONT: new MathSymbolFont( 14 )

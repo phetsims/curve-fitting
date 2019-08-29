@@ -43,7 +43,7 @@ define( require => {
         yEqualsTextOptions: { font: SYMBOL_FONT },
         coefficientSignTextOptions: { font: NORMAL_FONT },
         coefficientTextOptions: { font: COEFFICIENT_FONT, fill: 'blue' },
-        xTextOptions: { font: NORMAL_FONT },
+        xTextOptions: { font: SYMBOL_FONT },
         maxWidth: 160
       }, options );
 
@@ -61,8 +61,6 @@ define( require => {
       // @private {Array.<RichText>}
       this.xVariableTextNodes = [];
 
-      const mathFontXString = `<i style='font-family:${SYMBOL_FONT.family}'>${xSymbolString}</i>`;
-
       // initializes this.signTextNodes, this.coefficientTextNodes, and this.xVariableTextNodes
       for ( let i = 0; i <= CurveFittingConstants.MAX_ORDER_OF_FIT; i++ ) {
         this.signTextNodes.push( new Text( '', options.coefficientSignTextOptions ) );
@@ -71,10 +69,10 @@ define( require => {
           this.xVariableTextNodes.push( new Text( '', options.xTextOptions ) );
         }
         else if ( i === 1 ) {
-          this.xVariableTextNodes.push( new RichText( mathFontXString, options.xTextOptions ) );
+          this.xVariableTextNodes.push( new RichText( xSymbolString, options.xTextOptions ) );
         }
         else {
-          this.xVariableTextNodes.push( new RichText( `${mathFontXString}<sup>${i}</sup>`, options.xTextOptions ) );
+          this.xVariableTextNodes.push( new RichText( `${xSymbolString}<sup>${i}</sup>`, options.xTextOptions ) );
         }
       }
 
