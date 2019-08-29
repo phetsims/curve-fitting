@@ -30,9 +30,9 @@ define( require => {
     constructor( orderProperty, options ) {
 
       // radio buttons
-      const linearButton = createRadioButton( 1, linearString, orderProperty );
-      const quadraticButton = createRadioButton( 2, quadraticString, orderProperty );
-      const cubicButton = createRadioButton( 3, cubicString, orderProperty );
+      const linearButton = createRadioButton( orderProperty, 1, linearString );
+      const quadraticButton = createRadioButton( orderProperty, 2, quadraticString );
+      const cubicButton = createRadioButton( orderProperty, 3, cubicString );
 
       // vertical layout
       const contentNode = new VBox( {
@@ -53,12 +53,12 @@ define( require => {
   /**
    * Creates a uniform radio button for this panel.
    *
+   * @param {Property.<number>} orderProperty
    * @param {number} value
    * @param {string} label
-   * @param {Property.<number>} orderProperty
    * @returns {AquaRadioButton}
    */
-  function createRadioButton( value, label, orderProperty ) {
+  function createRadioButton( orderProperty, value, label ) {
     return new AquaRadioButton(
       orderProperty,
       value,
