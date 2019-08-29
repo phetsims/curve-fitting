@@ -1,7 +1,8 @@
 // Copyright 2015-2019, University of Colorado Boulder
 
 /**
- * Node with equation parameters in 'Curve Fitting' simulation.
+ * EquationAccordionBox is the accordion box that shows the equation of the curve on the graph.
+ * It displays 'undefined' if the curve is undefined.
  *
  * @author Andrey Zelenkov (Mlearner)
  * @author Saurabh Totey
@@ -28,7 +29,7 @@ define( require => {
   // max number of digits for coefficients in ascending order of polynomials
   const MAX_DIGITS = [ 2, 3, 4, 4 ];
 
-  class GraphEquationAccordionBox extends Panel {
+  class EquationAccordionBox extends Panel {
 
     /**
      * @param {Curve} curve
@@ -154,5 +155,5 @@ define( require => {
 
   }
 
-  return curveFitting.register( 'GraphEquationAccordionBox', GraphEquationAccordionBox );
+  return curveFitting.register( 'EquationAccordionBox', EquationAccordionBox );
 } );

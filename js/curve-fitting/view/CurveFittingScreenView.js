@@ -17,8 +17,8 @@ define( require => {
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const CurveNode = require( 'CURVE_FITTING/curve-fitting/view/CurveNode' );
   const DeviationsAccordionBox = require( 'CURVE_FITTING/curve-fitting/view/DeviationsAccordionBox' );
+  const EquationAccordionBox = require( 'CURVE_FITTING/curve-fitting/view/EquationAccordionBox' );
   const GraphAreaNode = require( 'CURVE_FITTING/curve-fitting/view/GraphAreaNode' );
-  const GraphEquationAccordionBox = require( 'CURVE_FITTING/curve-fitting/view/GraphEquationAccordionBox' );
   const ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
@@ -92,7 +92,7 @@ define( require => {
 
       // create the equation node (accordion box) in the upper left corner of the graph
       const equationBoxLeft = modelViewTransform.modelToViewX( -10 ) + 10;
-      const graphEquationAccordionBox = new GraphEquationAccordionBox(
+      const equationAccordionBox = new EquationAccordionBox(
         model.curve,
         model.orderProperty,
         equationPanelExpandedProperty,
@@ -104,18 +104,18 @@ define( require => {
         }
       );
 
-      // create the panel that serves as an opaque background for the graphEquationAccordionBox; see #126
-      // no dispose necessary because graphEquationAccordionBox is present for the lifetime of the sim
+      // create the panel that serves as an opaque background for the equationAccordionBox; see #126
+      // no dispose necessary because equationAccordionBox is present for the lifetime of the sim
       const graphEquationBackground = new Rectangle( 0, 0, 0, 0, 0, 0, {
         cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
         fill: 'white'
       } );
-      graphEquationAccordionBox.updatedEmitter.addListener( () => {
-        graphEquationBackground.visible = graphEquationAccordionBox.visible;
-        graphEquationBackground.rectBounds = graphEquationAccordionBox.bounds;
+      equationAccordionBox.updatedEmitter.addListener( () => {
+        graphEquationBackground.visible = equationAccordionBox.visible;
+        graphEquationBackground.rectBounds = equationAccordionBox.bounds;
       } );
 
-      // Whenever the curve becomes visible, points below the GraphEquationAccordionBox's expand/collapse button get
+      // Whenever the curve becomes visible, points below the EquationAccordionBox's expand/collapse button get
       // pushed out from under the button; see #131
       const bumpOutPointsUnderExpandCollapseButton = () => {
         if ( !curveVisibleProperty.value ) {
@@ -124,8 +124,8 @@ define( require => {
 
         const pointPushBounds = modelViewTransform.viewToModelBounds(
           graphAreaNode.globalToLocalBounds(
-            graphEquationAccordionBox.expandCollapseButton.localToGlobalBounds(
-              graphEquationAccordionBox.expandCollapseButton.localBounds
+            equationAccordionBox.expandCollapseButton.localToGlobalBounds(
+              equationAccordionBox.expandCollapseButton.localBounds
             )
           )
         ).dilated( EXPAND_COLLAPSE_PUSH_BOUNDS_DILATION );
@@ -195,7 +195,7 @@ define( require => {
       this.addChild( curveNode );
       this.addChild( residualsNode );
       this.addChild( bucketNode );
-      this.addChild( graphEquationAccordionBox );
+      this.addChild( equationAccordionBox );
     }
 
   }
