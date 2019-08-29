@@ -4,6 +4,7 @@
  * Constants used in multiple locations within the 'Curve Fitting' simulation.
  *
  * @author Andrey Zelenkov (MLearner)
+ * @author Chris Malley (PixelZoom, Inc.)
  */
 define( require => {
   'use strict';
