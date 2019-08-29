@@ -85,7 +85,7 @@ define( require => {
 
     // fonts
     CONTROL_FONT: new PhetFont( 16 ),
-    COEFFICIENT_FONT: new PhetFont( { weight: 'bold', size: EQUATION_FONT_SIZE } ),
+    COEFFICIENT_FONT: new PhetFont( { size: EQUATION_FONT_SIZE, weight: 'bold' } ),
     EQUATION_SYMBOL_FONT: new MathSymbolFont( EQUATION_FONT_SIZE ),
     EQUATION_NORMAL_FONT: new PhetFont( EQUATION_FONT_SIZE ),
     ACCORDION_BOX_TITLE_FONT: new PhetFont( 16 ),
