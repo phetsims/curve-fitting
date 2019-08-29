@@ -362,7 +362,7 @@ define( require => {
         valueTextBackground.visible = valueTextLabel.visible;
 
         // update positionings
-        valueTextBackground.left = circleView.right + 2;
+        valueTextBackground.left = circleView.right + 5;
         valueTextBackground.centerY = circleView.centerY;
         valueTextBackground.setRect(
           0,
