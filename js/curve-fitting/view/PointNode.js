@@ -52,7 +52,10 @@ define( require => {
   };
 
   // displayed values (delta, coordinates)
-  const VALUE_TEXT_OPTIONS = { font: CurveFittingConstants.POINT_VALUE_FONT, maxWidth: 100 };
+  const VALUE_TEXT_OPTIONS = {
+    font: CurveFittingConstants.POINT_VALUE_FONT,
+    maxWidth: 100 // determined empirically
+  };
   const VALUE_MARGIN = 2;
   const VALUE_BACKGROUND_CORNER_RADIUS = 4;
 
