@@ -44,10 +44,11 @@ define( require => {
         coefficientSignTextOptions: { font: NORMAL_FONT },
         coefficientTextOptions: { font: COEFFICIENT_FONT, fill: 'blue' },
         xTextOptions: { font: SYMBOL_FONT },
+        align: 'bottom',
         maxWidth: 160
       }, options );
 
-      super( { align: 'bottom', maxWidth: options.maxWidth } );
+      super( options );
 
       // @private {Property.<number>}
       this.orderProperty = orderProperty;
