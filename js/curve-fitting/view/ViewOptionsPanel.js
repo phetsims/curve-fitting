@@ -86,7 +86,7 @@ define( require => {
         maxWidth: 140 // determined empirically
       } ),
       property,
-      CurveFittingConstants.CHECK_BOX_OPTIONS
+      CurveFittingConstants.CHECKBOX_OPTIONS
     );
   }
 

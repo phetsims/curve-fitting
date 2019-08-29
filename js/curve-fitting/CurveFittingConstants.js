@@ -26,7 +26,7 @@ define( require => {
 
     MAX_ORDER_OF_FIT: 3,
 
-    // barometer
+    // barometers
     BAROMETER_BAR_WIDTH: 10,
     BAROMETER_AXIS_HEIGHT: 270,
     BAROMETER_TICK_WIDTH: 15,
@@ -36,7 +36,7 @@ define( require => {
     GRAY_COLOR: 'rgb( 107, 107, 107 )',
     LIGHT_GRAY_COLOR: 'rgb( 201, 201, 202 )',
 
-    // point
+    // points
     POINT_FILL: 'rgb( 252, 151, 64 )',
     POINT_RADIUS: 8,
     POINT_STROKE: 'black',
@@ -48,12 +48,14 @@ define( require => {
     PANEL_MAX_WIDTH: 180,
     PANEL_MIN_WIDTH: 180,
 
+    // radio buttons
     RADIO_BUTTON_OPTIONS: {
       radius: 7,
       touchAreaXDilation: 5
     },
 
-    CHECK_BOX_OPTIONS: {
+    // checkboxes
+    CHECKBOX_OPTIONS: {
       boxWidth: 14
     },
 
