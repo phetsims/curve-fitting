@@ -32,50 +32,55 @@ define( require => {
   const deltaEqualsPatternString = require( 'string!CURVE_FITTING/deltaEqualsPattern' );
 
   // constants
-  const MIN_DELTA = 1E-3; // arbitrarily small non-zero number for minimum delta: 0 causes divide by 0 errors
+
+  // range for delta
+  const MIN_DELTA = 1E-3; // arbitrarily small non-zero number for minimum delta, 0 causes divide-by-0 errors
   const MAX_DELTA = 10;
-  const VALUE_TEXT_OPTIONS = { font: CurveFittingConstants.POINT_VALUE_FONT, maxWidth: 100 };
-  const BAR_COLOR = Color.toColor( CurveFittingConstants.BLUE_COLOR );
-  const CENTRAL_LINE_OPTIONS = {
-    stroke: CurveFittingConstants.BLUE_COLOR,
-    lineWidth: 1
-  };
-  const COORDINATE_BACKGROUND_RECTANGLE_OPTIONS = {
-    fill: CurveFittingConstants.POINT_FILL,
-    opacity: 0.75,
-    cornerRadius: 4
-  };
-  const DELTA_BACKGROUND_RECTANGLE_OPTIONS = {
-    fill: 'white',
-    opacity: 0.75,
-    cornerRadius: 4
-  };
-  const VALUE_BACKGROUND_PADDING = 2;
-  const DISTANCE_BETWEEN_COORDINATE_AND_DELTA = 1;
-  const ERROR_BAR_DILATION_X = 14;
-  const ERROR_BAR_DILATION_Y = 2;
-  const ERROR_BAR_BOUNDS = new Bounds2( -10, 0, 10, 2 );
-  const ERROR_BAR_OPTIONS = {
-    fill: CurveFittingConstants.BLUE_COLOR
-  };
-  const HALO_BOUNDS = new Bounds2( -12, -2, 12, 4 );
+
+  // point (circle)
   const POINT_COLOR = Color.toColor( CurveFittingConstants.POINT_FILL );
-  const CIRCLE_VIEW_OPTIONS = {
+  const POINT_OPTIONS = {
     fill: POINT_COLOR,
     radius: CurveFittingConstants.POINT_RADIUS,
     stroke: CurveFittingConstants.POINT_STROKE,
     lineWidth: CurveFittingConstants.POINT_LINE_WIDTH
   };
-  const HALO_BAR_OPTIONS = {
-    fill: BAR_COLOR.withAlpha( 0.3 ),
-    pickable: false,
-    visible: false
-  };
-  const HALO_POINT_OPTIONS = {
+  const POINT_HALO_OPTIONS = {
     fill: POINT_COLOR.withAlpha( 0.3 ),
     pickable: false,
     visible: false
   };
+
+  // displayed values (delta, coordinates)
+  const VALUE_TEXT_OPTIONS = { font: CurveFittingConstants.POINT_VALUE_FONT, maxWidth: 100 };
+  const VALUE_MARGIN = 2;
+  const VALUE_BACKGROUND_CORNER_RADIUS = 4;
+
+  // error bars
+  const ERROR_BAR_COLOR = Color.toColor( CurveFittingConstants.BLUE_COLOR );
+  const ERROR_BAR_DILATION_X = 14;
+  const ERROR_BAR_DILATION_Y = 2;
+  const ERROR_BAR_BOUNDS = new Bounds2( -10, 0, 10, 2 );
+  const ERROR_BAR_OPTIONS = {
+    fill: ERROR_BAR_COLOR
+  };
+  const ERROR_BAR_HALO_BOUNDS = new Bounds2( -12, -2, 12, 4 );
+  const ERROR_BAR_HALO_OPTIONS = {
+    fill: ERROR_BAR_COLOR.withAlpha( 0.3 ),
+    pickable: false,
+    visible: false
+  };
+
+  // Vertical line that connects the error bars
+  const CENTRAL_LINE_OPTIONS = {
+    stroke: ERROR_BAR_COLOR,
+    lineWidth: 1
+  };
+
+  // spacing
+  const DELTA_COORDINATES_Y_SPACING = 1; // vertical spacing between delta and coordinates
+  const POINT_COORDINATES_X_SPACING = 5; // horizontal space between point and coordinates
+  const ERROR_BAR_DELTA_X_SPACING = 2; // horizontal space between error bar and delta display
 
   class PointNode extends Node {
 
@@ -96,13 +101,13 @@ define( require => {
 
       // bottom error bar
       const errorBarBottomRectangle = new Rectangle( ERROR_BAR_BOUNDS, ERROR_BAR_OPTIONS );
-      const errorBarBottomHaloRectangle = new Rectangle( HALO_BOUNDS, HALO_BAR_OPTIONS );
+      const errorBarBottomHaloRectangle = new Rectangle( ERROR_BAR_HALO_BOUNDS, ERROR_BAR_HALO_OPTIONS );
       const errorBarBottomNode = new Node( { children: [ errorBarBottomRectangle, errorBarBottomHaloRectangle ] } );
       this.addChild( errorBarBottomNode );
 
       // top error bar
       const errorBarTopRectangle = new Rectangle( ERROR_BAR_BOUNDS, ERROR_BAR_OPTIONS );
-      const errorBarTopHaloRectangle = new Rectangle( HALO_BOUNDS, HALO_BAR_OPTIONS );
+      const errorBarTopHaloRectangle = new Rectangle( ERROR_BAR_HALO_BOUNDS, ERROR_BAR_HALO_OPTIONS );
       const errorBarTopNode = new Node( { children: [ errorBarTopRectangle, errorBarTopHaloRectangle ] } );
       this.addChild( errorBarTopNode );
 
@@ -115,7 +120,11 @@ define( require => {
         StringUtils.fillIn( deltaEqualsPatternString, { deltaValue: Util.toFixed( point.deltaProperty.value, 1 ) } ),
         VALUE_TEXT_OPTIONS
       );
-      const deltaTextBackground = new Rectangle( 0, 0, 1, 1, DELTA_BACKGROUND_RECTANGLE_OPTIONS );
+      const deltaTextBackground = new Rectangle( 0, 0, 1, 1, {
+        fill: 'white',
+        opacity: 0.75,
+        cornerRadius: VALUE_BACKGROUND_CORNER_RADIUS
+      } );
       this.addChild( deltaTextBackground );
       this.addChild( deltaTextLabel );
 
@@ -138,7 +147,7 @@ define( require => {
       errorBarTopRectangle.addInputListener( barHaloHandler );
 
       // point view
-      const circleView = new Circle( CIRCLE_VIEW_OPTIONS );
+      const circleView = new Circle( POINT_OPTIONS );
       circleView.touchArea = circleView.bounds.dilated( 5 );
       circleView.mouseArea = circleView.bounds.dilated( 5 );
       this.addChild( circleView );
@@ -262,7 +271,11 @@ define( require => {
         ),
         VALUE_TEXT_OPTIONS
       );
-      const valueTextBackground = new Rectangle( 0, 0, 1, 1, COORDINATE_BACKGROUND_RECTANGLE_OPTIONS );
+      const valueTextBackground = new Rectangle( 0, 0, 1, 1, {
+        fill: CurveFittingConstants.POINT_FILL,
+        opacity: 0.75,
+        cornerRadius: VALUE_BACKGROUND_CORNER_RADIUS
+      } );
       this.addChild( valueTextBackground );
       this.addChild( valueTextLabel );
 
@@ -324,17 +337,17 @@ define( require => {
 
         // update text background positioning
         deltaTextBackground.centerY = errorBarTopNode.centerY;
-        deltaTextBackground.left = errorBarTopNode.right + 2;
+        deltaTextBackground.left = errorBarTopNode.right + ERROR_BAR_DELTA_X_SPACING;
         deltaTextBackground.setRect(
           0,
           0,
-          deltaTextLabel.width + 2 * VALUE_BACKGROUND_PADDING,
-          deltaTextLabel.height + 2 * VALUE_BACKGROUND_PADDING
+          deltaTextLabel.width + 2 * VALUE_MARGIN,
+          deltaTextLabel.height + 2 * VALUE_MARGIN
         );
 
         // update label and background and ensure that coordinate and delta backgrounds do not intersect
-        if ( deltaTextBackground.bottom > valueTextBackground.top - DISTANCE_BETWEEN_COORDINATE_AND_DELTA ) {
-          deltaTextBackground.bottom = valueTextBackground.top - DISTANCE_BETWEEN_COORDINATE_AND_DELTA;
+        if ( deltaTextBackground.bottom > valueTextBackground.top - DELTA_COORDINATES_Y_SPACING ) {
+          deltaTextBackground.bottom = valueTextBackground.top - DELTA_COORDINATES_Y_SPACING;
         }
 
         // set text position to final background position
@@ -362,13 +375,13 @@ define( require => {
         valueTextBackground.visible = valueTextLabel.visible;
 
         // update positionings
-        valueTextBackground.left = circleView.right + 5;
+        valueTextBackground.left = circleView.right + POINT_COORDINATES_X_SPACING;
         valueTextBackground.centerY = circleView.centerY;
         valueTextBackground.setRect(
           0,
           0,
-          valueTextLabel.width + 2 * VALUE_BACKGROUND_PADDING,
-          valueTextLabel.height + 2 * VALUE_BACKGROUND_PADDING
+          valueTextLabel.width + 2 * VALUE_MARGIN,
+          valueTextLabel.height + 2 * VALUE_MARGIN
         );
         valueTextLabel.center = valueTextBackground.center;
       }
@@ -398,7 +411,7 @@ define( require => {
       residualsVisibleProperty.link( updateErrorBarsBasedOnResidualsVisibility );
 
       // point halo
-      const haloPointNode = new Circle( 1.75 * CurveFittingConstants.POINT_RADIUS, HALO_POINT_OPTIONS );
+      const haloPointNode = new Circle( 1.75 * CurveFittingConstants.POINT_RADIUS, POINT_HALO_OPTIONS );
       this.addChild( haloPointNode );
       circleView.addInputListener( new ButtonListener( {
         up: () => { haloPointNode.visible = false; },
