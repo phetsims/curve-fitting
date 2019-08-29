@@ -11,12 +11,11 @@ define( require => {
 
   // modules
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
+  const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const Dialog = require( 'SUN/Dialog' );
   const FormulaNode = require( 'SCENERY_PHET/FormulaNode' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const HStrut = require( 'SCENERY/nodes/HStrut' );
-  const MathSymbolFont = require( 'SCENERY_PHET/MathSymbolFont' );
-  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const RichText = require( 'SCENERY/nodes/RichText' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
@@ -33,9 +32,10 @@ define( require => {
   const theReducedChiSquaredStatisticIsString = require( 'string!CURVE_FITTING/theReducedChiSquaredStatisticIs' );
 
   // constants
-  const DIALOG_FONT_SIZE = 14;
-  const DIALOG_PLAIN_FONT = new PhetFont( DIALOG_FONT_SIZE );
-  const DIALOG_MATH_FONT = new MathSymbolFont( DIALOG_FONT_SIZE );
+  const TEXT_OPTIONS = {
+    font: CurveFittingConstants.INFO_DIALOG_NORMAL_FONT,
+    maxWidth: 500
+  };
 
   class ReducedChiSquaredStatisticDialog extends Dialog {
 
@@ -43,23 +43,23 @@ define( require => {
 
       const numberOfDataPointsNode = new RichText(
         StringUtils.fillIn( nEqualsNumberOfDataPointsPatternString, {
-          nSymbol: `<i style='font-family:${DIALOG_MATH_FONT.family}'>${nSymbolString}</i>`
+          nSymbol: `<i style='font-family:${CurveFittingConstants.INFO_DIALOG_SYMBOL_FONT.family}'>${nSymbolString}</i>`
         } ),
-        { font: DIALOG_PLAIN_FONT, maxWidth: 500 }
+        TEXT_OPTIONS
       );
 
       const numberOfParametersNode = new RichText(
         StringUtils.fillIn( fEqualsNumberOfParametersPatternString, {
-          fSymbol: `<i style='font-family:${DIALOG_MATH_FONT.family}'>${fSymbolString}</i>`
+          fSymbol: `<i style='font-family:${CurveFittingConstants.INFO_DIALOG_SYMBOL_FONT.family}'>${fSymbolString}</i>`
         } ),
-        { font: DIALOG_PLAIN_FONT, maxWidth: 500 }
+        TEXT_OPTIONS
       );
 
       const contentNode = new VBox( {
         align: 'left',
         spacing: 10,
         children: [
-          new Text( theReducedChiSquaredStatisticIsString, { font: DIALOG_PLAIN_FONT, maxWidth: 500 } ),
+          new Text( theReducedChiSquaredStatisticIsString, TEXT_OPTIONS ),
           new HBox( {
             children: [
               new HStrut( 20 ),

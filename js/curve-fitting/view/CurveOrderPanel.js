@@ -37,7 +37,7 @@ define( require => {
       // vertical layout
       const contentNode = new VBox( {
         align: 'left',
-        spacing: 5,
+        spacing: CurveFittingConstants.CONTROLS_Y_SPACING,
         children: [
           linearButton,
           quadraticButton,
@@ -62,7 +62,10 @@ define( require => {
     return new AquaRadioButton(
       orderProperty,
       value,
-      new Text( label, CurveFittingConstants.CONTROL_TEXT_OPTIONS ),
+      new Text( label, {
+        font: CurveFittingConstants.CONTROL_FONT,
+        maxWidth: 140
+      } ),
       CurveFittingConstants.RADIO_BUTTON_OPTIONS
     );
   }

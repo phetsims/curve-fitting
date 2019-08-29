@@ -31,19 +31,6 @@ define( require => {
      */
     constructor( curveVisibleProperty, residualsVisibleProperty, valuesVisibleProperty, options ) {
 
-      /**
-       * Creates a checkbox for this panel.
-       *
-       * @param {Property} property
-       * @param {string} label
-       * @returns {Checkbox}
-       */
-      const createCheckbox = ( property, label ) => new Checkbox(
-        new Text( label, CurveFittingConstants.CONTROL_TEXT_OPTIONS ),
-        property,
-        CurveFittingConstants.CHECK_BOX_OPTIONS
-      );
-
       // checkboxes
       const curveCheckbox = createCheckbox( curveVisibleProperty, curveString );
       const residualsCheckbox = createCheckbox( residualsVisibleProperty, residualsString );
@@ -51,7 +38,7 @@ define( require => {
 
       // vertical layout
       const contentNode = new VBox( {
-        spacing: 5,
+        spacing: CurveFittingConstants.CONTROLS_Y_SPACING,
         align: 'left',
         children: [
           curveCheckbox,
@@ -84,7 +71,23 @@ define( require => {
         }
       } );
     }
+  }
 
+  /**
+   * Creates a checkbox for this panel.
+   * @param {Property} property
+   * @param {string} label
+   * @returns {Checkbox}
+   */
+  function createCheckbox( property, label ) {
+    return new Checkbox(
+      new Text( label, {
+        font: CurveFittingConstants.CONTROL_FONT,
+        maxWidth: 140
+      } ),
+      property,
+      CurveFittingConstants.CHECK_BOX_OPTIONS
+    );
   }
 
   return curveFitting.register( 'ViewOptionsPanel', ViewOptionsPanel );

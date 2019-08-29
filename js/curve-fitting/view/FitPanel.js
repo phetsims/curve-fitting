@@ -21,7 +21,6 @@ define( require => {
   const HBox = require( 'SCENERY/nodes/HBox' );
   const HStrut = require( 'SCENERY/nodes/HStrut' );
   const Panel = require( 'SUN/Panel' );
-  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Text = require( 'SCENERY/nodes/Text' );
   const VBox = require( 'SCENERY/nodes/VBox' );
 
@@ -58,7 +57,7 @@ define( require => {
       // vertical layout
       const radioButtonsBox = new VBox( {
         align: 'left',
-        spacing: 5,
+        spacing: CurveFittingConstants.CONTROLS_Y_SPACING,
         children: [
           bestFitButton,
           adjustableFitButton
@@ -68,10 +67,7 @@ define( require => {
       // equation that corresponds to the curve
       const equationFitNode = new EquationNode( orderProperty, {
         coefficientTextOptions: {
-          font: new PhetFont( {
-            weight: 'bold',
-            size: 12
-          } ),
+          font: CurveFittingConstants.COEFFICIENT_FONT,
           fill: CurveFittingConstants.BLUE_COLOR
         }
       } );
@@ -79,7 +75,7 @@ define( require => {
       // vertical layout
       const contentNode = new VBox( {
         align: 'left',
-        spacing: 5,
+        spacing: CurveFittingConstants.CONTROLS_Y_SPACING,
         children: [
           radioButtonsBox,
           equationFitNode
@@ -127,7 +123,10 @@ define( require => {
 
       // create slider box under the equationFitNode
       // HBox and HStrut spacing are empirically determined
-      const slidersBox = new HBox( { spacing: 7, children: sliders } );
+      const slidersBox = new HBox( {
+        spacing: CurveFittingConstants.SLIDERS_X_SPACING,
+        children: sliders
+      } );
       const slidersOffset = new HStrut( 3 );
 
       // add slider number observer; no dispose necessary because FitPanel is always present
@@ -154,9 +153,7 @@ define( require => {
           contentNode.addChild( slidersBox );
         }
       } );
-
     }
-
   }
 
   /**
@@ -171,7 +168,10 @@ define( require => {
     return new AquaRadioButton(
       property,
       value,
-      new Text( label, CurveFittingConstants.CONTROL_TEXT_OPTIONS ),
+      new Text( label, {
+        font: CurveFittingConstants.CONTROL_FONT,
+        maxWidth: 140
+      } ),
       CurveFittingConstants.RADIO_BUTTON_OPTIONS
     );
   }

@@ -20,7 +20,6 @@ define( require => {
   const DragListener = require( 'SCENERY/listeners/DragListener' );
   const Line = require( 'SCENERY/nodes/Line' );
   const Node = require( 'SCENERY/nodes/Node' );
-  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const RichText = require( 'SCENERY/nodes/RichText' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
@@ -35,7 +34,7 @@ define( require => {
   // constants
   const MIN_DELTA = 1E-3; // arbitrarily small non-zero number for minimum delta: 0 causes divide by 0 errors
   const MAX_DELTA = 10;
-  const VALUE_TEXT_OPTIONS = { font: new PhetFont( 11 ), maxWidth: 100 };
+  const VALUE_TEXT_OPTIONS = { font: CurveFittingConstants.POINT_VALUE_FONT, maxWidth: 100 };
   const BAR_COLOR = Color.toColor( CurveFittingConstants.BLUE_COLOR );
   const CENTRAL_LINE_OPTIONS = {
     stroke: CurveFittingConstants.BLUE_COLOR,

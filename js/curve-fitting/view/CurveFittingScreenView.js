@@ -27,7 +27,6 @@ define( require => {
   const Vector2 = require( 'DOT/Vector2' );
 
   // constants
-  const GRAPH_PADDING_LEFT_RIGHT = 15;
   const EXPAND_COLLAPSE_PUSH_BOUNDS_DILATION = 0.45; // in model coordinates
 
   class CurveFittingScreenView extends ScreenView {
@@ -37,7 +36,7 @@ define( require => {
      */
     constructor( model ) {
 
-      super( CurveFittingConstants.SCREEN_VIEW_OPTIONS );
+      super();
 
       // view-specific Properties
       // @public {Property.<boolean>} determines visibility of the "Deviations" accordion box (upper left hand side panel)
@@ -55,14 +54,28 @@ define( require => {
       // @public {Property.<boolean>} determines visibility of the curve fit
       const curveVisibleProperty = new BooleanProperty( false );
 
+      // create a model view transform, graph is centered and fills the ScreenView height
+      const modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping(
+        new Vector2( 0, 0 ),
+        new Vector2( this.layoutBounds.centerX, this.layoutBounds.centerY ),
+        25.5 //TODO compute this
+      );
+
+      // create the graph area node - responsible for the rendering of the axes, ticks and background.
+      const graphAreaNode = new GraphAreaNode( modelViewTransform );
+
+      const graphViewBounds = modelViewTransform.modelToViewBounds( CurveFittingConstants.GRAPH_BACKGROUND_MODEL_BOUNDS );
+
       // deviations accordion box, at left of screen
       const deviationsAccordionBox = new DeviationsAccordionBox(
         deviationsAccordionBoxExpandedProperty,
         model.points,
         model.curve.chiSquaredProperty,
         model.curve.rSquaredProperty,
-        curveVisibleProperty,
-        { left: 10, top: 10 }
+        curveVisibleProperty, {
+          centerX: this.layoutBounds.left + ( graphAreaNode.left - this.layoutBounds.left ) / 2,
+          top: graphViewBounds.minY
+        }
       );
 
       // all other controls, at right of screen
@@ -72,23 +85,10 @@ define( require => {
         model.fitProperty,
         curveVisibleProperty,
         residualsVisibleProperty,
-        valuesVisibleProperty,
-        { right: this.layoutBounds.right - 10, top: deviationsAccordionBox.top }
-      );
-
-      // create a model view transform
-      const graphAreaWidth = controlPanels.left - deviationsAccordionBox.right - GRAPH_PADDING_LEFT_RIGHT * 2;
-      const graphCenterX = 0.5 * ( controlPanels.left + deviationsAccordionBox.right );
-      const graphCenterY = graphAreaWidth / 2 + deviationsAccordionBox.top;
-      const scale = graphAreaWidth / CurveFittingConstants.GRAPH_NODE_MODEL_BOUNDS.width;
-      const modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping(
-        new Vector2( 0, 0 ),
-        new Vector2( graphCenterX, graphCenterY ),
-        scale
-      );
-
-      // create the graph area node - responsible for the rendering of the axes, ticks and background.
-      const graphAreaNode = new GraphAreaNode( modelViewTransform );
+        valuesVisibleProperty, {
+          centerX: this.layoutBounds.right - ( this.layoutBounds.right - graphAreaNode.right ) / 2,
+          top: graphViewBounds.minY
+        } );
 
       // create the equation node (accordion box) in the upper left corner of the graph
       const equationBoxLeft = modelViewTransform.modelToViewX( -10 ) + 10;
@@ -182,9 +182,8 @@ define( require => {
           valuesVisibleProperty.reset();
           curveVisibleProperty.reset();
         },
-        scale: 0.75,
-        right: controlPanels.right,
-        bottom: this.layoutBounds.bottom - 15
+        right: this.layoutBounds.right - CurveFittingConstants.SCREEN_VIEW_X_MARGIN,
+        bottom: this.layoutBounds.bottom - CurveFittingConstants.SCREEN_VIEW_Y_MARGIN
       } );
 
       // add the children to the scene graph

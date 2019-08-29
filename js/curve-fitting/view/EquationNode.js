@@ -13,9 +13,7 @@ define( require => {
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const HStrut = require( 'SCENERY/nodes/HStrut' );
-  const MathSymbolFont = require( 'SCENERY_PHET/MathSymbolFont' );
   const MathSymbols = require( 'SCENERY_PHET/MathSymbols' );
-  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const RichText = require( 'SCENERY/nodes/RichText' );
   const Text = require( 'SCENERY/nodes/Text' );
   const VStrut = require( 'SCENERY/nodes/VStrut' );
@@ -29,8 +27,9 @@ define( require => {
   const ySymbolString = require( 'string!CURVE_FITTING/ySymbol' );
 
   // constants
-  const NORMAL_FONT = new PhetFont( 12 );
-  const MATH_FONT = new MathSymbolFont( 12 );
+  const NORMAL_FONT = CurveFittingConstants.EQUATION_NORMAL_FONT;
+  const SYMBOL_FONT = CurveFittingConstants.EQUATION_SYMBOL_FONT;
+  const COEFFICIENT_FONT = CurveFittingConstants.COEFFICIENT_FONT;
 
   class EquationNode extends HBox {
 
@@ -41,11 +40,11 @@ define( require => {
     constructor( orderProperty, options ) {
 
       options = _.extend( {
-        yEqualsTextOptions: { font: NORMAL_FONT },
+        yEqualsTextOptions: { font: SYMBOL_FONT },
         coefficientSignTextOptions: { font: NORMAL_FONT },
-        coefficientTextOptions: { font: NORMAL_FONT, fill: 'blue' },
+        coefficientTextOptions: { font: COEFFICIENT_FONT, fill: 'blue' },
         xTextOptions: { font: NORMAL_FONT },
-        maxWidth: 130
+        maxWidth: 160
       }, options );
 
       super( { align: 'bottom', maxWidth: options.maxWidth } );
@@ -62,7 +61,7 @@ define( require => {
       // @private {Array.<RichText>}
       this.xVariableTextNodes = [];
 
-      const mathFontXString = `<i style='font-family:${MATH_FONT.family}'>${xSymbolString}</i>`;
+      const mathFontXString = `<i style='font-family:${SYMBOL_FONT.family}'>${xSymbolString}</i>`;
 
       // initializes this.signTextNodes, this.coefficientTextNodes, and this.xVariableTextNodes
       for ( let i = 0; i <= CurveFittingConstants.MAX_ORDER_OF_FIT; i++ ) {

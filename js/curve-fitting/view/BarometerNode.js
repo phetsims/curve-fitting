@@ -13,7 +13,6 @@ define( require => {
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const Line = require( 'SCENERY/nodes/Line' );
   const Node = require( 'SCENERY/nodes/Node' );
-  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const Text = require( 'SCENERY/nodes/Text' );
 
@@ -39,7 +38,7 @@ define( require => {
         fill: '#fff',
 
         // {Font} the font of the tick labels
-        font: new PhetFont( 12 ),
+        font: CurveFittingConstants.BAROMETER_TICK_LABEL_FONT,
 
         // {number} how tall this barometer is
         axisHeight: CurveFittingConstants.BAROMETER_AXIS_HEIGHT,

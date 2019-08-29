@@ -12,7 +12,6 @@ define( require => {
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const Dimension2 = require( 'DOT/Dimension2' );
-  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Text = require( 'SCENERY/nodes/Text' );
   const VBox = require( 'SCENERY/nodes/VBox' );
   const VSlider = require( 'SUN/VSlider' );
@@ -36,10 +35,7 @@ define( require => {
         thumbMouseAreaYDilation: 4,
         thumbMouseAreaXDilation: 10,
         labelOptions: {
-          font: new PhetFont( {
-            weight: 'bold',
-            size: 13
-          } ),
+          font: CurveFittingConstants.COEFFICIENT_FONT,
           fill: CurveFittingConstants.BLUE_COLOR,
           maxWidth: 20
         }

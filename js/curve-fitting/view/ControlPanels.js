@@ -41,7 +41,7 @@ define( require => {
                  valuesProperty, options ) {
       options = _.extend( {
         align: 'left',
-        spacing: 10
+        spacing: 12
       }, options );
 
       // view options

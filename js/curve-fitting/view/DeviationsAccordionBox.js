@@ -18,11 +18,9 @@ define( require => {
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const InfoButton = require( 'SCENERY_PHET/buttons/InfoButton' );
-  const MathSymbolFont = require( 'SCENERY_PHET/MathSymbolFont' );
   const MathSymbols = require( 'SCENERY_PHET/MathSymbols' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Panel = require( 'SUN/Panel' );
-  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const ReducedChiSquaredStatisticDialog = require( 'CURVE_FITTING/curve-fitting/view/ReducedChiSquaredStatisticDialog' );
   const RichText = require( 'SCENERY/nodes/RichText' );
   const Text = require( 'SCENERY/nodes/Text' );
@@ -32,15 +30,21 @@ define( require => {
   const deviationsString = require( 'string!CURVE_FITTING/deviations' );
 
   // constants
-  const TEXT_FONT = new PhetFont( 12 );
-  const VALUES_TEXT_FONT = new PhetFont( 10 );
-  const MATH_FONT = new MathSymbolFont( 12 );
+  const VALUES_TEXT_FONT = CurveFittingConstants.BAROMETER_VALUE_FONT;
+  const MATH_FONT = CurveFittingConstants.BAROMETER_SYMBOL_FONT;
   const MAX_CHI_SQUARE_VALUE = 1000;
-  const LABEL_TEXT_OPTIONS = { font: TEXT_FONT, maxWidth: 25 };
+  const LABEL_TEXT_OPTIONS = {
+    font: CurveFittingConstants.BAROMETER_SYMBOL_FONT,
+    maxWidth: 35
+  };
 
   // strings
   const chiSymbolString = require( 'string!CURVE_FITTING/chiSymbol' );
   const rSymbolString = require( 'string!CURVE_FITTING/rSymbol' );
+
+  // constants
+  const LABEL_MAX_WIDTH = 30;
+  const VALUE_MAX_WIDTH = 30;
 
   class DeviationsAccordionBox extends AccordionBox {
 
@@ -60,13 +64,16 @@ define( require => {
         minWidth: CurveFittingConstants.PANEL_MIN_WIDTH,
         maxWidth: CurveFittingConstants.PANEL_MAX_WIDTH,
         expandedProperty: expandedProperty,
-        titleNode: new Text( deviationsString, { font: TEXT_FONT, maxWidth: 115 } ),
+        titleNode: new Text( deviationsString, {
+          font: CurveFittingConstants.ACCORDION_BOX_TITLE_FONT,
+          maxWidth: 115
+        } ),
         titleAlignX: 'left',
         showTitleWhenExpanded: true,
-        buttonXMargin: 5,
-        buttonYMargin: 5,
-        contentXMargin: 10,
-        contentYMargin: 5,
+        buttonXMargin: 7,
+        buttonYMargin: 7,
+        contentXMargin: CurveFittingConstants.PANEL_MARGIN,
+        contentYMargin: CurveFittingConstants.PANEL_MARGIN,
         expandCollapseButtonOptions: {
           touchAreaXDilation: 8,
           touchAreaYDilation: 8
@@ -77,7 +84,7 @@ define( require => {
           xMargin: 4,
           yMargin: 4,
           resize: false,
-          maxWidth: 30
+          maxWidth: VALUE_MAX_WIDTH
         }
       }, options );
 
@@ -110,30 +117,38 @@ define( require => {
       const mathFontChiString = `<i style='font-family:${MATH_FONT.family}'>${chiSymbolString}</i>`;
       const mathFontRString = `<i style='font-family:${MATH_FONT.family}'>${rSymbolString}</i>`;
 
+      // X^2 =
+      const chiSquaredLabelText = new RichText(
+        `${mathFontChiString}<sup>&#8198;2</sup> ${MathSymbols.EQUAL_TO}&nbsp;`, LABEL_TEXT_OPTIONS
+      );
+
       // X^2 value
       const chiSquaredValueText = new Text( '0.00', {
         font: VALUES_TEXT_FONT,
         textAlign: 'left',
-        maxWidth: 22
+        maxWidth: LABEL_MAX_WIDTH
       } );
       const chiSquaredValuePanel = new Panel( chiSquaredValueText, options.valuePanelOptions );
-      const chiSquaredLabelText = new RichText(
-        `${mathFontChiString}<sup>&#8198;2</sup> ${MathSymbols.EQUAL_TO}&nbsp;`, LABEL_TEXT_OPTIONS
-      );
+
+      // X^2 = value
       const chiSquaredInformationBox = new HBox( {
         children: [ chiSquaredLabelText, chiSquaredValuePanel ]
       } );
+
+      // r^2 =
+      const rSquaredLabelText = new RichText(
+        `${mathFontRString}<sup>&#8198;2</sup> ${MathSymbols.EQUAL_TO}&nbsp;`, LABEL_TEXT_OPTIONS
+      );
 
       // r^2 value
       const rSquaredValueText = new Text( '0.00', {
         font: VALUES_TEXT_FONT,
         textAlign: 'left',
-        maxWidth: 22
+        maxWidth: LABEL_MAX_WIDTH
       } );
       const rSquaredValuePanel = new Panel( rSquaredValueText, options.valuePanelOptions );
-      const rSquaredLabelText = new RichText(
-        `${mathFontRString}<sup>&#8198;2</sup> ${MathSymbols.EQUAL_TO}&nbsp;`, LABEL_TEXT_OPTIONS
-      );
+      
+      // r^2 = value
       const rSquaredInformationBox = new HBox( {
         children: [ rSquaredLabelText, rSquaredValuePanel ]
       } );
@@ -183,15 +198,17 @@ define( require => {
       panelContent.addChild( barometerX2 );
       panelContent.addChild( barometerR2 );
 
+      const xSpacing = 10;
+      const ySpacing = 10;
       helpButton.centerX = panelContent.width / 2;
-      chiSquaredInformationBox.right = helpButton.centerX - 5;
-      chiSquaredInformationBox.bottom = helpButton.top - 5;
-      rSquaredInformationBox.left = helpButton.centerX + 5;
-      rSquaredInformationBox.bottom = helpButton.top - 5;
+      chiSquaredInformationBox.right = helpButton.centerX - xSpacing;
+      chiSquaredInformationBox.bottom = helpButton.top - ySpacing;
+      rSquaredInformationBox.left = helpButton.centerX + xSpacing;
+      rSquaredInformationBox.bottom = helpButton.top - ySpacing;
       barometerX2.centerX = chiSquaredInformationBox.centerX;
       barometerR2.centerX = rSquaredInformationBox.centerX;
-      barometerX2.bottom = chiSquaredInformationBox.top - 5;
-      barometerR2.bottom = rSquaredInformationBox.top - 5;
+      barometerX2.bottom = chiSquaredInformationBox.top - ySpacing;
+      barometerR2.bottom = rSquaredInformationBox.top - ySpacing;
 
       super( panelContent, options );
     }

@@ -14,10 +14,8 @@ define( require => {
   const ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  const MathSymbolFont = require( 'SCENERY_PHET/MathSymbolFont' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Path = require( 'SCENERY/nodes/Path' );
-  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const Shape = require( 'KITE/Shape' );
   const Text = require( 'SCENERY/nodes/Text' );
@@ -34,10 +32,10 @@ define( require => {
   const MINOR_TICK_LENGTH = 0.3;
   const MAJOR_TICK_LENGTH = 0.75;
   const MAJOR_TICK_LOCATIONS = [ -10, -5, 5, 10 ];
-  const TICK_LABEL_FONT = new PhetFont( 12 );
+  const TICK_LABEL_FONT = CurveFittingConstants.GRAPH_TICK_LABEL_FONT;
   const TICK_LABEL_DISTANCE_FROM_AXES = 0.5;
   const AXIS_LABEL_DISTANCE_FROM_AXES = 0.2;
-  const AXIS_LABEL_FONT = new MathSymbolFont( { size: 14, weight: 'bold' } );
+  const AXIS_LABEL_FONT = CurveFittingConstants.GRAPH_AXIS_LABEL_FONT;
   const AXIS_ARROW_OPTIONS = {
     doubleHead: true,
     tailWidth: 0,

@@ -44,7 +44,6 @@ define( require => {
     } ),
     fill: CurveFittingConstants.BLUE_COLOR
   };
-  const TEXT_OPTIONS = { font: new PhetFont( 12 ), maxWidth: 100 };
 
   // max number of digits for coefficients in ascending order of polynomials
   const MAX_DIGITS = [ 2, 3, 4, 4 ];
@@ -65,7 +64,10 @@ define( require => {
       }, options );
 
       // visible text node when panel is not expanded
-      const titleNode = new Text( equationString, TEXT_OPTIONS );
+      const titleNode = new Text( equationString, {
+        font: CurveFittingConstants.ACCORDION_BOX_TITLE_FONT,
+        maxWidth: options.equationNodeMaxWidth
+      } );
 
       // create expand button
       const expandCollapseButton = new ExpandCollapseButton( equationPanelExpandedProperty, {
@@ -96,7 +98,7 @@ define( require => {
 
       // visible node when panel is expanded but there is no equation
       const undefinedEquationText = new Text( undefinedString, {
-        font: new PhetFont( 12 ),
+        font: CurveFittingConstants.ACCORDION_BOX_TITLE_FONT,
         maxWidth: options.equationNodeMaxWidth
       } );
 
