@@ -40,11 +40,13 @@ define( require => {
      */
     constructor( curve, orderProperty, equationPanelExpandedProperty, curveVisibleProperty, options ) {
 
-      options = _.extend( {}, CurveFittingConstants.PANEL_CORNER_RADIUS, {
+      options = _.extend( {}, {
         equationNodeMaxWidth: 250,
         fill: 'white',
         opacity: 0.8,
-        cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS
+        cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
+        xMargin: CurveFittingConstants.PANEL_MARGIN,
+        yMargin: CurveFittingConstants.PANEL_MARGIN
       }, options );
 
       // visible text node when panel is not expanded
@@ -61,7 +63,7 @@ define( require => {
       expandCollapseButton.mouseArea = expandCollapseButton.localBounds.dilated( expandCollapseButton.width / 3 );
 
       const content = new HBox( {
-        spacing: 5,
+        spacing: 8,
         children: [ expandCollapseButton, titleNode ]
       } );
 

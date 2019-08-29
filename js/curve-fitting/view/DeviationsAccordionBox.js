@@ -72,11 +72,10 @@ define( require => {
           maxWidth: 115
         } ),
         titleAlignX: 'left',
+        titleXSpacing: 8,
         showTitleWhenExpanded: true,
-        buttonXMargin: 7,
-        buttonYMargin: 7,
-        contentXMargin: CurveFittingConstants.PANEL_MARGIN,
-        contentYMargin: CurveFittingConstants.PANEL_MARGIN,
+        buttonXMargin: CurveFittingConstants.PANEL_MARGIN,
+        buttonYMargin: CurveFittingConstants.PANEL_MARGIN,
         expandCollapseButtonOptions: {
           touchAreaXDilation: 8,
           touchAreaYDilation: 8
