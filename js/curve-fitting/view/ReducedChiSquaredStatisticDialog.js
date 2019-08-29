@@ -33,8 +33,7 @@ define( require => {
 
   // constants
   const TEXT_OPTIONS = {
-    font: CurveFittingConstants.INFO_DIALOG_NORMAL_FONT,
-    maxWidth: 500
+    font: CurveFittingConstants.INFO_DIALOG_NORMAL_FONT
   };
 
   const FORMULA_STRING = `${chiSymbolString}_r^2 = ` +
@@ -46,16 +45,19 @@ define( require => {
 
     constructor() {
 
+      // Pattern for styling a symbol with the PhET standard math font
+      const symbolPattern = `<i style='font-family:${CurveFittingConstants.INFO_DIALOG_SYMBOL_FONT.family}'>{{symbol}}</i>`;
+
       const numberOfDataPointsNode = new RichText(
         StringUtils.fillIn( nEqualsNumberOfDataPointsPatternString, {
-          nSymbol: `<i style='font-family:${CurveFittingConstants.INFO_DIALOG_SYMBOL_FONT.family}'>${nSymbolString}</i>`
+          nSymbol: StringUtils.fillIn( symbolPattern, { symbol: nSymbolString } )
         } ),
         TEXT_OPTIONS
       );
 
       const numberOfParametersNode = new RichText(
         StringUtils.fillIn( fEqualsNumberOfParametersPatternString, {
-          fSymbol: `<i style='font-family:${CurveFittingConstants.INFO_DIALOG_SYMBOL_FONT.family}'>${fSymbolString}</i>`
+          fSymbol: StringUtils.fillIn( symbolPattern, { symbol: fSymbolString } )
         } ),
         TEXT_OPTIONS
       );
@@ -69,12 +71,12 @@ define( require => {
             children: [
               new HStrut( 20 ),
               new FormulaNode( FORMULA_STRING )
-            ],
-            maxWidth: 650
+            ]
           } ),
           numberOfDataPointsNode,
           numberOfParametersNode
-        ]
+        ],
+        maxWidth: 500 // determined empirically
       } );
 
       super( contentNode );
