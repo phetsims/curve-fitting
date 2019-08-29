@@ -83,7 +83,7 @@ define( require => {
     return new Checkbox(
       new Text( label, {
         font: CurveFittingConstants.CONTROL_FONT,
-        maxWidth: 140
+        maxWidth: 140 // determined empirically
       } ),
       property,
       CurveFittingConstants.CHECK_BOX_OPTIONS

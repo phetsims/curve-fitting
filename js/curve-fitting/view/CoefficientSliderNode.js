@@ -25,6 +25,7 @@ define( require => {
      * @param {Object} [options] for slider node.
      */
     constructor( property, range, label, options ) {
+
       options = _.extend( {
         trackFill: 'black',
         trackSize: new Dimension2( 120, 1 ),
@@ -37,7 +38,7 @@ define( require => {
         labelOptions: {
           font: CurveFittingConstants.COEFFICIENT_FONT,
           fill: CurveFittingConstants.BLUE_COLOR,
-          maxWidth: 20
+          maxWidth: 20 // determined empirically
         }
       }, options );
 

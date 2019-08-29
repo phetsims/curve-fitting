@@ -170,7 +170,7 @@ define( require => {
       value,
       new Text( label, {
         font: CurveFittingConstants.CONTROL_FONT,
-        maxWidth: 140
+        maxWidth: 140 // determined empirically
       } ),
       CurveFittingConstants.RADIO_BUTTON_OPTIONS
     );
