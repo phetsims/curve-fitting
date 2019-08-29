@@ -1,7 +1,7 @@
 // Copyright 2015-2019, University of Colorado Boulder
 
 /**
- * Barometer for x^2 (chi square) deviation.
+ * Barometer for X^2 (chi square) deviation.
  * Linear dependence in [ 0; 1 ] interval,
  * Logarithmic dependence in ( 1; 100 ] interval.
  *
