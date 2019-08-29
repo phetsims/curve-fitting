@@ -83,7 +83,7 @@ define( require => {
         },
         valuePanelOptions: {
           fill: 'white',
-          cornerRadius: 4,
+          cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
           xMargin: 4,
           yMargin: 4,
           resize: false,

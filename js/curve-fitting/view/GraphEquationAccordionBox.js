@@ -42,7 +42,8 @@ define( require => {
       options = _.extend( {}, CurveFittingConstants.PANEL_CORNER_RADIUS, {
         equationNodeMaxWidth: 250,
         fill: 'white',
-        opacity: 0.8
+        opacity: 0.8,
+        cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS
       }, options );
 
       // visible text node when panel is not expanded
