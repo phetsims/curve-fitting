@@ -48,7 +48,8 @@ define( require => {
       // @public {Property.<boolean>} a Property that reflects whether the point is in the graph
       this.isInsideGraphProperty = new DerivedProperty(
         [ this.positionProperty ],
-        position => CurveFittingConstants.GRAPH_BACKGROUND_MODEL_BOUNDS.containsPoint( position )
+        position => CurveFittingConstants.GRAPH_BACKGROUND_MODEL_BOUNDS.containsPoint( position ),
+        { valueType: 'boolean' }
       );
 
       // if the user dropped the point outside of the graph send it back to the bucket

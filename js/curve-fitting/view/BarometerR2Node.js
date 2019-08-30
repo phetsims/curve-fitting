@@ -41,7 +41,8 @@ define( require => {
       // No dispose necessary, present for the lifetime of the sim
       const modifiedRSquaredProperty = new DerivedProperty(
         [ rSquaredProperty ],
-        rSquared => isNaN( rSquared ) ? 0 : rSquared
+        rSquared => isNaN( rSquared ) ? 0 : rSquared,
+        { valueType: 'number', isValidValue: value => 0 <= value && value <= 1 }
       );
 
       super( modifiedRSquaredProperty, curveVisibleProperty, tickLocationsToLabels, options );

@@ -15,7 +15,6 @@ define( require => {
   const FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
   const Matrix = require( 'DOT/Matrix' );
   const NumberProperty = require( 'AXON/NumberProperty' );
-  const Range = require( 'DOT/Range' );
 
   // constants
   const EPSILON = 1.0E-10;
@@ -38,7 +37,7 @@ define( require => {
 
       // @public {Property.<number>} r^2 deviation value, a number ranging from 0 to 1
       this.rSquaredProperty = new NumberProperty( 0, {
-        isValidValue: value => isNaN( value ) || new Range( 0, 1 ).contains( value )
+        isValidValue: value => isNaN( value ) || 0 <= value && value <= 1
       } );
 
       // @public (read-only) {Array.<number>} array of coefficients of the polynomial curve stored in ascending polynomial order.

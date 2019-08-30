@@ -14,6 +14,7 @@ define( require => {
   // modules
   const ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
   const BarometerNode = require( 'CURVE_FITTING/curve-fitting/view/BarometerNode' );
+  const ColorDef = require( 'SCENERY/util/ColorDef' );
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
@@ -50,10 +51,11 @@ define( require => {
 
       // links up listeners to properties that map chi squared values to fill ratios and colors
       // dispose unnecessary because BarometerX2 is present for the lifetime of the simulation
-      const fillProportionProperty = new DerivedProperty( [ chiSquaredProperty ], chiSquaredValueToRatio );
+      const fillProportionProperty = new DerivedProperty( [ chiSquaredProperty ], chiSquaredValueToRatio, { valueType: 'number' } );
       const fillColorProperty = new DerivedProperty(
         [ chiSquaredProperty ],
-        chiSquaredValue => getFillColorFromChiSquaredValue( chiSquaredValue, points.length )
+        chiSquaredValue => getFillColorFromChiSquaredValue( chiSquaredValue, points.length ),
+        { isValidValue: value => ColorDef.isColorDef( value ) }
       );
 
       // calls the superclass's constructor that initializes BarometerX2Node as a BarometerNode
