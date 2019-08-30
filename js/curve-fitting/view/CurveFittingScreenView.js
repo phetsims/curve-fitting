@@ -100,7 +100,7 @@ define( require => {
         {
           left: equationBoxLeft,
           top: modelViewTransform.modelToViewY( 10 ) + 10,
-          equationNodeMaxWidth: modelViewTransform.modelToViewX( 10 ) - equationBoxLeft - 45
+          equationNodeMaxWidth: modelViewTransform.modelToViewX( 10 ) - equationBoxLeft - 65
         }
       );
 
