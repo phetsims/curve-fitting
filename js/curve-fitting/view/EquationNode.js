@@ -105,8 +105,8 @@ define( require => {
       );
       this.setCoefficients( initialCoefficients );
 
-      // links the visibility of terms to the order of the equation
-      const visibilityUpdater = order => {
+      // links the visibility of terms to the order of the equation; unlink unnecessary: all instances present for sim life
+      this.orderProperty.link( order => {
         for ( let i = 0; i <= CurveFittingConstants.MAX_ORDER_OF_FIT; i++ ) {
           const isVisible = i <= order;
           this.signTextNodes[ i ].visible = isVisible;
@@ -114,11 +114,7 @@ define( require => {
           this.xVariableTextNodes[ i ].visible = isVisible;
         }
         this.updateChildrenAndVisibilities();
-      };
-      this.orderProperty.link( visibilityUpdater );
-
-      // @private
-      this.disposeVisibilityUpdater = () => { this.orderProperty.unlink( visibilityUpdater ); };
+      } );
 
     }
 
@@ -172,15 +168,6 @@ define( require => {
 
       this.updateChildrenAndVisibilities();
 
-    }
-
-    /**
-     * @override
-     * @public
-     */
-    dispose() {
-      this.disposeVisibilityUpdater();
-      super.dispose();
     }
 
   }
