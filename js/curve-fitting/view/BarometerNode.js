@@ -63,18 +63,11 @@ define( require => {
       const baseLine = new Line( -5, 0, CurveFittingConstants.BAROMETER_BAR_WIDTH + 5, 0, LINE_OPTIONS );
       this.addChild( baseLine );
 
-      // links the valueRectangle's properties to the relevant listeners
-      const valueRectangleHeightSetter = fillProportion => {
+      // links the valueRectangle's properties to the relevant listeners; unlinks unnecessary, instances present for sim life
+      fillProportionProperty.link( fillProportion => {
         valueRectangle.setRectHeight( fillProportion * options.axisHeight );
-      };
-      fillProportionProperty.link( valueRectangleHeightSetter );
-      const fillVisiblePropertyLinkHandle = fillVisibleProperty.linkAttribute( valueRectangle, 'visible' );
-
-      // @private {function}
-      this.disposeListeners = () => {
-        fillProportionProperty.unlink( valueRectangleHeightSetter );
-        fillVisibleProperty.unlinkAttribute( fillVisiblePropertyLinkHandle );
-      };
+      } );
+      fillVisibleProperty.linkAttribute( valueRectangle, 'visible' );
 
       // adds ticks for each tick location key in the tickLocationToLabels parameter
       Object.keys( tickLocationToLabels ).forEach( tickLocation => {
@@ -95,15 +88,6 @@ define( require => {
         this.addChild( tickLabel );
       } );
 
-    }
-
-    /**
-     * @override
-     * @public
-     */
-    dispose() {
-      this.disposeListeners();
-      super.dispose();
     }
 
   }
