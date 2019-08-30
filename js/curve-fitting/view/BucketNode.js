@@ -26,7 +26,7 @@ define( require => {
   const Vector2 = require( 'DOT/Vector2' );
 
   // constants
-  const BUCKET_WIDTH = 5; // in model coordinates
+  const BUCKET_WIDTH = 4.45; // in model coordinates
   const BUCKET_HEIGHT = BUCKET_WIDTH * 0.50;
   const BUCKET_COLOR = 'rgb( 65, 63, 117 )';
 
