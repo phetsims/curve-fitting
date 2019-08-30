@@ -15,6 +15,7 @@ define( require => {
   const FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
   const Matrix = require( 'DOT/Matrix' );
   const NumberProperty = require( 'AXON/NumberProperty' );
+  const Range = require( 'DOT/Range' );
 
   // constants
   const EPSILON = 1.0E-10;
@@ -31,10 +32,14 @@ define( require => {
     constructor( points, sliderPropertyArray, orderProperty, fitProperty ) {
 
       // @public {Property.<number>} X^2 deviation value, a number ranging from 0 to + $\infty$
-      this.chiSquaredProperty = new NumberProperty( 0 );
+      this.chiSquaredProperty = new NumberProperty( 0, {
+        isValidValue: value => value >= 0
+      } );
 
       // @public {Property.<number>} r^2 deviation value, a number ranging from 0 to 1
-      this.rSquaredProperty = new NumberProperty( 0 );
+      this.rSquaredProperty = new NumberProperty( 0, {
+        isValidValue: value => isNaN( value ) || new Range( 0, 1 ).contains( value )
+      } );
 
       // @public (read-only) {Array.<number>} array of coefficients of the polynomial curve stored in ascending polynomial order.
       // eg. y = a_0 +a_1 x + a_2 x^2 + a_3 x^3 yields [a_0, a_1, a_2, a_3]
@@ -206,7 +211,7 @@ define( require => {
 
         // calculation of chiSquared
         const degreesOfFreedom = numberOfPoints - this.orderProperty.value - 1;
-        this.chiSquaredProperty.value = residualSumOfSquares / Math.max( degreesOfFreedom, 1 );
+        this.chiSquaredProperty.value = Math.abs( residualSumOfSquares / Math.max( degreesOfFreedom, 1 ) );
 
         // calculation of rSquared = 1 - averageOfResidualSquares / averageOfSquares;
         // avoiding a divide by 0 situation and setting rSquared to NaN when averageOfSquares is basically 0; see #86

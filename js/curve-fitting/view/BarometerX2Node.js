@@ -163,12 +163,6 @@ define( require => {
    * @returns {number} ratio between 0 to 1 for how much the barometer should be filled
    */
   function chiSquaredValueToRatio( value ) {
-
-    // reassigns value if it is negative, which only happens in edge cases where it is supposed to be 0
-    if ( value < 0 ) {
-      value = 0;
-    }
-
     if ( value <= 1 ) {
       return value / ( 1 + Math.log( MAX_CHI_SQUARED_VALUE ) );
     }
