@@ -84,7 +84,7 @@ define( require => {
 
     // spacing
     CONTROLS_Y_SPACING: 12,
-    SLIDERS_X_SPACING: 12,
+    SLIDERS_X_SPACING: 15,
 
     // fonts
     CONTROL_FONT: new PhetFont( 16 ),
