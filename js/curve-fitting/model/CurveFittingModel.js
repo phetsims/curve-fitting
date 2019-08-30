@@ -22,18 +22,21 @@ define( require => {
     constructor() {
 
       // @public {Property.<number>} order of the polynomial that describes the curve, valid values are 1, 2, 3
-      this.orderProperty = new NumberProperty( 1 );
+      this.orderProperty = new NumberProperty( 1, {
+        validValues: [ 1, 2, 3 ]
+      } );
 
       // @public {Property.<FitType>}, the method of fitting the curve to data points
       this.fitProperty = new EnumerationProperty( FitType, FitType.BEST );
 
       // @public {Property.<number>[]}, user input values for coefficients of the polynomial, starting from lowest
       // order x^0 to x^3
+      const makeNumberPropertyFromRange = range => new NumberProperty( range.defaultValue, { range: range } );
       this.sliderPropertyArray = [
-        new NumberProperty( CurveFittingConstants.CONSTANT_RANGE.defaultValue ),
-        new NumberProperty( CurveFittingConstants.LINEAR_RANGE.defaultValue ),
-        new NumberProperty( CurveFittingConstants.QUADRATIC_RANGE.defaultValue ),
-        new NumberProperty( CurveFittingConstants.CUBIC_RANGE.defaultValue )
+        makeNumberPropertyFromRange( CurveFittingConstants.CONSTANT_RANGE ),
+        makeNumberPropertyFromRange( CurveFittingConstants.LINEAR_RANGE ),
+        makeNumberPropertyFromRange( CurveFittingConstants.QUADRATIC_RANGE ),
+        makeNumberPropertyFromRange( CurveFittingConstants.CUBIC_RANGE )
       ];
 
       // @public {Points} - Points for plotting curve. This includes points that are outside the bounds of the graph,
@@ -47,12 +50,7 @@ define( require => {
       this.updateCurveFit = () => { this.curve.updateFit(); };
 
       // validate Property values and update curve fit; unlink unnecessary present for the lifetime of the sim
-      this.orderProperty.link( order => {
-
-        // ensure the order is 1, 2 or 3: linear, quadratic or cubic
-        assert && assert( order === 1 || order === 2 || order === 3, `invalid order: ${order}` );
-        this.updateCurveFit();
-      } );
+      this.orderProperty.link( () => { this.updateCurveFit(); } );
 
       // unlink unnecessary, present for the lifetime of the sim
       this.fitProperty.link( this.updateCurveFit );
