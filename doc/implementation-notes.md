@@ -15,6 +15,8 @@ For 'Adjustable Fit', the standard r-squared value can be negative. For the purp
 ## View
 
 `BucketNode` is responsible for handling the points coming out of the bucket.
+
+Almost none of the nodes need to be disposed because they are instantiated a finite number of times and last for the duration of the sim. `PointNode` is the exception as it needs a dispose, and it gets disposed in `BucketNode`.
  
  This simulation includes query parameters in `CurveFittingQueryParameters` that are useful for debugging
  and should be shared with the QA team.
