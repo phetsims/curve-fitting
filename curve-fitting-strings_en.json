@@ -33,7 +33,7 @@
     "value": "{{nSymbol}} = number of data points"
   },
   "deltaEqualsPattern": {
-    "value": "\u0394<sub>y</sub> = {{deltaValue}}"
+    "value": "\u0394<sub>{{y}}</sub> = {{deltaValue}}"
   },
   "pointCoordinatesPattern": {
     "value": "({{xCoordinate}}, {{yCoordinate}})"

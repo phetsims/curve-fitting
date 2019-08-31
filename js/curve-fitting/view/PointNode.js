@@ -30,8 +30,10 @@ define( require => {
   // strings
   const pointCoordinatesPatternString = require( 'string!CURVE_FITTING/pointCoordinatesPattern' );
   const deltaEqualsPatternString = require( 'string!CURVE_FITTING/deltaEqualsPattern' );
+  const ySymbolString = require( 'string!CURVE_FITTING/ySymbol' );
 
   // constants
+  const Y_PATTERN = `<i style='font-family:${CurveFittingConstants.EQUATION_SYMBOL_FONT.family}'>{{y}}</i>`;
 
   // range for delta
   const MIN_DELTA = 1E-3; // arbitrarily small non-zero number for minimum delta, 0 causes divide-by-0 errors
@@ -118,10 +120,7 @@ define( require => {
       this.addChild( centralLine );
 
       // delta text label
-      const deltaTextLabel = new RichText(
-        StringUtils.fillIn( deltaEqualsPatternString, { deltaValue: Util.toFixed( point.deltaProperty.value, 1 ) } ),
-        VALUE_TEXT_OPTIONS
-      );
+      const deltaTextLabel = new RichText( '', VALUE_TEXT_OPTIONS ); // text to be set by updateDelta
       const deltaTextBackground = new Rectangle( 0, 0, 1, 1, {
         fill: 'white',
         opacity: 0.75,
@@ -264,13 +263,10 @@ define( require => {
 
       // value text label
       const valueTextLabel = new Text(
-        StringUtils.fillIn(
-          pointCoordinatesPatternString,
-          {
-            xCoordinate: Util.toFixed( point.positionProperty.value.x, 1 ),
-            yCoordinate: Util.toFixed( point.positionProperty.value.y, 1 )
-          }
-        ),
+        StringUtils.fillIn( pointCoordinatesPatternString, {
+          xCoordinate: Util.toFixed( point.positionProperty.value.x, 1 ),
+          yCoordinate: Util.toFixed( point.positionProperty.value.y, 1 )
+        } ),
         VALUE_TEXT_OPTIONS
       );
       const valueTextBackground = new Rectangle( 0, 0, 1, 1, {
@@ -314,10 +310,12 @@ define( require => {
       function updateDelta() {
 
         // update text
-        deltaTextLabel.text = StringUtils.fillIn(
-          deltaEqualsPatternString,
-          { deltaValue: Util.toFixed( point.deltaProperty.value, 1 ) }
-        );
+        deltaTextLabel.text = StringUtils.fillIn( deltaEqualsPatternString, {
+          y: StringUtils.fillIn( Y_PATTERN, {
+            y: ySymbolString
+          } ),
+          deltaValue: Util.toFixed( point.deltaProperty.value, 1 )
+        } );
 
         const lineHeight = modelViewTransform.modelToViewDeltaY( point.deltaProperty.value );
 
