@@ -43,6 +43,11 @@ define( require => {
      */
     constructor( property, range, label, options ) {
 
+      options = _.extend( {
+        sliderOptions: SLIDER_OPTIONS,
+        labelOptions: LABEL_OPTIONS
+      }, options );
+
       const sliderNode = new VSlider( property, range, SLIDER_OPTIONS );
 
       // add central tick
