@@ -48,7 +48,7 @@ define( require => {
         labelOptions: LABEL_OPTIONS
       }, options );
 
-      const sliderNode = new VSlider( property, range, SLIDER_OPTIONS );
+      const sliderNode = new VSlider( property, range, options.sliderOptions );
 
       // add central tick
       sliderNode.addMinorTick( 0, '' );
@@ -56,7 +56,7 @@ define( require => {
       super( _.extend( {
         children: [
           sliderNode,
-          new Text( label, LABEL_OPTIONS )
+          new Text( label, options.labelOptions )
         ]
       }, options ) );
     }
