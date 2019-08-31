@@ -41,7 +41,6 @@ define( require => {
   const POINT_COLOR = Color.toColor( CurveFittingConstants.POINT_FILL );
   const POINT_OPTIONS = {
     fill: POINT_COLOR,
-    radius: CurveFittingConstants.POINT_RADIUS,
     stroke: CurveFittingConstants.POINT_STROKE,
     lineWidth: CurveFittingConstants.POINT_LINE_WIDTH
   };
@@ -150,7 +149,7 @@ define( require => {
       errorBarTopRectangle.addInputListener( barHaloHandler );
 
       // point view
-      const circleView = new Circle( POINT_OPTIONS );
+      const circleView = new Circle( CurveFittingConstants.POINT_RADIUS, POINT_OPTIONS );
       circleView.touchArea = circleView.bounds.dilated( 5 );
       circleView.mouseArea = circleView.bounds.dilated( 5 );
       this.addChild( circleView );
