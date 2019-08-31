@@ -354,6 +354,7 @@ define( require => {
         deltaTextLabel.center = deltaTextBackground.center;
       }
 
+      // must be unlinked in dispose
       point.deltaProperty.link( updateDelta );
 
       /**
@@ -386,6 +387,7 @@ define( require => {
         valueTextLabel.center = valueTextBackground.center;
       }
 
+      // these require unlinkAttribute in dispose
       const valueBackgroundHandle = valuesVisibleProperty.linkAttribute( valueTextBackground, 'visible' );
       const valueTextHandle = valuesVisibleProperty.linkAttribute( valueTextLabel, 'visible' );
       const deltaBackgroundHandle = valuesVisibleProperty.linkAttribute( deltaTextBackground, 'visible' );
@@ -408,6 +410,7 @@ define( require => {
         }
       }
 
+      // must be unlinked in dispose
       residualsVisibleProperty.link( updateErrorBarsBasedOnResidualsVisibility );
 
       // point halo
@@ -432,6 +435,7 @@ define( require => {
         updateDelta();
       }
 
+      // must be unlinked in dispose
       point.positionProperty.link( centerPositionListener );
 
       // @private

@@ -46,6 +46,7 @@ define( require => {
       this.animation = null;
 
       // @public {Property.<boolean>} a Property that reflects whether the point is in the graph
+      // No dispose needed because Point owns all dependencies
       this.isInsideGraphProperty = new DerivedProperty(
         [ this.positionProperty ],
         position => CurveFittingConstants.GRAPH_BACKGROUND_MODEL_BOUNDS.containsPoint( position ),
@@ -96,7 +97,7 @@ define( require => {
           this.animation.endedEmitter.removeListener( onAnimationEnd );
           this.animation = null;
         };
-        this.animation.endedEmitter.addListener( onAnimationEnd );
+        this.animation.endedEmitter.addListener( onAnimationEnd ); // removed when animation ends
 
         this.animation.start();
       }
