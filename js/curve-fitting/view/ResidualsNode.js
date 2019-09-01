@@ -58,7 +58,7 @@ define( require => {
         }
       };
 
-      // unlink and removeListener necessary: present for the lifetime of the simulation
+      // unlink and removeListener unnecessary: present for the lifetime of the simulation
       residualsVisibleProperty.link( updateResiduals );
       curve.orderProperty.link( updateResiduals );
       curve.updateCurveEmitter.addListener( updateResiduals );
