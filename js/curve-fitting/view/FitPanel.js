@@ -12,7 +12,6 @@ define( require => {
 
   // modules
   const AquaRadioButton = require( 'SUN/AquaRadioButton' );
-  const BooleanProperty = require( 'AXON/BooleanProperty' );
   const CoefficientSliderNode = require( 'CURVE_FITTING/curve-fitting/view/CoefficientSliderNode' );
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
@@ -88,23 +87,19 @@ define( require => {
       const slidersAttributes = [
         {
           string: dSymbolString,
-          range: CurveFittingConstants.CONSTANT_RANGE,
-          enabledProperty: new BooleanProperty( true )
+          range: CurveFittingConstants.CONSTANT_RANGE
         },
         {
           string: cSymbolString,
-          range: CurveFittingConstants.LINEAR_RANGE,
-          enabledProperty: new BooleanProperty( true )
+          range: CurveFittingConstants.LINEAR_RANGE
         },
         {
           string: bSymbolString,
-          range: CurveFittingConstants.QUADRATIC_RANGE,
-          enabledProperty: new BooleanProperty( true )
+          range: CurveFittingConstants.QUADRATIC_RANGE
         },
         {
           string: aSymbolString,
-          range: CurveFittingConstants.CUBIC_RANGE,
-          enabledProperty: new BooleanProperty( true )
+          range: CurveFittingConstants.CUBIC_RANGE
         }
       ];
 
@@ -113,8 +108,7 @@ define( require => {
         ( sliderAttribute, index ) => new CoefficientSliderNode(
           sliderPropertyArray[ index ],
           sliderAttribute.range,
-          sliderAttribute.string,
-          { enabledProperty: sliderAttribute.enabledProperty }
+          sliderAttribute.string
         )
       );
 
@@ -134,12 +128,6 @@ define( require => {
 
         // set the content of the slidersBox
         slidersBox.children = sliders.slice( sliders.length - order - 1, sliders.length );
-
-        // if the sliders are not disabled they will be able to change
-        // and behave as described in #15 and #37
-        slidersAttributes.forEach(
-          ( sliderObject, index ) => { sliderObject.enabledProperty.value = order >= index; }
-        );
 
         slidersBox.children = [ slidersOffset ].concat( slidersBox.children );
       } );
