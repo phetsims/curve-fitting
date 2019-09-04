@@ -41,7 +41,7 @@ define( require => {
      */
     constructor( curve, orderProperty, equationPanelExpandedProperty, curveVisibleProperty, options ) {
 
-      options = _.extend( {}, {
+      options = _.extend( {
         equationNodeMaxWidth: 250,
         fill: 'white',
         opacity: 0.8,
@@ -101,7 +101,7 @@ define( require => {
        * @param {number} maxDigits
        * @returns {Array.<string>} - first string is number's sign, second string is number's absolute value
        */
-      const getRoundedParamterStrings = ( number, maxDigits ) => {
+      const getRoundedParameterStrings = ( number, maxDigits ) => {
 
         // number = mantissa times 10^(exponent) where the mantissa is between 1 and 10 (or -1 to -10)
         const exponent = Math.floor( Util.log10( Math.abs( number ) ) );
@@ -133,7 +133,7 @@ define( require => {
 
         const coefficientStrings = _.flatMap(
           curve.coefficients,
-          ( coefficient, index ) => getRoundedParamterStrings( coefficient, MAX_DIGITS[ index ] )
+          ( coefficient, index ) => getRoundedParameterStrings( coefficient, MAX_DIGITS[ index ] )
         );
         equationNode.setCoefficients( coefficientStrings );
 
