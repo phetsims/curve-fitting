@@ -58,9 +58,19 @@ define( require => {
 
       super( options );
 
+      // @private stored in as a field of ControlPanels for #161
+      this.viewOptionsPanel = viewOptionsPanel;
+
       // hide panels when curve is not visible; unlink unnecessary because ControlPanels is always present
       curveVisibleProperty.linkAttribute( orderPanel, 'visible' );
       curveVisibleProperty.linkAttribute( fitPanel, 'visible' );
+    }
+
+    /**
+     * @public
+     */
+    reset() {
+      this.viewOptionsPanel.reset();
     }
 
   }

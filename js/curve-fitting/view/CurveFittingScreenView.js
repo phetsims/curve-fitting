@@ -176,6 +176,7 @@ define( require => {
       const resetAllButton = new ResetAllButton( {
         listener: () => {
           model.reset();
+          controlPanels.reset();
           deviationsAccordionBoxExpandedProperty.reset();
           equationPanelExpandedProperty.reset();
           residualsVisibleProperty.reset();
