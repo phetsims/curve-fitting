@@ -15,6 +15,7 @@ define( require => {
   const ControlPanels = require( 'CURVE_FITTING/curve-fitting/view/ControlPanels' );
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
+  const CurveFittingQueryParameters = require( 'CURVE_FITTING/curve-fitting/CurveFittingQueryParameters' );
   const CurveNode = require( 'CURVE_FITTING/curve-fitting/view/CurveNode' );
   const DeviationsAccordionBox = require( 'CURVE_FITTING/curve-fitting/view/DeviationsAccordionBox' );
   const EquationAccordionBox = require( 'CURVE_FITTING/curve-fitting/view/EquationAccordionBox' );
@@ -24,6 +25,7 @@ define( require => {
   const ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   const ResidualsNode = require( 'CURVE_FITTING/curve-fitting/view/ResidualsNode' );
   const ScreenView = require( 'JOIST/ScreenView' );
+  const Util = require( 'DOT/Util' );
   const Vector2 = require( 'DOT/Vector2' );
 
   // constants
@@ -143,6 +145,15 @@ define( require => {
             point.positionProperty.value = point.positionProperty.value.plus( directionToPush );
           } );
         } while ( pointsUnder.length > 0 );
+
+        // Rounds point positions
+        const decimals = CurveFittingQueryParameters.snapToGrid? 0 : 1;
+        model.points.forEach( point => {
+          point.positionProperty.value = new Vector2(
+            Util.toFixedNumber( point.positionProperty.value.x, decimals ),
+            Util.toFixedNumber( point.positionProperty.value.y, decimals )
+          );
+        } );
       };
 
       // unlink unnecessary, present for the lifetime of the sim
