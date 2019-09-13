@@ -129,12 +129,11 @@ define( require => {
 
           end: () => {
             bumpOutFunction();
-            if ( CurveFittingQueryParameters.snapToGrid ) {
-              point.positionProperty.value = new Vector2(
-                Util.toFixedNumber( point.positionProperty.value.x, 0 ),
-                Util.toFixedNumber( point.positionProperty.value.y, 0 )
-              );
-            }
+            const decimals = CurveFittingQueryParameters.snapToGrid? 0 : 1;
+            point.positionProperty.value = new Vector2(
+              Util.toFixedNumber( point.positionProperty.value.x, decimals ),
+              Util.toFixedNumber( point.positionProperty.value.y, decimals )
+            );
             currentlyInteractingPoints.splice( currentlyInteractingPoints.indexOf( point ), 1 );
             point.draggingProperty.value = false;
             point = null;
