@@ -294,11 +294,12 @@ define( require => {
         end: () => {
           point.draggingProperty.value = false;
           bumpOutFunction();
-          const decimals = CurveFittingQueryParameters.snapToGrid? 0 : 1;
-          point.positionProperty.value = new Vector2(
-            Util.toFixedNumber( point.positionProperty.value.x, decimals ),
-            Util.toFixedNumber( point.positionProperty.value.y, decimals )
-          );
+          if ( CurveFittingQueryParameters.snapToGrid ) {
+            point.positionProperty.value = new Vector2(
+              Util.toFixedNumber( point.positionProperty.value.x, 0 ),
+              Util.toFixedNumber( point.positionProperty.value.y, 0 )
+            );
+          }
           removePointFromCurrentlyInteracting();
         }
       } ) );
