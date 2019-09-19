@@ -8,7 +8,6 @@ The simulation allows fitting 3 types of polynomial curves:
 Linear, Quadratic and Cubic. The fit can be done manually ('Adjustable Fit') by manipulating a sets of sliders 
 or be determined automatically ('Best Fit'). 
 
-The coefficients of the polynomial can be displayed by clicking on the equation accordion box.
 The chi-squared and r-squared values are determined for the curve in relation to the data points and are displayed with a barometer-style scale. 
 The Best Fit coefficients are calculated using the standard procedure of weighted least square regression where one finds
 the most appropriate polynomial coefficients that minimize the chi-squared value.
