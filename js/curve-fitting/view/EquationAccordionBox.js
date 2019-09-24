@@ -61,7 +61,6 @@ define( require => {
         sideLength: 16
       } );
       expandCollapseButton.touchArea = expandCollapseButton.localBounds.dilated( expandCollapseButton.width / 3 );
-      expandCollapseButton.mouseArea = expandCollapseButton.localBounds.dilated( expandCollapseButton.width / 3 );
 
       // visible node when panel is expanded
       const equationNode = new EquationNode( orderProperty, {
