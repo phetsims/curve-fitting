@@ -1,5 +1,5 @@
 {
-  "comment": "# curve-fitting 1.0.0-rc.1 Mon Sep 23 2019 15:10:49 GMT-0600 (Mountain Daylight Time)",
+  "comment": "# curve-fitting 1.0.0-rc.1 Mon Oct 14 2019 13:30:08 GMT-0600 (Mountain Daylight Time)",
   "assert": {
     "sha": "bd6e3ed0a8b6fea73a4a176d5364809666833e58",
     "branch": "HEAD"
@@ -17,7 +17,7 @@
     "branch": "HEAD"
   },
   "curve-fitting": {
-    "sha": "516c7eb71808825c9112e86e4916badd49237d3e",
+    "sha": "4bbfb2cf3896f2dac445ce4407b00592ffc5f04d",
     "branch": "1.0"
   },
   "dot": {
@@ -33,8 +33,8 @@
     "branch": "HEAD"
   },
   "phet-core": {
-    "sha": "d7675968f217089b97d40640acc3f4bf1b852bff",
-    "branch": "HEAD"
+    "sha": "08af1508c7fe2671baf5255d49a91dc974689920",
+    "branch": "curve-fitting-1.0"
   },
   "phet-io": {
     "sha": "16d2140f409e878dd14854d774095d02ef1dacf9",
@@ -58,7 +58,7 @@
   },
   "scenery": {
     "sha": "3ad53071c0a5ae5eec7d1c0ae3ad7c797791ff3d",
-    "branch": "curve-fitting-1.0"
+    "branch": "HEAD"
   },
   "scenery-phet": {
     "sha": "c254747d17e3c779454cb9683143c619fe026b6e",
