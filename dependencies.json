@@ -1,5 +1,5 @@
 {
-  "comment": "# curve-fitting 1.0.0-rc.1 Mon Oct 14 2019 13:30:08 GMT-0600 (Mountain Daylight Time)",
+  "comment": "# curve-fitting 1.0.0-rc.1 Tue Oct 15 2019 13:20:06 GMT-0600 (Mountain Daylight Time)",
   "assert": {
     "sha": "bd6e3ed0a8b6fea73a4a176d5364809666833e58",
     "branch": "HEAD"
@@ -17,7 +17,7 @@
     "branch": "HEAD"
   },
   "curve-fitting": {
-    "sha": "4bbfb2cf3896f2dac445ce4407b00592ffc5f04d",
+    "sha": "e97b2622788b2c6e843148f360f2a7156472045b",
     "branch": "1.0"
   },
   "dot": {
@@ -33,7 +33,7 @@
     "branch": "HEAD"
   },
   "phet-core": {
-    "sha": "08af1508c7fe2671baf5255d49a91dc974689920",
+    "sha": "24595d60b8cd2c9d9aa748ab3b78a19773e50fff",
     "branch": "curve-fitting-1.0"
   },
   "phet-io": {
