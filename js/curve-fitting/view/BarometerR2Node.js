@@ -14,6 +14,7 @@ define( require => {
   const BarometerNode = require( 'CURVE_FITTING/curve-fitting/view/BarometerNode' );
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
+  const merge = require( 'PHET_CORE/merge' );
 
   class BarometerR2Node extends BarometerNode {
 
@@ -24,7 +25,7 @@ define( require => {
      */
     constructor( rSquaredProperty, curveVisibleProperty, options ) {
 
-      options = _.extend( {
+      options = merge( {
         fill: 'blue',
         tickWidth: 20
       }, options );

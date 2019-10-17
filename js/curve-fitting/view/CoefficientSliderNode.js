@@ -12,6 +12,7 @@ define( require => {
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const Dimension2 = require( 'DOT/Dimension2' );
+  const merge = require( 'PHET_CORE/merge' );
   const Text = require( 'SCENERY/nodes/Text' );
   const VBox = require( 'SCENERY/nodes/VBox' );
   const VSlider = require( 'SUN/VSlider' );
@@ -43,7 +44,7 @@ define( require => {
      */
     constructor( property, range, label, options ) {
 
-      options = _.extend( {
+      options = merge( {
         sliderOptions: SLIDER_OPTIONS,
         labelOptions: LABEL_OPTIONS
       }, options );
@@ -53,7 +54,7 @@ define( require => {
       // add central tick
       sliderNode.addMinorTick( 0, '' );
 
-      super( _.extend( {
+      super( merge( {
         children: [
           sliderNode,
           new Text( label, options.labelOptions )

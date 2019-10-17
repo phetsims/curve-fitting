@@ -19,6 +19,7 @@ define( require => {
   const HBox = require( 'SCENERY/nodes/HBox' );
   const InfoButton = require( 'SCENERY_PHET/buttons/InfoButton' );
   const MathSymbols = require( 'SCENERY_PHET/MathSymbols' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Panel = require( 'SUN/Panel' );
   const ReducedChiSquaredStatisticDialog = require( 'CURVE_FITTING/curve-fitting/view/ReducedChiSquaredStatisticDialog' );
@@ -61,7 +62,7 @@ define( require => {
      */
     constructor( expandedProperty, points, chiSquaredProperty, rSquaredProperty, curveVisibleProperty, options ) {
 
-      options = _.extend( {
+      options = merge( {
         cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
         fill: CurveFittingConstants.PANEL_BACKGROUND_COLOR,
         minWidth: CurveFittingConstants.PANEL_MIN_WIDTH,

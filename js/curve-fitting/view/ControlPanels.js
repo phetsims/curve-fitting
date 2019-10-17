@@ -13,6 +13,7 @@ define( require => {
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const CurveOrderPanel = require( 'CURVE_FITTING/curve-fitting/view/CurveOrderPanel' );
   const FitPanel = require( 'CURVE_FITTING/curve-fitting/view/FitPanel' );
+  const merge = require( 'PHET_CORE/merge' );
   const VBox = require( 'SCENERY/nodes/VBox' );
   const ViewOptionsPanel = require( 'CURVE_FITTING/curve-fitting/view/ViewOptionsPanel' );
 
@@ -39,7 +40,7 @@ define( require => {
      */
     constructor( sliderPropertyArray, orderProperty, fitProperty, curveVisibleProperty, residualsVisibleProperty,
                  valuesProperty, options ) {
-      options = _.extend( {
+      options = merge( {
         align: 'left',
         spacing: 12
       }, options );

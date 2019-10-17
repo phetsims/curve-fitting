@@ -13,11 +13,12 @@ define( require => {
   // modules
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  const EquationNode = require( 'CURVE_FITTING/curve-fitting/view/EquationNode' );
   const Emitter = require( 'AXON/Emitter' );
+  const EquationNode = require( 'CURVE_FITTING/curve-fitting/view/EquationNode' );
   const ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const MathSymbols = require( 'SCENERY_PHET/MathSymbols' );
+  const merge = require( 'PHET_CORE/merge' );
   const Panel = require( 'SUN/Panel' );
   const Text = require( 'SCENERY/nodes/Text' );
   const Util = require( 'DOT/Util' );
@@ -41,7 +42,7 @@ define( require => {
      */
     constructor( curve, orderProperty, equationPanelExpandedProperty, curveVisibleProperty, options ) {
 
-      options = _.extend( {
+      options = merge( {
         equationNodeMaxWidth: 250,
         fill: 'white',
         opacity: 0.8,

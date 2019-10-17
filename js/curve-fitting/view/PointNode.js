@@ -19,6 +19,7 @@ define( require => {
   const CurveFittingQueryParameters = require( 'CURVE_FITTING/curve-fitting/CurveFittingQueryParameters' );
   const DragListener = require( 'SCENERY/listeners/DragListener' );
   const Line = require( 'SCENERY/nodes/Line' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const RichText = require( 'SCENERY/nodes/RichText' );
@@ -28,8 +29,8 @@ define( require => {
   const Vector2 = require( 'DOT/Vector2' );
 
   // strings
-  const pointCoordinatesPatternString = require( 'string!CURVE_FITTING/pointCoordinatesPattern' );
   const deltaEqualsPatternString = require( 'string!CURVE_FITTING/deltaEqualsPattern' );
+  const pointCoordinatesPatternString = require( 'string!CURVE_FITTING/pointCoordinatesPattern' );
   const ySymbolString = require( 'string!CURVE_FITTING/ySymbol' );
 
   // constants
@@ -101,7 +102,7 @@ define( require => {
     constructor( point, bumpOutFunction, currentlyInteractingPoints, residualsVisibleProperty, valuesVisibleProperty,
                  modelViewTransform, options ) {
 
-      super( _.extend( { cursor: 'pointer' }, options ) );
+      super( merge( { cursor: 'pointer' }, options ) );
 
       // bottom error bar
       const errorBarBottomRectangle = new Rectangle( ERROR_BAR_BOUNDS, ERROR_BAR_OPTIONS );

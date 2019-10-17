@@ -12,6 +12,7 @@ define( require => {
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const Line = require( 'SCENERY/nodes/Line' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const Text = require( 'SCENERY/nodes/Text' );
@@ -32,7 +33,7 @@ define( require => {
      */
     constructor( fillProportionProperty, fillVisibleProperty, tickLocationToLabels, options ) {
 
-      options = _.extend( {
+      options = merge( {
 
         // {ColorDef} the color of the barometer's fill
         fill: '#fff',

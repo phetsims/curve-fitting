@@ -19,14 +19,15 @@ define( require => {
   const FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const HStrut = require( 'SCENERY/nodes/HStrut' );
+  const merge = require( 'PHET_CORE/merge' );
   const Panel = require( 'SUN/Panel' );
   const Text = require( 'SCENERY/nodes/Text' );
   const VBox = require( 'SCENERY/nodes/VBox' );
 
   // strings
   const adjustableFitString = require( 'string!CURVE_FITTING/adjustableFit' );
-  const bestFitString = require( 'string!CURVE_FITTING/bestFit' );
   const aSymbolString = require( 'string!CURVE_FITTING/aSymbol' );
+  const bestFitString = require( 'string!CURVE_FITTING/bestFit' );
   const bSymbolString = require( 'string!CURVE_FITTING/bSymbol' );
   const cSymbolString = require( 'string!CURVE_FITTING/cSymbol' );
   const dSymbolString = require( 'string!CURVE_FITTING/dSymbol' );
@@ -41,7 +42,7 @@ define( require => {
      */
     constructor( sliderPropertyArray, fitProperty, orderProperty, options ) {
 
-      options = _.extend( {
+      options = merge( {
         cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
         fill: CurveFittingConstants.PANEL_BACKGROUND_COLOR,
         xMargin: CurveFittingConstants.PANEL_MARGIN,

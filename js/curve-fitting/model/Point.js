@@ -17,6 +17,7 @@ define( require => {
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const Easing = require( 'TWIXT/Easing' );
   const Emitter = require( 'AXON/Emitter' );
+  const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Vector2 = require( 'DOT/Vector2' );
   const Vector2Property = require( 'DOT/Vector2Property' );
@@ -28,7 +29,7 @@ define( require => {
      */
     constructor( options ) {
 
-      options = _.extend( {
+      options = merge( {
         position: new Vector2( 0, 0 ), // {Vector2} initial position
         dragging: false // {boolean} is the user dragging the point?
       }, options );
