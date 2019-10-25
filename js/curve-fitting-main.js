@@ -20,9 +20,9 @@ define( require => {
   const simOptions = {
     credits: {
       leadDesign: 'Michael Dubson, Amanda McGarry',
-      softwareDevelopment: 'Michael Dubson, Chris Malley, Jonathan Olson, Martin Veillette',
+      softwareDevelopment: 'Michael Dubson, Chris Malley, Jonathan Olson, Saurabh Totey, Martin Veillette',
       team: 'Trish Loeblein, Ariel Paul, Kathy Perkins',
-      qualityAssurance: '',
+      qualityAssurance: 'Jaspe Arias, Logan Bray, Megan Lai, Liam Mulhall, Kathryn Woessner',
       graphicArts: '',
       thanks: 'Thanks to Mobile Learner Labs for working with the PhET development team to convert this simulation to HTML5.'
     }
