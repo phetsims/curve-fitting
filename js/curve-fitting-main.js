@@ -16,7 +16,6 @@ define( require => {
   // strings
   const curveFittingTitleString = require( 'string!CURVE_FITTING/curve-fitting.title' );
 
-  //TODO finalize credits with team leader, see https://github.com/phetsims/curve-fitting/issues/34
   const simOptions = {
     credits: {
       leadDesign: 'Michael Dubson, Amanda McGarry',
