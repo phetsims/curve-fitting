@@ -20,8 +20,8 @@ define( require => {
   // constants
   const SLIDER_OPTIONS = {
     trackFill: 'black',
-    trackSize: new Dimension2( 120, 1 ),
-    thumbSize: new Dimension2( 10, 20 ),
+    trackSize: new Dimension2( 1, 120 ),
+    thumbSize: new Dimension2( 20, 10 ),
     minorTickLineWidth: 2,
     minorTickLength: 12,
     thumbTouchAreaYDilation: 8, // supposed to make touch horizontal areas flush; is YDilation since we rotate by 90; see #72
