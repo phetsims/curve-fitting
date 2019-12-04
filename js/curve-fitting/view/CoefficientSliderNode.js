@@ -24,9 +24,9 @@ define( require => {
     thumbSize: new Dimension2( 20, 10 ),
     minorTickLineWidth: 2,
     minorTickLength: 12,
-    thumbTouchAreaYDilation: 8, // supposed to make touch horizontal areas flush; is YDilation since we rotate by 90; see #72
-    thumbMouseAreaYDilation: 8,
-    thumbMouseAreaXDilation: 10
+    thumbTouchAreaXDilation: 8, // supposed to make touch horizontal areas flush; see #72
+    thumbMouseAreaXDilation: 8,
+    thumbMouseAreaYDilation: 10
   };
   const LABEL_OPTIONS = {
     font: CurveFittingConstants.COEFFICIENT_FONT,
