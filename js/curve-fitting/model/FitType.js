@@ -14,7 +14,7 @@ define( require => {
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const Enumeration = require( 'PHET_CORE/Enumeration' );
 
-  const FitType = new Enumeration( [ 'ADJUSTABLE', 'BEST' ] );
+  const FitType = Enumeration.byKeys( [ 'ADJUSTABLE', 'BEST' ] );
 
   return curveFitting.register( 'FitType', FitType );
 } );
