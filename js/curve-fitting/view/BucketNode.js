@@ -22,7 +22,7 @@ define( require => {
   const Node = require( 'SCENERY/nodes/Node' );
   const Point = require( 'CURVE_FITTING/curve-fitting/model/Point' );
   const PointNode = require( 'CURVE_FITTING/curve-fitting/view/PointNode' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const Vector2 = require( 'DOT/Vector2' );
 
   // constants
@@ -131,8 +131,8 @@ define( require => {
             bumpOutFunction();
             if ( CurveFittingQueryParameters.snapToGrid ) {
               point.positionProperty.value = new Vector2(
-                Util.toFixedNumber( point.positionProperty.value.x, 0 ),
-                Util.toFixedNumber( point.positionProperty.value.y, 0 )
+                Utils.toFixedNumber( point.positionProperty.value.x, 0 ),
+                Utils.toFixedNumber( point.positionProperty.value.y, 0 )
               );
             }
             currentlyInteractingPoints.splice( currentlyInteractingPoints.indexOf( point ), 1 );

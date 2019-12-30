@@ -18,7 +18,7 @@ define( require => {
   const curveFitting = require( 'CURVE_FITTING/curveFitting' );
   const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
 
   // constants
   const ARROW_OFFSET = 6;
@@ -154,7 +154,7 @@ define( require => {
     blue *= 255;
     green *= 255;
 
-    return `rgb( ${Util.roundSymmetric( red )}, ${Util.roundSymmetric( green )}, ${Util.roundSymmetric( blue )} )`;
+    return `rgb( ${Utils.roundSymmetric( red )}, ${Utils.roundSymmetric( green )}, ${Utils.roundSymmetric( blue )} )`;
   }
 
   /**

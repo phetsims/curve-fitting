@@ -21,7 +21,7 @@ define( require => {
   const merge = require( 'PHET_CORE/merge' );
   const Panel = require( 'SUN/Panel' );
   const Text = require( 'SCENERY/nodes/Text' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const VStrut = require( 'SCENERY/nodes/VStrut' );
 
   // strings
@@ -104,7 +104,7 @@ define( require => {
       const getRoundedParameterStrings = ( number, maxDigits ) => {
 
         // number = mantissa times 10^(exponent) where the mantissa is between 1 and 10 (or -1 to -10)
-        const exponent = Math.floor( Util.log10( Math.abs( number ) ) );
+        const exponent = Math.floor( Utils.log10( Math.abs( number ) ) );
 
         let decimalPlaces;
         if ( exponent >= maxDigits ) {
@@ -117,9 +117,9 @@ define( require => {
           decimalPlaces = maxDigits - 1;
         }
 
-        const roundedNumber = Util.toFixedNumber( number, decimalPlaces );
+        const roundedNumber = Utils.toFixedNumber( number, decimalPlaces );
         const signToString = ( roundedNumber >= 0 ) ? MathSymbols.PLUS : MathSymbols.MINUS; // N.B.
-        const absoluteNumberToString = Util.toFixed( Math.abs( number ), decimalPlaces ); // N.B.
+        const absoluteNumberToString = Utils.toFixed( Math.abs( number ), decimalPlaces ); // N.B.
 
         return [ signToString, absoluteNumberToString ];
       };

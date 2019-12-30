@@ -26,7 +26,7 @@ define( require => {
   const RichText = require( 'SCENERY/nodes/RichText' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
 
   // strings
   const deviationsString = require( 'string!CURVE_FITTING/deviations' );
@@ -230,7 +230,7 @@ define( require => {
     // 0.00011 -> 0.000
 
     // number = mantissa times 10^(exponent) where the mantissa is between 1 and 10 (or -1 and -10)
-    const exponent = Math.floor( Util.log10( Math.abs( number ) ) );
+    const exponent = Math.floor( Utils.log10( Math.abs( number ) ) );
 
     let decimalPlaces;
     if ( exponent >= digits ) {
@@ -243,7 +243,7 @@ define( require => {
       decimalPlaces = digits;
     }
 
-    return Util.toFixed( number, decimalPlaces );
+    return Utils.toFixed( number, decimalPlaces );
   }
 
   return curveFitting.register( 'DeviationsAccordionBox', DeviationsAccordionBox );

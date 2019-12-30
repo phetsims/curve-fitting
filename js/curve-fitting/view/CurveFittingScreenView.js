@@ -25,7 +25,7 @@ define( require => {
   const ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   const ResidualsNode = require( 'CURVE_FITTING/curve-fitting/view/ResidualsNode' );
   const ScreenView = require( 'JOIST/ScreenView' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const Vector2 = require( 'DOT/Vector2' );
 
   // constants
@@ -150,8 +150,8 @@ define( require => {
         if ( CurveFittingQueryParameters.snapToGrid ) {
           model.points.forEach( point => {
             point.positionProperty.value = new Vector2(
-              Util.toFixedNumber( point.positionProperty.value.x, 0 ),
-              Util.toFixedNumber( point.positionProperty.value.y, 0 )
+              Utils.toFixedNumber( point.positionProperty.value.x, 0 ),
+              Utils.toFixedNumber( point.positionProperty.value.y, 0 )
             );
           } );
         }

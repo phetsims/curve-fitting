@@ -25,7 +25,7 @@ define( require => {
   const RichText = require( 'SCENERY/nodes/RichText' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const Vector2 = require( 'DOT/Vector2' );
 
   // strings
@@ -215,7 +215,7 @@ define( require => {
               circleView.centerY - this.globalToLocalPoint( event.pointer.point ).y
             );
           }
-          point.deltaProperty.value = Util.clamp(
+          point.deltaProperty.value = Utils.clamp(
             newUnclampedDelta,
             MIN_DELTA,
             MAX_DELTA
@@ -246,7 +246,7 @@ define( require => {
           errorBarTopHaloRectangle.visible = true;
           errorBarBottomHaloRectangle.visible = true;
 
-          point.deltaProperty.value = Util.clamp(
+          point.deltaProperty.value = Utils.clamp(
             modelViewTransform.viewToModelDeltaY( circleView.centerY - this.globalToLocalPoint( event.pointer.point ).y ),
             MIN_DELTA,
             MAX_DELTA
@@ -265,8 +265,8 @@ define( require => {
       // value text label
       const valueTextLabel = new Text(
         StringUtils.fillIn( pointCoordinatesPatternString, {
-          xCoordinate: Util.toFixed( point.positionProperty.value.x, 1 ),
-          yCoordinate: Util.toFixed( point.positionProperty.value.y, 1 )
+          xCoordinate: Utils.toFixed( point.positionProperty.value.x, 1 ),
+          yCoordinate: Utils.toFixed( point.positionProperty.value.y, 1 )
         } ),
         VALUE_TEXT_OPTIONS
       );
@@ -297,8 +297,8 @@ define( require => {
           bumpOutFunction();
           if ( CurveFittingQueryParameters.snapToGrid ) {
             point.positionProperty.value = new Vector2(
-              Util.toFixedNumber( point.positionProperty.value.x, 0 ),
-              Util.toFixedNumber( point.positionProperty.value.y, 0 )
+              Utils.toFixedNumber( point.positionProperty.value.x, 0 ),
+              Utils.toFixedNumber( point.positionProperty.value.y, 0 )
             );
           }
           removePointFromCurrentlyInteracting();
@@ -315,7 +315,7 @@ define( require => {
           y: StringUtils.fillIn( Y_PATTERN, {
             y: ySymbolString
           } ),
-          deltaValue: Util.toFixed( point.deltaProperty.value, 1 )
+          deltaValue: Utils.toFixed( point.deltaProperty.value, 1 )
         } );
 
         const lineHeight = modelViewTransform.modelToViewDeltaY( point.deltaProperty.value );
@@ -367,8 +367,8 @@ define( require => {
         valueTextLabel.text = StringUtils.fillIn(
           pointCoordinatesPatternString,
           {
-            xCoordinate: Util.toFixed( point.positionProperty.value.x, 1 ),
-            yCoordinate: Util.toFixed( point.positionProperty.value.y, 1 )
+            xCoordinate: Utils.toFixed( point.positionProperty.value.x, 1 ),
+            yCoordinate: Utils.toFixed( point.positionProperty.value.y, 1 )
           }
         );
 
