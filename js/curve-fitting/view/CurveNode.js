@@ -5,58 +5,55 @@
  *
  * @author Martin Veillette (Berea College)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  const Node = require( 'SCENERY/nodes/Node' );
-  const Path = require( 'SCENERY/nodes/Path' );
-  const Shape = require( 'KITE/Shape' );
+import Shape from '../../../../kite/js/Shape.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
+import Path from '../../../../scenery/js/nodes/Path.js';
+import curveFitting from '../../curveFitting.js';
+import CurveFittingConstants from '../CurveFittingConstants.js';
 
-  // constants
-  const CURVE_OPTIONS = { stroke: 'black', lineWidth: 2 };
+// constants
+const CURVE_OPTIONS = { stroke: 'black', lineWidth: 2 };
 
-  class CurveNode extends Node {
+class CurveNode extends Node {
+
+  /**
+   * @param {Curve} curve - curve model.
+   * @param {Property.<boolean>} curveVisibleProperty
+   * @param {ModelViewTransform2} modelViewTransform
+   */
+  constructor( curve, curveVisibleProperty, modelViewTransform ) {
+
+    super();
+
+    // add clip area
+    this.clipArea = Shape.bounds( modelViewTransform.modelToViewBounds( CurveFittingConstants.CURVE_CLIP_BOUNDS ) );
+
+    // create and add curve
+    const curvePath = new Path( null, CURVE_OPTIONS );
+    this.addChild( curvePath );
 
     /**
-     * @param {Curve} curve - curve model.
-     * @param {Property.<boolean>} curveVisibleProperty
-     * @param {ModelViewTransform2} modelViewTransform
+     * updates the curve
      */
-    constructor( curve, curveVisibleProperty, modelViewTransform ) {
+    const updateCurve = () => {
+      if ( curveVisibleProperty.value && curve.isCurvePresent() ) {
+        curvePath.shape = modelViewTransform.modelToViewShape( curve.shape );
+      }
+      else {
 
-      super();
+        // reset the curve shape to null
+        curvePath.shape = null;
+      }
+    };
 
-      // add clip area
-      this.clipArea = Shape.bounds( modelViewTransform.modelToViewBounds( CurveFittingConstants.CURVE_CLIP_BOUNDS ) );
-
-      // create and add curve
-      const curvePath = new Path( null, CURVE_OPTIONS );
-      this.addChild( curvePath );
-
-      /**
-       * updates the curve
-       */
-      const updateCurve = () => {
-        if ( curveVisibleProperty.value && curve.isCurvePresent() ) {
-          curvePath.shape = modelViewTransform.modelToViewShape( curve.shape );
-        }
-        else {
-
-          // reset the curve shape to null
-          curvePath.shape = null;
-        }
-      };
-
-      // unlink and removeListener unnecessary because this CurveNode is always present for the lifetime of the simulation
-      curveVisibleProperty.link( updateCurve );
-      curve.orderProperty.link( updateCurve );
-      curve.updateCurveEmitter.addListener( updateCurve );
-    }
-
+    // unlink and removeListener unnecessary because this CurveNode is always present for the lifetime of the simulation
+    curveVisibleProperty.link( updateCurve );
+    curve.orderProperty.link( updateCurve );
+    curve.updateCurveEmitter.addListener( updateCurve );
   }
 
-  return curveFitting.register( 'CurveNode', CurveNode );
-} );
+}
+
+curveFitting.register( 'CurveNode', CurveNode );
+export default CurveNode;

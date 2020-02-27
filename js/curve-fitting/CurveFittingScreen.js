@@ -5,27 +5,24 @@
  *
  * @author Andrey Zelenkov (MLearner)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  const CurveFittingModel = require( 'CURVE_FITTING/curve-fitting/model/CurveFittingModel' );
-  const CurveFittingScreenView = require( 'CURVE_FITTING/curve-fitting/view/CurveFittingScreenView' );
-  const Property = require( 'AXON/Property' );
-  const Screen = require( 'JOIST/Screen' );
+import Property from '../../../axon/js/Property.js';
+import Screen from '../../../joist/js/Screen.js';
+import curveFitting from '../curveFitting.js';
+import CurveFittingModel from './model/CurveFittingModel.js';
+import CurveFittingScreenView from './view/CurveFittingScreenView.js';
 
-  class CurveFittingScreen extends Screen {
+class CurveFittingScreen extends Screen {
 
-    constructor() {
-      super(
-        () => new CurveFittingModel(),
-        model => new CurveFittingScreenView( model ),
-        { backgroundColorProperty: new Property( 'rgb( 187, 230, 246 )' ) }
-      );
-    }
-
+  constructor() {
+    super(
+      () => new CurveFittingModel(),
+      model => new CurveFittingScreenView( model ),
+      { backgroundColorProperty: new Property( 'rgb( 187, 230, 246 )' ) }
+    );
   }
 
-  return curveFitting.register( 'CurveFittingScreen', CurveFittingScreen );
-} );
+}
+
+curveFitting.register( 'CurveFittingScreen', CurveFittingScreen );
+export default CurveFittingScreen;

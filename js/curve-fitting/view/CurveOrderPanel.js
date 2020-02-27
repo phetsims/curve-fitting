@@ -5,70 +5,67 @@
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const AquaRadioButton = require( 'SUN/AquaRadioButton' );
-  const curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  const Panel = require( 'SUN/Panel' );
-  const Text = require( 'SCENERY/nodes/Text' );
-  const VBox = require( 'SCENERY/nodes/VBox' );
+import Text from '../../../../scenery/js/nodes/Text.js';
+import VBox from '../../../../scenery/js/nodes/VBox.js';
+import AquaRadioButton from '../../../../sun/js/AquaRadioButton.js';
+import Panel from '../../../../sun/js/Panel.js';
+import curveFittingStrings from '../../curve-fitting-strings.js';
+import curveFitting from '../../curveFitting.js';
+import CurveFittingConstants from '../CurveFittingConstants.js';
 
-  // strings
-  const cubicString = require( 'string!CURVE_FITTING/cubic' );
-  const linearString = require( 'string!CURVE_FITTING/linear' );
-  const quadraticString = require( 'string!CURVE_FITTING/quadratic' );
+const cubicString = curveFittingStrings.cubic;
+const linearString = curveFittingStrings.linear;
+const quadraticString = curveFittingStrings.quadratic;
 
-  class CurveOrderPanel extends Panel {
-
-    /**
-     * @param {Property.<number>} orderProperty - order of the polynomial that describes the curve
-     * @param {Object} [options]
-     */
-    constructor( orderProperty, options ) {
-
-      // radio buttons
-      const linearButton = createRadioButton( orderProperty, 1, linearString );
-      const quadraticButton = createRadioButton( orderProperty, 2, quadraticString );
-      const cubicButton = createRadioButton( orderProperty, 3, cubicString );
-
-      // vertical layout
-      const contentNode = new VBox( {
-        align: 'left',
-        spacing: CurveFittingConstants.CONTROLS_Y_SPACING,
-        children: [
-          linearButton,
-          quadraticButton,
-          cubicButton
-        ]
-      } );
-
-      super( contentNode, options );
-    }
-
-  }
+class CurveOrderPanel extends Panel {
 
   /**
-   * Creates a uniform radio button for this panel.
-   *
-   * @param {Property.<number>} orderProperty
-   * @param {number} value
-   * @param {string} label
-   * @returns {AquaRadioButton}
+   * @param {Property.<number>} orderProperty - order of the polynomial that describes the curve
+   * @param {Object} [options]
    */
-  function createRadioButton( orderProperty, value, label ) {
-    return new AquaRadioButton(
-      orderProperty,
-      value,
-      new Text( label, {
-        font: CurveFittingConstants.CONTROL_FONT,
-        maxWidth: 140 // determined empirically
-      } ),
-      CurveFittingConstants.RADIO_BUTTON_OPTIONS
-    );
+  constructor( orderProperty, options ) {
+
+    // radio buttons
+    const linearButton = createRadioButton( orderProperty, 1, linearString );
+    const quadraticButton = createRadioButton( orderProperty, 2, quadraticString );
+    const cubicButton = createRadioButton( orderProperty, 3, cubicString );
+
+    // vertical layout
+    const contentNode = new VBox( {
+      align: 'left',
+      spacing: CurveFittingConstants.CONTROLS_Y_SPACING,
+      children: [
+        linearButton,
+        quadraticButton,
+        cubicButton
+      ]
+    } );
+
+    super( contentNode, options );
   }
 
-  return curveFitting.register( 'CurveOrderPanel', CurveOrderPanel );
-} );
+}
+
+/**
+ * Creates a uniform radio button for this panel.
+ *
+ * @param {Property.<number>} orderProperty
+ * @param {number} value
+ * @param {string} label
+ * @returns {AquaRadioButton}
+ */
+function createRadioButton( orderProperty, value, label ) {
+  return new AquaRadioButton(
+    orderProperty,
+    value,
+    new Text( label, {
+      font: CurveFittingConstants.CONTROL_FONT,
+      maxWidth: 140 // determined empirically
+    } ),
+    CurveFittingConstants.RADIO_BUTTON_OPTIONS
+  );
+}
+
+curveFitting.register( 'CurveOrderPanel', CurveOrderPanel );
+export default CurveOrderPanel;

@@ -7,14 +7,11 @@
  *
  * @author Saurabh Totey
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  const Enumeration = require( 'PHET_CORE/Enumeration' );
+import Enumeration from '../../../../phet-core/js/Enumeration.js';
+import curveFitting from '../../curveFitting.js';
 
-  const FitType = Enumeration.byKeys( [ 'ADJUSTABLE', 'BEST' ] );
+const FitType = Enumeration.byKeys( [ 'ADJUSTABLE', 'BEST' ] );
 
-  return curveFitting.register( 'FitType', FitType );
-} );
+curveFitting.register( 'FitType', FitType );
+export default FitType;

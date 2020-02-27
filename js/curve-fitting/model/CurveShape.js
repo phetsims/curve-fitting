@@ -7,49 +7,46 @@
  * @author Martin Veillette (Berea College)
  * @author Saurabh Totey
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  const Shape = require( 'KITE/Shape' );
+import Shape from '../../../../kite/js/Shape.js';
+import curveFitting from '../../curveFitting.js';
+import CurveFittingConstants from '../CurveFittingConstants.js';
 
-  // constants
-  // how many segments: more segments means a finer/more accurate curve
-  const NUMBER_STEPS = 220;
+// constants
+// how many segments: more segments means a finer/more accurate curve
+const NUMBER_STEPS = 220;
 
-  class CurveShape extends Shape {
+class CurveShape extends Shape {
 
-    /**
-     * @param {function(number): number} getYValueAt - a function that gets a Y value for the given X coordinate
-     */
-    constructor( getYValueAt ) {
+  /**
+   * @param {function(number): number} getYValueAt - a function that gets a Y value for the given X coordinate
+   */
+  constructor( getYValueAt ) {
 
-      super();
+    super();
 
-      // model bounds of the graph area
-      const graphBounds = CurveFittingConstants.GRAPH_NODE_MODEL_BOUNDS;
+    // model bounds of the graph area
+    const graphBounds = CurveFittingConstants.GRAPH_NODE_MODEL_BOUNDS;
 
-      // convenience variables
-      const xMin = graphBounds.minX; // minimum value of the x range
-      const xMax = graphBounds.maxX; // maximum value of the x range
+    // convenience variables
+    const xMin = graphBounds.minX; // minimum value of the x range
+    const xMax = graphBounds.maxX; // maximum value of the x range
 
-      // separation between adjacent x coordinates
-      const interval = ( xMax - xMin ) / NUMBER_STEPS;
+    // separation between adjacent x coordinates
+    const interval = ( xMax - xMin ) / NUMBER_STEPS;
 
-      // move shape to initial location
-      this.moveTo( xMin, getYValueAt( xMin ) );
+    // move shape to initial location
+    this.moveTo( xMin, getYValueAt( xMin ) );
 
-      // create lines connecting each point
-      for ( let x = xMin + interval; x <= xMax; x += interval ) {
-        const y = getYValueAt( x );
-        this.lineTo( x, y );
-      }
-
+    // create lines connecting each point
+    for ( let x = xMin + interval; x <= xMax; x += interval ) {
+      const y = getYValueAt( x );
+      this.lineTo( x, y );
     }
 
   }
 
-  return curveFitting.register( 'CurveShape', CurveShape );
-} );
+}
+
+curveFitting.register( 'CurveShape', CurveShape );
+export default CurveShape;

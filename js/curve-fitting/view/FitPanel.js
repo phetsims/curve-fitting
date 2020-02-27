@@ -7,163 +7,160 @@
  * @author Andrey Zelenkov (Mlearner)
  * @author Saurabh Totey
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const AquaRadioButton = require( 'SUN/AquaRadioButton' );
-  const CoefficientSliderNode = require( 'CURVE_FITTING/curve-fitting/view/CoefficientSliderNode' );
-  const curveFitting = require( 'CURVE_FITTING/curveFitting' );
-  const CurveFittingConstants = require( 'CURVE_FITTING/curve-fitting/CurveFittingConstants' );
-  const EquationNode = require( 'CURVE_FITTING/curve-fitting/view/EquationNode' );
-  const FitType = require( 'CURVE_FITTING/curve-fitting/model/FitType' );
-  const HBox = require( 'SCENERY/nodes/HBox' );
-  const HStrut = require( 'SCENERY/nodes/HStrut' );
-  const merge = require( 'PHET_CORE/merge' );
-  const Panel = require( 'SUN/Panel' );
-  const Text = require( 'SCENERY/nodes/Text' );
-  const VBox = require( 'SCENERY/nodes/VBox' );
+import merge from '../../../../phet-core/js/merge.js';
+import HBox from '../../../../scenery/js/nodes/HBox.js';
+import HStrut from '../../../../scenery/js/nodes/HStrut.js';
+import Text from '../../../../scenery/js/nodes/Text.js';
+import VBox from '../../../../scenery/js/nodes/VBox.js';
+import AquaRadioButton from '../../../../sun/js/AquaRadioButton.js';
+import Panel from '../../../../sun/js/Panel.js';
+import curveFittingStrings from '../../curve-fitting-strings.js';
+import curveFitting from '../../curveFitting.js';
+import CurveFittingConstants from '../CurveFittingConstants.js';
+import FitType from '../model/FitType.js';
+import CoefficientSliderNode from './CoefficientSliderNode.js';
+import EquationNode from './EquationNode.js';
 
-  // strings
-  const adjustableFitString = require( 'string!CURVE_FITTING/adjustableFit' );
-  const aSymbolString = require( 'string!CURVE_FITTING/aSymbol' );
-  const bestFitString = require( 'string!CURVE_FITTING/bestFit' );
-  const bSymbolString = require( 'string!CURVE_FITTING/bSymbol' );
-  const cSymbolString = require( 'string!CURVE_FITTING/cSymbol' );
-  const dSymbolString = require( 'string!CURVE_FITTING/dSymbol' );
+const adjustableFitString = curveFittingStrings.adjustableFit;
+const aSymbolString = curveFittingStrings.aSymbol;
+const bestFitString = curveFittingStrings.bestFit;
+const bSymbolString = curveFittingStrings.bSymbol;
+const cSymbolString = curveFittingStrings.cSymbol;
+const dSymbolString = curveFittingStrings.dSymbol;
 
-  class FitPanel extends Panel {
-
-    /**
-     * @param {Property.<number>[]} sliderPropertyArray - stored in ascending order of the polynomial fit, starting with order zero.
-     * @param {Property.<FitType>} fitProperty
-     * @param {Property.<number>} orderProperty
-     * @param {Object} [options]
-     */
-    constructor( sliderPropertyArray, fitProperty, orderProperty, options ) {
-
-      options = merge( {
-        cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
-        fill: CurveFittingConstants.PANEL_BACKGROUND_COLOR,
-        xMargin: CurveFittingConstants.PANEL_MARGIN,
-        yMargin: CurveFittingConstants.PANEL_MARGIN,
-        maxWidth: CurveFittingConstants.PANEL_MAX_WIDTH
-      }, options );
-
-      // radio buttons
-      const bestFitButton = createRadioButton( fitProperty, FitType.BEST, bestFitString );
-      const adjustableFitButton = createRadioButton( fitProperty, FitType.ADJUSTABLE, adjustableFitString );
-
-      // vertical layout
-      const radioButtonsBox = new VBox( {
-        align: 'left',
-        spacing: CurveFittingConstants.CONTROLS_Y_SPACING,
-        children: [
-          bestFitButton,
-          adjustableFitButton
-        ]
-      } );
-
-      // equation that corresponds to the curve
-      const equationFitNode = new EquationNode( orderProperty, {
-        coefficientTextOptions: {
-          font: CurveFittingConstants.COEFFICIENT_FONT,
-          fill: CurveFittingConstants.BLUE_COLOR
-        }
-      } );
-
-      // vertical layout
-      const contentNode = new VBox( {
-        align: 'left',
-        spacing: CurveFittingConstants.CONTROLS_Y_SPACING,
-        children: [
-          radioButtonsBox,
-          equationFitNode
-        ]
-      } );
-
-      super( contentNode, options );
-
-      // attributes for four sliders in ASCENDING order of polynomial
-      const slidersAttributes = [
-        {
-          string: dSymbolString,
-          range: CurveFittingConstants.CONSTANT_RANGE
-        },
-        {
-          string: cSymbolString,
-          range: CurveFittingConstants.LINEAR_RANGE
-        },
-        {
-          string: bSymbolString,
-          range: CurveFittingConstants.QUADRATIC_RANGE
-        },
-        {
-          string: aSymbolString,
-          range: CurveFittingConstants.CUBIC_RANGE
-        }
-      ];
-
-      // create array in ASCENDING order of polynomial
-      const ascendingSliders = slidersAttributes.map(
-        ( sliderAttribute, index ) => new CoefficientSliderNode(
-          sliderPropertyArray[ index ],
-          sliderAttribute.range,
-          sliderAttribute.string
-        )
-      );
-
-      // we want sliders in DESCENDING order of polynomial
-      const sliders = ascendingSliders.reverse();
-
-      // create slider box under the equationFitNode
-      // HBox and HStrut spacing are empirically determined
-      const slidersBox = new HBox( {
-        spacing: CurveFittingConstants.SLIDERS_X_SPACING,
-        children: sliders
-      } );
-      const slidersOffset = new HStrut( 3 );
-
-      // add slider number observer; no dispose necessary because FitPanel is always present
-      orderProperty.link( order => {
-
-        // set the content of the slidersBox
-        slidersBox.children = sliders.slice( sliders.length - order - 1, sliders.length );
-
-        slidersBox.children = [ slidersOffset ].concat( slidersBox.children );
-      } );
-
-      // show sliders when adjustable fit is selected; no dispose necessary because FitPanel is always present
-      fitProperty.link( fit => {
-        if ( fit === FitType.BEST && contentNode.hasChild( slidersBox ) ) {
-          contentNode.removeChild( slidersBox );
-        }
-        else if ( fit === FitType.ADJUSTABLE ) {
-          contentNode.addChild( slidersBox );
-        }
-      } );
-    }
-  }
+class FitPanel extends Panel {
 
   /**
-   * Creates a radio button for this panel.
-   *
-   * @param {Property} property
-   * @param {*} value
-   * @param {string} label
-   * @returns {AquaRadioButton}
+   * @param {Property.<number>[]} sliderPropertyArray - stored in ascending order of the polynomial fit, starting with order zero.
+   * @param {Property.<FitType>} fitProperty
+   * @param {Property.<number>} orderProperty
+   * @param {Object} [options]
    */
-  function createRadioButton( property, value, label ) {
-    return new AquaRadioButton(
-      property,
-      value,
-      new Text( label, {
-        font: CurveFittingConstants.CONTROL_FONT,
-        maxWidth: 140 // determined empirically
-      } ),
-      CurveFittingConstants.RADIO_BUTTON_OPTIONS
-    );
-  }
+  constructor( sliderPropertyArray, fitProperty, orderProperty, options ) {
 
-  return curveFitting.register( 'FitPanel', FitPanel );
-} );
+    options = merge( {
+      cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
+      fill: CurveFittingConstants.PANEL_BACKGROUND_COLOR,
+      xMargin: CurveFittingConstants.PANEL_MARGIN,
+      yMargin: CurveFittingConstants.PANEL_MARGIN,
+      maxWidth: CurveFittingConstants.PANEL_MAX_WIDTH
+    }, options );
+
+    // radio buttons
+    const bestFitButton = createRadioButton( fitProperty, FitType.BEST, bestFitString );
+    const adjustableFitButton = createRadioButton( fitProperty, FitType.ADJUSTABLE, adjustableFitString );
+
+    // vertical layout
+    const radioButtonsBox = new VBox( {
+      align: 'left',
+      spacing: CurveFittingConstants.CONTROLS_Y_SPACING,
+      children: [
+        bestFitButton,
+        adjustableFitButton
+      ]
+    } );
+
+    // equation that corresponds to the curve
+    const equationFitNode = new EquationNode( orderProperty, {
+      coefficientTextOptions: {
+        font: CurveFittingConstants.COEFFICIENT_FONT,
+        fill: CurveFittingConstants.BLUE_COLOR
+      }
+    } );
+
+    // vertical layout
+    const contentNode = new VBox( {
+      align: 'left',
+      spacing: CurveFittingConstants.CONTROLS_Y_SPACING,
+      children: [
+        radioButtonsBox,
+        equationFitNode
+      ]
+    } );
+
+    super( contentNode, options );
+
+    // attributes for four sliders in ASCENDING order of polynomial
+    const slidersAttributes = [
+      {
+        string: dSymbolString,
+        range: CurveFittingConstants.CONSTANT_RANGE
+      },
+      {
+        string: cSymbolString,
+        range: CurveFittingConstants.LINEAR_RANGE
+      },
+      {
+        string: bSymbolString,
+        range: CurveFittingConstants.QUADRATIC_RANGE
+      },
+      {
+        string: aSymbolString,
+        range: CurveFittingConstants.CUBIC_RANGE
+      }
+    ];
+
+    // create array in ASCENDING order of polynomial
+    const ascendingSliders = slidersAttributes.map(
+      ( sliderAttribute, index ) => new CoefficientSliderNode(
+        sliderPropertyArray[ index ],
+        sliderAttribute.range,
+        sliderAttribute.string
+      )
+    );
+
+    // we want sliders in DESCENDING order of polynomial
+    const sliders = ascendingSliders.reverse();
+
+    // create slider box under the equationFitNode
+    // HBox and HStrut spacing are empirically determined
+    const slidersBox = new HBox( {
+      spacing: CurveFittingConstants.SLIDERS_X_SPACING,
+      children: sliders
+    } );
+    const slidersOffset = new HStrut( 3 );
+
+    // add slider number observer; no dispose necessary because FitPanel is always present
+    orderProperty.link( order => {
+
+      // set the content of the slidersBox
+      slidersBox.children = sliders.slice( sliders.length - order - 1, sliders.length );
+
+      slidersBox.children = [ slidersOffset ].concat( slidersBox.children );
+    } );
+
+    // show sliders when adjustable fit is selected; no dispose necessary because FitPanel is always present
+    fitProperty.link( fit => {
+      if ( fit === FitType.BEST && contentNode.hasChild( slidersBox ) ) {
+        contentNode.removeChild( slidersBox );
+      }
+      else if ( fit === FitType.ADJUSTABLE ) {
+        contentNode.addChild( slidersBox );
+      }
+    } );
+  }
+}
+
+/**
+ * Creates a radio button for this panel.
+ *
+ * @param {Property} property
+ * @param {*} value
+ * @param {string} label
+ * @returns {AquaRadioButton}
+ */
+function createRadioButton( property, value, label ) {
+  return new AquaRadioButton(
+    property,
+    value,
+    new Text( label, {
+      font: CurveFittingConstants.CONTROL_FONT,
+      maxWidth: 140 // determined empirically
+    } ),
+    CurveFittingConstants.RADIO_BUTTON_OPTIONS
+  );
+}
+
+curveFitting.register( 'FitPanel', FitPanel );
+export default FitPanel;
