@@ -7,7 +7,7 @@
   <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1"/>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="phet-sim-level" content="development">
-  
+
   <title>curve-fitting</title>
 </head>
 
@@ -19,32 +19,65 @@
 
   window.phet = window.phet || {};
   window.phet.chipper = window.phet.chipper || {};
-  window.phet.chipper.packageObject = {
-    "name": "curve-fitting",
-    "version": "1.1.0-dev.0",
-    "license": "GPL-3.0",
-    "repository": { "type": "git", "url": "https://github.com/phetsims/curve-fitting.git" },
-    "devDependencies": { "grunt": "~1.0.0" },
-    "phet": {
-      "requirejsNamespace": "CURVE_FITTING",
-      "phetLibs": [ "twixt" ],
-      "preload": [ "../sherpa/lib/katex-0.11.0-css-all.js", "../sherpa/lib/katex-0.11.0.min.js" ],
-      "runnable": true,
-      "supportedBrands": [ "phet", "adapted-from-phet" ],
-      "simulation": true
-    },
-    "eslintConfig": { "extends": "../chipper/eslint/sim_es6_eslintrc.js" }
-  };
-  window.phet.chipper.stringRepos = [ {
-    "repo": "curve-fitting",
-    "requirejsNamespace": "CURVE_FITTING"
-  }, { "repo": "joist", "requirejsNamespace": "JOIST" }, {
-    "repo": "scenery-phet",
-    "requirejsNamespace": "SCENERY_PHET"
-  }, { "repo": "sun", "requirejsNamespace": "SUN" }, {
-    "repo": "tambo",
-    "requirejsNamespace": "TAMBO"
-  }, { "repo": "twixt", "requirejsNamespace": "TWIXT" } ];
+  window.phet.chipper.packageObject =
+    {
+      "name": "curve-fitting",
+      "version": "1.1.0-dev.0",
+      "license": "GPL-3.0",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/phetsims/curve-fitting.git"
+      },
+      "devDependencies": {
+        "grunt": "~1.0.0"
+      },
+      "phet": {
+        "requirejsNamespace": "CURVE_FITTING",
+        "phetLibs": [
+          "twixt"
+        ],
+        "preload": [
+          "../sherpa/lib/katex-0.11.0-css-all.js",
+          "../sherpa/lib/katex-0.11.0.min.js"
+        ],
+        "runnable": true,
+        "supportedBrands": [
+          "phet",
+          "adapted-from-phet"
+        ],
+        "simulation": true
+      },
+      "eslintConfig": {
+        "extends": "../chipper/eslint/sim_es6_eslintrc.js"
+      }
+    };
+  window.phet.chipper.stringRepos =
+    [
+      {
+        "repo": "curve-fitting",
+        "requirejsNamespace": "CURVE_FITTING"
+      },
+      {
+        "repo": "joist",
+        "requirejsNamespace": "JOIST"
+      },
+      {
+        "repo": "scenery-phet",
+        "requirejsNamespace": "SCENERY_PHET"
+      },
+      {
+        "repo": "sun",
+        "requirejsNamespace": "SUN"
+      },
+      {
+        "repo": "tambo",
+        "requirejsNamespace": "TAMBO"
+      },
+      {
+        "repo": "twixt",
+        "requirejsNamespace": "TWIXT"
+      }
+    ];
 
   // Identify the brand (assume generated brand if not provided with query parameters)
   const brandMatch = location.search.match( /brand=([^&]+)/ );
