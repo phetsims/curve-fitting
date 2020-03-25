@@ -26,10 +26,10 @@ class BarometerNode extends Node {
   /**
    * @param {Property.<number>} fillProportionProperty - how much the barometer should be filled in a scale from 0 to 1
    * @param {Property.<boolean>} fillVisibleProperty - Property that controls whether the fill of the barometer is visible
-   * @param {Object.<number, string>} tickLocationToLabels - a map of tick location from 0 to 1 to the corresponding label text
+   * @param {Object.<number, string>} tickPositionToLabels - a map of tick position from 0 to 1 to the corresponding label text
    * @param {Object} [options]
    */
-  constructor( fillProportionProperty, fillVisibleProperty, tickLocationToLabels, options ) {
+  constructor( fillProportionProperty, fillVisibleProperty, tickPositionToLabels, options ) {
 
     options = merge( {
 
@@ -68,18 +68,18 @@ class BarometerNode extends Node {
     } );
     fillVisibleProperty.linkAttribute( valueRectangle, 'visible' );
 
-    // adds ticks for each tick location key in the tickLocationToLabels parameter
-    Object.keys( tickLocationToLabels ).forEach( tickLocation => {
+    // adds ticks for each tick position key in the tickPositionToLabels parameter
+    Object.keys( tickPositionToLabels ).forEach( tickPosition => {
       const tickLine = new Line(
         -5,
-        -tickLocation * options.axisHeight,
+        -tickPosition * options.axisHeight,
         options.tickWidth - 5,
-        -tickLocation * options.axisHeight,
+        -tickPosition * options.axisHeight,
         LINE_OPTIONS
       );
       this.addChild( tickLine );
 
-      const tickLabel = new Text( tickLocationToLabels[ tickLocation ], {
+      const tickLabel = new Text( tickPositionToLabels[ tickPosition ], {
         font: options.font,
         right: tickLine.left - 2,
         centerY: tickLine.centerY

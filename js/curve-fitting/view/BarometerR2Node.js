@@ -27,7 +27,7 @@ class BarometerR2Node extends BarometerNode {
       tickWidth: 20
     }, options );
 
-    const tickLocationsToLabels = {
+    const tickPositionsToLabels = {
       0: '0',
       0.25: '0.25',
       0.5: '0.5',
@@ -43,7 +43,7 @@ class BarometerR2Node extends BarometerNode {
       { valueType: 'number', isValidValue: value => 0 <= value && value <= 1 }
     );
 
-    super( modifiedRSquaredProperty, curveVisibleProperty, tickLocationsToLabels, options );
+    super( modifiedRSquaredProperty, curveVisibleProperty, tickPositionsToLabels, options );
 
   }
 

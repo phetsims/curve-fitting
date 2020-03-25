@@ -35,7 +35,7 @@ class CurveShape extends Shape {
     // separation between adjacent x coordinates
     const interval = ( xMax - xMin ) / NUMBER_STEPS;
 
-    // move shape to initial location
+    // move shape to initial position
     this.moveTo( xMin, getYValueAt( xMin ) );
 
     // create lines connecting each point

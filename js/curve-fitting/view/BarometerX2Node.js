@@ -39,11 +39,11 @@ class BarometerX2Node extends BarometerNode {
    */
   constructor( points, chiSquaredProperty, curveVisibleProperty ) {
 
-    // sets up a map of location along barometer (a ratio from 0 to 1) to chi squared value (0, 0.5, 1, 2, 3, 10, 30, 100)
-    const tickLocationsToLabels = { 0: '0' };
+    // sets up a map of position along barometer (a ratio from 0 to 1) to chi squared value (0, 0.5, 1, 2, 3, 10, 30, 100)
+    const tickPositionsToLabels = { 0: '0' };
     [ 0.5, 1, 2, 3, 10, 30, 100 ].forEach( chiSquaredValue => {
-      const chiSquaredLocation = chiSquaredValueToRatio( chiSquaredValue );
-      tickLocationsToLabels[ chiSquaredLocation ] = chiSquaredValue;
+      const chiSquaredPosition = chiSquaredValueToRatio( chiSquaredValue );
+      tickPositionsToLabels[ chiSquaredPosition ] = chiSquaredValue;
     } );
 
     // links up listeners to properties that map chi squared values to fill ratios and colors
@@ -56,7 +56,7 @@ class BarometerX2Node extends BarometerNode {
     );
 
     // calls the superclass's constructor that initializes BarometerX2Node as a BarometerNode
-    super( fillProportionProperty, curveVisibleProperty, tickLocationsToLabels, {
+    super( fillProportionProperty, curveVisibleProperty, tickPositionsToLabels, {
       fill: fillColorProperty,
       axisHeight: BAROMETER_HEIGHT,
       tickWidth: BAROMETER_TICK_WIDTH

@@ -88,7 +88,7 @@ class PointNode extends Node {
 
   /**
    * @param {Point} point - Model for single point
-   * @param {function} bumpOutFunction - a function that bumps this point out of invalid locations (see #131)
+   * @param {function} bumpOutFunction - a function that bumps this point out of invalid positions (see #131)
    * @param {Point[]} currentlyInteractingPoints - an array of points that are being interacted with currently
    *  is used to determine when points should be displaying their halos (see #133)
    * @param {Property.<boolean>} residualsVisibleProperty
@@ -164,9 +164,9 @@ class PointNode extends Node {
     };
 
     // variables that allow for the top bar to be dragged in either direction when it covers the bottom bar; see #127
-    // initialTopBarDragLocation is null unless it is relevant for choosing a dragging direction
+    // initialTopBarDragPosition is null unless it is relevant for choosing a dragging direction
     let shouldTopBarActLikeBottomBar = false;
-    let initialTopBarDragLocation = null;
+    let initialTopBarDragPosition = null;
 
     // handling for error bar dragging
     let isDraggingDeltaTop = false;
@@ -175,11 +175,11 @@ class PointNode extends Node {
       start: event => {
         isDraggingDeltaTop = !isDraggingDeltaBottom;
 
-        // the top bar is currently covering the bottom bar so initialTopBarDragLocation is set to be non-null
-        // initialTopBarDragLocation is now set to the current mouse location because it is now relevant
+        // the top bar is currently covering the bottom bar so initialTopBarDragPosition is set to be non-null
+        // initialTopBarDragPosition is now set to the current mouse position because it is now relevant
         //  for choosing a drag direction
         if ( point.deltaProperty.value === MIN_DELTA ) {
-          initialTopBarDragLocation = event.pointer.point;
+          initialTopBarDragPosition = event.pointer.point;
         }
 
         addPointAsCurrentlyInteracting();
@@ -197,14 +197,14 @@ class PointNode extends Node {
           this.globalToLocalPoint( event.pointer.point ).y - circleView.centerY
         );
 
-        // If initialTopBarDragLocation has a value, that means that it is intentionally so because the user can
+        // If initialTopBarDragPosition has a value, that means that it is intentionally so because the user can
         // choose a drag direction the allowed direction of the top bar drag is now set by whether the user dragged
         // up or down. If the user dragged down, the top bar acts like the bottom bar because that is how the user
         // interacted with it for this case, the user couldn't have interacted with the actual bottom bar because
         // it was covered by this top one.
-        if ( initialTopBarDragLocation !== null ) {
-          shouldTopBarActLikeBottomBar = event.pointer.point.y > initialTopBarDragLocation.y;
-          initialTopBarDragLocation = null;
+        if ( initialTopBarDragPosition !== null ) {
+          shouldTopBarActLikeBottomBar = event.pointer.point.y > initialTopBarDragPosition.y;
+          initialTopBarDragPosition = null;
         }
 
         if ( shouldTopBarActLikeBottomBar ) {
@@ -221,7 +221,7 @@ class PointNode extends Node {
       end: () => {
         isDraggingDeltaTop = false;
         shouldTopBarActLikeBottomBar = false;
-        initialTopBarDragLocation = null;
+        initialTopBarDragPosition = null;
         removePointFromCurrentlyInteracting();
 
         // necessary because button listener doesn't activate for touch snag

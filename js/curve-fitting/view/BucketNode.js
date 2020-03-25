@@ -68,7 +68,7 @@ class BucketNode extends Node {
 
   /**
    * @param {Points} points
-   * @param {function} bumpOutFunction - the function that bumps points out of invalid locations (see #131)
+   * @param {function} bumpOutFunction - the function that bumps points out of invalid positions (see #131)
    * @param {Property.<boolean>} residualsVisibleProperty
    * @param {Property.<boolean>} valuesVisibleProperty
    * @param {ModelViewTransform2} modelViewTransform
@@ -120,8 +120,8 @@ class BucketNode extends Node {
         },
 
         drag: event => {
-          const viewLocation = this.globalToLocalPoint( event.pointer.point );
-          point.positionProperty.value = modelViewTransform.viewToModelPosition( viewLocation );
+          const viewPosition = this.globalToLocalPoint( event.pointer.point );
+          point.positionProperty.value = modelViewTransform.viewToModelPosition( viewPosition );
         },
 
         end: () => {

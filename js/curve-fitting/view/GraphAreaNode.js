@@ -28,7 +28,7 @@ const GRAPH_BACKGROUND_OPTIONS = { fill: 'white', stroke: 'rgb( 214, 223, 226 )'
 // information regarding ticks and axes; all distances and lengths are in model coordinates
 const MINOR_TICK_LENGTH = 0.3;
 const MAJOR_TICK_LENGTH = 0.75;
-const MAJOR_TICK_LOCATIONS = [ -10, -5, 5, 10 ];
+const MAJOR_TICK_POSITIONS = [ -10, -5, 5, 10 ];
 const TICK_LABEL_FONT = CurveFittingConstants.GRAPH_TICK_LABEL_FONT;
 const TICK_LABEL_DISTANCE_FROM_AXES = 0.5;
 const AXIS_LABEL_DISTANCE_FROM_AXES = 0.2;
@@ -73,7 +73,7 @@ class GraphAreaNode extends Node {
     // ticks: assumes that backgroundBounds is a square
     for ( let i = backgroundBounds.minX; i <= backgroundBounds.maxX; i++ ) {
       let tickLength = MINOR_TICK_LENGTH;
-      if ( _.includes( MAJOR_TICK_LOCATIONS, i ) ) {
+      if ( _.includes( MAJOR_TICK_POSITIONS, i ) ) {
         tickLength = MAJOR_TICK_LENGTH;
       }
       axisShape.moveTo( i, -tickLength / 2 );
@@ -84,15 +84,15 @@ class GraphAreaNode extends Node {
     this.addChild( new Path( modelViewTransform.modelToViewShape( axisShape ), AXIS_OPTIONS ) );
 
     // tick labels
-    MAJOR_TICK_LOCATIONS.forEach( tickLocation => {
-      this.addChild( new Text( tickLocation, {
+    MAJOR_TICK_POSITIONS.forEach( tickPosition => {
+      this.addChild( new Text( tickPosition, {
         font: TICK_LABEL_FONT,
-        centerX: modelViewTransform.modelToViewX( tickLocation ),
+        centerX: modelViewTransform.modelToViewX( tickPosition ),
         top: modelViewTransform.modelToViewY( -TICK_LABEL_DISTANCE_FROM_AXES )
       } ) );
-      this.addChild( new Text( tickLocation, {
+      this.addChild( new Text( tickPosition, {
         font: TICK_LABEL_FONT,
-        centerY: modelViewTransform.modelToViewY( tickLocation ),
+        centerY: modelViewTransform.modelToViewY( tickPosition ),
         right: modelViewTransform.modelToViewX( -TICK_LABEL_DISTANCE_FROM_AXES )
       } ) );
     } );
