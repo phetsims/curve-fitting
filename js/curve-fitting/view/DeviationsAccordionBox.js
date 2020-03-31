@@ -19,7 +19,7 @@ import RichText from '../../../../scenery/js/nodes/RichText.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
 import Panel from '../../../../sun/js/Panel.js';
-import curveFittingStrings from '../../curve-fitting-strings.js';
+import curveFittingStrings from '../../curveFittingStrings.js';
 import curveFitting from '../../curveFitting.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 import BarometerR2Node from './BarometerR2Node.js';

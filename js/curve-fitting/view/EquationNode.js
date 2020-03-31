@@ -13,7 +13,7 @@ import HStrut from '../../../../scenery/js/nodes/HStrut.js';
 import RichText from '../../../../scenery/js/nodes/RichText.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import VStrut from '../../../../scenery/js/nodes/VStrut.js';
-import curveFittingStrings from '../../curve-fitting-strings.js';
+import curveFittingStrings from '../../curveFittingStrings.js';
 import curveFitting from '../../curveFitting.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 
