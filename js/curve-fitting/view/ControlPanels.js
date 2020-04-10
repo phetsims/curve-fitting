@@ -39,7 +39,8 @@ class ControlPanels extends VBox {
                valuesProperty, options ) {
     options = merge( {
       align: 'left',
-      spacing: 12
+      spacing: 12,
+      excludeInvisibleChildrenFromBounds: true
     }, options );
 
     // view options
