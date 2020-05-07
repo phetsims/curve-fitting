@@ -7,7 +7,7 @@
  */
 
 import Sim from '../../joist/js/Sim.js';
-import SimLauncher from '../../joist/js/SimLauncher.js';
+import simLauncher from '../../joist/js/simLauncher.js';
 import curveFittingStrings from './curveFittingStrings.js';
 import CurveFittingScreen from './curve-fitting/CurveFittingScreen.js';
 
@@ -24,7 +24,7 @@ const simOptions = {
   }
 };
 
-SimLauncher.launch( () => {
+simLauncher.launch( () => {
   const sim = new Sim( curveFittingTitleString, [ new CurveFittingScreen() ], simOptions );
   sim.start();
 } );
