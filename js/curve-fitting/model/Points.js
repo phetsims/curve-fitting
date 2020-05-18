@@ -27,7 +27,7 @@ class Points extends ObservableArray {
    * @public
    */
   getRelevantPoints() {
-    return this.getArray().filter( point => point.isInsideGraphProperty.value && point.animation === null );
+    return this.filter( point => point.isInsideGraphProperty.value && point.animation === null );
   }
 
   get relevantPoints() { return this.getRelevantPoints(); }
