@@ -7,10 +7,10 @@
  * @author Saurabh Totey
  */
 
-import ObservableArray from '../../../../axon/js/ObservableArray.js';
+import AxonArray from '../../../../axon/js/AxonArray.js';
 import curveFitting from '../../curveFitting.js';
 
-class Points extends ObservableArray {
+class Points extends AxonArray {
 
   /**
    * Resets the model
@@ -41,7 +41,6 @@ class Points extends ObservableArray {
   getNumberUniquePositionX() {
     return _.chain( this.relevantPoints ).map( point => point.positionProperty.value.x ).uniq().value().length;
   }
-
 }
 
 curveFitting.register( 'Points', Points );
