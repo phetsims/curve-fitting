@@ -46,7 +46,7 @@ class ResidualsNode extends Node {
         const residualsShape = new Shape();
 
         // updates the path residuals which are the vertical lines connecting data points to curve
-        points.relevantPoints.forEach( point => {
+        points.getRelevantPoints().forEach( point => {
           residualsShape.moveToPoint( point.positionProperty.value );
           residualsShape.verticalLineTo( curve.getYValueAt( point.positionProperty.value.x ) );
         } );

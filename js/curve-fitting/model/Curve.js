@@ -70,7 +70,7 @@ class Curve {
    * @public (read-only)
    */
   isCurvePresent() {
-    return this.points.relevantPoints.length >= 2 || this.fitProperty.value === FitType.ADJUSTABLE;
+    return this.points.getRelevantPoints().length >= 2 || this.fitProperty.value === FitType.ADJUSTABLE;
   }
 
   /**
@@ -158,7 +158,7 @@ class Curve {
    */
   updateRAndChiSquared() {
 
-    const points = this.points.relevantPoints;
+    const points = this.points.getRelevantPoints();
     const numberOfPoints = points.length; // number of points in the array
 
     if ( numberOfPoints < 2 ) {
@@ -252,7 +252,7 @@ class Curve {
    */
   getBestFitCoefficients() {
 
-    const relevantPoints = this.points.relevantPoints;
+    const relevantPoints = this.points.getRelevantPoints();
 
     const solutionArrayLength = this.orderProperty.value + 1;
 

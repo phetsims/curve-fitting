@@ -10,9 +10,9 @@ import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import curveFitting from '../../curveFitting.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
+import createPoints from './createPoints.js';
 import Curve from './Curve.js';
 import FitType from './FitType.js';
-import Points from './Points.js';
 
 class CurveFittingModel {
 
@@ -38,7 +38,7 @@ class CurveFittingModel {
 
     // @public {Points} - Points for plotting curve. This includes points that are outside the bounds of the graph,
     // so be careful to call getRelevantPoints when using points in calculations. Order of the points doesn't matter.
-    this.points = new Points();
+    this.points = createPoints();
 
     // @public {Curve} - the model of the curve
     this.curve = new Curve( this.points, this.sliderPropertyArray, this.orderProperty, this.fitProperty );
