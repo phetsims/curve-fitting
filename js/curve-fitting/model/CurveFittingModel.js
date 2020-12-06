@@ -89,7 +89,9 @@ class CurveFittingModel {
     point.deltaProperty.link( this.updateCurveFit );
 
     const removePointListener = () => {
-      this.points.remove( point );
+      if ( this.points.includes( point ) ) {
+        this.points.remove( point );
+      }
       point.returnToOriginEmitter.removeListener( removePointListener );
     };
 
