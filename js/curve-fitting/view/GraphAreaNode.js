@@ -60,7 +60,7 @@ class GraphAreaNode extends Node {
     const axesBounds = CurveFittingConstants.GRAPH_AXES_BOUNDS;
 
     // create and add white background
-    this.addChild( new Rectangle.bounds(
+    this.addChild( Rectangle.bounds(
       modelViewTransform.modelToViewBounds( backgroundBounds ),
       GRAPH_BACKGROUND_OPTIONS
     ) );
