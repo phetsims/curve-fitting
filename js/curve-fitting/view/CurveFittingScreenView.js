@@ -8,6 +8,7 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import dotRandom from '../../../../dot/js/dotRandom.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
@@ -136,7 +137,7 @@ class CurveFittingScreenView extends ScreenView {
         pointsUnder.forEach( point => {
           let directionToPush = point.positionProperty.value.minus( pointPushBounds.center );
           while ( directionToPush.equals( Vector2.ZERO ) ) {
-            directionToPush = new Vector2( phet.joist.random.nextDouble(), phet.joist.random.nextDouble() );
+            directionToPush = new Vector2( dotRandom.nextDouble(), dotRandom.nextDouble() );
           }
           directionToPush.setMagnitude( 0.05 );
           point.positionProperty.value = point.positionProperty.value.plus( directionToPush );
