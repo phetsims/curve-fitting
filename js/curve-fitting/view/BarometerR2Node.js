@@ -40,7 +40,7 @@ class BarometerR2Node extends BarometerNode {
     const modifiedRSquaredProperty = new DerivedProperty(
       [ rSquaredProperty ],
       rSquared => isNaN( rSquared ) ? 0 : rSquared,
-      { valueType: 'number', isValidValue: value => 0 <= value && value <= 1 }
+      { valueType: 'number', isValidValue: value => value >= 0 && value <= 1 }
     );
 
     super( modifiedRSquaredProperty, curveVisibleProperty, tickPositionsToLabels, options );

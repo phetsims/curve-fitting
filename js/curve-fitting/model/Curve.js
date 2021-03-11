@@ -34,7 +34,7 @@ class Curve {
 
     // @public {Property.<number>} r^2 deviation value, a number ranging from 0 to 1
     this.rSquaredProperty = new NumberProperty( 0, {
-      isValidValue: value => isNaN( value ) || 0 <= value && value <= 1
+      isValidValue: value => isNaN( value ) || value >= 0 && value <= 1
     } );
 
     // @public (read-only) {Array.<number>} array of coefficients of the polynomial curve stored in ascending polynomial order.
