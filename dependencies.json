@@ -1,5 +1,5 @@
 {
-  "comment": "# curve-fitting 1.0.0 Mon Mar 08 2021 13:06:10 GMT-0500 (Eastern Standard Time)",
+  "comment": "# curve-fitting 1.0.0 Thu Apr 22 2021 11:54:38 GMT-0600 (Mountain Daylight Time)",
   "assert": {
     "sha": "bd6e3ed0a8b6fea73a4a176d5364809666833e58",
     "branch": "HEAD"
@@ -17,7 +17,7 @@
     "branch": "HEAD"
   },
   "curve-fitting": {
-    "sha": "d3befa7d6469dd22cc31f6b77cdd2ef8db1dfbeb",
+    "sha": "baf83e9cd8546de5a6671e3cdd493a32e4c415e5",
     "branch": "1.0"
   },
   "dot": {
@@ -50,15 +50,15 @@
   },
   "phetmarks": {
     "sha": "d5359098231ff598f3864cdcaa12369c318e23f8",
-    "branch": "curve-fitting-1.0"
+    "branch": "HEAD"
   },
   "query-string-machine": {
     "sha": "bbee74e6c18a54263dade3f71e222b9ad5a096f0",
     "branch": "HEAD"
   },
   "scenery": {
-    "sha": "3ad53071c0a5ae5eec7d1c0ae3ad7c797791ff3d",
-    "branch": "HEAD"
+    "sha": "b1355220974dbfe6075a2e26089acbc2f260f136",
+    "branch": "curve-fitting-1.0"
   },
   "scenery-phet": {
     "sha": "c254747d17e3c779454cb9683143c619fe026b6e",
