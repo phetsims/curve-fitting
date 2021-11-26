@@ -8,8 +8,8 @@
 
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import merge from '../../../../phet-core/js/merge.js';
-import Text from '../../../../scenery/js/nodes/Text.js';
-import VBox from '../../../../scenery/js/nodes/VBox.js';
+import { Text } from '../../../../scenery/js/imports.js';
+import { VBox } from '../../../../scenery/js/imports.js';
 import VSlider from '../../../../sun/js/VSlider.js';
 import curveFitting from '../../curveFitting.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';

@@ -9,11 +9,11 @@
 
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import FormulaNode from '../../../../scenery-phet/js/FormulaNode.js';
-import HBox from '../../../../scenery/js/nodes/HBox.js';
-import HStrut from '../../../../scenery/js/nodes/HStrut.js';
-import RichText from '../../../../scenery/js/nodes/RichText.js';
-import Text from '../../../../scenery/js/nodes/Text.js';
-import VBox from '../../../../scenery/js/nodes/VBox.js';
+import { HBox } from '../../../../scenery/js/imports.js';
+import { HStrut } from '../../../../scenery/js/imports.js';
+import { RichText } from '../../../../scenery/js/imports.js';
+import { Text } from '../../../../scenery/js/imports.js';
+import { VBox } from '../../../../scenery/js/imports.js';
 import Dialog from '../../../../sun/js/Dialog.js';
 import curveFittingStrings from '../../curveFittingStrings.js';
 import curveFitting from '../../curveFitting.js';

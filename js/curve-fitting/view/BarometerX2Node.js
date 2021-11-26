@@ -12,7 +12,7 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Utils from '../../../../dot/js/Utils.js';
 import ArrowNode from '../../../../scenery-phet/js/ArrowNode.js';
-import ColorDef from '../../../../scenery/js/util/ColorDef.js';
+import { ColorDef } from '../../../../scenery/js/imports.js';
 import curveFitting from '../../curveFitting.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 import BarometerNode from './BarometerNode.js';
