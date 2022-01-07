@@ -8,10 +8,10 @@
  * @author Saurabh Totey
  */
 
-import Enumeration from '../../../../phet-core/js/Enumeration.js';
+import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
 import curveFitting from '../../curveFitting.js';
 
-const FitType = Enumeration.byKeys( [ 'ADJUSTABLE', 'BEST' ] );
+const FitType = EnumerationDeprecated.byKeys( [ 'ADJUSTABLE', 'BEST' ] );
 
 curveFitting.register( 'FitType', FitType );
 export default FitType;
