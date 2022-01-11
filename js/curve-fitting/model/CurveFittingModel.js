@@ -6,7 +6,7 @@
  * @author Andrey Zelenkov (Mlearner)
  */
 
-import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
+import EnumerationDeprecatedProperty from '../../../../axon/js/EnumerationDeprecatedProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import curveFitting from '../../curveFitting.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
@@ -24,7 +24,7 @@ class CurveFittingModel {
     } );
 
     // @public {Property.<FitType>}, the method of fitting the curve to data points
-    this.fitProperty = new EnumerationProperty( FitType, FitType.BEST );
+    this.fitProperty = new EnumerationDeprecatedProperty( FitType, FitType.BEST );
 
     // @public {Property.<number>[]}, user input values for coefficients of the polynomial, starting from lowest
     // order x^0 to x^3
