@@ -1,4 +1,4 @@
-// Copyright 2017-2021, University of Colorado Boulder
+// Copyright 2017-2022, University of Colorado Boulder
 
 /**
  * Residuals node in 'Curve Fitting' simulation that is responsible for the vertical lines between the data points and the curve
