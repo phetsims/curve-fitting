@@ -8,35 +8,35 @@ import getStringModule from '../../chipper/js/getStringModule.js';
 import curveFitting from './curveFitting.js';
 
 type StringsType = {
-  'adjustableFit': string,
-  'bestFit': string,
-  'cubic': string,
-  'curve': string,
+  'adjustableFit': string;
+  'bestFit': string;
+  'cubic': string;
+  'curve': string;
   'curve-fitting': {
-    'title': string
-  },
-  'deviations': string,
-  'equation': string,
-  'linear': string,
-  'undefined': string,
-  'fEqualsNumberOfParametersPattern': string,
-  'nEqualsNumberOfDataPointsPattern': string,
-  'deltaEqualsPattern': string,
-  'pointCoordinatesPattern': string,
-  'theReducedChiSquaredStatisticIs': string,
-  'quadratic': string,
-  'residuals': string,
-  'values': string,
-  'aSymbol': string,
-  'bSymbol': string,
-  'cSymbol': string,
-  'dSymbol': string,
-  'fSymbol': string,
-  'nSymbol': string,
-  'xSymbol': string,
-  'ySymbol': string,
-  'rSymbol': string,
-  'chiSymbol': string
+    'title': string;
+  };
+  'deviations': string;
+  'equation': string;
+  'linear': string;
+  'undefined': string;
+  'fEqualsNumberOfParametersPattern': string;
+  'nEqualsNumberOfDataPointsPattern': string;
+  'deltaEqualsPattern': string;
+  'pointCoordinatesPattern': string;
+  'theReducedChiSquaredStatisticIs': string;
+  'quadratic': string;
+  'residuals': string;
+  'values': string;
+  'aSymbol': string;
+  'bSymbol': string;
+  'cSymbol': string;
+  'dSymbol': string;
+  'fSymbol': string;
+  'nSymbol': string;
+  'xSymbol': string;
+  'ySymbol': string;
+  'rSymbol': string;
+  'chiSymbol': string;
 };
 
 const curveFittingStrings = getStringModule( 'CURVE_FITTING' ) as StringsType;
