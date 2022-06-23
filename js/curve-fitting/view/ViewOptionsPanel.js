@@ -86,14 +86,10 @@ class ViewOptionsPanel extends Panel {
  * @returns {Checkbox}
  */
 function createCheckbox( property, label ) {
-  return new Checkbox(
-    new Text( label, {
-      font: CurveFittingConstants.CONTROL_FONT,
-      maxWidth: 140 // determined empirically
-    } ),
-    property,
-    CurveFittingConstants.CHECKBOX_OPTIONS
-  );
+  return new Checkbox( property, new Text( label, {
+    font: CurveFittingConstants.CONTROL_FONT,
+    maxWidth: 140 // determined empirically
+  } ), CurveFittingConstants.CHECKBOX_OPTIONS );
 }
 
 curveFitting.register( 'ViewOptionsPanel', ViewOptionsPanel );
