@@ -10,12 +10,9 @@
 
 import { Shape } from '../../../../kite/js/imports.js';
 import ArrowNode from '../../../../scenery-phet/js/ArrowNode.js';
-import { Node } from '../../../../scenery/js/imports.js';
-import { Path } from '../../../../scenery/js/imports.js';
-import { Rectangle } from '../../../../scenery/js/imports.js';
-import { Text } from '../../../../scenery/js/imports.js';
-import curveFittingStrings from '../../curveFittingStrings.js';
+import { Node, Path, Rectangle, Text } from '../../../../scenery/js/imports.js';
 import curveFitting from '../../curveFitting.js';
+import curveFittingStrings from '../../curveFittingStrings.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 
 const xSymbolString = curveFittingStrings.xSymbol;

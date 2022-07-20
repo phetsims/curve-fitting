@@ -9,14 +9,10 @@
 
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import FormulaNode from '../../../../scenery-phet/js/FormulaNode.js';
-import { HBox } from '../../../../scenery/js/imports.js';
-import { HStrut } from '../../../../scenery/js/imports.js';
-import { RichText } from '../../../../scenery/js/imports.js';
-import { Text } from '../../../../scenery/js/imports.js';
-import { VBox } from '../../../../scenery/js/imports.js';
+import { HBox, HStrut, RichText, Text, VBox } from '../../../../scenery/js/imports.js';
 import Dialog from '../../../../sun/js/Dialog.js';
-import curveFittingStrings from '../../curveFittingStrings.js';
 import curveFitting from '../../curveFitting.js';
+import curveFittingStrings from '../../curveFittingStrings.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 
 const fEqualsNumberOfParametersPatternString = curveFittingStrings.fEqualsNumberOfParametersPattern;

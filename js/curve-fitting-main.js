@@ -8,8 +8,8 @@
 
 import Sim from '../../joist/js/Sim.js';
 import simLauncher from '../../joist/js/simLauncher.js';
-import curveFittingStrings from './curveFittingStrings.js';
 import CurveFittingScreen from './curve-fitting/CurveFittingScreen.js';
+import curveFittingStrings from './curveFittingStrings.js';
 
 const curveFittingTitleString = curveFittingStrings[ 'curve-fitting' ].title;
 

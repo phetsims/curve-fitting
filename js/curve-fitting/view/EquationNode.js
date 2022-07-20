@@ -8,13 +8,9 @@
 
 import merge from '../../../../phet-core/js/merge.js';
 import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
-import { HBox } from '../../../../scenery/js/imports.js';
-import { HStrut } from '../../../../scenery/js/imports.js';
-import { RichText } from '../../../../scenery/js/imports.js';
-import { Text } from '../../../../scenery/js/imports.js';
-import { VStrut } from '../../../../scenery/js/imports.js';
-import curveFittingStrings from '../../curveFittingStrings.js';
+import { HBox, HStrut, RichText, Text, VStrut } from '../../../../scenery/js/imports.js';
 import curveFitting from '../../curveFitting.js';
+import curveFittingStrings from '../../curveFittingStrings.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 
 const aSymbolString = curveFittingStrings.aSymbol;
