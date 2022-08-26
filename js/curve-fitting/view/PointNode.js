@@ -377,11 +377,16 @@ class PointNode extends Node {
       valueTextLabel.center = valueTextBackground.center;
     }
 
-    // these require unlinkAttribute in dispose
-    const valueBackgroundHandle = valuesVisibleProperty.linkAttribute( valueTextBackground, 'visible' );
-    const valueTextHandle = valuesVisibleProperty.linkAttribute( valueTextLabel, 'visible' );
-    const deltaBackgroundHandle = valuesVisibleProperty.linkAttribute( deltaTextBackground, 'visible' );
-    const deltaTextHandle = valuesVisibleProperty.linkAttribute( deltaTextLabel, 'visible' );
+    // these require unlink in dispose
+    const valueBackgroundHandle = visible => {valueTextBackground.visible = visible;};
+    const valueTextHandle = visible => {valueTextLabel.visible = visible;};
+    const deltaBackgroundHandle = visible => {deltaTextBackground.visible = visible;};
+    const deltaTextHandle = visible => {deltaTextLabel.visible = visible;};
+
+    valuesVisibleProperty.link( valueBackgroundHandle );
+    valuesVisibleProperty.link( valueTextHandle );
+    valuesVisibleProperty.link( deltaBackgroundHandle );
+    valuesVisibleProperty.link( deltaTextHandle );
 
     /**
      * updates how the error bars look based on whether the residuals are visible or not
@@ -433,10 +438,10 @@ class PointNode extends Node {
       point.deltaProperty.unlink( updateDelta );
       point.positionProperty.unlink( centerPositionListener );
       residualsVisibleProperty.unlink( updateErrorBarsBasedOnResidualsVisibility );
-      valuesVisibleProperty.unlinkAttribute( deltaTextHandle );
-      valuesVisibleProperty.unlinkAttribute( valueTextHandle );
-      valuesVisibleProperty.unlinkAttribute( deltaBackgroundHandle );
-      valuesVisibleProperty.unlinkAttribute( valueBackgroundHandle );
+      valuesVisibleProperty.unlink( deltaTextHandle );
+      valuesVisibleProperty.unlink( valueTextHandle );
+      valuesVisibleProperty.unlink( deltaBackgroundHandle );
+      valuesVisibleProperty.unlink( valueBackgroundHandle );
     };
   }
 
