@@ -11,7 +11,7 @@ import simLauncher from '../../joist/js/simLauncher.js';
 import CurveFittingScreen from './curve-fitting/CurveFittingScreen.js';
 import curveFittingStrings from './curveFittingStrings.js';
 
-const curveFittingTitleString = curveFittingStrings[ 'curve-fitting' ].title;
+const curveFittingTitleStringProperty = curveFittingStrings[ 'curve-fitting' ].titleStringProperty;
 
 const simOptions = {
   credits: {
@@ -25,6 +25,6 @@ const simOptions = {
 };
 
 simLauncher.launch( () => {
-  const sim = new Sim( curveFittingTitleString, [ new CurveFittingScreen() ], simOptions );
+  const sim = new Sim( curveFittingTitleStringProperty, [ new CurveFittingScreen() ], simOptions );
   sim.start();
 } );
