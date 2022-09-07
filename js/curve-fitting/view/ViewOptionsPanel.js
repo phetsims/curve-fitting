@@ -10,12 +10,12 @@ import { Text, VBox } from '../../../../scenery/js/imports.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
 import Panel from '../../../../sun/js/Panel.js';
 import curveFitting from '../../curveFitting.js';
-import curveFittingStrings from '../../curveFittingStrings.js';
+import CurveFittingStrings from '../../CurveFittingStrings.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 
-const curveString = curveFittingStrings.curve;
-const residualsString = curveFittingStrings.residuals;
-const valuesString = curveFittingStrings.values;
+const curveString = CurveFittingStrings.curve;
+const residualsString = CurveFittingStrings.residuals;
+const valuesString = CurveFittingStrings.values;
 
 class ViewOptionsPanel extends Panel {
 

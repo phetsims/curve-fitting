@@ -10,12 +10,12 @@ import { Text, VBox } from '../../../../scenery/js/imports.js';
 import AquaRadioButton from '../../../../sun/js/AquaRadioButton.js';
 import Panel from '../../../../sun/js/Panel.js';
 import curveFitting from '../../curveFitting.js';
-import curveFittingStrings from '../../curveFittingStrings.js';
+import CurveFittingStrings from '../../CurveFittingStrings.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 
-const cubicString = curveFittingStrings.cubic;
-const linearString = curveFittingStrings.linear;
-const quadraticString = curveFittingStrings.quadratic;
+const cubicString = CurveFittingStrings.cubic;
+const linearString = CurveFittingStrings.linear;
+const quadraticString = CurveFittingStrings.quadratic;
 
 class CurveOrderPanel extends Panel {
 

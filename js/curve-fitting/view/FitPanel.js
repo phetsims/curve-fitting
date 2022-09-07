@@ -13,18 +13,18 @@ import { HBox, HStrut, Text, VBox } from '../../../../scenery/js/imports.js';
 import AquaRadioButton from '../../../../sun/js/AquaRadioButton.js';
 import Panel from '../../../../sun/js/Panel.js';
 import curveFitting from '../../curveFitting.js';
-import curveFittingStrings from '../../curveFittingStrings.js';
+import CurveFittingStrings from '../../CurveFittingStrings.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 import FitType from '../model/FitType.js';
 import CoefficientSliderNode from './CoefficientSliderNode.js';
 import EquationNode from './EquationNode.js';
 
-const adjustableFitString = curveFittingStrings.adjustableFit;
-const aSymbolString = curveFittingStrings.aSymbol;
-const bestFitString = curveFittingStrings.bestFit;
-const bSymbolString = curveFittingStrings.bSymbol;
-const cSymbolString = curveFittingStrings.cSymbol;
-const dSymbolString = curveFittingStrings.dSymbol;
+const adjustableFitString = CurveFittingStrings.adjustableFit;
+const aSymbolString = CurveFittingStrings.aSymbol;
+const bestFitString = CurveFittingStrings.bestFit;
+const bSymbolString = CurveFittingStrings.bSymbol;
+const cSymbolString = CurveFittingStrings.cSymbol;
+const dSymbolString = CurveFittingStrings.dSymbol;
 
 class FitPanel extends Panel {
 

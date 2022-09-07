@@ -10,15 +10,15 @@ import merge from '../../../../phet-core/js/merge.js';
 import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
 import { HBox, HStrut, RichText, Text, VStrut } from '../../../../scenery/js/imports.js';
 import curveFitting from '../../curveFitting.js';
-import curveFittingStrings from '../../curveFittingStrings.js';
+import CurveFittingStrings from '../../CurveFittingStrings.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 
-const aSymbolString = curveFittingStrings.aSymbol;
-const bSymbolString = curveFittingStrings.bSymbol;
-const cSymbolString = curveFittingStrings.cSymbol;
-const dSymbolString = curveFittingStrings.dSymbol;
-const xSymbolString = curveFittingStrings.xSymbol;
-const ySymbolString = curveFittingStrings.ySymbol;
+const aSymbolString = CurveFittingStrings.aSymbol;
+const bSymbolString = CurveFittingStrings.bSymbol;
+const cSymbolString = CurveFittingStrings.cSymbol;
+const dSymbolString = CurveFittingStrings.dSymbol;
+const xSymbolString = CurveFittingStrings.xSymbol;
+const ySymbolString = CurveFittingStrings.ySymbol;
 
 // constants
 const NORMAL_FONT = CurveFittingConstants.EQUATION_NORMAL_FONT;

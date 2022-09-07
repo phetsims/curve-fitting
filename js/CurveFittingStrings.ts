@@ -67,8 +67,8 @@ type StringsType = {
   'chiSymbolStringProperty': TReadOnlyProperty<string>;
 };
 
-const curveFittingStrings = getStringModule( 'CURVE_FITTING' ) as StringsType;
+const CurveFittingStrings = getStringModule( 'CURVE_FITTING' ) as StringsType;
 
-curveFitting.register( 'curveFittingStrings', curveFittingStrings );
+curveFitting.register( 'CurveFittingStrings', CurveFittingStrings );
 
-export default curveFittingStrings;
+export default CurveFittingStrings;

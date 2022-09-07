@@ -12,11 +12,11 @@ import { Shape } from '../../../../kite/js/imports.js';
 import ArrowNode from '../../../../scenery-phet/js/ArrowNode.js';
 import { Node, Path, Rectangle, Text } from '../../../../scenery/js/imports.js';
 import curveFitting from '../../curveFitting.js';
-import curveFittingStrings from '../../curveFittingStrings.js';
+import CurveFittingStrings from '../../CurveFittingStrings.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 
-const xSymbolString = curveFittingStrings.xSymbol;
-const ySymbolString = curveFittingStrings.ySymbol;
+const xSymbolString = CurveFittingStrings.xSymbol;
+const ySymbolString = CurveFittingStrings.ySymbol;
 
 // constants
 const AXIS_OPTIONS = { lineWidth: 1, stroke: 'black' };

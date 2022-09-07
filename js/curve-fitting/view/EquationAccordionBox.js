@@ -16,12 +16,12 @@ import { HBox, Text, VStrut } from '../../../../scenery/js/imports.js';
 import ExpandCollapseButton from '../../../../sun/js/ExpandCollapseButton.js';
 import Panel from '../../../../sun/js/Panel.js';
 import curveFitting from '../../curveFitting.js';
-import curveFittingStrings from '../../curveFittingStrings.js';
+import CurveFittingStrings from '../../CurveFittingStrings.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 import EquationNode from './EquationNode.js';
 
-const equationString = curveFittingStrings.equation;
-const undefinedString = curveFittingStrings.undefined;
+const equationString = CurveFittingStrings.equation;
+const undefinedString = CurveFittingStrings.undefined;
 
 // max number of digits for coefficients in ascending order of polynomials
 const MAX_DIGITS = [ 2, 3, 4, 4 ];

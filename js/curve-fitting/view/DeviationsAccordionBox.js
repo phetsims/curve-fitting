@@ -17,13 +17,13 @@ import { HBox, Node, RichText, Text } from '../../../../scenery/js/imports.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
 import Panel from '../../../../sun/js/Panel.js';
 import curveFitting from '../../curveFitting.js';
-import curveFittingStrings from '../../curveFittingStrings.js';
+import CurveFittingStrings from '../../CurveFittingStrings.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 import BarometerR2Node from './BarometerR2Node.js';
 import BarometerX2Node from './BarometerX2Node.js';
 import ReducedChiSquaredStatisticDialog from './ReducedChiSquaredStatisticDialog.js';
 
-const deviationsString = curveFittingStrings.deviations;
+const deviationsString = CurveFittingStrings.deviations;
 
 // constants
 const VALUES_TEXT_FONT = CurveFittingConstants.BAROMETER_VALUE_FONT;
@@ -34,8 +34,8 @@ const LABEL_TEXT_OPTIONS = {
 };
 
 // strings
-const chiSymbolString = curveFittingStrings.chiSymbol;
-const rSymbolString = curveFittingStrings.rSymbol;
+const chiSymbolString = CurveFittingStrings.chiSymbol;
+const rSymbolString = CurveFittingStrings.rSymbol;
 
 // constants
 const LABEL_MAX_WIDTH = 30;

@@ -9,9 +9,9 @@
 import Sim from '../../joist/js/Sim.js';
 import simLauncher from '../../joist/js/simLauncher.js';
 import CurveFittingScreen from './curve-fitting/CurveFittingScreen.js';
-import curveFittingStrings from './curveFittingStrings.js';
+import CurveFittingStrings from './CurveFittingStrings.js';
 
-const curveFittingTitleStringProperty = curveFittingStrings[ 'curve-fitting' ].titleStringProperty;
+const curveFittingTitleStringProperty = CurveFittingStrings[ 'curve-fitting' ].titleStringProperty;
 
 const simOptions = {
   credits: {

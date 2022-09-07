@@ -12,17 +12,17 @@ import FormulaNode from '../../../../scenery-phet/js/FormulaNode.js';
 import { HBox, HStrut, RichText, Text, VBox } from '../../../../scenery/js/imports.js';
 import Dialog from '../../../../sun/js/Dialog.js';
 import curveFitting from '../../curveFitting.js';
-import curveFittingStrings from '../../curveFittingStrings.js';
+import CurveFittingStrings from '../../CurveFittingStrings.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 
-const fEqualsNumberOfParametersPatternString = curveFittingStrings.fEqualsNumberOfParametersPattern;
-const nEqualsNumberOfDataPointsPatternString = curveFittingStrings.nEqualsNumberOfDataPointsPattern;
-const chiSymbolString = curveFittingStrings.chiSymbol;
-const fSymbolString = curveFittingStrings.fSymbol;
-const nSymbolString = curveFittingStrings.nSymbol;
-const xSymbolString = curveFittingStrings.xSymbol;
-const ySymbolString = curveFittingStrings.ySymbol;
-const theReducedChiSquaredStatisticIsString = curveFittingStrings.theReducedChiSquaredStatisticIs;
+const fEqualsNumberOfParametersPatternString = CurveFittingStrings.fEqualsNumberOfParametersPattern;
+const nEqualsNumberOfDataPointsPatternString = CurveFittingStrings.nEqualsNumberOfDataPointsPattern;
+const chiSymbolString = CurveFittingStrings.chiSymbol;
+const fSymbolString = CurveFittingStrings.fSymbol;
+const nSymbolString = CurveFittingStrings.nSymbol;
+const xSymbolString = CurveFittingStrings.xSymbol;
+const ySymbolString = CurveFittingStrings.ySymbol;
+const theReducedChiSquaredStatisticIsString = CurveFittingStrings.theReducedChiSquaredStatisticIs;
 
 // constants
 const TEXT_OPTIONS = {

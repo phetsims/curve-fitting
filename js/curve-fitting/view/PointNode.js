@@ -14,13 +14,13 @@ import merge from '../../../../phet-core/js/merge.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import { ButtonListener, Circle, Color, DragListener, Line, Node, Rectangle, RichText, Text } from '../../../../scenery/js/imports.js';
 import curveFitting from '../../curveFitting.js';
-import curveFittingStrings from '../../curveFittingStrings.js';
+import CurveFittingStrings from '../../CurveFittingStrings.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 import CurveFittingQueryParameters from '../CurveFittingQueryParameters.js';
 
-const deltaEqualsPatternString = curveFittingStrings.deltaEqualsPattern;
-const pointCoordinatesPatternString = curveFittingStrings.pointCoordinatesPattern;
-const ySymbolString = curveFittingStrings.ySymbol;
+const deltaEqualsPatternString = CurveFittingStrings.deltaEqualsPattern;
+const pointCoordinatesPatternString = CurveFittingStrings.pointCoordinatesPattern;
+const ySymbolString = CurveFittingStrings.ySymbol;
 
 // constants
 const Y_PATTERN = `<i style='font-family:${CurveFittingConstants.EQUATION_SYMBOL_FONT.family}'>{{y}}</i>`;
