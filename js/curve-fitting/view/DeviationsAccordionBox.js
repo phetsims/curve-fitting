@@ -152,7 +152,7 @@ class DeviationsAccordionBox extends AccordionBox {
       } );
 
       // If chiSquared is greater than 10 we have a bad fit so less precision is needed.
-      // If chiSquared if greater than 100 we have a really bad fit and decimals are inconsequential.
+      // If chiSquared is greater than 100 we have a really bad fit and decimals are inconsequential.
       // If chiSquared is larger than 1000, round it to 1000; see #28
       chiSquaredValueText.text = formatNumber( Math.min( chiSquared, MAX_CHI_SQUARE_VALUE ), 2 );
 
