@@ -147,7 +147,7 @@ class DeviationsAccordionBox extends AccordionBox {
     chiSquaredProperty.link( chiSquared => {
 
       // if chiSquared is larger than a 1000, the actual value will not be displayed, so use a '>' sign
-      chiSquaredLabelText.text = StringUtils.fillIn( CHI_SQUARED_PATTERN, {
+      chiSquaredLabelText.string = StringUtils.fillIn( CHI_SQUARED_PATTERN, {
         relationalOperator: ( chiSquared > MAX_CHI_SQUARE_VALUE ) ? MathSymbols.GREATER_THAN : MathSymbols.EQUAL_TO
       } );
 
