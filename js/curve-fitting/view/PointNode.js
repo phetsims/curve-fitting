@@ -300,7 +300,7 @@ class PointNode extends Node {
     function updateDelta() {
 
       // update text
-      deltaTextLabel.text = StringUtils.fillIn( deltaEqualsPatternString, {
+      deltaTextLabel.string = StringUtils.fillIn( deltaEqualsPatternString, {
         y: StringUtils.fillIn( Y_PATTERN, {
           y: ySymbolString
         } ),
