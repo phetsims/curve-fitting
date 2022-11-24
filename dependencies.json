@@ -17,7 +17,7 @@
     "branch": "HEAD"
   },
   "curve-fitting": {
-    "sha": "580c356f700d7d5ec46b724b5d59f738a5c5034a",
+    "sha": "63853b74234fb134733159440e29ddf87dd4884b",
     "branch": "1.0"
   },
   "dot": {
@@ -57,7 +57,7 @@
     "branch": "HEAD"
   },
   "scenery": {
-    "sha": "9eb1b9d884c8af8b3db169353282676be886397f",
+    "sha": "8e9b38a4a60b776750bff70a1ff3b7428da3fe09",
     "branch": "HEAD"
   },
   "scenery-phet": {
