@@ -8,6 +8,7 @@
 
 import Emitter from '../../../../axon/js/Emitter.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import Property from '../../../../axon/js/Property.js';
 import Matrix from '../../../../dot/js/Matrix.js';
 import curveFitting from '../../curveFitting.js';
 import CurveShape from './CurveShape.js';
@@ -33,7 +34,8 @@ class Curve {
     } );
 
     // @public {Property.<number>} r^2 deviation value, a number ranging from 0 to 1
-    this.rSquaredProperty = new NumberProperty( 0, {
+    this.rSquaredProperty = new Property( 0, {
+      valueType: 'number',
       isValidValue: value => isNaN( value ) || value >= 0 && value <= 1
     } );
 
