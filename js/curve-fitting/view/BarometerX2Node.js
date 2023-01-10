@@ -159,7 +159,7 @@ function getFillColorFromChiSquaredValue( chiSquaredValue, numberOfPoints ) {
  * X^2 scales linearly when less than 1, and logarithmically afterwards
  *
  * @param {number} value - Barometer's X^2 value.
- * @returns {number} ratio between 0 to 1 for how much the barometer should be filled
+ * @returns {number} ratio between 0 and 1 for how much the barometer should be filled
  */
 function chiSquaredValueToRatio( value ) {
   if ( value <= 1 ) {
