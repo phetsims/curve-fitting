@@ -58,7 +58,7 @@ class CurveFittingScreenView extends ScreenView {
     const modelViewTransform = ModelViewTransform2.createSinglePointScaleInvertedYMapping(
       new Vector2( 0, 0 ),
       new Vector2( this.layoutBounds.centerX, this.layoutBounds.centerY ),
-      25.5 //TODO compute this, https://github.com/phetsims/curve-fitting/issues/157
+      25.5 // set empirically, see https://github.com/phetsims/curve-fitting/issues/157
     );
 
     // create the graph area node - responsible for the rendering of the axes, ticks and background.
