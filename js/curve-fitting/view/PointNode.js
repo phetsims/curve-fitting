@@ -353,7 +353,7 @@ class PointNode extends Node {
     function updateValue() {
 
       // update text
-      valueTextLabel.text = StringUtils.fillIn(
+      valueTextLabel.string = StringUtils.fillIn(
         pointCoordinatesPatternString,
         {
           xCoordinate: Utils.toFixed( point.positionProperty.value.x, 1 ),

@@ -125,8 +125,8 @@ class EquationNode extends HBox {
     const leadingSignTextNode = this.signTextNodes[ this.orderProperty.value ];
     leadingSignTextNode.visible = false;
     const leadingCoefficient = this.coefficientTextNodes[ this.orderProperty.value ];
-    if ( leadingSignTextNode.text === ` ${MathSymbols.MINUS} ` && !_.includes( leadingCoefficient.text, MathSymbols.UNARY_MINUS ) ) {
-      leadingCoefficient.text = MathSymbols.UNARY_MINUS + leadingCoefficient.text;
+    if ( leadingSignTextNode.string === ` ${MathSymbols.MINUS} ` && !_.includes( leadingCoefficient.string, MathSymbols.UNARY_MINUS ) ) {
+      leadingCoefficient.string = MathSymbols.UNARY_MINUS + leadingCoefficient.string;
     }
 
     // makes unnecessary HStruts invisible; HStruts are unnecessary when their proceeding variable texts are invisible
@@ -155,8 +155,8 @@ class EquationNode extends HBox {
     );
 
     for ( let i = 0; i < coefficientsArray.length; i += 2 ) {
-      this.signTextNodes[ i / 2 ].text = ` ${coefficientsArray[ i ]} `;
-      this.coefficientTextNodes[ i / 2 ].text = coefficientsArray[ i + 1 ];
+      this.signTextNodes[ i / 2 ].string = ` ${coefficientsArray[ i ]} `;
+      this.coefficientTextNodes[ i / 2 ].string = coefficientsArray[ i + 1 ];
     }
 
     this.updateChildrenAndVisibilities();

@@ -154,7 +154,7 @@ class DeviationsAccordionBox extends AccordionBox {
       // If chiSquared is greater than 10 we have a bad fit so less precision is needed.
       // If chiSquared is greater than 100 we have a really bad fit and decimals are inconsequential.
       // If chiSquared is larger than 1000, round it to 1000; see #28
-      chiSquaredValueText.text = formatNumber( Math.min( chiSquared, MAX_CHI_SQUARE_VALUE ), 2 );
+      chiSquaredValueText.string = formatNumber( Math.min( chiSquared, MAX_CHI_SQUARE_VALUE ), 2 );
 
       // centers the chiSquared text node within the panel
       // chi squared needs to be centered because the number of digits can change
@@ -172,7 +172,7 @@ class DeviationsAccordionBox extends AccordionBox {
       else {
         rSquaredString = formatNumber( rSquared, 2 );
       }
-      rSquaredValueText.text = rSquaredString;
+      rSquaredValueText.string = rSquaredString;
     } );
 
     // unlinks unnecessary, present for the lifetime of the sim
