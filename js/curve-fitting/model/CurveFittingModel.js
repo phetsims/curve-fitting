@@ -21,7 +21,7 @@ class CurveFittingModel {
     // @public {Property.<number>} order of the polynomial that describes the curve, valid values are 1, 2, 3
     this.orderProperty = new NumberProperty( 1, {
       validValues: [ 1, 2, 3 ],
-      hasListenerOrderDependencies: true
+      hasListenerOrderDependencies: true // TODO: https://github.com/phetsims/curve-fitting/issues/169
     } );
 
     // @public {Property.<FitType>}, the method of fitting the curve to data points
