@@ -28,5 +28,5 @@ Fit' mode, the chi-squared value is not assumed to be zero in such situations (S
 Almost none of the nodes need to be disposed because they are instantiated a finite number of times and last for the
 duration of the sim. `PointNode` is the exception as it needs a dispose, and it gets disposed in `BucketNode`.
 
-This simulation includes query parameters in `CurveFittingQueryParameters` that are useful for debugging
-and should be shared with the QA team.
+This simulation includes query parameters in `CurveFittingQueryParameters` that are useful for debugging and should be
+shared with the QA team.
