@@ -106,7 +106,7 @@ class CurveFittingScreenView extends ScreenView {
 
     // create the panel that serves as an opaque background for the equationAccordionBox; see #126
     // no dispose or removeListener necessary because equationAccordionBox is present for the lifetime of the sim
-    const graphEquationBackground = new Rectangle( 0, 0, 0, 0, 0, 0, {
+    const graphEquationBackground = new Rectangle( {
       cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
       fill: 'white'
     } );
