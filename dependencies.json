@@ -1,5 +1,5 @@
 {
-  "comment": "# curve-fitting 1.0.14-rc.1 Thu Feb 29 2024 12:31:19 GMT-0700 (Mountain Standard Time)",
+  "comment": "# curve-fitting 1.0.14 Mon Mar 11 2024 10:45:29 GMT-0600 (Mountain Daylight Time)",
   "assert": {
     "sha": "bd6e3ed0a8b6fea73a4a176d5364809666833e58",
     "branch": "HEAD"
@@ -17,7 +17,7 @@
     "branch": "HEAD"
   },
   "curve-fitting": {
-    "sha": "c684c9d5ea37884c8df0531f71a9fdd66378309d",
+    "sha": "1f8ba5901620a15c2090de450d053648f4c6c778",
     "branch": "1.0"
   },
   "dot": {
