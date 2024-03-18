@@ -13,11 +13,11 @@
     "branch": "HEAD"
   },
   "chipper": {
-    "sha": "c5c3eb81ff45b8d6dee5d2b5575e3dd1a52e91f3",
+    "sha": "ba5c6088e3cc9481df9c097266c4438eb78d54cd",
     "branch": "HEAD"
   },
   "curve-fitting": {
-    "sha": "1f8ba5901620a15c2090de450d053648f4c6c778",
+    "sha": "dcf8522e1d8ad09e2244ec08be0b79c9e2430517",
     "branch": "1.0"
   },
   "dot": {
@@ -25,7 +25,7 @@
     "branch": "HEAD"
   },
   "joist": {
-    "sha": "cddb329077c69cceec1dfd6e687e5f8cfe0fc30e",
+    "sha": "36639b112e47ee20bc8f76520d9972737c1940ba",
     "branch": "HEAD"
   },
   "kite": {
