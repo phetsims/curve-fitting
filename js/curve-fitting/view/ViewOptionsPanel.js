@@ -6,7 +6,8 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import { Text, VBox } from '../../../../scenery/js/imports.js';
+import VBox from '../../../../scenery/js/layout/nodes/VBox.js';
+import Text from '../../../../scenery/js/nodes/Text.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
 import Panel from '../../../../sun/js/Panel.js';
 import curveFitting from '../../curveFitting.js';
