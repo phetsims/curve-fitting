@@ -1,4 +1,4 @@
-// Copyright 2002-2022, University of Colorado Boulder
+// Copyright 2002-2025, University of Colorado Boulder
 
 /**
  * Curve node in 'Curve Fitting' simulation.

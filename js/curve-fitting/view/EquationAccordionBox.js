@@ -1,4 +1,4 @@
-// Copyright 2015-2022, University of Colorado Boulder
+// Copyright 2015-2025, University of Colorado Boulder
 
 /**
  * EquationAccordionBox is the accordion box that shows the equation of the curve on the graph.
