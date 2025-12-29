@@ -8,6 +8,7 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import Multilink from '../../../../axon/js/Multilink.js';
 import dotRandom from '../../../../dot/js/dotRandom.js';
 import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
@@ -110,10 +111,16 @@ class CurveFittingScreenView extends ScreenView {
       cornerRadius: CurveFittingConstants.PANEL_CORNER_RADIUS,
       fill: 'white'
     } );
-    equationAccordionBox.updatedEmitter.addListener( () => {
-      graphEquationBackground.visible = equationAccordionBox.visible;
-      graphEquationBackground.rectBounds = equationAccordionBox.bounds;
-    } );
+    Multilink.multilink(
+      [
+        equationAccordionBox.boundsProperty,
+        equationAccordionBox.visibleProperty
+      ],
+      ( bounds, visible ) => {
+        graphEquationBackground.visible = visible;
+        graphEquationBackground.rectBounds = bounds;
+      }
+    );
 
     // Whenever the curve becomes visible, points below the EquationAccordionBox's expand/collapse button get
     // pushed out from under the button; see #131
