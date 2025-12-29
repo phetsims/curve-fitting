@@ -26,7 +26,7 @@ import BarometerR2Node from './BarometerR2Node.js';
 import BarometerX2Node from './BarometerX2Node.js';
 import ReducedChiSquaredStatisticDialog from './ReducedChiSquaredStatisticDialog.js';
 
-const deviationsString = CurveFittingStrings.deviations;
+const deviationsStringProperty = CurveFittingStrings.deviationsStringProperty;
 
 // constants
 const VALUES_TEXT_FONT = CurveFittingConstants.BAROMETER_VALUE_FONT;
@@ -65,7 +65,7 @@ class DeviationsAccordionBox extends AccordionBox {
       minWidth: CurveFittingConstants.PANEL_MIN_WIDTH,
       maxWidth: CurveFittingConstants.PANEL_MAX_WIDTH,
       expandedProperty: expandedProperty,
-      titleNode: new Text( deviationsString, {
+      titleNode: new Text( deviationsStringProperty, {
         font: CurveFittingConstants.ACCORDION_BOX_TITLE_FONT,
         maxWidth: 115
       } ),

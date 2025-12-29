@@ -14,9 +14,9 @@ import curveFitting from '../../curveFitting.js';
 import CurveFittingStrings from '../../CurveFittingStrings.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 
-const cubicString = CurveFittingStrings.cubic;
-const linearString = CurveFittingStrings.linear;
-const quadraticString = CurveFittingStrings.quadratic;
+const cubicStringProperty = CurveFittingStrings.cubicStringProperty;
+const linearStringProperty = CurveFittingStrings.linearStringProperty;
+const quadraticStringProperty = CurveFittingStrings.quadraticStringProperty;
 
 class CurveOrderPanel extends Panel {
 
@@ -27,9 +27,9 @@ class CurveOrderPanel extends Panel {
   constructor( orderProperty, options ) {
 
     // radio buttons
-    const linearButton = createRadioButton( orderProperty, 1, linearString );
-    const quadraticButton = createRadioButton( orderProperty, 2, quadraticString );
-    const cubicButton = createRadioButton( orderProperty, 3, cubicString );
+    const linearButton = createRadioButton( orderProperty, 1, linearStringProperty );
+    const quadraticButton = createRadioButton( orderProperty, 2, quadraticStringProperty );
+    const cubicButton = createRadioButton( orderProperty, 3, cubicStringProperty );
 
     // vertical layout
     const contentNode = new VBox( {

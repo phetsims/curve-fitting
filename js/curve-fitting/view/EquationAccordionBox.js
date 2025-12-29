@@ -22,8 +22,8 @@ import CurveFittingStrings from '../../CurveFittingStrings.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 import EquationNode from './EquationNode.js';
 
-const equationString = CurveFittingStrings.equation;
-const undefinedString = CurveFittingStrings.undefined;
+const equationStringProperty = CurveFittingStrings.equationStringProperty;
+const undefinedStringProperty = CurveFittingStrings.undefinedStringProperty;
 
 // max number of digits for coefficients in ascending order of polynomials
 const MAX_DIGITS = [ 2, 3, 4, 4 ];
@@ -49,7 +49,7 @@ class EquationAccordionBox extends Panel {
     }, options );
 
     // visible text node when panel is not expanded
-    const titleNode = new Text( equationString, {
+    const titleNode = new Text( equationStringProperty, {
       font: CurveFittingConstants.ACCORDION_BOX_TITLE_FONT,
       maxWidth: options.equationNodeMaxWidth
     } );
@@ -69,7 +69,7 @@ class EquationAccordionBox extends Panel {
     } );
 
     // visible node when panel is expanded but there is no equation
-    const undefinedEquationText = new Text( undefinedString, {
+    const undefinedEquationText = new Text( undefinedStringProperty, {
       font: CurveFittingConstants.ACCORDION_BOX_TITLE_FONT,
       maxWidth: options.equationNodeMaxWidth
     } );

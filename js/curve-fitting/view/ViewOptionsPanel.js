@@ -14,9 +14,9 @@ import curveFitting from '../../curveFitting.js';
 import CurveFittingStrings from '../../CurveFittingStrings.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 
-const curveString = CurveFittingStrings.curve;
-const residualsString = CurveFittingStrings.residuals;
-const valuesString = CurveFittingStrings.values;
+const curveStringProperty = CurveFittingStrings.curveStringProperty;
+const residualsStringProperty = CurveFittingStrings.residualsStringProperty;
+const valuesStringProperty = CurveFittingStrings.valuesStringProperty;
 
 class ViewOptionsPanel extends Panel {
 
@@ -29,9 +29,9 @@ class ViewOptionsPanel extends Panel {
   constructor( curveVisibleProperty, residualsVisibleProperty, valuesVisibleProperty, options ) {
 
     // checkboxes
-    const curveCheckbox = createCheckbox( curveVisibleProperty, curveString );
-    const residualsCheckbox = createCheckbox( residualsVisibleProperty, residualsString );
-    const valuesCheckbox = createCheckbox( valuesVisibleProperty, valuesString );
+    const curveCheckbox = createCheckbox( curveVisibleProperty, curveStringProperty );
+    const residualsCheckbox = createCheckbox( residualsVisibleProperty, residualsStringProperty );
+    const valuesCheckbox = createCheckbox( valuesVisibleProperty, valuesStringProperty );
 
     // vertical layout
     const contentNode = new VBox( {

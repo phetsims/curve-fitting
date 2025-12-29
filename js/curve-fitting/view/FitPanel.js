@@ -22,9 +22,9 @@ import FitType from '../model/FitType.js';
 import CoefficientSliderNode from './CoefficientSliderNode.js';
 import EquationNode from './EquationNode.js';
 
-const adjustableFitString = CurveFittingStrings.adjustableFit;
+const adjustableFitStringProperty = CurveFittingStrings.adjustableFitStringProperty;
+const bestFitStringProperty = CurveFittingStrings.bestFitStringProperty;
 const aSymbolString = CurveFittingStrings.aSymbol;
-const bestFitString = CurveFittingStrings.bestFit;
 const bSymbolString = CurveFittingStrings.bSymbol;
 const cSymbolString = CurveFittingStrings.cSymbol;
 const dSymbolString = CurveFittingStrings.dSymbol;
@@ -48,8 +48,8 @@ class FitPanel extends Panel {
     }, options );
 
     // radio buttons
-    const bestFitButton = createRadioButton( fitProperty, FitType.BEST, bestFitString );
-    const adjustableFitButton = createRadioButton( fitProperty, FitType.ADJUSTABLE, adjustableFitString );
+    const bestFitButton = createRadioButton( fitProperty, FitType.BEST, bestFitStringProperty );
+    const adjustableFitButton = createRadioButton( fitProperty, FitType.ADJUSTABLE, adjustableFitStringProperty );
 
     // vertical layout
     const radioButtonsBox = new VBox( {
