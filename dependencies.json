@@ -17,7 +17,7 @@
     "branch": "HEAD"
   },
   "curve-fitting": {
-    "sha": "cdeb485b207588f2b82b0841f75ffb2988b9dc97",
+    "sha": "d9557978111531902d1446ec3c0ae9a9de68cb60",
     "branch": "1.0"
   },
   "dot": {
@@ -45,7 +45,7 @@
     "branch": "HEAD"
   },
   "phetcommon": {
-    "sha": "1e58b404e118b193a007de890f868df60fd0f2c6",
+    "sha": "30f4ebdc19ce9956dbb3d77f8e4c9efe1b5c85f1",
     "branch": "HEAD"
   },
   "phetmarks": {
