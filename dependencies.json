@@ -17,7 +17,7 @@
     "branch": "HEAD"
   },
   "curve-fitting": {
-    "sha": "179722c131ab4d859f2a0161dd8725d7fa79390d",
+    "sha": "9c14d6b8e12b691b52ec40348119fc4266189b3c",
     "branch": "1.0"
   },
   "dot": {
@@ -25,7 +25,7 @@
     "branch": "HEAD"
   },
   "joist": {
-    "sha": "8df0be8b76fa240789df83da338b4c8687a65272",
+    "sha": "664e54f1709901622060d5b798166f8a0ea54010",
     "branch": "HEAD"
   },
   "kite": {
