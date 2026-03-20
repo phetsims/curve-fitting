@@ -16,7 +16,6 @@ import BucketHole from '../../../../scenery-phet/js/bucket/BucketHole.js';
 import DragListener from '../../../../scenery/js/listeners/DragListener.js';
 import Circle from '../../../../scenery/js/nodes/Circle.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
-import curveFitting from '../../curveFitting.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 import CurveFittingQueryParameters from '../CurveFittingQueryParameters.js';
 import Point from '../model/Point.js';
@@ -187,5 +186,4 @@ class BucketNode extends Node {
 
 }
 
-curveFitting.register( 'BucketNode', BucketNode );
 export default BucketNode;

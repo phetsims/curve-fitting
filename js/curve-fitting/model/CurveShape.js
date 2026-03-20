@@ -9,7 +9,6 @@
  */
 
 import Shape from '../../../../kite/js/Shape.js';
-import curveFitting from '../../curveFitting.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 
 // constants
@@ -48,5 +47,4 @@ class CurveShape extends Shape {
 
 }
 
-curveFitting.register( 'CurveShape', CurveShape );
 export default CurveShape;

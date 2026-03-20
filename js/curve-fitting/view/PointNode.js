@@ -21,7 +21,6 @@ import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import RichText from '../../../../scenery/js/nodes/RichText.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Color from '../../../../scenery/js/util/Color.js';
-import curveFitting from '../../curveFitting.js';
 import CurveFittingStrings from '../../CurveFittingStrings.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 import CurveFittingQueryParameters from '../CurveFittingQueryParameters.js';
@@ -461,5 +460,4 @@ class PointNode extends Node {
 
 }
 
-curveFitting.register( 'PointNode', PointNode );
 export default PointNode;

@@ -9,9 +9,7 @@
  */
 
 import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
-import curveFitting from '../../curveFitting.js';
 
 const FitType = EnumerationDeprecated.byKeys( [ 'ADJUSTABLE', 'BEST' ] );
 
-curveFitting.register( 'FitType', FitType );
 export default FitType;

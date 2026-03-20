@@ -11,7 +11,6 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import RangeWithValue from '../../../dot/js/RangeWithValue.js';
 import MathSymbolFont from '../../../scenery-phet/js/MathSymbolFont.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
-import curveFitting from '../curveFitting.js';
 
 // constants
 const EQUATION_FONT_SIZE = 16;
@@ -99,5 +98,4 @@ const CurveFittingConstants = {
   INFO_DIALOG_SYMBOL_FONT: new MathSymbolFont( 14 )
 };
 
-curveFitting.register( 'CurveFittingConstants', CurveFittingConstants );
 export default CurveFittingConstants;

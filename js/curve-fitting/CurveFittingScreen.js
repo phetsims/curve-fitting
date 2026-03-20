@@ -8,7 +8,6 @@
 
 import Property from '../../../axon/js/Property.js';
 import Screen from '../../../joist/js/Screen.js';
-import curveFitting from '../curveFitting.js';
 import CurveFittingModel from './model/CurveFittingModel.js';
 import CurveFittingScreenView from './view/CurveFittingScreenView.js';
 
@@ -24,5 +23,4 @@ class CurveFittingScreen extends Screen {
 
 }
 
-curveFitting.register( 'CurveFittingScreen', CurveFittingScreen );
 export default CurveFittingScreen;

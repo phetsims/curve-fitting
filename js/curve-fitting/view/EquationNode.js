@@ -13,7 +13,6 @@ import HStrut from '../../../../scenery/js/nodes/HStrut.js';
 import RichText from '../../../../scenery/js/nodes/RichText.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import VStrut from '../../../../scenery/js/nodes/VStrut.js';
-import curveFitting from '../../curveFitting.js';
 import CurveFittingStrings from '../../CurveFittingStrings.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 
@@ -169,5 +168,4 @@ class EquationNode extends HBox {
 
 }
 
-curveFitting.register( 'EquationNode', EquationNode );
 export default EquationNode;

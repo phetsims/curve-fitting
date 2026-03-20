@@ -17,7 +17,6 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import VStrut from '../../../../scenery/js/nodes/VStrut.js';
 import ExpandCollapseButton from '../../../../sun/js/ExpandCollapseButton.js';
 import Panel from '../../../../sun/js/Panel.js';
-import curveFitting from '../../curveFitting.js';
 import CurveFittingStrings from '../../CurveFittingStrings.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 import EquationNode from './EquationNode.js';
@@ -158,5 +157,4 @@ class EquationAccordionBox extends Panel {
 
 }
 
-curveFitting.register( 'EquationAccordionBox', EquationAccordionBox );
 export default EquationAccordionBox;

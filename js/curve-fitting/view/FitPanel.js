@@ -15,7 +15,6 @@ import HStrut from '../../../../scenery/js/nodes/HStrut.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import AquaRadioButton from '../../../../sun/js/AquaRadioButton.js';
 import Panel from '../../../../sun/js/Panel.js';
-import curveFitting from '../../curveFitting.js';
 import CurveFittingStrings from '../../CurveFittingStrings.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 import FitType from '../model/FitType.js';
@@ -162,5 +161,4 @@ function createRadioButton( property, value, label ) {
   );
 }
 
-curveFitting.register( 'FitPanel', FitPanel );
 export default FitPanel;

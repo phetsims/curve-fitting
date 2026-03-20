@@ -12,7 +12,6 @@ import Line from '../../../../scenery/js/nodes/Line.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
-import curveFitting from '../../curveFitting.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 
 // constants
@@ -91,5 +90,4 @@ class BarometerNode extends Node {
 
 }
 
-curveFitting.register( 'BarometerNode', BarometerNode );
 export default BarometerNode;

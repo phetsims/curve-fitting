@@ -10,7 +10,6 @@ import VBox from '../../../../scenery/js/layout/nodes/VBox.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import AquaRadioButton from '../../../../sun/js/AquaRadioButton.js';
 import Panel from '../../../../sun/js/Panel.js';
-import curveFitting from '../../curveFitting.js';
 import CurveFittingStrings from '../../CurveFittingStrings.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 
@@ -67,5 +66,4 @@ function createRadioButton( orderProperty, value, label ) {
   );
 }
 
-curveFitting.register( 'CurveOrderPanel', CurveOrderPanel );
 export default CurveOrderPanel;

@@ -16,7 +16,6 @@ import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import merge from '../../../../phet-core/js/merge.js';
 import Animation from '../../../../twixt/js/Animation.js';
 import Easing from '../../../../twixt/js/Easing.js';
-import curveFitting from '../../curveFitting.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 
 class Point {
@@ -108,5 +107,4 @@ class Point {
 
 }
 
-curveFitting.register( 'Point', Point );
 export default Point;

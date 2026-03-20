@@ -9,7 +9,6 @@
 import Shape from '../../../../kite/js/Shape.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
-import curveFitting from '../../curveFitting.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 
 // constants
@@ -55,5 +54,4 @@ class CurveNode extends Node {
 
 }
 
-curveFitting.register( 'CurveNode', CurveNode );
 export default CurveNode;

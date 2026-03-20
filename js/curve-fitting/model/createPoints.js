@@ -8,7 +8,6 @@
  */
 
 import createObservableArray from '../../../../axon/js/createObservableArray.js';
-import curveFitting from '../../curveFitting.js';
 
 const createPoints = () => {
 
@@ -35,5 +34,4 @@ const createPoints = () => {
   return points;
 };
 
-curveFitting.register( 'createPoints', createPoints );
 export default createPoints;

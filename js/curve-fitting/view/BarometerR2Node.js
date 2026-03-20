@@ -10,7 +10,6 @@
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import merge from '../../../../phet-core/js/merge.js';
-import curveFitting from '../../curveFitting.js';
 import BarometerNode from './BarometerNode.js';
 
 class BarometerR2Node extends BarometerNode {
@@ -49,5 +48,4 @@ class BarometerR2Node extends BarometerNode {
 
 }
 
-curveFitting.register( 'BarometerR2Node', BarometerR2Node );
 export default BarometerR2Node;

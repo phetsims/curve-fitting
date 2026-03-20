@@ -7,7 +7,6 @@
  */
 
 import { QueryStringMachine } from '../../../query-string-machine/js/QueryStringMachineModule.js';
-import curveFitting from '../curveFitting.js';
 
 const CurveFittingQueryParameters = QueryStringMachine.getAll( {
 
@@ -20,5 +19,4 @@ const CurveFittingQueryParameters = QueryStringMachine.getAll( {
 
 } );
 
-curveFitting.register( 'CurveFittingQueryParameters', CurveFittingQueryParameters );
 export default CurveFittingQueryParameters;

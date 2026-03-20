@@ -11,7 +11,6 @@ import merge from '../../../../phet-core/js/merge.js';
 import VBox from '../../../../scenery/js/layout/nodes/VBox.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import VSlider from '../../../../sun/js/VSlider.js';
-import curveFitting from '../../curveFitting.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 
 // constants
@@ -61,5 +60,4 @@ class CoefficientSliderNode extends VBox {
 
 }
 
-curveFitting.register( 'CoefficientSliderNode', CoefficientSliderNode );
 export default CoefficientSliderNode;

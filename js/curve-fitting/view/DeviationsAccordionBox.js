@@ -19,7 +19,6 @@ import RichText from '../../../../scenery/js/nodes/RichText.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
 import Panel from '../../../../sun/js/Panel.js';
-import curveFitting from '../../curveFitting.js';
 import CurveFittingStrings from '../../CurveFittingStrings.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 import BarometerR2Node from './BarometerR2Node.js';
@@ -243,5 +242,4 @@ function formatNumber( number, digits ) {
   return Utils.toFixed( number, decimalPlaces );
 }
 
-curveFitting.register( 'DeviationsAccordionBox', DeviationsAccordionBox );
 export default DeviationsAccordionBox;

@@ -8,7 +8,6 @@
 
 import EnumerationDeprecatedProperty from '../../../../axon/js/EnumerationDeprecatedProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
-import curveFitting from '../../curveFitting.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 import createPoints from './createPoints.js';
 import Curve from './Curve.js';
@@ -119,5 +118,4 @@ class CurveFittingModel {
 
 }
 
-curveFitting.register( 'CurveFittingModel', CurveFittingModel );
 export default CurveFittingModel;

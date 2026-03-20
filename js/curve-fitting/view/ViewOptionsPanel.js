@@ -10,7 +10,6 @@ import VBox from '../../../../scenery/js/layout/nodes/VBox.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
 import Panel from '../../../../sun/js/Panel.js';
-import curveFitting from '../../curveFitting.js';
 import CurveFittingStrings from '../../CurveFittingStrings.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 
@@ -92,5 +91,4 @@ function createCheckbox( property, label ) {
   } ), CurveFittingConstants.CHECKBOX_OPTIONS );
 }
 
-curveFitting.register( 'ViewOptionsPanel', ViewOptionsPanel );
 export default ViewOptionsPanel;

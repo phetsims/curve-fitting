@@ -10,7 +10,6 @@ import Emitter from '../../../../axon/js/Emitter.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Matrix from '../../../../dot/js/Matrix.js';
-import curveFitting from '../../curveFitting.js';
 import CurveShape from './CurveShape.js';
 import FitType from './FitType.js';
 
@@ -332,5 +331,4 @@ class Curve {
 
 }
 
-curveFitting.register( 'Curve', Curve );
 export default Curve;

@@ -15,7 +15,6 @@ import HStrut from '../../../../scenery/js/nodes/HStrut.js';
 import RichText from '../../../../scenery/js/nodes/RichText.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Dialog from '../../../../sun/js/Dialog.js';
-import curveFitting from '../../curveFitting.js';
 import CurveFittingStrings from '../../CurveFittingStrings.js';
 import CurveFittingConstants from '../CurveFittingConstants.js';
 
@@ -81,5 +80,4 @@ class ReducedChiSquaredStatisticDialog extends Dialog {
 
 }
 
-curveFitting.register( 'ReducedChiSquaredStatisticDialog', ReducedChiSquaredStatisticDialog );
 export default ReducedChiSquaredStatisticDialog;
