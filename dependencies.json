@@ -13,11 +13,11 @@
     "branch": "HEAD"
   },
   "chipper": {
-    "sha": "8d0fe964279ec209e7e2d3ccf7d20fb77761dd0c",
+    "sha": "6076cf0989acd6e2e1202a2d99a90e3a3a7f5dd3",
     "branch": "HEAD"
   },
   "curve-fitting": {
-    "sha": "54d1b9b91b88b81b6c6a0c5d8687c4ef5a12e43e",
+    "sha": "57e652d210ae455bb3935145b3ba5f6a3a03ee6c",
     "branch": "1.0"
   },
   "dot": {
