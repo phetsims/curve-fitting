@@ -45,4 +45,6 @@ type StringsType = {
 
 const CurveFittingStrings = getStringModule( 'CURVE_FITTING' ) as StringsType;
 
+curveFitting.register( 'CurveFittingStrings', CurveFittingStrings );
+
 export default CurveFittingStrings;
